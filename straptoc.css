@@ -1,0 +1,8 @@
+div.onside {
+   position: fixed;
+   right: 50px;
+   height: 500px;
+   background-color:#FFF;
+   font-size:85%;
+   overflow: scroll;
+ }
