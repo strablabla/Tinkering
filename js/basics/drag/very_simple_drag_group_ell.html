@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>d3 simple</title>
+<style>
+
+body {
+  font: 13px sans-serif;
+  position: relative;
+  width: 960px;
+  height: 500px;
+}
+
+form {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+
+circle,
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+circle {
+  fill: #fff;
+  fill-opacity: .2;
+  cursor: move;
+}
+
+.selected {
+  fill: #ff7f0e;
+  stroke: #ff7f0e;
+}
+
+</style>
+
+<body>
+
+<div></div>
+ <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+
+<script>
+
+// var drag = d3.behavior.drag()
+//     .origin(function(d) { return d; })
+//     .on("dragstart", dragstarted)
+//     .on("drag", dragged)
+//     .on("dragend", dragended);
+
+var width = 500,
+    height = 500;
+    
+var ellData = [
+  {"x":100,"y":100,"col":"yellow", "id":"Bim"}
+];
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .style("background", "lightgrey");
+
+var group = svg.selectAll("blabla")
+    .data(ellData)
+    .enter()
+    .append("g")
+    .attr("id", function (d) { return d.id;});
+
+group
+    .append("ellipse")       // attach an ellipse
+    .attr("cx", function(d){return d.x;})           // position the x-centre
+    .attr("cy", function(d){return d.y;})           // position the y-centre
+    .attr("rx", 30)           // set the x radius
+    .attr("ry", 10)           // set the y radius
+    .attr("fill", function(d){return d.col;})
+    .attr("class", "grad_rnd")
+
+group
+    .append("rect") // rectangle for gradient. 
+    .attr("x", function(d){return d.x - 20;})
+    .attr("y", function(d){return d.y + 10;} )
+    .attr("width", 40)
+    .attr("height", 20)
+    .attr("fill", "green")
+    .attr("class", "grad_rnd")
+
+var drag = d3.behavior.drag()
+    // .origin(function(d) { return d; })
+    .origin(function (d) {
+        var element = d3.select("#" + d.id);
+        return {
+            "x": d3.transform(element.attr("transform")).translate[0],
+            "y": d3.transform(element.attr("transform")).translate[1]
+        };
+    })
+    .on("dragstart", dragstarted)
+    .on("drag", dragged)
+    .on("dragend", dragended);
+    
+function dragstarted(d) {
+  d3.event.sourceEvent.stopPropagation();
+  d3.select(this).classed("dragging", true);
+}
+// 
+function dragged(d) {
+  var x = d3.event.x;
+  var y = d3.event.y;
+  d3.select(this).attr("transform", "translate(" + x + "," + y + ")");
+}
+// 
+function dragended(d) {
+  d3.select(this).classed("dragging", false);
+}
+
+group.call(drag);
+
+
+</script>
+
+
+</body>

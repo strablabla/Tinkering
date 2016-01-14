@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>d3 simple</title>
+<style>
+
+body {
+  font: 13px sans-serif;
+  position: relative;
+  width: 960px;
+  height: 500px;
+}
+
+form {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+/*rect {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}*/
+
+circle,
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+circle {
+  fill: #fff;
+  fill-opacity: .2;
+  cursor: move;
+}
+
+.selected {
+  fill: #ff7f0e;
+  stroke: #ff7f0e;
+}
+
+</style>
+
+<body>
+
+<div></div>
+ <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+
+<script>
+
+
+var chart = d3.select("body").append("svg")
+   .attr("height", 500)
+   .attr("width", 500)
+   .style("background", "lightgrey");
+
+var group = chart.selectAll("g")
+    .data(["Bim"])
+    .enter()
+    .append("g")
+    .attr("id", function (d) { return d;});
+
+var rect = group.append("rect")
+    .attr("fill", "yellow")
+    .attr("width", 50)
+    .attr("height", 50)
+    .attr("x", 10)
+    .attr("y", 10);
+
+var label = group.append("text")
+    .attr("x", 20)
+    .attr("y", 40)
+    .attr("text-anchor", "start")
+    .text(function (d) { return d;})
+    .style("font-size","15px");
+
+// Set up dragging for the entire group
+var dragMove = function (d) {
+    var x = d3.event.x;
+    var y = d3.event.y;
+    d3.select(this).attr("transform", "translate(" + x + "," + y + ")");
+};
+
+
+var drag = d3.behavior.drag()
+    .origin(function (data) {
+        var element = d3.select("#" + data);
+        return {
+            x: d3.transform(element.attr("transform")).translate[0],
+            y: d3.transform(element.attr("transform")).translate[1]
+        };
+    })
+    .on("drag", dragMove);
+
+group.call(drag);
+
+
+</script>
+
+
+</body>

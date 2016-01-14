@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Joystick</title>
+
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.css">
+
+<style>
+
+body {
+  font: 13px sans-serif;
+  position: relative;
+  width: 960px;
+  height: 500px;
+}
+
+form {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+circle,
+.line {
+  fill: none;
+  stroke: black;
+  stroke-width: 1.5px;
+}
+
+/*stroke: steelblue;*/
+
+circle {
+  fill: #fff;
+  fill-opacity: .2;
+  cursor: move;
+}
+
+.selected {
+  fill: #ff7f0e;
+  stroke: #ff7f0e;
+}
+
+</style>
+
+<body>
+
+<h1 style="text-align:center"> Simple joystick </h1>
+
+<div></div>
+ <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script src="Simple_joystick_d3js.js"></script>
+
+<div class="container">
+
+ <div id="joystick"></div>
+ <div id="joypos"></div>
+
+</div> 
+
+<script>
+var svg = d3.select("#joystick")
+            .append("svg")
+            .attr("width", 600)
+            .attr("height", 300);
+
+var param_joy = [{'x':150, 'y':150, 'col': 'green'}]
+var size_joy_butt = 50
+
+joy(param_joy, svg)
+</script>
+
+</body>

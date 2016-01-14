@@ -1,0 +1,105 @@
+<!doctype html>
+<head>
+<title>Arrow</title>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<style>
+
+.line {
+    stroke: blue;
+    stroke-width: 1.5px;
+    fill: white;
+}
+
+circle {
+    fill: red;
+}
+#marker {
+  stroke: black;
+    fill: black;
+}
+
+</style>
+</head>
+
+
+<body>
+<div id="ok">
+    
+<script>
+
+var drag = d3.behavior.drag()
+    .origin(function(d) { return d; })
+    .on("dragstart", dragstarted)
+    .on("drag", dragged_arrow)
+    .on("dragend", dragended);
+
+//Create SVG element
+var svg = d3.select("#ok")
+            .append("svg")
+            .attr("width", 500)
+            .attr("height", 500);
+
+line_arrow = function(data_arrow){          // Horizontal arrow
+  
+    var translate_rotate_arrow = function(d, side){
+        if(side == "right"){
+            posx = d.x + d.length
+            posy = d.y - 1;
+            rotation = " rotate(-30)"
+        }
+        else if (side == "left"){
+              posx = d.x
+              posy = d.y + 1
+              rotation = " rotate(150)"
+         }
+        return "translate(" + posx + ","+ posy + ")"+ rotation;
+    }
+  
+  var g_arrow = svg.selectAll("garrow")
+      .data(data_arrow)
+      .enter()
+      .append("g")
+      .call(drag);
+  
+  g_arrow.append("line")
+     .attr('x1', function(d){return d.x;})
+     .attr('y1', function(d){return d.y;})
+     .attr('x2', function(d){return d.x + d.length;})
+     .attr('y2', function(d){return d.y;})
+     .attr('stroke', 'black')
+
+     g_arrow.append("path")
+         .attr("d", d3.svg.symbol().type("triangle-up").size(function(d) { return d.size}))
+         .attr("transform", function(d) { return translate_rotate_arrow(d, "right") }) // triangle right
+     
+     g_arrow.append("path")
+         .attr("d", d3.svg.symbol().type("triangle-up").size(function(d) { return d.size}))
+         .attr("transform", function(d) { return translate_rotate_arrow(d, "left") }) // triangle right
+}
+
+line_arrow([{"x":200, "y":200, "length":50, "size":20}])
+
+/////////
+
+function dragstarted(d) {
+  d3.event.sourceEvent.stopPropagation();
+  d3.select(this).classed("dragging", true);
+}
+
+function dragged_arrow(d) {          // Drag the gradient
+    var x = d3.event.x;
+    var y = d3.event.y;
+    d3.select(this).attr("transform", "translate(" + x + "," + y + ")");
+  }
+
+function dragended(d) {
+  d3.select(this).classed("dragging", false);
+}
+
+</script>
+
+
+</body>
+
+
+</html>
