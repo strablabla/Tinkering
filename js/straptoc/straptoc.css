@@ -1,6 +1,7 @@
 div.onside {
    position: fixed;
    padding-left: 20px;
+   box-shadow: 0.5em 0.5em 0.7em;
    right: 50px;
    height: 200px;
    background-color:#FFF;
