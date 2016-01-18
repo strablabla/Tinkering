@@ -1,0 +1,12 @@
+div.onside {
+   position: fixed;
+   padding-left: 20px;
+   box-shadow: 0.5em 0.5em 0.7em;
+   right: 20px;
+   height:auto;
+   width: 150px;
+   background-color:#FFF;
+   font-size:85%;
+   overflow: scroll;
+   overflow-x: hidden;
+ }
