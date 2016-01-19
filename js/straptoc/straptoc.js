@@ -1,7 +1,7 @@
 var maketoc = function(){
 
     $('#toc').append($('<a/>').append($('<span/>').text("[--]").addClass('li_h1')));
-    var ul0 = $("<ul/>");
+    var ul0 = $("<ul/>"); // first levels with class
     $('#toc').append(ul0);
 
     for(var i = 0,  elems = $(":header"); i < elems.length; i++) {
@@ -23,7 +23,7 @@ var maketoc = function(){
             else{
                 var li0 = $("<li/>");
                 ul0.append(li0);
-                var ul = $("<ul/>").addClass('lev2');
+                var ul = $("<ul/>").addClass('lev2'); // second levels with class
                 li0.append(
                     $('<a/>')
                     .attr('href', nameh1href)
@@ -35,14 +35,12 @@ var maketoc = function(){
             } // end else
     } // end for elems
     
-    $('ul.lev2').toggle();
-  
-    $("a").click(function (evt) {   
+    $('ul.lev2').toggle();                  // close all the  second levels
+    $("a").click(function (evt) {           // toggle for second levels
         if(evt.target.className == 'li_h2') 
             $(this).next().toggle();
         });
-
-    $("a").click(function (evt) {   
+    $("a").click(function (evt) {           // toggle for first levels
         if(evt.target.className == 'li_h1') 
             $(this).next().toggle();
         });
