@@ -1,4 +1,13 @@
 var maketoc = function(){
+    
+    var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position.
+    $("p").each(function() { 
+        if ($(this).html().match(reg_free)){
+        alert($(this).html());
+        var h1prev = $(this).prev("h1").html()
+        $(this).attr('class',h1prev).attr('id',h1prev+ ' '+$(this).html()) // add class to each date (month and year)
+        }
+    });
 
     $('#toc').append($('<a/>').append($('<span/>').text("[--]").addClass('li_h1')));
     var ul0 = $("<ul/>"); // first levels with class
@@ -11,7 +20,7 @@ var maketoc = function(){
             if($('[id=' + '"' + nameh1 + '"'+']').prop("tagName") == 'H2')
                 {
                 var li = $("<li/>");
-                li.append(
+                li.append(  // H1 tags
                     $('<a/>')
                     .attr('href', nameh1href)
                     .html(nameh1)
@@ -19,12 +28,13 @@ var maketoc = function(){
                     ) // end of li
                     .css({'list-style': 'square inside','line-height': '20px'}) // end append li
                 ul.append(li)
+
                 } // end if h2
             else{
                 var li0 = $("<li/>");
                 ul0.append(li0);
                 var ul = $("<ul/>").addClass('lev2'); // second levels with class
-                li0.append(
+                li0.append(  // H2 tags
                     $('<a/>')
                     .attr('href', nameh1href)
                     .css({'color': 'black'})
