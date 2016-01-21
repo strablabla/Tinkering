@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<script src="lib/codemirror.js"></script>
+<link rel="stylesheet" href="lib/codemirror.css">
+<script src="mode/javascript/javascript.js"></script>
+
+
+
+
+<meta charset="UTF-8">
+<head>
+<title>Analytical FTICR Principles</title>
+
+<script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script  src="https://cdn.rawgit.com/strablabla/Tinkering/93d9c64/straptoc.js"></script>
+<link rel="stylesheet" href="https://cdn.rawgit.com/strablabla/Tinkering/ba352c7/straptoc.css">
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+
+<div class="onside" id="toc"></div>
+
+<xmp theme="cerulean" style="display:none;">
+    
+# Principle
+
+The principle is to consider the trajectory as described by a complex number. For the speed we have: $v=\rho e^{i\omega t}$
+
+## Without excitation the movement is described by
+
+$$\dfrac{df}{dt}=i a f$$
+
+The solution is $f=\rho e^{ia t}$
+
+This can be found with distribution. 
+Indeed from above we have in Fourier space: 
+
+$$ \omega F = ia F $$
+
+so 
+
+$$ F = \rho \delta(\omega-ia) $$
+
+and the solution is 
+
+$$f = \rho e^{ia t}$$
+
+## With excitation the movement is described by
+
+$$\dfrac{dv}{dt}=i a v + e^{ib t} $$
+
+But 
+
+$TF(e^{ib t}) = \delta(b+\omega)$
+
+So
+
+$$F = \delta(ib-\omega) /(ia-\omega)$$
+
+which is in fact
+
+$$F = \delta(ib-\omega) /i(a-b)$$
+
+hence a particular solution is 
+
+$$f = e^{ib t}/(a-b)$$
+
+Giving the general solution 
+
+$$f = e^{ia t} + e^{ib t}/(a-b)$$
+    
+
+# Using speed only
+Using a complex notation for the speed of an ion ie , the classical cyclotronic differential equation with an harmonic excitation for describing the ions trajectory is :
+
+$$\dfrac{dv}{dt}=i \dfrac{qB}{m}v+ k e^{i \omega_{excit} t}$$
+
+This can be rewritten 
+
+$$\dfrac{dv}{dt}=i a v + k e^{i b t}$$
+
+where $a=\dfrac{qB}{m}$ and $b=\omega_{excit}$
+
+
+Expressing $v$ as a linear combination of $e^{i b t}$ and $e^{i a t}$, 
+we find:
+
+$$ v= e^{i a t} + k \dfrac{e^{i b_i t}}{b-a}$$ 
+
+With
+
+$$ k = (v_0-1)(b-a)$$
+
+# Todo
+
+Differential equation with Fourier Transform. How it simplifies all a lot.. 
+
+
+</xmp>
+
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+<script> maketoc() </script>
+
+<script>var myCodeMirror = CodeMirror(document.body)</script>
+
+</html>
+
+
+
+
+
+
+

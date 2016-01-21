@@ -1,44 +1,48 @@
 var maketoc = function(){
     
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position.
-    $("p").each(function() { 
+
+    $("p").each(function() {  // Replacing dates with p in date with h2 and 
         if ($(this).html().match(reg_free)){
-        alert($(this).html());
-        var h1prev = $(this).prev("h1").html()
-        $(this).attr('class',h1prev).attr('id',h1prev+ ' '+$(this).html()) // add class to each date (month and year)
-        }
-    });
+            $(this).replaceWith(function(){ 
+                var h1prev = $(this).prev("h1").text()
+                var dateh2 = $('<h2/>').text($(this).text())
+                return dateh2; 
+            }) // end replaceWith
+        } // end if
+    }); // end each
 
     $('#toc').append($('<a/>').append($('<span/>').text("[--]").addClass('li_h1')));
     var ul0 = $("<ul/>"); // first levels with class
     $('#toc').append(ul0);
 
     for(var i = 0,  elems = $(":header"); i < elems.length; i++) {
-            var nameh1 = elems[i].innerHTML.trim();
-            elems[i].id = nameh1;
-            var nameh1href = '#'+nameh1;
-            if($('[id=' + '"' + nameh1 + '"'+']').prop("tagName") == 'H2')
+            var nameh = elems[i].innerHTML.trim();
+            elems[i].id = nameh;
+            if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H2')
                 {
+                elems[i].id = nameh1 +'_'+ nameh;
+                var namehhref = '#'+elems[i].id;
                 var li = $("<li/>");
                 li.append(  // H1 tags
                     $('<a/>')
-                    .attr('href', nameh1href)
-                    .html(nameh1)
-                    .addClass(nameh1)
+                    .attr('href', namehhref)
+                    .html(nameh)
+                    .addClass(nameh)
                     ) // end of li
                     .css({'list-style': 'square inside','line-height': '20px'}) // end append li
                 ul.append(li)
-
                 } // end if h2
-            else{
+            else{                        // if H1
+                var nameh1 = nameh
                 var li0 = $("<li/>");
                 ul0.append(li0);
                 var ul = $("<ul/>").addClass('lev2'); // second levels with class
                 li0.append(  // H2 tags
                     $('<a/>')
-                    .attr('href', nameh1href)
+                    .attr('href', namehhref)
                     .css({'color': 'black'})
-                    .html(nameh1)
+                    .html(nameh)
                     .append($('<span/>').text("[-]").addClass('li_h2')) // 
                     ) // en append ul
                 li0.append(ul);
