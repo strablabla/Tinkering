@@ -3,7 +3,7 @@ var maketoc = function(){
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position.
     $("p").each(function() { 
         if ($(this).html().match(reg_free)){
-        alert($(this).html());
+        //alert($(this).html());
         var h1prev = $(this).prev("h1").html()
         $(this).attr('class',h1prev).attr('id',h1prev+ ' '+$(this).html()) // add class to each date (month and year)
         }
@@ -28,7 +28,6 @@ var maketoc = function(){
                     ) // end of li
                     .css({'list-style': 'square inside','line-height': '20px'}) // end append li
                 ul.append(li)
-
                 } // end if h2
             else{
                 var li0 = $("<li/>");
@@ -45,7 +44,9 @@ var maketoc = function(){
             } // end else
     } // end for elems
     
-    $('ul.lev2').toggle();                  // close all the  second levels
+    
+    $('ul.lev2').toggle();  // close all the  second levels
+           
     $("a").click(function (evt) {           // toggle for second levels
         if(evt.target.className == 'li_h2') 
             $(this).next().toggle();
