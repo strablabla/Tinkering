@@ -3,7 +3,7 @@ div.onside {
    padding-left: 20px;
    box-shadow: 0.5em 0.5em 0.7em;
    right: 50px;
-   height: auto;
+   height: 500px;
    background-color:#FFCC99; /*#FFF;*/
    font-size:85%;
    overflow: scroll;
