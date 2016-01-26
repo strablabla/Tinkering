@@ -98,5 +98,11 @@ var maketoc = function(){
         else if(evt.target.className == '::') // hide sublist elements
             $(this).next().toggle();
         });// end click
+    
+    $(document).keydown(function(event){
+        if(event.keyCode == 37){  //prev key
+            alert("hello");
+        }
+    });
 
 }// end maketoc
