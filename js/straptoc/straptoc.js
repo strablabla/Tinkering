@@ -72,6 +72,7 @@ var maketoc = function(){
                 } // end else if H3
 
     } // end for elems
+    
 
     $("li").each(function(i){    // need to be placed before  $("a").click              
         if($(this).html().search('::')!=-1){
@@ -94,11 +95,8 @@ var maketoc = function(){
             $(this).next().toggle();
         else if(evt.target.className == 'li_h3') 
             $(this).next().toggle();
-        else if(evt.target.className == '::') 
+        else if(evt.target.className == '::') // hide sublist elements
             $(this).next().toggle();
         });// end click
 
-
-
- 
 }// end maketoc

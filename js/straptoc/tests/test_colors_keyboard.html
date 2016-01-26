@@ -2,7 +2,7 @@
 <html>
 
 <meta charset="UTF-8">
-<title>test color</title>
+<title>test_colors_keyboard</title>
 
 <script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 <script  src="straptoc.js"></script>
@@ -26,6 +26,7 @@
 
 <script>
 
+
 var regcol = /@\w*/
 $("li").each(function(i){                   
     if($(this).html().search(regcol)!=-1){
@@ -42,6 +43,15 @@ $("li").each(function(i){
         }// end if
     }); // each
     
+$("li").addClass('lili')
+
+$(document).keydown(function(event){
+    if(event.keyCode == 37){  //prev key
+        $( ".lili").css({"background":'red'});
+    }
+});
+
+
 
  </script>
 
