@@ -1,5 +1,9 @@
 var maketoc = function(){
     
+    // Javascript code to ease navigation in notes written in Markdown format and transformed with strapdown in html code. 
+    // Maketoc supposes the code is yet in html format.
+    // The whole code uses extensively jQuery library.
+    
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
 
     $("p").each(function() {  // Replacing dates with p in date with h2 and 
@@ -15,7 +19,8 @@ var maketoc = function(){
     $('#toc').append($('<a/>').append($('<span/>').text("[--]").addClass('li_h1')));
     var ul1 = $("<ul/>"); // first levels with class
     $('#toc').append(ul1);
-
+    
+    // read all the headers and make the TOC (with ref) and the id names
     for(var i = 0,  elems = $(":header"); i < elems.length; i++) {
             var nameh = elems[i].innerHTML.trim();
             elems[i].id = nameh; 
@@ -73,7 +78,7 @@ var maketoc = function(){
 
     } // end for elems
     
-
+    // bit of code for closing list when it finds :: in the code.
     $("li").each(function(i){    // need to be placed before  $("a").click              
         if($(this).html().search('::')!=-1){
             var text = $(this).html()
@@ -85,8 +90,8 @@ var maketoc = function(){
         }// end if
     }); // end each
     
-    $('ul.lev1').toggle();                  // 
-    $('ul.lev2').toggle();                  // 
+    $('ul.lev1').toggle(); //  close level 1 in TOC
+    $('ul.lev2').toggle(); //  close level 2 in TOC
 
     $("a").click(function (evt) {           // toggle for H1
         if(evt.target.className == 'li_h1') 
@@ -100,7 +105,7 @@ var maketoc = function(){
         });// end click
     
     $(document).keydown(function(event){
-        if(event.keyCode == 37){  //prev key
+        if(event.keyCode == 109){  //M letter
             alert("hello");
         }
     });
