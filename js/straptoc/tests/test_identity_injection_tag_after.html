@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="UTF-8">
+<title>Hello Strapdown</title>
+
+<script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script  src="straptoc.js"></script>
+<link rel="stylesheet" href="straptoc.css">
+
+<div class="onside" id="toc"></div>
+
+<xmp theme="cerulean" style="display:none;">
+    
+# Origines 
+
+    Les langues italiques formaient, à côté des langues celtiques, germaniques et helléniques, une sous-famille « centum » de langues indo-européennes qui incluait le latin, parlé par la population du Latium en Italie centrale (les Latins), et d'autres parlers comme l'ombrien et l'osque, au voisinage immédiat d'une langue étrusque non indo-européenne mais dont le latin a subi l'influence culturelle. De nos jours, les langues italiques sont représentées par les langues romanes, issues du latin (l'italien, le roumain/moldave, l'aroumain, le français, l'occitan, le francoprovençal, le catalan, l'espagnol, le portugais, le sarde, le ladin, le corse, …, ainsi que des langues aujourd'hui éteintes comme le dalmate ou le mozarabe).
+
+* Il était une fois :: -hop-
+    * parfois les aléas de  la vie.
+        * bien que le hasard soit une chose pour le moins étrange.
+
+
+
+## arar
+uuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+
+## yoyo
+uuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+
+## ooo
+uuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+
+## aaa
+pofnqqouuznksne27686
+
+### poaepaeuapeauepaue
+* eaheahea
+
+# Latin classiqueeee
+fqdqdq
+
+# Latin archaïque -huppe-
+
+    On appelle latin archaïque (prisca latinitas) l'état du latin en usage de l'origine jusqu'au tout début du ier siècle av. J.-C..
+
+# Latin classique
+
+    L'expansion territoriale de la Rome antique assure au latin une diffusion de plus en plus large à partir du iiie siècle av. J.-C.. Langue officielle de l'Empire romain[réf. nécessaire], elle se répand dans la majeure partie de l'Europe occidentale, de l'Afrique du nord, de l'Asie Mineure et des régions danubiennes. Sous l'Empire, le latin est la langue du droit, de l'administration romaine et de l'armée et des nombreuses colonies romaines, coexistant avec le grec et les parlers locaux.
+
+# Bas-latin 
+
+    Après la chute de l'Empire d'Occident au ve siècle, les envahisseurs germaniques adoptent progressivement le mode de pensée romain et la langue latine afin d'asseoir leur légitimité. Seule la Bretagne romaine sera lentement germanisée par les envahisseurs anglo-saxons qui conserveront leur langue germanique, celle-ci se répandant progressivement au détriment du celtique parlé par les brito-romains qui toutefois parviendra à se maintenir jusqu'à nos jours. Tout au long du haut Moyen Âge, bien qu'il ne soit pas une langue vernaculaire, le latin reste la langue des actes officiels, de la diplomatie, de la liturgie et de la littérature savante (théologie, philosophie, sciences).
+
+    Durant la suite du Moyen Âge, les langues locales s'affirment sur le plan littéraire et intérieur, et tandis qu'il donne naissance à de nombreuses langues vernaculaires dérivées (les langues romanes) et que des langues non romanes (comme l'anglais ou l'allemand) lui empruntent du vocabulaire, le latin reste influent aux plans diplomatique, juridique, scientifique et philosophique.
+
+# Latin médiéval 
+
+    Le latin est réformé vers 800 puis au xie siècle sur le modèle du latin classique, afin d'éviter une dérive vers les langues vernaculaires qui en étaient issues.
+
+    Pendant tout le Moyen Âge, le latin fait office de langue liturgique de l'Église catholique romaine. Presque toutes les bibles utilisées à cette époque en Occident sont écrites en latin, sur le modèle de la Vulgate de saint Jérôme, de même que les autres livres liturgiques. L'Historia scholastica de Pierre le Mangeur, texte de base pour l'étude de la Bible à partir des années 1170, est écrit en latin. La traduction de la Bible en langues vernaculaires est même interdite à la fin du xiie siècle par des lettres du pape Innocent III, puis par plusieurs conciles au début du xiiie siècle2. Les lettrés s'expriment toujours en latin. La langue des universités est le latin, dès la création de celles-ci vers la fin du xiie siècle. Les intellectuels du Moyen Âge écrivent tous leurs traités en latin. Par exemple, l'encyclopédie (pour employer un terme contemporain) de Vincent de Beauvais, le Speculum maius, est écrit en latin. Toutefois, à partir du concile de Tours (813), dans les territoires correspondant à la France et l'Allemagne actuelles, les homélies ne sont plus prononcées en latin mais en « langue romane rustique » (gallo-roman), ou dans la « langue tudesque » (germanique).
+
+# roultablille 
+
+[huppe](#huppe)
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+
+<script>
+
+var reg_id = /-\w*-/
+
+
+$("H1").each(function(i){                   
+    if($(this).html().search(reg_id)!=-1){
+        match_id = $(this).html().match(reg_id)[0]
+        var idslice = match_id.slice(1,-1)
+        var text = $(this).html().replace(match_id,"")
+        $(this).html(text);
+        $(this).append($("<p/>").attr("id",idslice))
+        }// end if
+    }); // each
+
+
+
+$("a").click(function(evt){           
+    if(evt.target.className == '::') 
+        $(this).next().toggle();
+    });// end click
+
+
+
+ </script>
+
+</html>

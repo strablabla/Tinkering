@@ -5,6 +5,7 @@ var maketoc = function(){
     // The whole code uses extensively jQuery library.
     
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
+    var reg_id = /-\w*-/; //regexp for identity
 
     $("p").each(function() {  // Replacing dates with p in date with h2 and 
         if ($(this).html().match(reg_free)){
@@ -15,6 +16,17 @@ var maketoc = function(){
             }) // end replaceWith
         } // end if
     }); // end each
+    
+        
+    $("H1").each(function(i){       // insertion of <p id = identity> </p> where found the pattern -identity-
+        if($(this).html().search(reg_id)!=-1){
+            match_id = $(this).html().match(reg_id)[0]
+            var idslice = match_id.slice(1,-1)
+            var text = $(this).html().replace(match_id,"")
+            $(this).html(text);
+            $(this).append($("<p/>").attr("id",idslice))
+            }// end if
+        }); // each
 
     $('#toc').append($('<a/>').append($('<span/>').text("[--]").addClass('li_h1')));
     var ul1 = $("<ul/>"); // first levels with class
