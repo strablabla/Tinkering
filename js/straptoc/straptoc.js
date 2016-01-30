@@ -121,9 +121,9 @@ var maketoc = function(){
         });// end click
     
     $(document).keydown(function(event){
-        if(event.keyCode == 109){  //M letter
+        if(event.keyCode == 37){  //M letter
             alert("hello");
-        }
-    });
+        	} // end if
+    	}); // end keydown
 
 }// end maketoc
