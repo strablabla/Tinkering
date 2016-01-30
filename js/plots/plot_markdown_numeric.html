@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>simple curve d3.js</title>
+
+<!-- Scripts -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script src="plot_markdown.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+
+<style>
+
+body {
+  font: 13px sans-serif;
+  position: relative;
+  width: 960px;
+  height: 500px;
+}
+
+form {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.line {
+  fill: none;
+  stroke: black;
+  stroke-width: 1.5px;
+}
+
+</style>
+
+<body>
+
+<h1 style="text-align:center"> Curve </h1>
+
+ <div id="ok"></div>
+ <div id="val"></div>
+ 
+<script>
+
+var num = numeric
+var N = 10000
+var x = num.linspace(1,100, N)
+var y = num.cos(x)
+xy = []
+
+for (i=0; i< x.length; i++){xy.push({'x':x[i],'y':y[i]*0.5})};
+var data_curve = xy
+
+plot('#ok', data_curve, 100);
+
+</script>
+
+</body>

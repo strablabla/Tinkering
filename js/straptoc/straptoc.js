@@ -1,8 +1,12 @@
 var maketoc = function(){
     
-    // Javascript code to ease navigation in notes written in Markdown format and transformed with strapdown in html code. 
+    // Javascript code to ease navigation in notes written in Markdown
+    // format and transformed with strapdown in html code. 
     // Maketoc supposes the code is yet in html format.
     // The whole code uses extensively jQuery library.
+    // Commands:
+    //  * :: , close the list and make a toggle tool in the main page.
+    //  * -link- , creates a tag with id "link"
     
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /-\w*-/; //regexp for identity
