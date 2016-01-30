@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>simple curve d3.js</title>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script src="plot_markdown.js"></script>
+
+<body>
+
+<h1 style="text-align:center"> Curve </h1>
+
+ <div id="ok"></div>
+ <div id="val"></div>
+ 
+<script>
+
+d3.json("data/data_curve.json", function(data) {
+  plot('#ok', data, 100);
+  });
+
+</script>
+
+</body>
