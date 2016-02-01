@@ -1,13 +1,16 @@
 import glob
-import os
+import os, sys
 import os.path as op
 from os.path import join
 from bs4 import BeautifulSoup
 
 '''
+Utility for hiding Unittest etc in the documentation with javascript.
 Find htmls in th folder and insert the javascript 
+synthax : python -m spike.util.insert_hide address_html_folder a'_debug' c'_Tests'
+a : attribute
+c : class
 '''
-
 
 class INSERTJS(object):
     '''
@@ -45,12 +48,15 @@ class INSERTJS(object):
 
 
 if __name__ == "__main__":
-    
-    hide_debug = r'''
-        $('.attribute').each(function(){
-            if ($(this).children('dt').attr('id').search('_debug') !=-1 ) { $(this).hide()}
-        })
-    '''
-    ijs = INSERTJS(folder='spike_make_sphinx', listinj=[hide_debug])
+    addr = sys.argv[1]
+    list_rem = sys.argv[2:]
+    print addr, list_rem
+    kindpatt = {'a' : '.attribute', 'c' : '.class'}
+    listinj = [r'''
+        $('{0}').each(function(){{
+            if ($(this).children('dt').attr('id').search('{1}') !=-1 ) {{ $(this).hide()}}
+        }})
+    '''.format(kindpatt[patt[0]], patt[1:]) for patt in list_rem]
+    ijs = INSERTJS(folder=addr, listinj=listinj)
     ijs.inject_in_all()
     
