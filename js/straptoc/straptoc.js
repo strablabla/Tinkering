@@ -117,7 +117,7 @@ var maketoc = function(){
             alert("hello");
         	} // end if
     	}); // end keydown
-    $("a").each(function(){    // need to be placed before  $("a").click 
+    $("a").each(function(){    
         if($(this).text().search(';;') != -1){
                 deb = '<iframe width="420" height="315" src="'
                 end = '" frameborder="0" allowfullscreen></iframe>'
