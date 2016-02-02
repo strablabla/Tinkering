@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="UTF-8">
+<title>Test insert iframe</title>
+
+<script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script  src="straptoc.js"></script>
+<link rel="stylesheet" href="straptoc.css">
+
+<div class="onside" id="toc"></div>
+
+<xmp theme="cerulean" style="display:none;">
+    
+
+# janv 2016
+
+1/1/16
+
+apeiapeia
+aeaoeuae
+peoitpeit
+
+* Il était une fois ::
+	* parfois les aléas de  la vie.
+		* bien que le hasard soit une chose pour le moins étrange.
+* Once upon a time 
+	* The little man entered the forest ::
+		* So many sounds, strange atmosphere in there..
+		
+[huppe link](#huppe)
+
+[vidéo 1 ;;](http://www.youtube.com/embed/QH2-TGUlwu4)
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+
+<script> 
+
+$("a").each(function(){    // need to be placed before  $("a").click 
+    if($(this).text().search(';;') != -1){
+            deb = '<iframe width="420" height="315" src="'
+            end = '" frameborder="0" allowfullscreen></iframe>'
+            iframe = deb+$(this).attr('href')+end
+            $( this ).replaceWith(iframe)
+        }
+}); // end each
+
+
+</script>
+    
+ <!-- <iframe width="420" height="315" src="http://www.youtube.com/embed/QH2-TGUlwu4" frameborder="0" allowfullscreen></iframe> -->
+
+</html>

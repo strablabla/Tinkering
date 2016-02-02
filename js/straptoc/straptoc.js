@@ -7,11 +7,12 @@ var maketoc = function(){
     // Commands:
     //  * :: , close the list and make a toggle tool in the main page.
     //  * -link- , creates a tag with id "link"
+    //  * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
     
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /-\w*-/; //regexp for identity
 
-    $("p").each(function() {  // Replacing dates with p in date with h2 and 
+    $("p").each(function() {                                // Replacing dates with p in date with h2 and 
         if ($(this).html().match(reg_free)){
             $(this).replaceWith(function(){ 
                 var h1prev = $(this).prev("h1").text()
@@ -20,8 +21,6 @@ var maketoc = function(){
             }) // end replaceWith
         } // end if
     }); // end each
-    
-        
     $("H1").each(function(i){       // insertion of <p id = identity> </p> where found the pattern -identity-
         if($(this).html().search(reg_id)!=-1){
             match_id = $(this).html().match(reg_id)[0]
@@ -31,35 +30,31 @@ var maketoc = function(){
             $(this).append($("<p/>").attr("id",idslice))
             }// end if
         }); // each
-
     $('#toc').append($('<a/>').append($('<span/>').text("[--]").addClass('li_h1')));
     var ul1 = $("<ul/>"); // first levels with class
     $('#toc').append(ul1);
-    
     // read all the headers and make the TOC (with ref) and the id names
     for(var i = 0,  elems = $(":header"); i < elems.length; i++) {
             var nameh = elems[i].innerHTML.trim();
             elems[i].id = nameh; 
-
-            if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H1')
-                {                        // if H1
+            if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H1')    // if H1
+                {                        
                 var nameh1 = nameh
                 var li1 = $("<li/>");
                 ul1.append(li1);
-                var ul2 = $("<ul/>").addClass('lev1'); // second levels with class
+                var ul2 = $("<ul/>").addClass('lev1');                     // second levels with class
                 li1.append(  
                     $('<a/>')
-                    .attr('href', namehhref) // add ref to id done just before
+                    .attr('href', namehhref)                               // add ref to id done just before
                     .css({'color': 'black'})
                     .html(nameh)
-                    .append($('<span/>').text(" [-]").addClass('li_h2')) // button for H1
+                    .append($('<span/>').text(" [-]").addClass('li_h2'))   // button for H1
                     ) // en append ul
                 li1.append(ul2);
             } // end if H1
-
-            else if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H2')
+            else if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H2') // if H2
                 {
-                elems[i].id = nameh1 +'_'+ nameh; // makes an id for H2
+                elems[i].id = nameh1 +'_'+ nameh;                               // makes an id for H2
                 var nameh2 = elems[i].id
                 var namehhref = '#'+nameh2;
                 var li2 = $("<li/>");
@@ -67,17 +62,16 @@ var maketoc = function(){
                 var ul3 = $("<ul/>").addClass('lev2'); 
                 li2.append(  
                     $('<a/>')
-                    .attr('href', namehhref) // adds ref to id done just before
+                    .attr('href', namehhref)                                    // adds ref to id done just before
                     .html(nameh)
-                    .append($('<span/>').text(" [-]").addClass('li_h3')) // button for H2
+                    .append($('<span/>').text(" [-]").addClass('li_h3'))        // button for H2
                     ) // end of li
                     .css({'list-style': 'square inside','line-height': '20px'}) // end append li2
                 li2.append(ul3)
                 } // end else if H2
-
             else if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H3')
                 {
-                elems[i].id = nameh2 +'_'+ nameh; // makes an id for H3
+                elems[i].id = nameh2 +'_'+ nameh;                               // makes an id for H3
                 var nameh3 = elems[i].id
                 var namehhref = '#'+nameh3;
                 var li3 = $("<li/>");
@@ -85,39 +79,36 @@ var maketoc = function(){
                 //var ul4 = $("<ul/>").addClass('lev3'); 
                 li3.append(  
                     $('<a/>')
-                    .attr('href', namehhref) // adds ref to id done just before
+                    .attr('href', namehhref)                            // adds ref to id done just before
                     .html(nameh)
                     .addClass(nameh)
                     ) // end of li
                     .css({'list-style': 'circle inside','line-height': '20px'}) // end append li3
                 } // end else if H3
-
-    } // end for elems
-    
+    }                                                                   // end for elems
     // bit of code for closing list when it finds :: in the code.
     $("li").each(function(i){    // need to be placed before  $("a").click              
         if($(this).html().search('::')!=-1){
             var text = $(this).html();
-            if (text.split('\n')[0].search('::')!=-1){
-                text = text.replace("::",""); // remove ::
-                $(this).html(text); 
-                $(this).children().toggle(); // close the sub lists 
+            if (text.split('\n')[0].search('::')!=-1){      // check that :: is on the first line
+                text = text.replace("::","");               // remove ::
+                $(this).html(text);     
+                $(this).children().toggle();                // close the sub lists 
+                $(this).children().css({'color':'green'})   // change color children
                 $('<a/>').append($('<span/>').text(" [-]").addClass('::')).insertBefore($(this).children())
             } // end if 
         }// end if
     }); // end each
-    
-    $('ul.lev1').toggle(); //  close level 1 in TOC
-    $('ul.lev2').toggle(); //  close level 2 in TOC
-
-    $("a").click(function (evt) {           // toggle for H1
+    $('ul.lev1').toggle();                          //  close level 1 in TOC
+    $('ul.lev2').toggle();                          //  close level 2 in TOC
+    $("a").click(function (evt) {                   // toggle for H1
         if(evt.target.className == 'li_h1') 
             $(this).next().toggle();
-        else if(evt.target.className == 'li_h2') 
+        else if(evt.target.className == 'li_h2')    // toggle H2 elements
             $(this).next().toggle();
-        else if(evt.target.className == 'li_h3') 
+        else if(evt.target.className == 'li_h3')    // toggle H3 elements
             $(this).next().toggle();
-        else if(evt.target.className == '::') // hide sublist elements
+        else if(evt.target.className == '::')       // toggle sublist elements
             $(this).next().toggle();
         });// end click
     
@@ -126,5 +117,15 @@ var maketoc = function(){
             alert("hello");
         	} // end if
     	}); // end keydown
+    
+    $("a").each(function(){    // need to be placed before  $("a").click 
+        if($(this).text().search(';;') != -1){
+                deb = '<iframe width="420" height="315" src="'
+                end = '" frameborder="0" allowfullscreen></iframe>'
+                iframe = deb+$(this).attr('href')+end
+                $( this ).replaceWith(iframe)
+            }
+    }); // end each
+   
 
 }// end maketoc
