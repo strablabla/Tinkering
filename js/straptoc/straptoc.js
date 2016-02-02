@@ -122,10 +122,9 @@ var maketoc = function(){
         if($(this).text().search(';;') != -1){
                 deb = '<iframe width="420" height="315" src="'
                 end = '" frameborder="0" allowfullscreen></iframe>'
-                iframe = deb+$(this).attr('href')+end
+                iframe = deb+$(this).attr('href').replace("watch?v=","embed/")+end
                 $( this ).replaceWith(iframe)
             }
     }); // end each
    
-
 }// end maketoc
