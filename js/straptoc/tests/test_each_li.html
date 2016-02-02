@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="UTF-8">
+<title>Test each li</title>
+
+<script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script  src="straptoc.js"></script>
+<link rel="stylesheet" href="straptoc.css">
+
+<div class="onside" id="toc"></div>
+
+<xmp theme="cerulean" style="display:none;">
+    
+# Origines
+Les langues italiques formaient, à côté des langues celtiques, germaniques et helléniques, une sous-famille « centum » de langues indo-européennes qui incluait le latin, parlé par la population du Latium en Italie centrale (les Latins), et d'autres parlers comme l'ombrien et l'osque, au voisinage immédiat d'une langue étrusque non indo-européenne mais dont le latin a subi l'influence culturelle. De nos jours, les langues italiques sont représentées par les langues romanes, issues du latin (l'italien, le roumain/moldave, l'aroumain, le français, l'occitan, le francoprovençal, le catalan, l'espagnol, le portugais, le sarde, le ladin, le corse, …, ainsi que des langues aujourd'hui éteintes comme le dalmate ou le mozarabe).
+
+
+
+# janv 2016
+
+1/1/16
+
+apeiapeia
+aeaoeuae
+peoitpeit
+
+* Il était une fois ::
+	* parfois les aléas de  la vie.
+		* bien que le hasard soit une chose pour le moins étrange.
+* Once upon a time 
+	* The little man entered the forest ::
+		* So many sounds, strange atmosphere in there..
+		
+[huppe link](#huppe)
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+
+<script> 
+
+$("li").each(function(i){    // need to be placed before  $("a").click              
+    if($(this).html().search('::')!=-1){
+        var text = $(this).html();
+        if (text.split('\n')[0].search('::')!=-1){
+            text = text.replace("::",""); // remove ::
+            $(this).html(text); 
+            $(this).children().toggle(); // close the sub lists 
+            $('<a/>').append($('<span/>').text(" [-]").addClass('::')).insertBefore($(this).children())
+        } // end if 
+    }// end if
+}); // end each
+
+
+$("a").click(function (evt) {           // toggle for H1
+    if(evt.target.className == '::') // hide sublist elements
+        $(this).next().toggle();
+    });// end click
+
+</script>
+    
+
+
+</html>

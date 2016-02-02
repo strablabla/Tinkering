@@ -97,12 +97,13 @@ var maketoc = function(){
     // bit of code for closing list when it finds :: in the code.
     $("li").each(function(i){    // need to be placed before  $("a").click              
         if($(this).html().search('::')!=-1){
-            var text = $(this).html()
-            text = text.replace("::",""); // remove ::
-            $(this).html(text); 
-            ///
-            $(this).children().toggle(); // close the sub lists 
-            $('<a/>').append($('<span/>').text(" [-]").addClass('::')).insertBefore($(this).children())
+            var text = $(this).html();
+            if (text.split('\n')[0].search('::')!=-1){
+                text = text.replace("::",""); // remove ::
+                $(this).html(text); 
+                $(this).children().toggle(); // close the sub lists 
+                $('<a/>').append($('<span/>').text(" [-]").addClass('::')).insertBefore($(this).children())
+            } // end if 
         }// end if
     }); // end each
     
