@@ -8,6 +8,7 @@ var maketoc = function(){
     //  * :: , close the list and make a toggle tool in the main page.
     //  * -link- , creates a tag with id "link"
     //  * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
+    //  * [pdf §§](hyperlink) insert a pdf with object tag.
     
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /-\w*-/; //regexp for identity
@@ -111,13 +112,11 @@ var maketoc = function(){
         else if(evt.target.className == '::')       // toggle sublist elements
             $(this).next().toggle();
         });// end click
-    
     $(document).keydown(function(event){
         if(event.keyCode == 37){  //M letter
             alert("hello");
         	} // end if
     	}); // end keydown
-    
     $("a").each(function(){    // need to be placed before  $("a").click 
         if($(this).text().search(';;') != -1){
                 deb = '<iframe width="420" height="315" src="'
@@ -125,6 +124,14 @@ var maketoc = function(){
                 iframe = deb+$(this).attr('href').replace("watch?v=","embed/")+end
                 $( this ).replaceWith(iframe)
             }
-    }); // end each
-   
+        if($(this).text().search('§§') != -1){
+                alert($(this).text())
+                deb = '<object width="100%" height="500" type="application/pdf" data="'
+                end = '"></object>'
+                object = deb+$(this).attr('href')+end
+                alert(object)
+                $(this).replaceWith(object)
+            }
+        }); // end each
 }// end maketoc
+
