@@ -9,7 +9,7 @@ var maketoc = function(){
     //  * -link- , creates a tag with id "link"
     //  * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
     //  * [pdf §§](hyperlink) insert a pdf with object tag.
-    // https://github.com/strablabla/Tinkering/158970d/js/straptoc/straptoc.js 
+    // https://github.com/strablabla/Tinkering/1ece99c/js/straptoc/straptoc.js 
     
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /-\w*-/; //regexp for identity
@@ -113,6 +113,17 @@ var maketoc = function(){
             alert("hello");
         	} // end if
     	}); // end keydown
+    
+    $("p").each(function(){
+             var text = $(this).text()
+             if (text.match(/\[\w*.*\]\(\w*.*\)/) != null){
+                 var text1 = text.match(/\[\w*.*\]/)[0].slice(1,-1)
+                 var text2 = text.match(/\(\w*.*\)/)[0].slice(1,-1)
+                 var newtag = $('<a/>').text(text1).attr('href',text2)
+                 $(this).replaceWith(newtag)
+                }// end if
+        })  
+        
     var maketag = function(self, deb, end, select){
         patt = {';;' : ["watch?v=", "embed/"], '§§' : ["none", "none"]}
         var tag = $("<ul/>").append($("<li/>").append(deb+self.attr('href').replace(patt[select][0],patt[select][1])+end))
@@ -124,7 +135,6 @@ var maketoc = function(){
     var debend = {';;' : {'deb' : '<iframe width="420" height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
                    '§§': {'deb' : '<object width="80%" height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
     $("a").each(function(){  // Deals with videos and pdfs
-
          var sel = [';;','§§']
          for (i in sel){
              if($(this).text().search(sel[i]) != -1){
