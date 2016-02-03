@@ -9,7 +9,7 @@ var maketoc = function(){
     //  * -link- , creates a tag with id "link"
     //  * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
     //  * [pdf §§](hyperlink) insert a pdf with object tag.
-    // https://github.com/strablabla/Tinkering/d7a489c/js/straptoc/straptoc.js 
+    // https://github.com/strablabla/Tinkering/158970d/js/straptoc/straptoc.js 
     
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /-\w*-/; //regexp for identity
@@ -118,12 +118,13 @@ var maketoc = function(){
         var tag = $("<ul/>").append($("<li/>").append(deb+self.attr('href').replace(patt[select][0],patt[select][1])+end))
         var text = self.text().replace(select,'')
         $('<p/>').text(text).append($('<a/>').append($('<span/>').text( " [-]").addClass(select)))
-                 .insertBefore(self)
+                 .insertBefore(self).css({'color':debend[select]['color']})
         return tag
     }
-    $("a").each(function(){ 
-         var debend = {';;' : {'deb' : '<iframe width="420" height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>'},
-                        '§§': {'deb' : '<object width="80%" height="500" type="application/pdf" data="' , 'end' : '"></object>'}}
+    var debend = {';;' : {'deb' : '<iframe width="420" height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
+                   '§§': {'deb' : '<object width="80%" height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
+    $("a").each(function(){  // Deals with videos and pdfs
+
          var sel = [';;','§§']
          for (i in sel){
              if($(this).text().search(sel[i]) != -1){
