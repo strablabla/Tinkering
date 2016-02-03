@@ -103,13 +103,8 @@ var maketoc = function(){
     $('ul.lev1').toggle();                          //  close level 1 in TOC
     $('ul.lev2').toggle();                          //  close level 2 in TOC
     $("a").click(function (evt) {                   // toggle for H1
-        if(evt.target.className == 'li_h1') 
-            $(this).next().toggle();
-        else if(evt.target.className == 'li_h2')    // toggle H2 elements
-            $(this).next().toggle();
-        else if(evt.target.className == 'li_h3')    // toggle H3 elements
-            $(this).next().toggle();
-        else if(evt.target.className == '::')       // toggle sublist elements
+        var evtc = evt.target.className;
+        if(evtc == 'li_h1' | evtc == 'li_h2' | evtc == 'li_h3' | evtc == '::') 
             $(this).next().toggle();
         });// end click
     $(document).keydown(function(event){
@@ -117,21 +112,30 @@ var maketoc = function(){
             alert("hello");
         	} // end if
     	}); // end keydown
-    $("a").each(function(){    
-        if($(this).text().search(';;') != -1){
-                deb = '<iframe width="420" height="315" src="'
-                end = '" frameborder="0" allowfullscreen></iframe>'
-                iframe = deb+$(this).attr('href').replace("watch?v=","embed/")+end
-                $( this ).replaceWith(iframe)
-            }
-        if($(this).text().search('§§') != -1){
-                alert($(this).text())
-                deb = '<object width="100%" height="500" type="application/pdf" data="'
-                end = '"></object>'
-                object = deb+$(this).attr('href')+end
-                alert(object)
-                $(this).replaceWith(object)
-            }
-        }); // end each
+    var maketag = function(self, deb, end, select){
+        patt = {';;' : ["watch?v=", "embed/"], '§§' : ["none", "none"]}
+        var tag = $("<ul/>").append($("<li/>").append(deb+self.attr('href').replace(patt[select][0],patt[select][1])+end)).toggle()
+        var text = self.text().replace(select,'')
+        $('<p/>').text(text).append($('<a/>').append($('<span/>').text( " [-]").addClass(select)))
+                 .insertBefore(self)
+        return tag
+    }
+    $("a").each(function(){ 
+         var debend = {';;' : {'deb' : '<iframe width="420" height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>'},
+                        '§§': {'deb' : '<object width="80%" height="500" type="application/pdf" data="' , 'end' : '"></object>'}}
+         var sel = [';;','§§']
+         for (i in sel){
+             if($(this).text().search(sel[i]) != -1){
+                   iframe = maketag($(this), debend[sel[i]]['deb'], debend[sel[i]]['end'], sel[i])  
+                   $(this).replaceWith(iframe)
+                 } // end if
+              }// end for
+         }); // end each
+    $("a").click(function (evt) {  
+        var evtc = evt.target.className;              
+        if(evtc == ';;' | evtc == '§§')       // toggle 
+            $(this).parent().next().toggle();
+        });// end click
+        
 }// end maketoc
 
