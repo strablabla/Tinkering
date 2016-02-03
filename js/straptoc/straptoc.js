@@ -9,6 +9,7 @@ var maketoc = function(){
     //  * -link- , creates a tag with id "link"
     //  * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
     //  * [pdf §§](hyperlink) insert a pdf with object tag.
+    // https://github.com/strablabla/Tinkering/d7a489c/js/straptoc/straptoc.js 
     
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /-\w*-/; //regexp for identity
@@ -114,7 +115,7 @@ var maketoc = function(){
     	}); // end keydown
     var maketag = function(self, deb, end, select){
         patt = {';;' : ["watch?v=", "embed/"], '§§' : ["none", "none"]}
-        var tag = $("<ul/>").append($("<li/>").append(deb+self.attr('href').replace(patt[select][0],patt[select][1])+end)).toggle()
+        var tag = $("<ul/>").append($("<li/>").append(deb+self.attr('href').replace(patt[select][0],patt[select][1])+end))
         var text = self.text().replace(select,'')
         $('<p/>').text(text).append($('<a/>').append($('<span/>').text( " [-]").addClass(select)))
                  .insertBefore(self)
@@ -126,8 +127,9 @@ var maketoc = function(){
          var sel = [';;','§§']
          for (i in sel){
              if($(this).text().search(sel[i]) != -1){
-                   iframe = maketag($(this), debend[sel[i]]['deb'], debend[sel[i]]['end'], sel[i])  
-                   $(this).replaceWith(iframe)
+                   var obj = maketag($(this), debend[sel[i]]['deb'], debend[sel[i]]['end'], sel[i])
+                   $(this).replaceWith(obj)
+                   obj.toggle()
                  } // end if
               }// end for
          }); // end each
