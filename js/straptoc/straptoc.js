@@ -9,7 +9,7 @@ var maketoc = function(){
     //  * -link- , creates a tag with id "link"
     //  * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
     //  * [pdf §§](hyperlink) insert a pdf with object tag.
-    // https://github.com/strablabla/Tinkering/1ece99c/js/straptoc/straptoc.js 
+    // https://github.com/strablabla/Tinkering/c36a563/js/straptoc/straptoc.js 
     
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /-\w*-/; //regexp for identity
@@ -118,7 +118,7 @@ var maketoc = function(){
              var text = $(this).text()
              if (text.match(/\[\w*.*\]\(\w*.*\)/) != null){
                  var text1 = text.match(/\[\w*.*\]/)[0].slice(1,-1)
-                 var text2 = text.match(/\(\w*.*\)/)[0].slice(1,-1)
+                 var text2 = text.match(/\(.*\w*.*\)/)[0].slice(1,-1)
                  var newtag = $('<a/>').text(text1).attr('href',text2)
                  $(this).replaceWith(newtag)
                 }// end if
