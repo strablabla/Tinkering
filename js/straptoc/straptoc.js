@@ -9,7 +9,7 @@ var maketoc = function(){
     //  * -link- , creates a tag with id "link"
     //  * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
     //  * [pdf §§](hyperlink) insert a pdf with object tag.
-    // https://github.com/strablabla/Tinkering/c36a563/js/straptoc/straptoc.js 
+    // https://github.com/strablabla/Tinkering/508e7e5/js/straptoc/straptoc.js 
     
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /-\w*-/; //regexp for identity
@@ -100,9 +100,8 @@ var maketoc = function(){
         }); // end each
     
     $('ul').each(function (){  // remove the double :
-            alert($(this).html())
             if ($(this).find("*").hasClass('::')){
-                var html = $(this).html().replace(/\:\:\<a\>/g,'\<a\>')
+                var html = $(this).html().replace(/\:\:\s*\<a\>/g,'\<a\>')
                 $(this).html(html)
             }
           } // end function after each
