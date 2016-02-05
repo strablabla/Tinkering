@@ -89,18 +89,25 @@ var maketoc = function(){
                 } // end else if H3
     }                                                                   // end for elems
     // bit of code for closing list when it finds :: in the code.
-    $("li").each(function(i){    // need to be placed before  $("a").click              
-        if($(this).html().search('::')!=-1){
-            var text = $(this).html();
-            if (text.split('\n')[0].search('::')!=-1){      // check that :: is on the first line
-                text = text.replace("::","");               // remove ::
-                $(this).html(text);     
-                $(this).children().toggle();                // close the sub lists 
-                $(this).children().css({'color':'green'})   // change color children
-                $('<a/>').append($('<span/>').text(" [-]").addClass('::')).insertBefore($(this).children())
+    $("li").each(function(i){    // need to be placed before  $("a").click    
+        var htm = $(this).html(); var childr = $(this).children()
+        if(htm.split('\n')[0].search('::')!=-1){ 
+                childr.toggle();                // close the sub lists 
+                childr.css({'color':'green'})   // change color children
+                $('<a/>').append($('<span/>').text(" [-]").addClass('::'))
+                         .insertBefore(childr)
             } // end if 
-        }// end if
-    }); // end each
+        }); // end each
+    
+    $('ul').each(function (){  // remove the double :
+            alert($(this).html())
+            if ($(this).find("*").hasClass('::')){
+                var html = $(this).html().replace(/\:\:\<a\>/g,'\<a\>')
+                $(this).html(html)
+            }
+          } // end function after each
+        )// end each
+    
     $('ul.lev1').toggle();                          //  close level 1 in TOC
     $('ul.lev2').toggle();                          //  close level 2 in TOC
     $("a").click(function (evt) {                   // toggle for H1
