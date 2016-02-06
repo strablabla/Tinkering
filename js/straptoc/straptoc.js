@@ -9,6 +9,7 @@ var maketoc = function(){
     //  * -link- , creates a tag with id "link"
     //  * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
     //  * [pdf §§](hyperlink) insert a pdf with object tag.
+    //  * write novideo at the beginnign of the document to avoid loading of videos.
     // https://github.com/strablabla/Tinkering/508e7e5/js/straptoc/straptoc.js 
     
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
@@ -119,15 +120,29 @@ var maketoc = function(){
             alert("hello");
         	} // end if
     	}); // end keydown
+    var sel = [';;','§§']
+    var debend = {';;' : {'deb' : '<iframe width="420" height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
+                   '§§': {'deb' : '<object width="80%" height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
     
     $("p").each(function(){
-             var text = $(this).text()
-             if (text.match(/\[\w*.*\]\(\w*.*\)/) != null){
-                 var text1 = text.match(/\[\w*.*\]/)[0].slice(1,-1)
-                 var text2 = text.match(/\(.*\w*.*\)/)[0].slice(1,-1)
+             var textp = $(this).text()
+             if (textp.match(/\[\w*.*\]\(\w*.*\)/) != null){
+                 var text1 = textp.match(/\[\w*.*\]/)[0].slice(1,-1)
+                 var text2 = textp.match(/\(.*\w*.*\)/)[0].slice(1,-1)
                  var newtag = $('<a/>').text(text1).attr('href',text2)
                  $(this).replaceWith(newtag)
                 }// end if
+             if (textp == 'novideo'){
+                $(this).hide() // hide novideo
+                sel = ['§§']
+                $("a").each(function(){ // removing ;;
+                    var texta = $(this).text()
+                    if (texta.search(';;') != -1){
+                        $(this).text(texta.replace(';;',''))
+                    }
+                }) // end a.each
+
+             }// end if novideo
         })  
         
     var maketag = function(self, deb, end, select){
@@ -138,10 +153,8 @@ var maketoc = function(){
                  .insertBefore(self).css({'color':debend[select]['color']})
         return tag
     }
-    var debend = {';;' : {'deb' : '<iframe width="420" height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
-                   '§§': {'deb' : '<object width="80%" height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
+
     $("a").each(function(){  // Deals with videos and pdfs
-         var sel = [';;','§§']
          for (i in sel){
              if($(this).text().search(sel[i]) != -1){
                    var obj = maketag($(this), debend[sel[i]]['deb'], debend[sel[i]]['end'], sel[i])
