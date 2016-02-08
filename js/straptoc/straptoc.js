@@ -14,15 +14,22 @@ var maketoc = function(){
     
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /-\w*-/; //regexp for identity
-
+    var collist = 'green'
     $("p").each(function() {                                // Replacing dates with p in date with h2 and 
         if ($(this).html().match(reg_free)){
             $(this).replaceWith(function(){ 
                 var h1prev = $(this).prev("h1").text()
                 var dateh2 = $('<h2/>').text($(this).text())
                 return dateh2; 
-            }) // end replaceWith
-        } // end if
+               }) // end replaceWith
+           } // end if
+        if ($(this).text().match(/^\$col\s*/) != null){
+            var col = $(this).text().split('$col')[1]
+            var newtag = $('<p/>').text('')
+            $(this).replaceWith(newtag)
+            collist = col
+            alert("color is " + col)
+           }// end if
     }); // end each
     $("H1").each(function(i){       // insertion of <p id = identity> </p> where found the pattern -identity-
         if($(this).html().search(reg_id)!=-1){
@@ -94,20 +101,18 @@ var maketoc = function(){
         var htm = $(this).html(); var childr = $(this).children()
         if(htm.split('\n')[0].search('::')!=-1){ 
                 childr.toggle();                // close the sub lists 
-                childr.css({'color':'green'})   // change color children
+                childr.css({'color': collist})   // change color children
                 $('<a/>').append($('<span/>').text(" [-]").addClass('::'))
                          .insertBefore(childr)
             } // end if 
         }); // end each
-    
-    $('ul').each(function (){  // remove the double :
+    $('ul').each(function (){  // remove the ::
             if ($(this).find("*").hasClass('::')){
                 var html = $(this).html().replace(/\:\:\s*\<a\>/g,'\<a\>')
                 $(this).html(html)
             }
           } // end function after each
         )// end each
-    
     $('ul.lev1').toggle();                          //  close level 1 in TOC
     $('ul.lev2').toggle();                          //  close level 2 in TOC
     $("a").click(function (evt) {                   // toggle for H1
@@ -123,7 +128,6 @@ var maketoc = function(){
     var sel = [';;','§§']
     var debend = {';;' : {'deb' : '<iframe width="420" height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
                    '§§': {'deb' : '<object width="80%" height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
-    
     $("p").each(function(){
              var textp = $(this).text()
              if (textp.match(/\[\w*.*\]\(\w*.*\)/) != null){
@@ -132,8 +136,8 @@ var maketoc = function(){
                  var newtag = $('<a/>').text(text1).attr('href',text2)
                  $(this).replaceWith(newtag)
                 }// end if
-             if (textp == 'novideo'){
-                $(this).hide() // hide novideo
+             if (textp.trim() == 'novideo'){  // hide novideo
+                $(this).hide() 
                 sel = ['§§']
                 $("a").each(function(){ // removing ;;
                     var texta = $(this).text()
@@ -141,10 +145,8 @@ var maketoc = function(){
                         $(this).text(texta.replace(';;',''))
                     }
                 }) // end a.each
-
              }// end if novideo
         })  
-        
     var maketag = function(self, deb, end, select){
         patt = {';;' : ["watch?v=", "embed/"], '§§' : ["none", "none"]}
         var tag = $("<ul/>").append($("<li/>").append(deb+self.attr('href').replace(patt[select][0],patt[select][1])+end))
@@ -153,7 +155,6 @@ var maketoc = function(){
                  .insertBefore(self).css({'color':debend[select]['color']})
         return tag
     }
-
     $("a").each(function(){  // Deals with videos and pdfs
          for (i in sel){
              if($(this).text().search(sel[i]) != -1){
@@ -168,14 +169,11 @@ var maketoc = function(){
         if(evtc == ';;' | evtc == '§§')       // toggle 
             $(this).parent().next().toggle();
         });// end click
-    
-    $("p").each(function(){
+    $("p").each(function(){ // POST'IT
              var html = $(this).html()
              if (html.match(/^\$post\s*/) != null){
                  var newtag = $('<div/>').html(html.split('$post')[1]).addClass('postit')
                  $(this).replaceWith(newtag)
                 }// end if
         })
-        
 }// end maketoc
-
