@@ -155,6 +155,14 @@ var maketoc = function(){
         if(evtc == ';;' | evtc == '§§')       // toggle 
             $(this).parent().next().toggle();
         });// end click
+    
+    $("p").each(function(){
+             var html = $(this).html()
+             if (html.match(/^\$post\s*/) != null){
+                 var newtag = $('<div/>').html(html.split('$post')[1]).addClass('postit')
+                 $(this).replaceWith(newtag)
+                }// end if
+        })
         
 }// end maketoc
 
