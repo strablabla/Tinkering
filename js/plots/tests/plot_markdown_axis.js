@@ -22,6 +22,16 @@ var plot = function(dom, data, col, axis_labels){
        ang = ang || 0
        return "translate(" + w + ","+ h + ") rotate("+ang+")"
         }
+
+    var add_html = function(htm, w,h,ang){
+        svg.append('foreignObject')
+            .attr("transform", tr(w,h, ang))
+            .attr('width', 200)
+            .attr('height', 100)
+            .append("xhtml:body")
+            .html(htm)
+        }
+
     var add_txt = function(label,w,h,ang){
         svg.append("text").attr("text-anchor", "middle")
             .attr("transform", tr(w,h, ang)) 
@@ -68,9 +78,12 @@ var plot = function(dom, data, col, axis_labels){
             .attr("d", valueline(data_curve))
             .attr("transform", tr(margin.left,-margin.bottom))
             .style({stroke : colrs[col], fill : 'none','stroke-width' : '1.5px'})
-        make_legend(svg, 'comment')
+        make_legend(svg, 'legend')
         make_axes(svg)
         make_axis_labels(svg, axis_labels[0], axis_labels[1])
+        htm = '<div style="width: 150px; color:blue">\
+                This is some information about whatever</div>'
+        add_html(htm, 100,130,0)
         function zoomed() {
               svg.select(".x.axis").call(xAxis);
               svg.select(".y.axis").call(yAxis);
