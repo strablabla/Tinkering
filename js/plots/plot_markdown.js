@@ -1,5 +1,5 @@
-// Utility for making plots with d3.js
-var plot = function(dom, data_curve, xoffset, col){
+var plot = function(dom, data, xoffset, col){
+    //var data_curve = 'nocurve';
     var col = col || 'k';
     var pos_line = 150;
     var width = 500,
@@ -13,7 +13,7 @@ var plot = function(dom, data_curve, xoffset, col){
     var valueline = d3.svg.line()           // Define the line 
         .x(function(d) { return d.x*5; })
         .y(function(d) { return d.y*curve_height + pos_line; }) // positionned on the line
-    curve = function(posx){
+    var curve = function(data_curve){
         var curved = svg.append("path")  
         .attr("class", "line")
         .attr("d", valueline(data_curve))
@@ -23,5 +23,17 @@ var plot = function(dom, data_curve, xoffset, col){
                 'stroke-width' : '1.5px',
             })
         };
-    curve()
+    var set_data_plot = function(data){
+         if (typeof(data)=='string'){ 
+             if (data.match(/\.json/)!=null){
+                 d3.json(data, function(dataset) {
+                        curve(dataset)
+                        }); // end d3.json
+                    }  // end if json
+               } // end if string     
+           else{
+               curve(data)
+             }
+        }// end function
+    set_data_plot(data)
 } // end plot

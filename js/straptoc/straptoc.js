@@ -176,4 +176,67 @@ var maketoc = function(){
                  $(this).replaceWith(newtag)
                 }// end if
         })
+    $("p").each(function(){ //
+             var text = $(this).text()
+             if (text.match(/^\$plot\s*/) != null){
+                     
+                     var texts = text.split(/\s+/)
+                     alert(texts)
+                     var id = texts[1].trim()
+                     var name = texts[2].trim()
+                     var ampl = texts[3].trim()
+                     // alert(id)
+                     // alert(name)
+                     // alert(parseInt(ampl))
+                     var newtag = $('<div/>').text('here').attr('id',id)
+                     $(this).replaceWith(newtag)
+                     plot('#'+id, 'data/data_curve.json', 100);
+                }// end if
+        })// end each
 }// end maketoc
+
+var plot = function(dom, data, xoffset, col){
+    //var data_curve = 'nocurve';
+    // alert('inplot')
+    // alert(dom)
+    // alert(data)
+    // alert(xoffset)
+    var col = col || 'k';
+    var pos_line = 150;
+    var width = 500,
+        height = 200;
+    var curve_height = 100;
+    var colrs = {'r':'red', 'k':'black', 'b':'blue', 'g':'green'};
+    var svg = d3.select(dom)                //Create SVG element
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+    var valueline = d3.svg.line()           // Define the line 
+        .x(function(d) { return d.x*5; })
+        .y(function(d) { return d.y*curve_height + pos_line; }) // positionned on the line
+    var curve = function(data_curve){
+        var curved = svg.append("path")  
+        .attr("class", "line")
+        .attr("d", valueline(data_curve))
+        .attr("transform", "translate(" + xoffset.toString() + ", 0)" ) // Translationin x
+        .style({stroke : colrs[col],
+                fill : 'none',
+                'stroke-width' : '1.5px',
+            })
+        };
+    var set_data_plot = function(data){
+         if (typeof(data)=='string'){ 
+             if (data.match(/\.json/)!=null){
+                 alert('found json')
+                 d3.json(data, function(dataset) {
+                        
+                        curve(dataset);
+                        }); // end d3.json
+                    }  // end if json
+               } // end if string     
+           else{
+               curve(data)
+             }
+        }// end function
+    set_data_plot(data)
+} // end plot
