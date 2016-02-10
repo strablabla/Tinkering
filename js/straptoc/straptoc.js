@@ -10,10 +10,10 @@ var maketoc = function(){
     //  * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
     //  * [pdf §§](hyperlink) insert a pdf with object tag.
     //  * write novideo at the beginnign of the document to avoid loading of videos.
-    // https://github.com/strablabla/Tinkering/508e7e5/js/straptoc/straptoc.js 
+    // https://github.com/strablabla/Tinkering/d131ad9/js/straptoc/straptoc.js 
     
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
-    var reg_id = /-\w*-/; //regexp for identity
+    var reg_id = /--\w*--/; //regexp for identity
     var collist = 'green'
     $("p").each(function() {                                // Replacing dates with p in date with h2 and 
         if ($(this).html().match(reg_free)){
@@ -35,7 +35,7 @@ var maketoc = function(){
         if($(this).html().search(reg_id)!=-1){
             alert($(this).html())
             match_id = $(this).html().match(reg_id)[0]
-            var idslice = match_id.slice(1,-1)
+            var idslice = match_id.slice(2,-2)
             var text = $(this).html().replace(match_id,"")
             $(this).html(text);
             $(this).append($("<p/>").attr("id",idslice))
