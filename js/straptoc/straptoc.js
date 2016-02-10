@@ -6,11 +6,11 @@ var maketoc = function(){
     // The whole code uses extensively jQuery library.
     // Commands:
     //  * :: , close the list and make a toggle tool in the main page.
-    //  * -link- , creates a tag with id "link"
+    //  * --link-- , creates a tag with id "link"
     //  * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
     //  * [pdf §§](hyperlink) insert a pdf with object tag.
     //  * write novideo at the beginnign of the document to avoid loading of videos.
-    // https://github.com/strablabla/Tinkering/4aaabd0/js/straptoc/straptoc.js 
+    // https://github.com/strablabla/Tinkering/d484d3f/js/straptoc/straptoc.js 
     
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /--\w*--/; //regexp for identity
@@ -28,25 +28,16 @@ var maketoc = function(){
             var newtag = $('<p/>').text('')
             $(this).replaceWith(newtag)
             collist = col
-            alert("color is " + col)
+            //alert("color is " + col)
            }// end if
     }); // end each
-    $("H1, H2, p, a, li").each(function(){       // insertion of <p id = identity> </p> where found the pattern -identity-
-        if($(this).html().search(reg_id)!=-1){
-            //alert($(this).html())
-            match_id = $(this).html().match(reg_id)[0]
-            var idslice = match_id.slice(2,-2)
-            var text = $(this).html().replace(match_id,"")
-            $(this).html(text);
-            $("<p/>").attr("id",idslice).insertBefore($(this))
-            }// end if
-        }); // each
+
     $('#toc').append($('<a/>').append($('<span/>').text("[--]").addClass('li_h1')));
     var ul1 = $("<ul/>"); // first levels with class
     $('#toc').append(ul1);
     // read all the headers and make the TOC (with ref) and the id names
     for(var i = 0,  elems = $(":header"); i < elems.length; i++) {
-            var nameh = elems[i].innerHTML.trim();
+            var nameh = elems[i].innerHTML.trim().split(reg_id)[0];
             elems[i].id = nameh; 
             if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H1')    // if H1
                 {                        
@@ -99,7 +90,7 @@ var maketoc = function(){
     }                                                                   // end for elems
     // bit of code for closing list when it finds :: in the code.
     $("li").each(function(i){    // need to be placed before  $("a").click    
-        var htm = $(this).html(); var childr = $(this).children()
+        var htm = $(this).html(); var childr = $(this).children('ul')
         if(htm.split('\n')[0].search('::')!=-1){ 
                 childr.toggle();                // close the sub lists 
                 childr.css({'color': collist})   // change color children
@@ -107,9 +98,24 @@ var maketoc = function(){
                          .insertBefore(childr)
             } // end if 
         }); // end each
+    
+    $("H1, H2, p, a, li").each(function(){       // insertion of <p> with id in tag <a>
+        if($(this).html().split('\n')[0].search(reg_id)!=-1){
+            match_id = $(this).html().match(reg_id)[0]
+            var idslice = match_id.slice(2,-2)
+            var text = $(this).html().replace(match_id,"")
+            $(this).html(text);
+            if ($(this).prop("tagName")=='LI'){
+                if ($(this).children('a').length >0){$("<a/>").attr("id",idslice).appendTo($(this).children('a'))} // yet existing <a> for folding list.
+                else{$("<a/>").attr("id",idslice).insertBefore($(this).children())} // no  <a> for folding list.
+                }
+            else{$("<p/>").attr("id",idslice).insertBefore($(this))} // general case, insert <p> before the tag
+            }// end if
+        }); // each
+    
     $('ul').each(function (){  // remove the ::
             if ($(this).find("*").hasClass('::')){
-                var html = $(this).html().replace(/\:\:\s*\<a\>/g,'\<a\>')
+                var html = $(this).html().replace(/\:\:[\s\w\-]*\<a\>/g,'\<a\>')
                 $(this).html(html)
             }
           } // end function after each
@@ -121,6 +127,7 @@ var maketoc = function(){
         if(evtc == 'li_h1' | evtc == 'li_h2' | evtc == 'li_h3' | evtc == '::') 
             $(this).next().toggle();
         });// end click
+    
     $(document).keydown(function(event){
         if(event.keyCode == 37){  //M letter
             alert("hello");
@@ -218,7 +225,7 @@ var plot = function(dom, data, xoffset, col){
     var set_data_plot = function(data){
          if (typeof(data)=='string'){ 
              if (data.match(/\.json/)!=null){
-                 alert('found json')
+                 //alert('found json')
                  d3.json(data, function(dataset) {
                         
                         curve(dataset);
