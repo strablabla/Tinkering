@@ -89,6 +89,28 @@ var maketoc = function(){
                     .css({'list-style': 'circle inside','line-height': '20px'}) // end append li3
                 } // end else if H3
     }                                                                   // end for elems
+    $("li").each(function(){ //
+             var htm = $(this).html();
+             //alert(htm)
+             if (htm.split('\n')[0].match(/@@\w+/) != null){
+                //alert(htm)
+                var htmnew = htm.replace(/@@\w+/, '')
+                // alert(htmnew);
+                // alert($(this).parent().prop("tagName"))
+                copy = $(this).clone()
+                copy.html(htmnew)
+                $(this).html(htmnew)
+                $("li").each(function(){ //
+                    var htm = $(this).html();
+                    if (htm.split('\n')[0].match(/\s*\w+@@/) != null){
+                        //alert($(this).html())
+                        var htmnew = htm.replace(/\s*\w+@@/, '')
+                        $(this).html(htmnew)
+                        $(this).append(copy)
+                    } // end if
+                }) // end each
+            }// end if
+        })// end each
     // bit of code for closing list when it finds :: in the code.
     $("li").each(function(i){    // need to be placed before  $("a").click    
         var htm = $(this).html(); var childr = $(this).children('ul')
@@ -200,28 +222,7 @@ var maketoc = function(){
                      plot('#'+id, 'data/data_curve.json', 100);
                 }// end if
         })// end each
-    $("li").each(function(){ //
-             var htm = $(this).html();
-             //alert(htm)
-             if (htm.split('\n')[0].match(/@@\w+/) != null){
-                //alert(htm)
-                var htmnew = htm.replace(/@@\w+/, '')
-                // alert(htmnew);
-                // alert($(this).parent().prop("tagName"))
-                copy = $(this).clone()
-                copy.html(htmnew)
-                $(this).html(htmnew)
-                $("li").each(function(){ //
-                    var htm = $(this).html();
-                    if (htm.split('\n')[0].match(/\s*\w+@@/) != null){
-                        //alert($(this).html())
-                        var htmnew = htm.replace(/\s*\w+@@/, '')
-                        $(this).html(htmnew)
-                        $(this).append(copy)
-                    } // end if
-                }) // end each
-            }// end if
-        })// end each
+
 }// end maketoc  /\>\>\w*/
 
 var plot = function(dom, data, xoffset, col){
