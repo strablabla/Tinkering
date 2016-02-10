@@ -10,6 +10,7 @@ var maketoc = function(){
     //  * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
     //  * [pdf §§](hyperlink) insert a pdf with object tag.
     //  * write novideo at the beginnign of the document to avoid loading of videos.
+    //  * @@blabla, cut the <li>, blabla@@ paste the <li>
     // https://github.com/strablabla/Tinkering/17c17af/js/straptoc/straptoc.js 
     
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
@@ -199,7 +200,29 @@ var maketoc = function(){
                      plot('#'+id, 'data/data_curve.json', 100);
                 }// end if
         })// end each
-}// end maketoc
+    $("li").each(function(){ //
+             var htm = $(this).html();
+             //alert(htm)
+             if (htm.split('\n')[0].match(/@@\w+/) != null){
+                //alert(htm)
+                var htmnew = htm.replace(/@@\w+/, '')
+                // alert(htmnew);
+                // alert($(this).parent().prop("tagName"))
+                copy = $(this).clone()
+                copy.html(htmnew)
+                $(this).html(htmnew)
+                $("li").each(function(){ //
+                    var htm = $(this).html();
+                    if (htm.split('\n')[0].match(/\s*\w+@@/) != null){
+                        //alert($(this).html())
+                        var htmnew = htm.replace(/\s*\w+@@/, '')
+                        $(this).html(htmnew)
+                        $(this).append(copy)
+                    } // end if
+                }) // end each
+            }// end if
+        })// end each
+}// end maketoc  /\>\>\w*/
 
 var plot = function(dom, data, xoffset, col){
     var col = col || 'k';
@@ -230,7 +253,6 @@ var plot = function(dom, data, xoffset, col){
              if (data.match(/\.json/)!=null){
                  //alert('found json')
                  d3.json(data, function(dataset) {
-                        
                         curve(dataset);
                         }); // end d3.json
                     }  // end if json
