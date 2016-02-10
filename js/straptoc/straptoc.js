@@ -10,7 +10,7 @@ var maketoc = function(){
     //  * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
     //  * [pdf §§](hyperlink) insert a pdf with object tag.
     //  * write novideo at the beginnign of the document to avoid loading of videos.
-    // https://github.com/strablabla/Tinkering/d131ad9/js/straptoc/straptoc.js 
+    // https://github.com/strablabla/Tinkering/4aaabd0/js/straptoc/straptoc.js 
     
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /--\w*--/; //regexp for identity
@@ -31,14 +31,14 @@ var maketoc = function(){
             alert("color is " + col)
            }// end if
     }); // end each
-    $("H1, H2, p, a, li").each(function(i){       // insertion of <p id = identity> </p> where found the pattern -identity-
+    $("H1, H2, p, a, li").each(function(){       // insertion of <p id = identity> </p> where found the pattern -identity-
         if($(this).html().search(reg_id)!=-1){
             //alert($(this).html())
             match_id = $(this).html().match(reg_id)[0]
             var idslice = match_id.slice(2,-2)
             var text = $(this).html().replace(match_id,"")
             $(this).html(text);
-            $(this).append($("<p/>").attr("id",idslice))
+            $("<p/>").attr("id",idslice).insertBefore($(this))
             }// end if
         }); // each
     $('#toc').append($('<a/>').append($('<span/>').text("[--]").addClass('li_h1')));
