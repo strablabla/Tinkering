@@ -31,9 +31,9 @@ var maketoc = function(){
             alert("color is " + col)
            }// end if
     }); // end each
-    $("H1, H2, p, a").each(function(i){       // insertion of <p id = identity> </p> where found the pattern -identity-
+    $("H1, H2, p, a, li").each(function(i){       // insertion of <p id = identity> </p> where found the pattern -identity-
         if($(this).html().search(reg_id)!=-1){
-            alert($(this).html())
+            //alert($(this).html())
             match_id = $(this).html().match(reg_id)[0]
             var idslice = match_id.slice(2,-2)
             var text = $(this).html().replace(match_id,"")
