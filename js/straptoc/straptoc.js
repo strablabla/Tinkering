@@ -31,8 +31,9 @@ var maketoc = function(){
             alert("color is " + col)
            }// end if
     }); // end each
-    $("H1").each(function(i){       // insertion of <p id = identity> </p> where found the pattern -identity-
+    $("H1, H2, p, a").each(function(i){       // insertion of <p id = identity> </p> where found the pattern -identity-
         if($(this).html().search(reg_id)!=-1){
+            alert($(this).html())
             match_id = $(this).html().match(reg_id)[0]
             var idslice = match_id.slice(1,-1)
             var text = $(this).html().replace(match_id,"")
@@ -179,15 +180,10 @@ var maketoc = function(){
     $("p").each(function(){ //
              var text = $(this).text()
              if (text.match(/^\$plot\s*/) != null){
-                     
                      var texts = text.split(/\s+/)
-                     alert(texts)
                      var id = texts[1].trim()
                      var name = texts[2].trim()
                      var ampl = texts[3].trim()
-                     // alert(id)
-                     // alert(name)
-                     // alert(parseInt(ampl))
                      var newtag = $('<div/>').text('here').attr('id',id)
                      $(this).replaceWith(newtag)
                      plot('#'+id, 'data/data_curve.json', 100);
@@ -196,11 +192,6 @@ var maketoc = function(){
 }// end maketoc
 
 var plot = function(dom, data, xoffset, col){
-    //var data_curve = 'nocurve';
-    // alert('inplot')
-    // alert(dom)
-    // alert(data)
-    // alert(xoffset)
     var col = col || 'k';
     var pos_line = 150;
     var width = 500,
