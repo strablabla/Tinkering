@@ -10,7 +10,7 @@ var maketoc = function(){
     //  * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
     //  * [pdf §§](hyperlink) insert a pdf with object tag.
     //  * write novideo at the beginnign of the document to avoid loading of videos.
-    // https://github.com/strablabla/Tinkering/d484d3f/js/straptoc/straptoc.js 
+    // https://github.com/strablabla/Tinkering/17c17af/js/straptoc/straptoc.js 
     
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /--\w*--/; //regexp for identity
@@ -106,8 +106,11 @@ var maketoc = function(){
             var text = $(this).html().replace(match_id,"")
             $(this).html(text);
             if ($(this).prop("tagName")=='LI'){
-                if ($(this).children('a').length >0){$("<a/>").attr("id",idslice).appendTo($(this).children('a'))} // yet existing <a> for folding list.
-                else{$("<a/>").attr("id",idslice).insertBefore($(this).children())} // no  <a> for folding list.
+                if ($(this).children('a').length >0){
+                    alert($(this).children('a').prop('tagName'))
+                    $(this).children('ul').prepend($("<a/>").attr("id",idslice))
+                    } // yet existing <a> for folding list.
+                else{$("<a/>").attr("id",idslice).insertBefore($(this).children('ul'))} // no  <a> for folding list.
                 }
             else{$("<p/>").attr("id",idslice).insertBefore($(this))} // general case, insert <p> before the tag
             }// end if
