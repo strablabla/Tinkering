@@ -11,11 +11,13 @@ var maketoc = function(){
     //  * [pdf §§](hyperlink) insert a pdf with object tag.
     //  * write novideo at the beginnign of the document to avoid loading of videos.
     //  * @@blabla, cut the <li>, blabla@@ paste the <li>
-    // https://github.com/strablabla/Tinkering/17c17af/js/straptoc/straptoc.js 
+    //  * key "k" to make appear disappear the sliders.
+    // https://github.com/strablabla/Tinkering/e099773/js/straptoc/straptoc.js 
     
     var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /--\w*--/; //regexp for identity
     var collist = 'green'
+    var num_slider = 0
     $("p").each(function() {                                // Replacing dates with p in date with h2 and 
         if ($(this).html().match(reg_free)){
             $(this).replaceWith(function(){ 
@@ -130,7 +132,7 @@ var maketoc = function(){
             $(this).html(text);
             if ($(this).prop("tagName")=='LI'){
                 if ($(this).children('a').length >0){
-                    alert($(this).children('a').prop('tagName'))
+                    //alert($(this).children('a').prop('tagName'))
                     $(this).children('ul').prepend($("<a/>").attr("id",idslice))
                     } // yet existing <a> for folding list.
                 else{$("<a/>").attr("id",idslice).insertBefore($(this).children('ul'))} // no  <a> for folding list.
@@ -154,11 +156,14 @@ var maketoc = function(){
             $(this).next().toggle();
         });// end click
     
-    $(document).keydown(function(event){
-        if(event.keyCode == 37){  //M letter
-            alert("hello");
-        	} // end if
-    	}); // end keydown
+    jQuery(document).bind('keydown', function (evt){
+        $("a").each(function(i){ 
+            if ($(this).prop('id').match(/slider_\d*/) != null ){
+                $(this).toggle()
+                }
+            }); // each
+       }); // end bind
+    
     var sel = [';;','§§']
     var debend = {';;' : {'deb' : '<iframe width="420" height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
                    '§§': {'deb' : '<object width="80%" height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
@@ -183,10 +188,23 @@ var maketoc = function(){
         })  
     var maketag = function(self, deb, end, select){
         patt = {';;' : ["watch?v=", "embed/"], '§§' : ["none", "none"]}
-        var tag = $("<ul/>").append($("<li/>").append(deb+self.attr('href').replace(patt[select][0],patt[select][1])+end))
+        num_slider += 1;
+        var nameslider = 'slider_' + num_slider
+        //alert(nameslider)
+        var tag = $("<ul/>").append($("<li/>").append(deb+self.attr('href').replace(patt[select][0],patt[select][1])+end))                                    
         var text = self.text().replace(select,'')
-        $('<p/>').text(text).append($('<a/>').append($('<span/>').text( " [-]").addClass(select)))
+        $('<p/>').text(text).append($('<a/>').append($('<span/>').text( " [-]").addClass(select))
+                                             .append($('<a/>').attr('id', nameslider))) // insert slider
                  .insertBefore(self).css({'color':debend[select]['color']})
+        //alert(self.next().prop("tagName"))
+        var chgx = function(){$("#slider_value").html(d3.event.x)}
+        var param_slider_x = [{'xbar':100, 'x':100,'ybar':10, 'y':10, 'col': 'violet', 'dir':'x', 'slength': 100, 'action':chgx}]
+        var svgslider = d3.select("#" + nameslider)
+                    .append("svg")
+                    .attr("width", 600)
+                    .attr("height", 20);
+        slide(param_slider_x, svgslider)
+        $("#" + nameslider).toggle()
         return tag
     }
     $("a").each(function(){  // Deals with videos and pdfs
@@ -200,8 +218,9 @@ var maketoc = function(){
          }); // end each
     $("a").click(function (evt) {  
         var evtc = evt.target.className;              
-        if(evtc == ';;' | evtc == '§§')       // toggle 
-            $(this).parent().next().toggle();
+        if(evtc == ';;' | evtc == '§§') {      // toggle 
+            $(this).parent().next().toggle(); // activate next <ul>
+            } // end if event      
         });// end click
     $("p").each(function(){ // POST'IT
              var html = $(this).html()
@@ -264,3 +283,65 @@ var plot = function(dom, data, xoffset, col){
         }// end function
     set_data_plot(data)
 } // end plot
+
+var drag_slider = d3.behavior.drag()
+    .origin(function(d) {  return d }) 
+    .on("dragstart", dragstarted)
+    .on("drag", function(d) {
+        if (d.dir == "x"){
+            d.action(); // 
+            return d3.select(this).attr("cx", d.x  = d3.event.x);
+            }
+        else if (d.dir == "y"){
+            $("#slider_value").html(d3.event.y);
+            d.action();
+            return d3.select(this).attr("cy", d.y  = d3.event.y);
+            }
+    })
+    .on("dragend", dragended);
+
+var slide = function(data, name_svg){ // Vertical or horizontal slider
+    //alert('inslide')
+   
+    slider_line = function(data){
+          var svg_slider_line = name_svg
+            .selectAll("svg_slider_line")
+            .data(data)
+            .enter()
+            .append("line")
+            .attr('x1', function(d){return d.xbar}) // 
+            .attr('y1', function(d){return d.ybar})
+            .attr('x2', function(d){if ( d.dir=="x" ){ return d.slength + d.xbar } else { return d.xbar }}) // 
+            .attr('y2', function(d){if ( d.dir=="y" ){ return d.slength + d.ybar } else { return d.ybar }})
+            .attr('stroke', function(d){return d.col})
+            .attr('stroke-width', '4px')
+        }
+
+    slider_button = function(data){ 
+
+        var slider_butt = name_svg
+          .selectAll("svg_slider_button")
+          .data(data)
+          .enter()
+          .append("ellipse")       // attach an ellipse
+          .attr("cx", function(d){return d.x})           // position the x-centre
+          .attr("cy", function(d){return d.y})           // position the y-centre
+          .attr("rx", 7)           // set the x radius
+          .attr("ry", 7)           // set the y radius
+          .attr("fill", function(d){return d.col})
+          .attr("class", "slide")
+          .call(drag_slider);
+        }  
+    slider_line(data);
+    slider_button(data);
+}
+
+function dragstarted(d) {
+  d3.event.sourceEvent.stopPropagation();
+  d3.select(this).classed("dragging", true);
+}
+
+function dragended(d) {
+  d3.select(this).classed("dragging", false);
+    }
+

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="UTF-8">
+<title>test identity</title>
+
+<script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script  src="straptoc.js"></script>
+<link rel="stylesheet" href="straptoc.css">
+
+<div class="onside" id="toc"></div>
+
+<xmp theme="cerulean" style="display:none;">
+    
+# Origines
+
+    Les langues italiques formaient, à côté des langues celtiques, germaniques et helléniques, une sous-famille « centum » de langues indo-européennes qui incluait le latin, parlé par la population du Latium en Italie centrale (les Latins), et d'autres parlers comme l'ombrien et l'osque, au voisinage immédiat d'une langue étrusque non indo-européenne mais dont le latin a subi l'influence culturelle. De nos jours, les langues italiques sont représentées par les langues romanes, issues du latin (l'italien, le roumain/moldave, l'aroumain, le français, l'occitan, le francoprovençal, le catalan, l'espagnol, le portugais, le sarde, le ladin, le corse, …, ainsi que des langues aujourd'hui éteintes comme le dalmate ou le mozarabe).
+
+* Il était une fois :: -hop-
+    * parfois les aléas de  la vie.
+        * bien que le hasard soit une chose pour le moins étrange.
+
+# roultablille 
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+
+<script>
+
+$("H1").each(function(i){     
+       $(this).attr('id','slider_'+$(this).text())           
+    }); // each
+  
+jQuery(document).bind('keydown', function (evt){
+    $("H1").each(function(i){ 
+        alert($(this).attr('id'))
+        if ($(this).attr('id').match(/\w*/) != null ){
+            alert("word")}
+        }); // each
+   }); // end bind
+ </script>
+
+</html>
