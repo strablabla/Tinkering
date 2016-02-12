@@ -12,28 +12,56 @@ var maketoc = function(){
     //  * write novideo at the beginnign of the document to avoid loading of videos.
     //  * @@blabla, cut the <li>, blabla@@ paste the <li>
     //  * key "k" to make appear disappear the sliders.
-    // https://github.com/strablabla/Tinkering/e099773/js/straptoc/straptoc.js 
+    // https://github.com/strablabla/Tinkering/5c6d52f/js/straptoc/straptoc.js 
     
-    var reg_free = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
+    var reg_date = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /--\w*--/; //regexp for identity
     var collist = 'green'
     var num_slider = 0
-    $("p").each(function() {                                // Replacing dates with p in date with h2 and 
-        if ($(this).html().match(reg_free)){
-            $(this).replaceWith(function(){ 
+    var width_video = "80%"
+    var width_pdf = "80%"
+    var reg_col = /^\§col\s*/
+    var reg_width_video = /^\§width_video\s*/
+    var reg_width_pdf = /^\§width_pdf\s*/
+    var reg_sign = /[^§]§[^§]\w*/
+    
+    param = {'color':{'reg':reg_col, 'cut':'§col', 'var': collist},
+             'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': width_video },
+             'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': width_pdf}}
+    // $("p").each(function(){    
+    //     if ($(this).html().match(reg_sign)){
+    //         alert($(this).html())
+    //         
+    //         // var listspl = $(this).html().split('§').slice(1)
+    //         //    for (ll in listspl){
+    //         //        alert(listspl[ll])
+    //         //        $('body').append(('<p/>').text('§'+listspl[ll]))
+    //         //        }
+    //         $(this).hide()
+    //         //alert($(this).html().split('§'))
+    //         }// end if
+    //     }) // end each
+    $("p").each(function() {                                
+        if ($(this).html().match(reg_date)){
+            $(this).replaceWith(function(){                 // Replacing dates with p in date with h2 and 
                 var h1prev = $(this).prev("h1").text()
                 var dateh2 = $('<h2/>').text($(this).text())
                 return dateh2; 
                }) // end replaceWith
            } // end if
-        if ($(this).text().match(/^\$col\s*/) != null){
-            var col = $(this).text().split('$col')[1]
-            var newtag = $('<p/>').text('')
-            $(this).replaceWith(newtag)
-            collist = col
-            //alert("color is " + col)
-           }// end if
+        for (elem in param){
+            if ($(this).text().match(param[elem]['reg']) != null){  // finds loading parameters
+                var interm = $(this).text().split(param[elem]['cut'])[1]
+                alert(interm)
+                var newtag = $('<p/>').text('')
+                $(this).replaceWith(newtag)
+                window[param[elem]['var']] = interm
+
+                //alert("color is " + col)
+               }// end if
+        } // end for
     }); // end each
+    
 
     $('#toc').append($('<a/>').append($('<span/>').text("[--]").addClass('li_h1')));
     var ul1 = $("<ul/>"); // first levels with class
@@ -165,33 +193,39 @@ var maketoc = function(){
        }); // end bind
     
     var sel = [';;','§§']
-    var debend = {';;' : {'deb' : '<iframe width="420" height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
-                   '§§': {'deb' : '<object width="80%" height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
+    alert(collist)
+    alert(width_video)
+    alert(width_pdf)
+    var debend = {';;' : {'deb' : '<iframe width='+'"' + width_video + '"' + 'height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
+                   '§§': {'deb' : '<object width='+'"' + width_pdf + '"' + ' height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
     $("p").each(function(){
              var textp = $(this).text()
-             if (textp.match(/\[\w*.*\]\(\w*.*\)/) != null){
+             if (textp.match(/\[\w*.*\]\(\w*.*\)/) != null){ // search for format [blabla](addr blabla)
                  var text1 = textp.match(/\[\w*.*\]/)[0].slice(1,-1)
                  var text2 = textp.match(/\(.*\w*.*\)/)[0].slice(1,-1)
                  var newtag = $('<a/>').text(text1).attr('href',text2)
                  $(this).replaceWith(newtag)
                 }// end if
-             if (textp.trim() == 'novideo'){  // hide novideo
-                $(this).hide() 
-                sel = ['§§']
-                $("a").each(function(){ // removing ;;
-                    var texta = $(this).text()
-                    if (texta.search(';;') != -1){
-                        $(this).text(texta.replace(';;',''))
-                    }
-                }) // end a.each
+             if (textp.match('§novideo')){ 
+                 $(this).hide() 
+                 if (textp.trim() == '§novideo'){  // hide novideo
+                    sel = ['§§']
+                    $("a").each(function(){ // removing ;;
+                        var texta = $(this).text()
+                        if (texta.search(';;') != -1){
+                            $(this).text(texta.replace(';;',''))
+                            } // end if == 
+                        }) // end a.each
+                } // end if match
              }// end if novideo
-        })  
+   
+        })  // end each 
     var maketag = function(self, deb, end, select){
         patt = {';;' : ["watch?v=", "embed/"], '§§' : ["none", "none"]}
         num_slider += 1;
         var nameslider = 'slider_' + num_slider
         //alert(nameslider)
-        var tag = $("<ul/>").append($("<li/>").append(deb+self.attr('href').replace(patt[select][0],patt[select][1])+end))                                    
+        var tag = $("<ul/>").append($("<li/>").append(deb+self.attr('href').replace(patt[select][0],patt[select][1])+end)) // make doc                                    
         var text = self.text().replace(select,'')
         $('<p/>').text(text).append($('<a/>').append($('<span/>').text( " [-]").addClass(select))
                                              .append($('<a/>').attr('id', nameslider))) // insert slider
