@@ -16,27 +16,24 @@ var maketoc = function(){
     
     var reg_date = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /--\w*--/; //regexp for identity
-    var collist = 'green'
     var num_slider = 0
-    var width_video = "80%"
-    var width_pdf = "80%"
     var reg_col = /^\§col\s*/
     var reg_width_video = /^\§width_video\s*/
     var reg_width_pdf = /^\§width_pdf\s*/
     var reg_sign = /[^§]§[^§]\w*/
     
-    param = {'color':{'reg':reg_col, 'cut':'§col', 'var': collist},
-             'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': width_video },
-             'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': width_pdf}}
+    param = {'color':{'reg':reg_col, 'cut':'§col', 'var': 'green'},
+             'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': '80%' },
+             'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'}}
     // $("p").each(function(){    
     //     if ($(this).html().match(reg_sign)){
     //         alert($(this).html())
-    //         
-    //         // var listspl = $(this).html().split('§').slice(1)
-    //         //    for (ll in listspl){
-    //         //        alert(listspl[ll])
-    //         //        $('body').append(('<p/>').text('§'+listspl[ll]))
-    //         //        }
+            
+    //         var listspl = $(this).html().split('§').slice(1)
+    //            for (ll in listspl){
+    //                alert(listspl[ll])
+    //                $('body').append(('<p/>').text('§'+listspl[ll]))
+    //                }
     //         $(this).hide()
     //         //alert($(this).html().split('§'))
     //         }// end if
@@ -55,9 +52,7 @@ var maketoc = function(){
                 alert(interm)
                 var newtag = $('<p/>').text('')
                 $(this).replaceWith(newtag)
-                window[param[elem]['var']] = interm
-
-                //alert("color is " + col)
+                param[elem]['var'] = interm
                }// end if
         } // end for
     }); // end each
@@ -146,7 +141,7 @@ var maketoc = function(){
         var htm = $(this).html(); var childr = $(this).children('ul')
         if(htm.split('\n')[0].search('::')!=-1){ 
                 childr.toggle();                // close the sub lists 
-                childr.css({'color': collist})   // change color children
+                childr.css({'color': param['color']['var']})   // change color children
                 $('<a/>').append($('<span/>').text(" [-]").addClass('::'))
                          .insertBefore(childr)
             } // end if 
@@ -193,11 +188,8 @@ var maketoc = function(){
        }); // end bind
     
     var sel = [';;','§§']
-    alert(collist)
-    alert(width_video)
-    alert(width_pdf)
-    var debend = {';;' : {'deb' : '<iframe width='+'"' + width_video + '"' + 'height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
-                   '§§': {'deb' : '<object width='+'"' + width_pdf + '"' + ' height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
+    var debend = {';;' : {'deb' : '<iframe width='+'"' + param['vid_width']['var'] + '"' + 'height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
+                   '§§': {'deb' : '<object width='+'"' + param['pdf_width']['var'] + '"' + ' height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
     $("p").each(function(){
              var textp = $(this).text()
              if (textp.match(/\[\w*.*\]\(\w*.*\)/) != null){ // search for format [blabla](addr blabla)
