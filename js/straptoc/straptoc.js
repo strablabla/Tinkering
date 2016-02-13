@@ -12,7 +12,7 @@ var maketoc = function(){
     //  * write novideo at the beginning of the document to avoid loading of videos.
     //  * @@blabla, cut the <li>, blabla@@ paste the <li>
     //  * key "k" to make appear disappear the sliders.
-    // https://github.com/strablabla/Tinkering/5c6d52f/js/straptoc/straptoc.js 
+    // https://github.com/strablabla/Tinkering/4d6408c/js/straptoc/straptoc.js 
     
     var reg_date = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /--\w*--/; //regexp for identity
