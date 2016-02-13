@@ -22,6 +22,8 @@ var maketoc = function(){
     var reg_width_pdf = /^\§width_pdf\s*/
     var reg_sign = /[^§]§[^§]\w*/
     
+    $('body').prepend($('<div/>').addClass('onside').attr('id',"toc"))
+    
     param = {'color':{'reg':reg_col, 'cut':'§col', 'var': 'green'},
              'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': '80%' },
              'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'}}
