@@ -12,7 +12,7 @@ var maketoc = function(){
     //  * write novideo at the beginning of the document to avoid loading of videos.
     //  * @@blabla, cut the <li>, blabla@@ paste the <li>
     //  * key "k" to make appear disappear the sliders.
-    // https://github.com/strablabla/Tinkering/4d6408c/js/straptoc/straptoc.js 
+    // https://github.com/strablabla/Tinkering/5ad3af9/js/straptoc/straptoc.js 
     
     var reg_date = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /--\w*--/; //regexp for identity
@@ -158,13 +158,26 @@ var maketoc = function(){
             $(this).next().toggle();
         });// end click
     
-    jQuery(document).bind('keydown', function (evt){
-        $("a").each(function(i){ 
-            if ($(this).prop('id').match(/slider_\d*/) != null ){
-                $(this).toggle()
-                }
-            }); // each
-       }); // end bind
+
+	$(document).keydown(function(event){
+		//alert(event.keyCode);
+		if(event.keyCode == 75){  //k key
+		  $("a").each(function(i){ 
+		        if ($(this).prop('id').match(/slider_\d*/)){
+		            $(this).toggle()
+		    	} // end if
+		      }); // each
+		  } // end if key code
+		if(event.keyCode == 75){  //^ key
+			$("li").each(function(i){ 
+		        if ($(this).hasClass('^^')){
+		            $(this).toggle()
+		    	} // end if
+		      }); // each
+		  }// end if key code
+        
+	    })
+
     var reg_hyper = /\[\w*.*\]\(\w*.*\)/
     var reg_brack = /\[\w*.*\]/
     var reg_parent = /\(.*\w*.*\)/
@@ -248,6 +261,16 @@ var maketoc = function(){
                      plot('#'+id, 'data/data_curve.json', 100);
                 }// end if
         })// end each
+    $("li").each(function(){ //
+    	var reg_hide = /\s*\^\^\s*/
+         var htm = $(this).html()
+         if (htm.match(reg_hide)){
+            $(this).toggle().addClass('^^')
+            var newhtm = htm.replace(reg_hide , '')
+            $(this).html(newhtm)
+            }// end if
+    })// end each
+
 }// end maketoc  /\>\>\w*/
 
 var plot = function(dom, data, xoffset, col){
