@@ -187,6 +187,7 @@ var maketoc = function(){
                         var texta = $(this).text()
                         if (texta.search(';;') != -1){
                             $(this).text(texta.replace(';;',''))
+                            	   .css({'color': debend[';;']['color']})
                             } // end if == 
                         }) // end a.each
                 } // end if match
