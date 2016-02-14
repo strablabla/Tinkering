@@ -12,7 +12,7 @@ var maketoc = function(){
     //  * write novideo at the beginning of the document to avoid loading of videos.
     //  * @@blabla, cut the <li>, blabla@@ paste the <li>
     //  * key "k" to make appear disappear the sliders.
-    // https://github.com/strablabla/Tinkering/5ad3af9/js/straptoc/straptoc.js 
+    // https://github.com/strablabla/Tinkering/7096cbb/js/straptoc/straptoc.js 
     
     var reg_date = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /--\w*--/; //regexp for identity
@@ -20,13 +20,16 @@ var maketoc = function(){
     var reg_col = /^\§col\s*/
     var reg_width_video = /^\§width_video\s*/
     var reg_width_pdf = /^\§width_pdf\s*/
+    var reg_toggle_hide = /^\§toggle_hide\s*/
     var reg_sign = /[^§]§[^§]\w*/
     
     $('body').prepend($('<div/>').addClass('onside').attr('id',"toc"))
     
     param = {'color':{'reg':reg_col, 'cut':'§col', 'var': 'green'},
              'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': '80%' },
-             'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'}}
+             'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'},
+             'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'}
+         }
     // $("p").each(function(){    
     //     if ($(this).html().match(reg_sign)){
     //         alert($(this).html())
@@ -49,11 +52,11 @@ var maketoc = function(){
                }) // end replaceWith
            } // end if
         for (elem in param){
-            if ($(this).text().match(param[elem]['reg']) != null){  // finds loading parameters
+            if ($(this).text().match(param[elem]['reg']) ){  // finds loading parameters
                 var interm = $(this).text().split(param[elem]['cut'])[1]
                 var newtag = $('<p/>').text('')
                 $(this).replaceWith(newtag)
-                param[elem]['var'] = interm
+                param[elem]['var'] = interm.trim()
                }// end if
         } // end for
     }); // end each
@@ -158,26 +161,23 @@ var maketoc = function(){
             $(this).next().toggle();
         });// end click
     
-
 	$(document).keydown(function(event){
 		//alert(event.keyCode);
-		if(event.keyCode == 75){  //k key
+		if(event.keyCode == "q".charCodeAt(0)-32){  //k key
 		  $("a").each(function(i){ 
 		        if ($(this).prop('id').match(/slider_\d*/)){
 		            $(this).toggle()
 		    	} // end if
 		      }); // each
 		  } // end if key code
-		if(event.keyCode == 75){  //^ key
+		if(event.keyCode == param['toggle_hide']['var'].charCodeAt(0)-32){  //^ key
 			$("li").each(function(i){ 
 		        if ($(this).hasClass('^^')){
 		            $(this).toggle()
 		    	} // end if
 		      }); // each
 		  }// end if key code
-        
 	    })
-
     var reg_hyper = /\[\w*.*\]\(\w*.*\)/
     var reg_brack = /\[\w*.*\]/
     var reg_parent = /\(.*\w*.*\)/

@@ -2,7 +2,7 @@
 <html>
 
 <meta charset="UTF-8">
-<title>Hello Strapdown</title>
+<title>test keys</title>
 
 <script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 <script  src="straptoc.js"></script>
@@ -14,7 +14,7 @@
     
 # Origines
 
-    Les langues italiques formaient, à côté des langues celtiques, germaniques et helléniques, une sous-famille « centum » de langues indo-européennes qui incluait le latin, parlé par la population du Latium en Italie centrale (les Latins), et d'autres parlers comme l'ombrien et l'osque, au voisinage immédiat d'une langue étrusque non indo-européenne mais dont le latin a subi l'influence culturelle. De nos jours, les langues italiques sont représentées par les langues romanes, issues du latin (l'italien, le roumain/moldave, l'aroumain, le français, l'occitan, le francoprovençal, le catalan, l'espagnol, le portugais, le sarde, le ladin, le corse, …, ainsi que des langues aujourd'hui éteintes comme le dalmate ou le mozarabe).
+    Les langues italiques formaient, à côté des langues celtiques, germaniques et helléniques, une sous-famille « centum » de langues indo-européennes qui incluait le latin, parlé par la population du Latium en Italie centrale (les Latins), et d'autres 
 
 * Il était une fois
 	* parfois les aléas de  la vie.
@@ -26,19 +26,14 @@
 
 <script>
 
-
-
-// jQuery(document).bind('keydown', function (evt){
-// 	if(evt.keyCode == 107){
-//     alert('Hello');
-// 	}
-//   });
-
 $(window).bind('keydown', function(event) {
-	alert(event.keyCode)
-	if(event.keyCode === 107) {
+	//alert(event.keyCode)
+	if(event.keyCode === "k".charCodeAt(0)-32) {
 		alert('Hello');
-	}
+		}
+	else if(event.keyCode === "q".charCodeAt(0)-32) {
+		alert('yess');
+		}
 });
 
  </script>
