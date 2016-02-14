@@ -127,7 +127,6 @@ var maketoc = function(){
                          .insertBefore(childr)
             } // end if 
         }); // end each
-    
     $("H1, H2, p, a, li").each(function(){       // insertion of <p> with id in tag <a>
         if($(this).html().split('\n')[0].search(reg_id)!=-1){
             match_id = $(this).html().match(reg_id)[0]
@@ -144,7 +143,6 @@ var maketoc = function(){
             else{$("<p/>").attr("id",idslice).insertBefore($(this))} // general case, insert <p> before the tag
             }// end if
         }); // each
-    
     $('ul').each(function (){  // remove the ::
             if ($(this).find("*").hasClass('::')){
                 var html = $(this).html().replace(/\:\:[\s\w\-]*\<a\>/g,'\<a\>')
@@ -167,16 +165,19 @@ var maketoc = function(){
                 }
             }); // each
        }); // end bind
-    
+    var reg_hyper = /\[\w*.*\]\(\w*.*\)/
+    var reg_brack = /\[\w*.*\]/
+    var reg_parent = /\(.*\w*.*\)/
     var sel = [';;','§§']
     var debend = {';;' : {'deb' : '<iframe width='+'"' + param['vid_width']['var'] + '"' + 'height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
                    '§§': {'deb' : '<object width='+'"' + param['pdf_width']['var'] + '"' + ' height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
-    $("p").each(function(){
+    $("p, li").each(function(){
              var textp = $(this).text()
-             if (textp.match(/\[\w*.*\]\(\w*.*\)/) != null){ // search for format [blabla](addr blabla)
-                 var text1 = textp.match(/\[\w*.*\]/)[0].slice(1,-1)
-                 var text2 = textp.match(/\(.*\w*.*\)/)[0].slice(1,-1)
+             if (textp.match(reg_hyper)){ // search for format [blabla](addr blabla)
+                 var text1 = textp.match(reg_brack)[0].slice(1,-1) // takes [blabla]
+                 var text2 = textp.match(reg_parent)[0].slice(1,-1) // takes (addr blabla)
                  var newtag = $('<a/>').text(text1).attr('href',text2)
+                 if ($(this).prop('tagName')== 'LI'){var newtag = $('<li/>').append(newtag)} // correction of link to local file.
                  $(this).replaceWith(newtag)
                 }// end if
              if (textp.match('§novideo')){ 
@@ -200,7 +201,7 @@ var maketoc = function(){
         var nameslider = 'slider_' + num_slider
         var tag = $("<ul/>").append($("<li/>").append(deb+self.attr('href').replace(patt[select][0],patt[select][1])+end)) // make doc                                    
         var text = self.text().replace(select,'')
-        $('<p/>').text(text).append($('<a/>').append($('<span/>').text( " [-]").addClass(select))
+        $('<a/>').text(text).append($('<a/>').append($('<span/>').text( " [-]").addClass(select))
                                              .append($('<a/>').attr('id', nameslider))) // insert slider
                  .insertBefore(self).css({'color':debend[select]['color']})
         //alert(self.next().prop("tagName"))
