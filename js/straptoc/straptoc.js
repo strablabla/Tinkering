@@ -99,7 +99,7 @@ var maketoc = function(){
                 li3.append($('<a/>').attr('href', namehhref).html(nameh).addClass(nameh)) // end of li
                     .css({'list-style': 'circle inside','line-height': '20px'}) // end append li3
                 } // end else if H3
-    }                                                                   // end for elems
+       }                                                                   // end for elems
     $("li").each(function(){ //
              var htm = $(this).html();
              if (htm.split('\n')[0].match(/@@\w+/) != null){
@@ -178,6 +178,7 @@ var maketoc = function(){
                  var text2 = textp.match(reg_parent)[0].slice(1,-1) // takes (addr blabla)
                  var newtag = $('<a/>').text(text1).attr('href',text2)
                  if ($(this).prop('tagName')== 'LI'){var newtag = $('<li/>').append(newtag)} // correction of link to local file.
+                 if ($(this).prop('tagName')== 'P'){var newtag = $('<p/>').append(newtag)} // correction to avoid gluing lines.. 
                  $(this).replaceWith(newtag)
                 }// end if
              if (textp.match('§novideo')){ 
@@ -218,7 +219,7 @@ var maketoc = function(){
              if($(this).text().search(sel[i]) != -1){
                    var obj = maketag($(this), debend[sel[i]]['deb'], debend[sel[i]]['end'], sel[i])
                    $(this).replaceWith(obj)
-                   obj.toggle()
+                   obj.toggle() // hide hide
                  } // end if
               }// end for
          }); // end each
