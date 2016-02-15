@@ -30,19 +30,16 @@ var maketoc = function(){
              'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'},
              'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'}
          }
-    // $("p").each(function(){    
-    //     if ($(this).html().match(reg_sign)){
-    //         alert($(this).html())
-            
-    //         var listspl = $(this).html().split('§').slice(1)
-    //            for (ll in listspl){
-    //                alert(listspl[ll])
-    //                $('body').append(('<p/>').text('§'+listspl[ll]))
-    //                }
-    //         $(this).hide()
-    //         //alert($(this).html().split('§'))
-    //         }// end if
-    //     }) // end each
+    $("p").each(function(){   // rewriting the option from bloc to <p>
+    if ($(this).text().match(/^§/)) {              
+		var txtsplit = $(this).text().split(/§/).slice(1)
+	    for (i in txtsplit){
+	    	$('body').prepend($('<p/>').text('§'+txtsplit[i]))
+	    $(this).hide()
+	    }
+	  }
+	}); // each
+
     $("p").each(function() {                                
         if ($(this).html().match(reg_date)){
             $(this).replaceWith(function(){                 // Replacing dates with p in date with h2 and 
@@ -105,14 +102,14 @@ var maketoc = function(){
        }                                                                   // end for elems
     $("li").each(function(){ //
              var htm = $(this).html();
-             if (htm.split('\n')[0].match(/@@\w+/) != null){
+             if (htm.split('\n')[0].match(/@@\w+/)){
                 var htmnew = htm.replace(/@@\w+/, '')
                 copy = $(this).clone()
                 copy.html(htmnew)
                 $(this).html(htmnew)
                 $("li").each(function(){ //
                     var htm = $(this).html();
-                    if (htm.split('\n')[0].match(/\s*\w+@@/) != null){
+                    if (htm.split('\n')[0].match(/\s*\w+@@/)){
                         var htmnew = htm.replace(/\s*\w+@@/, '')
                         $(this).html(htmnew)
                         $(this).append(copy)
@@ -244,14 +241,14 @@ var maketoc = function(){
         });// end click
     $("p").each(function(){ // POST'IT
              var html = $(this).html()
-             if (html.match(/^\$post\s*/) != null){
+             if (html.match(/^\$post\s*/)){
                  var newtag = $('<div/>').html(html.split('$post')[1]).addClass('postit')
                  $(this).replaceWith(newtag)
                 }// end if
         })
     $("p").each(function(){ //
              var text = $(this).text()
-             if (text.match(/^\$plot\s*/) != null){
+             if (text.match(/^\$plot\s*/)){
                      var texts = text.split(/\s+/)
                      var id = texts[1].trim()
                      var name = texts[2].trim()
@@ -297,7 +294,7 @@ var plot = function(dom, data, xoffset, col){
         };
     var set_data_plot = function(data){
          if (typeof(data)=='string'){ 
-             if (data.match(/\.json/)!=null){
+             if (data.match(/\.json/)){
                  d3.json(data, function(dataset){curve(dataset)}); // end d3.json
                     }  // end if json
                } // end if string     

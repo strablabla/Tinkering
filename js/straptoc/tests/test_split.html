@@ -2,7 +2,7 @@
 <html>
 
 <meta charset="UTF-8">
-<title>test match</title>
+<title>test split</title>
 
 <script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 <script  src="straptoc.js"></script>
@@ -11,6 +11,12 @@
 <div class="onside" id="toc"></div>
 
 <xmp theme="cerulean" style="display:none;">
+
+§novideo;  
+§width_video 10%  
+§width_pdf 10%  
+§col #ff6600  
+§toggle_hide a  
     
 # Origines
 
@@ -34,12 +40,20 @@ ohh aaah   ihhh
 var regex1 = /'\w*'/
 var regex2 = /\[\w*.*\]\(\w*.*\)/
 
-$("p").each(function(){                   
-	var txts = $(this).text().split(/\s+/)
-    alert(txts)
+// $("p").each(function(){                   
+// 	var txts = $(this).text().split(/\s+/)
+//     alert(txts)
+// 	}); // each
+
+$("p").each(function(){  
+    if ($(this).text().match(/^§/)) {              
+		var txtsplit = $(this).text().split(/§/).slice(1)
+	    for (i in txtsplit){
+	    	$('body').prepend($('<p/>').text('§'+txtsplit[i]))
+	    $(this).hide()
+	    }
+	  }
 	}); // each
-
-
 
  </script>
 
