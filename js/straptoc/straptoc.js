@@ -4,25 +4,28 @@ var maketoc = function(){
     // format and transformed with strapdown in html code. 
     // Maketoc supposes the code is yet in html format.
     // The whole code uses extensively jQuery library.
-    // Commands:
-    //  * :: , close the list and make a toggle tool in the main page.
-    //  * --link-- , creates a tag with id "link"
-    //  * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
-    //  * [pdf §§](hyperlink) insert a pdf with object tag.
-    //  * write novideo at the beginning of the document to avoid loading of videos.
-    //  * @@blabla, cut the <li>, blabla@@ paste the <li>
-    //  * key "k" to make appear disappear the sliders.
-    //  * insertion of tooltip : afer <h1> or <h2>, write the tooltip betweeen {}
-    // https://github.com/strablabla/Tinkering/7096cbb/js/straptoc/straptoc.js 
+    var help = `
+    Commands:
+     * :: , close the list and make a toggle tool in the main page.
+     * --link-- , creates a tag with id "link"
+     * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
+     * [pdf §§](hyperlink) insert a pdf with object tag.
+     * write novideo at the beginning of the document to avoid loading of videos.
+     * @@blabla, cut the <li>, blabla@@ paste the <li>
+     * key "k" to make appear disappear the sliders.
+     * insertion of tooltip : afer <h1> or <h2>, write the tooltip betweeen {}
+    `
+    //https://github.com/strablabla/Tinkering/c8db3e7/js/straptoc/straptoc.js 
     
-    
+    reg_func = function(name){return RegExp('^\\§'+name+'\\s*','g') }
     var reg_date = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /--\w*--/; //regexp for identity
     var num_slider = 0
-    var reg_col = /^\§col\s*/
-    var reg_width_video = /^\§width_video\s*/
-    var reg_width_pdf = /^\§width_pdf\s*/
-    var reg_toggle_hide = /^\§toggle_hide\s*/
+    var reg_col = reg_func('col') 
+    var reg_width_video = reg_func('width_video') 
+    var reg_width_pdf = reg_func('width_pdf') 
+    var reg_toggle_hide = reg_func('toggle_hide') 
+    var reg_help = reg_func('help')
     var reg_sign = /[^§]§[^§]\w*/
     
     $('body').prepend($('<div/>').addClass('onside').attr('id',"toc")) // adds the Table of Contents at the beginning
@@ -30,7 +33,8 @@ var maketoc = function(){
     param = {'color':{'reg':reg_col, 'cut':'§col', 'var': 'green'},
              'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': '80%' },
              'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'},
-             'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'}
+             'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
+             'help':{'reg':reg_help, 'cut':'§help', 'var': false}
          }
 
     $("p").each(function(){   // Tooltips
@@ -47,13 +51,13 @@ var maketoc = function(){
     
     $("p").each(function(){   // rewriting the option from bloc to <p>
     if ($(this).text().match(/^§/)) {              
-		var txtsplit = $(this).text().split(/§/).slice(1)
-	    for (i in txtsplit){
-	    	$('body').prepend($('<p/>').text('§'+txtsplit[i]))
-	    $(this).hide()
-	    }
-	  }
-	}); // each
+        var txtsplit = $(this).text().split(/§/).slice(1)
+        for (i in txtsplit){
+            $('body').prepend($('<p/>').text('§'+txtsplit[i]))
+        $(this).hide()
+        }
+      }
+    }); // each
 
     $("p").each(function() {                                
         if ($(this).html().match(reg_date)){
@@ -66,6 +70,8 @@ var maketoc = function(){
         for (elem in param){
             if ($(this).text().match(param[elem]['reg']) ){  // finds loading parameters
                 var interm = $(this).text().split(param[elem]['cut'])[1]
+                // alert($(this).text().split(param[elem]['cut']).length)
+                // if ($(this).text().split(param[elem]['cut']).length == 1){interm = true}
                 var newtag = $('<p/>').text('')
                 $(this).replaceWith(newtag)
                 param[elem]['var'] = interm.trim()
@@ -87,7 +93,7 @@ var maketoc = function(){
                 ul1.append(li1);
                 var ul2 = $("<ul/>").addClass('lev1');                     // second levels with class
                 li1.append($('<a/>').attr('href', namehhref).css({'color': 'black'}).html(nameh)
-                    		 .append($('<span/>').text(" [-]").addClass('li_h2'))) // en append ul
+                             .append($('<span/>').text(" [-]").addClass('li_h2'))) // en append ul
                 li1.append(ul2);
             } // end if H1
             else if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H2') // if H2
@@ -99,7 +105,7 @@ var maketoc = function(){
                 ul2.append(li2);
                 var ul3 = $("<ul/>").addClass('lev2'); 
                 li2.append($('<a/>').attr('href', namehhref).html(nameh)
-                					.append($('<span/>').text(" [-]").addClass('li_h3'))) // end of li
+                                    .append($('<span/>').text(" [-]").addClass('li_h3'))) // end of li
                     .css({'list-style': 'square inside','line-height': '20px'}) // end append li2
                 li2.append(ul3)
                 } // end else if H2
@@ -173,23 +179,25 @@ var maketoc = function(){
             $(this).next().toggle();
         });// end click
     
-	$(document).keydown(function(event){
-		//alert(event.keyCode);
-		if(event.keyCode == "q".charCodeAt(0)-32){  //k key
-		  $("a").each(function(i){ 
-		        if ($(this).prop('id').match(/slider_\d*/)){
-		            $(this).toggle()
-		    	} // end if
-		      }); // each
-		  } // end if key code
-		if(event.keyCode == param['toggle_hide']['var'].charCodeAt(0)-32){  //^ key
-			$("li").each(function(i){ 
-		        if ($(this).hasClass('^^')){
-		            $(this).toggle()
-		    	} // end if
-		      }); // each
-		  }// end if key code
-	    })
+    $(document).keydown(function(event){
+        if(event.keyCode == "h".charCodeAt(0)-32){  
+            if (param['help']['var'] != false){alert(help)}
+          } // end if key code
+        if(event.keyCode == "q".charCodeAt(0)-32){  //k key
+            $("a").each(function(i){ 
+                  if ($(this).prop('id').match(/slider_\d*/)){
+                      $(this).toggle()
+                  } // end if
+                }); // each
+            } // end if key code
+        if(event.keyCode == param['toggle_hide']['var'].charCodeAt(0)-32){  //^ key
+            $("li").each(function(i){ 
+                if ($(this).hasClass('^^')){
+                    $(this).toggle()
+                } // end if
+              }); // each
+          }// end if key code
+        })
     var reg_hyper = /\[\w*.*\]\(\w*.*\)/
     var reg_brack = /\[\w*.*\]/
     var reg_parent = /\(.*\w*.*\)/
@@ -214,7 +222,7 @@ var maketoc = function(){
                         var texta = $(this).text()
                         if (texta.search(';;') != -1){
                             $(this).text(texta.replace(';;',''))
-                            	   .css({'color': debend[';;']['color']})
+                                   .css({'color': debend[';;']['color']})
                             } // end if == 
                         }) // end a.each
                 } // end if match
@@ -274,7 +282,7 @@ var maketoc = function(){
                 }// end if
         })// end each
     $("li").each(function(){ //
-    	var reg_hide = /\s*\^\^\s*/
+        var reg_hide = /\s*\^\^\s*/
          var htm = $(this).html()
          if (htm.match(reg_hide)){
             $(this).toggle().addClass('^^')
