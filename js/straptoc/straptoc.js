@@ -12,7 +12,9 @@ var maketoc = function(){
     //  * write novideo at the beginning of the document to avoid loading of videos.
     //  * @@blabla, cut the <li>, blabla@@ paste the <li>
     //  * key "k" to make appear disappear the sliders.
+    //  * insertion of tooltip : afer <h1> or <h2>, write the tooltip betweeen {}
     // https://github.com/strablabla/Tinkering/7096cbb/js/straptoc/straptoc.js 
+    
     
     var reg_date = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /--\w*--/; //regexp for identity
@@ -23,13 +25,26 @@ var maketoc = function(){
     var reg_toggle_hide = /^\§toggle_hide\s*/
     var reg_sign = /[^§]§[^§]\w*/
     
-    $('body').prepend($('<div/>').addClass('onside').attr('id',"toc"))
-    
+    $('body').prepend($('<div/>').addClass('onside').attr('id',"toc")) // adds the Table of Contents at the beginning
+
     param = {'color':{'reg':reg_col, 'cut':'§col', 'var': 'green'},
              'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': '80%' },
              'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'},
              'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'}
          }
+
+    $("p").each(function(){   // Tooltips
+        if ($(this).text().match(/\{/)){
+            var prec = $(this).prev()
+            var tt = $('<a/>').attr('href','#')
+                              .attr('data-toggle', 'tooltip')
+                              .attr('title',$(this).text().slice(1,-1))
+                              .append($(this).prev().clone())
+            $(this).prev().replaceWith(tt)
+            $(this).remove()
+            } // end if
+        })// end each
+    
     $("p").each(function(){   // rewriting the option from bloc to <p>
     if ($(this).text().match(/^§/)) {              
 		var txtsplit = $(this).text().split(/§/).slice(1)
@@ -362,4 +377,8 @@ function dragstarted(d) {
 }
 
 function dragended(d){ d3.select(this).classed("dragging", false) }
+
+$(document).ready(function(){ // activates the tooltips
+    $('[data-toggle="tooltip"]').tooltip(); 
+});
 

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="UTF-8">
+<title>test_tooltips</title>
+
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script  src="straptoc.js"></script>
+<link rel="stylesheet" href="straptoc.css">
+
+
+<xmp theme="cerulean" style="display:none;">
+    
+# Origines
+{apoeaepa  apeuaepuae aoeuapeu}
+
+    Les langues italiques formaient, à côté des langues celtiques, germaniques et helléniques, une sous-famille « centum » de langues indo-européennes qui incluait le latin, parlé par la population du Latium en Italie centrale (les Latins), et d'autres parlers comme l'ombrien et l'osque, au voisinage immédiat d'une langue étrusque non indo-européenne mais dont le latin a subi l'influence culturelle. De nos jours, les langues italiques sont représentées par les langues romanes, issues du latin (l'italien, le roumain/moldave, l'aroumain, le français, l'occitan, le francoprovençal, le catalan, l'espagnol, le portugais, le sarde, le ladin, le corse, …, ainsi que des langues aujourd'hui éteintes comme le dalmate ou le mozarabe).
+
+* Il était une fois ::
+	* parfois les aléas de  la vie.
+		* bien que le hasard soit une chose pour le moins étrange.
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+
+
+<script>
+
+
+$("p").each(function(){   // Tooltips
+    //alert($(this).text())
+    if ($(this).text().match(/\{/)){
+        alert($(this).text()) 
+        alert($(this).prev().text())
+        var prec = $(this).prev()
+        var tt = $('<a/>').attr('href','#')
+                          .attr('data-toggle', 'tooltip')
+                          .attr('title',$(this).text())
+                          .append($(this).prev().clone())
+        $(this).prev().replaceWith(tt)
+        $(this).remove()
+        } // end if
+    })// end each
+    
+// placement : function (tooltip, trigger) {
+//     window.setTimeout(function () {
+//         $(tooltip)
+//             .addClass('top')
+//             .css({top: -24, left: 138.5})
+//             .find('.tooltip-arrow').css({left: '64%'});
+//         $(tooltip).addClass('in');
+//     }, 0);
+// }
+
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
+
+ </script>
+
+</html>
