@@ -39,18 +39,17 @@ var maketoc = function(){
              'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
              'help':{'reg':reg_help, 'cut':'§help', 'var': false}
          }
-
-    $("p").each(function(){   // Tooltips
-        if ($(this).text().match(/\{/)){
-            var prec = $(this).prev()
-            var tt = $('<a/>').attr('href','#')
-                              .attr('data-toggle', 'tooltip')
-                              .attr('title',$(this).text().slice(1,-1))
-                              .append($(this).prev().clone())
-            $(this).prev().replaceWith(tt)
-            $(this).remove()
-            } // end if
-        })// end each
+    
+    for (i=0;i<4;i++){ // iteration if tooltips in the same nested list
+        $("li, h1, h2").each(function(){  // Tooltips for h1, h2 and li
+            var text = $(this).html().split('\n')[0]
+            if (text.match(/\{.*\}/)){
+                $(this).attr('title', text.match(/\{.*\}/)[0].slice(1,-1))
+                var newhtm = $(this).html().replace(/\{.*\}/, ' ')
+                $(this).html(newhtm)
+                } // end match
+            })
+    }
     
     $("p").each(function(){   // rewriting the option from bloc to <p>
     if ($(this).text().match(/^§/)) {              
@@ -80,7 +79,6 @@ var maketoc = function(){
         } // end for
     }); // end each
     
-    alert(param['color_toc']['var'])
     $('.onside').css({'background-color' : param['color_toc']['var']}) // modifying backgnd color for TOC
     
     $('#toc').append($('<a/>').append($('<span/>').text("[--]").addClass('li_h1')));
