@@ -21,7 +21,8 @@ var maketoc = function(){
     var reg_date = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /--\w*--/; //regexp for identity
     var num_slider = 0
-    var reg_col = reg_func('col') 
+    var reg_col_sublist = reg_func('col_sublist') 
+    var reg_col_toc = reg_func('col_toc')
     var reg_width_video = reg_func('width_video') 
     var reg_width_pdf = reg_func('width_pdf') 
     var reg_toggle_hide = reg_func('toggle_hide') 
@@ -30,7 +31,9 @@ var maketoc = function(){
     
     $('body').prepend($('<div/>').addClass('onside').attr('id',"toc")) // adds the Table of Contents at the beginning
 
-    param = {'color_sublist':{'reg':reg_col, 'cut':'§col', 'var': 'green'},
+    param = {
+             'color_sublist':{'reg':reg_col_sublist, 'cut':'§col_sublist', 'var': 'green'},
+             'color_toc':{'reg':reg_col_toc, 'cut':'§col_toc', 'var': '#FFCC99'},
              'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': '80%' },
              'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'},
              'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
@@ -76,6 +79,9 @@ var maketoc = function(){
                }// end if
         } // end for
     }); // end each
+    
+    alert(param['color_toc']['var'])
+    $('.onside').css({'background-color' : param['color_toc']['var']}) // modifying backgnd color for TOC
     
     $('#toc').append($('<a/>').append($('<span/>').text("[--]").addClass('li_h1')));
     var ul1 = $("<ul/>"); // first levels with class
@@ -340,7 +346,6 @@ var drag_slider = d3.behavior.drag()
     .on("dragend", dragended);
 
 var slide = function(data, name_svg){ // Vertical or horizontal slider
-   
     slider_line = function(data){
           var svg_slider_line = name_svg
             .selectAll("svg_slider_line")
@@ -354,9 +359,7 @@ var slide = function(data, name_svg){ // Vertical or horizontal slider
             .attr('stroke', function(d){return d.col})
             .attr('stroke-width', '4px')
         }
-
     slider_button = function(data){ 
-
         var slider_butt = name_svg
           .selectAll("svg_slider_button")
           .data(data)
