@@ -15,7 +15,7 @@ var maketoc = function(){
      * key "k" to make appear disappear the sliders.
      * insertion of tooltip : afer <h1> or <h2>, write the tooltip betweeen {}
     `
-    //https://github.com/strablabla/Tinkering/54301bc/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/211ec23/js/straptoc/straptoc.js 
     
     reg_func = function(name){return RegExp('^\\§'+name+'\\s*','g') }
     var reg_date = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
