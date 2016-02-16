@@ -15,7 +15,7 @@ var maketoc = function(){
      * key "k" to make appear disappear the sliders.
      * insertion of tooltip : afer <h1> or <h2>, write the tooltip betweeen {}
     `
-    //https://github.com/strablabla/Tinkering/c8db3e7/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/54301bc/js/straptoc/straptoc.js 
     
     reg_func = function(name){return RegExp('^\\§'+name+'\\s*','g') }
     var reg_date = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
@@ -30,7 +30,7 @@ var maketoc = function(){
     
     $('body').prepend($('<div/>').addClass('onside').attr('id',"toc")) // adds the Table of Contents at the beginning
 
-    param = {'color':{'reg':reg_col, 'cut':'§col', 'var': 'green'},
+    param = {'color_sublist':{'reg':reg_col, 'cut':'§col', 'var': 'green'},
              'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': '80%' },
              'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'},
              'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
@@ -54,7 +54,7 @@ var maketoc = function(){
         var txtsplit = $(this).text().split(/§/).slice(1)
         for (i in txtsplit){
             $('body').prepend($('<p/>').text('§'+txtsplit[i]))
-        $(this).hide()
+            $(this).hide()
         }
       }
     }); // each
@@ -70,11 +70,9 @@ var maketoc = function(){
         for (elem in param){
             if ($(this).text().match(param[elem]['reg']) ){  // finds loading parameters
                 var interm = $(this).text().split(param[elem]['cut'])[1]
-                // alert($(this).text().split(param[elem]['cut']).length)
-                // if ($(this).text().split(param[elem]['cut']).length == 1){interm = true}
                 var newtag = $('<p/>').text('')
-                $(this).replaceWith(newtag)
-                param[elem]['var'] = interm.trim()
+                $(this).replaceWith(newtag) // remove text of the optional parameters
+                param[elem]['var'] = interm.trim() // retrieve the value of parameters in the dic param
                }// end if
         } // end for
     }); // end each
@@ -86,8 +84,7 @@ var maketoc = function(){
     for(var i = 0,  elems = $(":header"); i < elems.length; i++) {
             var nameh = elems[i].innerHTML.trim().split(reg_id)[0];
             elems[i].id = nameh; 
-            if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H1')    // if H1
-                {                        
+            if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H1'){    // if H1                    
                 var nameh1 = nameh
                 var li1 = $("<li/>");
                 ul1.append(li1);
@@ -96,8 +93,7 @@ var maketoc = function(){
                              .append($('<span/>').text(" [-]").addClass('li_h2'))) // en append ul
                 li1.append(ul2);
             } // end if H1
-            else if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H2') // if H2
-                {
+            else if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H2'){ // if H2
                 elems[i].id = nameh1 +'_'+ nameh;                               // makes an id for H2
                 var nameh2 = elems[i].id
                 var namehhref = '#'+nameh2;
@@ -109,8 +105,7 @@ var maketoc = function(){
                     .css({'list-style': 'square inside','line-height': '20px'}) // end append li2
                 li2.append(ul3)
                 } // end else if H2
-            else if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H3')
-                {
+            else if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H3'){
                 elems[i].id = nameh2 +'_'+ nameh;                               // makes an id for H3
                 var nameh3 = elems[i].id
                 var namehhref = '#'+nameh3;
@@ -121,7 +116,7 @@ var maketoc = function(){
                     .css({'list-style': 'circle inside','line-height': '20px'}) // end append li3
                 } // end else if H3
        }                                                                   // end for elems
-    $("li").each(function(){ //
+    $("li").each(function(){                // plugin list from one place to another..
              var htm = $(this).html();
              if (htm.split('\n')[0].match(/@@\w+/)){
                 var htmnew = htm.replace(/@@\w+/, '')
@@ -143,7 +138,7 @@ var maketoc = function(){
         var htm = $(this).html(); var childr = $(this).children('ul')
         if(htm.split('\n')[0].search('::')!=-1){ 
                 childr.toggle();                // close the sub lists 
-                childr.css({'color': param['color']['var']})   // change color children
+                childr.css({'color': param['color_sublist']['var']})   // change color children
                 $('<a/>').append($('<span/>').text(" [-]").addClass('::'))
                          .insertBefore(childr)
             } // end if 
@@ -156,7 +151,6 @@ var maketoc = function(){
             $(this).html(text);
             if ($(this).prop("tagName")=='LI'){
                 if ($(this).children('a').length >0){
-                    //alert($(this).children('a').prop('tagName'))
                     $(this).children('ul').prepend($("<a/>").attr("id",idslice))
                     } // yet existing <a> for folding list.
                 else{$("<a/>").attr("id",idslice).insertBefore($(this).children('ul'))} // no  <a> for folding list.
@@ -164,7 +158,7 @@ var maketoc = function(){
             else{$("<p/>").attr("id",idslice).insertBefore($(this))} // general case, insert <p> before the tag
             }// end if
         }); // each
-    $('ul').each(function (){  // remove the ::
+    $('ul').each(function (){  // remove the :: (closing list sign)
             if ($(this).find("*").hasClass('::')){
                 var html = $(this).html().replace(/\:\:[\s\w\-]*\<a\>/g,'\<a\>')
                 $(this).html(html)
@@ -175,22 +169,22 @@ var maketoc = function(){
     $('ul.lev2').toggle();                          //  close level 2 in TOC
     $("a").click(function (evt) {                   // toggle for H1
         var evtc = evt.target.className;
-        if(evtc == 'li_h1' | evtc == 'li_h2' | evtc == 'li_h3' | evtc == '::') 
+        if(evtc == 'li_h1' | evtc == 'li_h2' | evtc == 'li_h3' | evtc == '::')  // open close list on click
             $(this).next().toggle();
         });// end click
     
     $(document).keydown(function(event){
-        if(event.keyCode == "h".charCodeAt(0)-32){  
+        if(event.keyCode == "h".charCodeAt(0)-32){    // "h", key for help documentation
             if (param['help']['var'] != false){alert(help)}
           } // end if key code
-        if(event.keyCode == "q".charCodeAt(0)-32){  //k key
+        if(event.keyCode == "q".charCodeAt(0)-32){  // "q" key for showing sliders
             $("a").each(function(i){ 
                   if ($(this).prop('id').match(/slider_\d*/)){
                       $(this).toggle()
                   } // end if
                 }); // each
             } // end if key code
-        if(event.keyCode == param['toggle_hide']['var'].charCodeAt(0)-32){  //^ key
+        if(event.keyCode == param['toggle_hide']['var'].charCodeAt(0)-32){  // hiding text key defined in the parameters
             $("li").each(function(i){ 
                 if ($(this).hasClass('^^')){
                     $(this).toggle()
@@ -212,33 +206,34 @@ var maketoc = function(){
                  var newtag = $('<a/>').text(text1).attr('href',text2)
                  if ($(this).prop('tagName')== 'LI'){var newtag = $('<li/>').append(newtag)} // correction of link to local file.
                  if ($(this).prop('tagName')== 'P'){var newtag = $('<p/>').append(newtag)} // correction to avoid gluing lines.. 
-                 $(this).replaceWith(newtag)
+                 $(this).replaceWith(newtag) // Replace the original tag
                 }// end if
              if (textp.match('§novideo')){ 
                  $(this).hide() 
-                 if (textp.trim() == '§novideo'){  // hide novideo
-                    sel = ['§§']
+                 if (textp.trim() == '§novideo'){  // hides novideo
+                    sel = ['§§'] // restricting the treatment to pdfs..
                     $("a").each(function(){ // removing ;;
                         var texta = $(this).text()
                         if (texta.search(';;') != -1){
                             $(this).text(texta.replace(';;',''))
-                                   .css({'color': debend[';;']['color']})
+                                   .css({'color': debend[';;']['color']}) // changes color for pdfs and videos
                             } // end if == 
                         }) // end a.each
                 } // end if match
              }// end if novideo
    
         })  // end each 
-    var maketag = function(self, deb, end, select){
+    var maketag = function(self, deb, end, select){ // makes the tags for pdfs and videos
         patt = {';;' : ["watch?v=", "embed/"], '§§' : ["none", "none"]}
         num_slider += 1;
         var nameslider = 'slider_' + num_slider
-        var tag = $("<ul/>").append($("<li/>").append(deb+self.attr('href').replace(patt[select][0],patt[select][1])+end)) // make doc                                    
+        var tag = $("<ul/>").append($("<li/>")
+                            .append(deb+self.attr('href')
+                            .replace(patt[select][0],patt[select][1])+end)) // make doc                                    
         var text = self.text().replace(select,'')
         $('<a/>').text(text).append($('<a/>').append($('<span/>').text( " [-]").addClass(select))
                                              .append($('<a/>').attr('id', nameslider))) // insert slider
                  .insertBefore(self).css({'color':debend[select]['color']})
-        //alert(self.next().prop("tagName"))
         var chgx = function(){$("#slider_value").html(d3.event.x)}
         var param_slider_x = [{'xbar':100, 'x':100,'ybar':10, 'y':10, 'col': 'violet', 'dir':'x', 'slength': 100, 'action':chgx}]
         var svgslider = d3.select("#" + nameslider)
@@ -250,7 +245,7 @@ var maketoc = function(){
     $("a").each(function(){  // Deals with videos and pdfs
          for (i in sel){
              if($(this).text().search(sel[i]) != -1){
-                   var obj = maketag($(this), debend[sel[i]]['deb'], debend[sel[i]]['end'], sel[i])
+                   var obj = maketag($(this), debend[sel[i]]['deb'], debend[sel[i]]['end'], sel[i]) // makes the tag.
                    $(this).replaceWith(obj)
                    obj.toggle() // hide hide
                  } // end if
@@ -259,7 +254,7 @@ var maketoc = function(){
     $("a").click(function (evt) {  
         var evtc = evt.target.className;              
         if(evtc == ';;' | evtc == '§§') {      // toggle 
-            $(this).parent().next().toggle(); // activate next <ul>
+            $(this).parent().next().toggle(); // if click, activate next <ul>
             } // end if event      
         });// end click
     $("p").each(function(){ // POST'IT
