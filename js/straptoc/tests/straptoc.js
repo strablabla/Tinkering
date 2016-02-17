@@ -7,29 +7,28 @@ var maketoc = function(){
     var help = `
     
      # Commands: 
-     * :: , makes folding list. Begin close.
+     * :: , close the list and make a toggle tool in the main page. 
      * --link-- , creates a tag with id "link" 
      * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
      * [pdf §§](hyperlink) insert a pdf with object tag.
-     * novideo, at the beginning of the document to avoid loading of videos.
-     * @@blabla, copy the li, blabla@@ paste the li
-     * key "k", to make appear disappear the sliders.
+     * write novideo at the beginning of the document to avoid loading of videos.
+     * @@blabla, cut the li, blabla@@ paste the li
+     * key "k" to make appear disappear the sliders.
      * insertion of tooltip : after h1 or h2, write the tooltip betweeen {}
-     * double ^, is used to hide some text
+     * double ^ is used to hide some text
     `
     //https://github.com/strablabla/Tinkering/211ec23/js/straptoc/straptoc.js 
     
-    simple_md = function(text){ // mini markdown for the help
+    simple_md = function(text){
         var all_text = text.split('\n')
         var htm = $('<div/>')
         var ul = $('<ul/>').css({'text-align':'left'})
         for (i in all_text){
-        	var text_insert = all_text[i].trim().slice(1)
             if (all_text[i].match(/\s*\*/)){
-            ul.append($('<li/>').text(text_insert))
+            ul.append($('<li/>').text(all_text[i].trim().slice(1)))
             } // end if
             if (all_text[i].match(/\s*\#/)){
-                htm.append($('<h1/>').text(text_insert))
+                htm.append($('<h1/>').text(all_text[i].trim().slice(1)))
             } // end if
         } // end for
         htm.append(ul);
