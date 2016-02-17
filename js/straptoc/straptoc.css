@@ -29,3 +29,8 @@ div.onside {
     background-color:#FFFF00; /*#FFF;*/
     font-size:85%;
   }
+  
+.alertify-message {
+    text-align:left;
+}
+

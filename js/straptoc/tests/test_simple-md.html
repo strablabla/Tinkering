@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="UTF-8">
+<title>test simple-md</title>
+
+<script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+
+
+<script>
+
+var help = `
+
+ # Commands: 
+ * :: , close the list and make a toggle tool in the main page. 
+ * --link-- , creates a tag with id "link" 
+ * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
+ * [pdf §§](hyperlink) insert a pdf with object tag.
+ * write novideo at the beginning of the document to avoid loading of videos.
+ * @@blabla, cut the li, blabla@@ paste the li
+ * key "k" to make appear disappear the sliders.
+ * insertion of tooltip : after h1 or h2, write the tooltip betweeen {}
+ * double ^ is used to hide some text
+
+`
+//https://github.com/strablabla/Tinkering/211ec23/js/straptoc/straptoc.js 
+
+simple_md = function(text){
+    var all_text = text.split('\n')
+    var htm = $('<div/>')
+    var ul = $('<ul/>')
+    for (i in all_text){
+        if (all_text[i].match(/\s*\*/)){
+        ul.append($('<li/>').text(all_text[i]))
+        } // end if
+        if (all_text[i].match(/\s*\#/)){
+            htm.append($('<h1/>').text(all_text[i]))
+        } // end if
+    } // end for
+    htm.append(ul);
+    return htm
+} // end function
+var hh = simple_md(help)
+alert(hh.html())
+
+
+ </script>
+
+</html>

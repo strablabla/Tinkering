@@ -5,17 +5,38 @@ var maketoc = function(){
     // Maketoc supposes the code is yet in html format.
     // The whole code uses extensively jQuery library.
     var help = `
-    Commands:
-     * :: , close the list and make a toggle tool in the main page.
-     * --link-- , creates a tag with id "link"
+    
+     # Commands: 
+     * :: , close the list and make a toggle tool in the main page. 
+     * --link-- , creates a tag with id "link" 
      * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
      * [pdf §§](hyperlink) insert a pdf with object tag.
      * write novideo at the beginning of the document to avoid loading of videos.
-     * @@blabla, cut the <li>, blabla@@ paste the <li>
+     * @@blabla, cut the li, blabla@@ paste the li
      * key "k" to make appear disappear the sliders.
-     * insertion of tooltip : afer <h1> or <h2>, write the tooltip betweeen {}
+     * insertion of tooltip : after h1 or h2, write the tooltip betweeen {}
+     * double ^ is used to hide some text
     `
     //https://github.com/strablabla/Tinkering/211ec23/js/straptoc/straptoc.js 
+    
+    simple_md = function(text){
+        var all_text = text.split('\n')
+        var htm = $('<div/>')
+        var ul = $('<ul/>')
+        // for (i in all_text){
+        //     htm.append($('<p/>').text(all_text[i].trim()))
+            
+        for (i in all_text){
+            if (all_text[i].match(/\s*\*/)){
+            ul.append($('<li/>').text(all_text[i].trim().slice(1)))
+            } // end if
+            if (all_text[i].match(/\s*\#/)){
+                htm.append($('<h1/>').text(all_text[i].trim().slice(1)))
+            } // end if
+        } // end for
+        htm.append(ul);
+        return htm.html()
+    } // end function
     
     reg_func = function(name){return RegExp('^\\§'+name+'\\s*','g') }
     var reg_date = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
@@ -155,7 +176,7 @@ var maketoc = function(){
             $(this).html(text);
             if ($(this).prop("tagName")=='LI'){
                 if ($(this).children('a').length >0){
-                    $(this).children('ul').prepend($("<a/>").attr("id",idslice))
+                    $(this).children('ul').prepend($("<a/>").attr("id", idslice))
                     } // yet existing <a> for folding list.
                 else{$("<a/>").attr("id",idslice).insertBefore($(this).children('ul'))} // no  <a> for folding list.
                 }
@@ -179,7 +200,10 @@ var maketoc = function(){
     
     $(document).keydown(function(event){
         if(event.keyCode == "h".charCodeAt(0)-32){    // "h", key for help documentation
-            if (param['help']['var'] != false){alert(help)}
+            if (param['help']['var'] != false){
+                $('.alertify .alert > *').css({'text-align':'left'});
+                alertify.alert(simple_md(help))
+                }
           } // end if key code
         if(event.keyCode == "q".charCodeAt(0)-32){  // "q" key for showing sliders
             $("a").each(function(i){ 
