@@ -22,10 +22,7 @@ var maketoc = function(){
     simple_md = function(text){
         var all_text = text.split('\n')
         var htm = $('<div/>')
-        var ul = $('<ul/>')
-        // for (i in all_text){
-        //     htm.append($('<p/>').text(all_text[i].trim()))
-            
+        var ul = $('<ul/>').css({'text-align':'left'})
         for (i in all_text){
             if (all_text[i].match(/\s*\*/)){
             ul.append($('<li/>').text(all_text[i].trim().slice(1)))
