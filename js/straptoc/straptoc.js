@@ -1,6 +1,6 @@
 var maketoc = function(){
     
-    // Javascript code to ease navigation in notes written in Markdown
+    // Javascript code for enhancing markdown capabilities.
     // format and transformed with strapdown in html code. 
     // Maketoc supposes the code is yet in html format.
     // The whole code uses extensively jQuery library.
@@ -35,11 +35,10 @@ var maketoc = function(){
         htm.append(ul);
         return htm.html()
     } // end function
-    
-    reg_func = function(name){return RegExp('^\\§'+name+'\\s*','g') }
+    // Definitions of regexp 
+    reg_func = function(name){return RegExp('^\\§'+name+'\\s*','g') } // function for regexp for configuration
     var reg_date = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /--\w*--/; //regexp for identity
-    var num_slider = 0
     var reg_col_sublist = reg_func('col_sublist') 
     var reg_col_toc = reg_func('col_toc')
     var reg_width_video = reg_func('width_video') 
@@ -47,6 +46,8 @@ var maketoc = function(){
     var reg_toggle_hide = reg_func('toggle_hide') 
     var reg_help = reg_func('help')
     var reg_sign = /[^§]§[^§]\w*/
+    //
+    var num_slider = 0
     
     $('body').prepend($('<div/>').addClass('onside').attr('id',"toc")) // adds the Table of Contents at the beginning
 
@@ -59,7 +60,7 @@ var maketoc = function(){
              'help':{'reg':reg_help, 'cut':'§help', 'var': false}
          }
     
-    for (i=0;i<4;i++){ // iteration if tooltips in the same nested list
+    for (i=0;i<4;i++){     // Tooltips, iteration for nested list
         $("li, h1, h2").each(function(){  // Tooltips for h1, h2 and li
             var text = $(this).html().split('\n')[0]
             if (text.match(/\{.*\}/)){
@@ -68,8 +69,7 @@ var maketoc = function(){
                 $(this).html(newhtm)
                 } // end match
             })
-    }
-    
+    	}
     $("p").each(function(){   // rewriting the option from bloc to <p>
     if ($(this).text().match(/^§/)) {              
         var txtsplit = $(this).text().split(/§/).slice(1)
@@ -79,7 +79,6 @@ var maketoc = function(){
         }
       }
     }); // each
-
     $("p").each(function() {                                
         if ($(this).html().match(reg_date)){
             $(this).replaceWith(function(){                 // Replacing dates with p in date with h2 and 
@@ -105,57 +104,57 @@ var maketoc = function(){
     $('#toc').append(ul1);
     // read all the headers and make the TOC (with ref) and the id names
     for(var i = 0,  elems = $(":header"); i < elems.length; i++) {
-            var nameh = elems[i].innerHTML.trim().split(reg_id)[0];
-            elems[i].id = nameh; 
-            if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H1'){    // if H1                    
-                var nameh1 = nameh
-                var li1 = $("<li/>");
-                ul1.append(li1);
-                var ul2 = $("<ul/>").addClass('lev1');                     // second levels with class
-                li1.append($('<a/>').attr('href', namehhref).css({'color': 'black'}).html(nameh)
-                             .append($('<span/>').text(" [-]").addClass('li_h2'))) // en append ul
-                li1.append(ul2);
-            } // end if H1
-            else if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H2'){ // if H2
-                elems[i].id = nameh1 +'_'+ nameh;                               // makes an id for H2
-                var nameh2 = elems[i].id
-                var namehhref = '#'+nameh2;
-                var li2 = $("<li/>");
-                ul2.append(li2);
-                var ul3 = $("<ul/>").addClass('lev2'); 
-                li2.append($('<a/>').attr('href', namehhref).html(nameh)
-                                    .append($('<span/>').text(" [-]").addClass('li_h3'))) // end of li
-                    .css({'list-style': 'square inside','line-height': '20px'}) // end append li2
-                li2.append(ul3)
-                } // end else if H2
-            else if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H3'){
-                elems[i].id = nameh2 +'_'+ nameh;                               // makes an id for H3
-                var nameh3 = elems[i].id
-                var namehhref = '#'+nameh3;
-                var li3 = $("<li/>");
-                ul3.append(li3);
-                //var ul4 = $("<ul/>").addClass('lev3'); 
-                li3.append($('<a/>').attr('href', namehhref).html(nameh).addClass(nameh)) // end of li
-                    .css({'list-style': 'circle inside','line-height': '20px'}) // end append li3
-                } // end else if H3
+        var nameh = elems[i].innerHTML.trim().split(reg_id)[0];
+        elems[i].id = nameh; 
+        if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H1'){    // if H1                    
+            var nameh1 = nameh
+            var li1 = $("<li/>");
+            ul1.append(li1);
+            var ul2 = $("<ul/>").addClass('lev1');                     // second levels with class
+            li1.append($('<a/>').attr('href', namehhref).css({'color': 'black'}).html(nameh)
+                         .append($('<span/>').text(" [-]").addClass('li_h2'))) // en append ul
+            li1.append(ul2);
+        } // end if H1
+        else if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H2'){ // if H2
+            elems[i].id = nameh1 +'_'+ nameh;                               // makes an id for H2
+            var nameh2 = elems[i].id
+            var namehhref = '#'+nameh2;
+            var li2 = $("<li/>");
+            ul2.append(li2);
+            var ul3 = $("<ul/>").addClass('lev2'); 
+            li2.append($('<a/>').attr('href', namehhref).html(nameh)
+                                .append($('<span/>').text(" [-]").addClass('li_h3'))) // end of li
+                .css({'list-style': 'square inside','line-height': '20px'}) // end append li2
+            li2.append(ul3)
+            } // end else if H2
+        else if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H3'){
+            elems[i].id = nameh2 +'_'+ nameh;                               // makes an id for H3
+            var nameh3 = elems[i].id
+            var namehhref = '#'+nameh3;
+            var li3 = $("<li/>");
+            ul3.append(li3);
+            //var ul4 = $("<ul/>").addClass('lev3'); 
+            li3.append($('<a/>').attr('href', namehhref).html(nameh).addClass(nameh)) // end of li
+                .css({'list-style': 'circle inside','line-height': '20px'}) // end append li3
+            } // end else if H3
        }                                                                   // end for elems
     $("li").each(function(){                // plugin list from one place to another..
-             var htm = $(this).html();
-             if (htm.split('\n')[0].match(/@@\w+/)){
-                var htmnew = htm.replace(/@@\w+/, '')
-                copy = $(this).clone()
-                copy.html(htmnew)
-                $(this).html(htmnew)
-                $("li").each(function(){ //
-                    var htm = $(this).html();
-                    if (htm.split('\n')[0].match(/\s*\w+@@/)){
-                        var htmnew = htm.replace(/\s*\w+@@/, '')
-                        $(this).html(htmnew)
-                        $(this).append(copy)
-                    } // end if
-                }) // end each
-            }// end if
-        })// end each
+         var htm = $(this).html();
+         if (htm.split('\n')[0].match(/@@\w+/)){
+            var htmnew = htm.replace(/@@\w+/, '')
+            copy = $(this).clone()
+            copy.html(htmnew)
+            $(this).html(htmnew)
+            $("li").each(function(){ //
+                var htm = $(this).html();
+                if (htm.split('\n')[0].match(/\s*\w+@@/)){
+                    var htmnew = htm.replace(/\s*\w+@@/, '')
+                    $(this).html(htmnew)
+                    $(this).append(copy)
+                } // end if
+            }) // end each
+        }// end if
+     })// end each
     // bit of code for closing list when it finds :: in the code.
     $("li").each(function(i){    // need to be placed before  $("a").click    
         var htm = $(this).html(); var childr = $(this).children('ul')
@@ -225,30 +224,29 @@ var maketoc = function(){
     var debend = {';;' : {'deb' : '<iframe width='+'"' + param['vid_width']['var'] + '"' + 'height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
                    '§§': {'deb' : '<object width='+'"' + param['pdf_width']['var'] + '"' + ' height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
     $("p, li").each(function(){
-             var textp = $(this).text()
-             if (textp.match(reg_hyper)){ // search for format [blabla](addr blabla)
-                 var text1 = textp.match(reg_brack)[0].slice(1,-1) // takes [blabla]
-                 var text2 = textp.match(reg_parent)[0].slice(1,-1) // takes (addr blabla)
-                 var newtag = $('<a/>').text(text1).attr('href',text2)
-                 if ($(this).prop('tagName')== 'LI'){var newtag = $('<li/>').append(newtag)} // correction of link to local file.
-                 if ($(this).prop('tagName')== 'P'){var newtag = $('<p/>').append(newtag)} // correction to avoid gluing lines.. 
-                 $(this).replaceWith(newtag) // Replace the original tag
-                }// end if
-             if (textp.match('§novideo')){ 
-                 $(this).hide() 
-                 if (textp.trim() == '§novideo'){  // hides novideo
-                    sel = ['§§'] // restricting the treatment to pdfs..
-                    $("a").each(function(){ // removing ;;
-                        var texta = $(this).text()
-                        if (texta.search(';;') != -1){
-                            $(this).text(texta.replace(';;',''))
-                                   .css({'color': debend[';;']['color']}) // changes color for pdfs and videos
-                            } // end if == 
-                        }) // end a.each
-                } // end if match
-             }// end if novideo
-   
-        })  // end each 
+         var textp = $(this).text()
+         if (textp.match(reg_hyper)){ // search for format [blabla](addr blabla)
+             var text1 = textp.match(reg_brack)[0].slice(1,-1) // takes [blabla]
+             var text2 = textp.match(reg_parent)[0].slice(1,-1) // takes (addr blabla)
+             var newtag = $('<a/>').text(text1).attr('href',text2)
+             if ($(this).prop('tagName')== 'LI'){var newtag = $('<li/>').append(newtag)} // correction of link to local file.
+             if ($(this).prop('tagName')== 'P'){var newtag = $('<p/>').append(newtag)} // correction to avoid gluing lines.. 
+             $(this).replaceWith(newtag) // Replace the original tag
+            }// end if
+         if (textp.match('§novideo')){ 
+             $(this).hide() 
+             if (textp.trim() == '§novideo'){  // hides novideo
+                sel = ['§§'] // restricting the treatment to pdfs..
+                $("a").each(function(){ // removing ;;
+                    var texta = $(this).text()
+                    if (texta.search(';;') != -1){
+                        $(this).text(texta.replace(';;',''))
+                               .css({'color': debend[';;']['color']}) // changes color for pdfs and videos
+                        } // end if == 
+                    }) // end a.each
+            } // end if match
+         }// end if novideo
+       })  // end each 
     var maketag = function(self, deb, end, select){ // makes the tags for pdfs and videos
         patt = {';;' : ["watch?v=", "embed/"], '§§' : ["none", "none"]}
         num_slider += 1;
@@ -291,16 +289,16 @@ var maketoc = function(){
                 }// end if
         })
     $("p").each(function(){ //
-             var text = $(this).text()
-             if (text.match(/^\$plot\s*/)){
-                     var texts = text.split(/\s+/)
-                     var id = texts[1].trim()
-                     var name = texts[2].trim()
-                     var ampl = texts[3].trim()
-                     var newtag = $('<div/>').text('here').attr('id',id)
-                     $(this).replaceWith(newtag)
-                     plot('#'+id, 'data/data_curve.json', 100);
-                }// end if
+         var text = $(this).text()
+         if (text.match(/^\$plot\s*/)){
+                 var texts = text.split(/\s+/)
+                 var id = texts[1].trim()
+                 var name = texts[2].trim()
+                 var ampl = texts[3].trim()
+                 var newtag = $('<div/>').text('here').attr('id',id)
+                 $(this).replaceWith(newtag)
+                 plot('#'+id, 'data/data_curve.json', 100);
+            }// end if
         })// end each
     $("li").each(function(){ //
         var reg_hide = /\s*\^\^\s*/
