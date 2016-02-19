@@ -8,8 +8,6 @@ plot = function(elemid, dataset, params) {
   
   this.dataset = dataset
   this.chart = document.getElementById(elemid);
-  this.cx = this.chart.clientWidth;
-  this.cy = this.chart.clientHeight;
   this.params = params || {};
   this.xlim = this.params['xlim']
   this.ylim = this.params['ylim']
@@ -17,9 +15,12 @@ plot = function(elemid, dataset, params) {
   this.ylabel = this.params['ylabel']
   this.title = this.params['title']
   this.col = this.params['color'] || 'k';
+  this.cx = this.chart.clientWidth;
+  this.cy = this.chart.clientHeight;
+  fillplot = this.params['fill'] || "#EEEEEE"
   var colrs = {'r':'red', 'k':'black', 'b':'blue', 'g':'green'};
   
-  var tr = function(w, h, ang){ // Translation with rotation
+  var tr = function(w, h, ang){      // Translation and Rotation
      ang = ang || 0
      return "translate(" + w + ","+ h + ") rotate("+ang+")"
       }
@@ -50,22 +51,15 @@ plot = function(elemid, dataset, params) {
   
   make_scale = function(lim, size, inv){
       var inv = inv || false
-      if (!inv){interv = [lim[0], lim[1]]}
-      else {interv = [lim[1], lim[0]]}
-      var scale = d3.scale.linear()
-            .domain(interv).nice()
-            .range([0, size]).nice();
+      if (!inv){interv = [lim[0], lim[1]]} else {interv = [lim[1], lim[0]]}
+      var scale = d3.scale.linear().domain(interv).nice().range([0, size]).nice();
       return scale
   }
 
-  // x-scale
-  this.x = make_scale(this.xlim,this.size.width)
-  // drag x-axis logic
-  this.downx = Math.NaN;
-  // y-scale (inverted domain)
-  this.y = make_scale(this.ylim,this.size.height, true)
-  // drag y-axis logic
-  this.downy = Math.NaN;
+  this.x = make_scale(this.xlim,this.size.width)  // x-scale
+  this.y = make_scale(this.ylim,this.size.height, true)  // y-scale (inverted domain)
+  this.downx = Math.NaN; // drag x-axis logic
+  this.downy = Math.NaN; // drag y-axis logic
   this.dragged = this.selected = null;
   this.show_circle = false;
   
@@ -88,11 +82,12 @@ plot = function(elemid, dataset, params) {
   this.plot = this.vis.append("rect")
       .attr("width", this.size.width)
       .attr("height", this.size.height)
-      .style("fill", "#EEEEEE")
+      .style("fill", fillplot) 
       .attr("pointer-events", "all")
       .on("mousedown.drag", self.plot_drag())
       .on("touchstart.drag", self.plot_drag())
-      this.plot.call(d3.behavior.zoom().x(this.x).y(this.y).on("zoom", this.redraw()));
+      .call(d3.behavior.zoom().x(this.x).y(this.y)
+      .on("zoom", this.redraw()));
 
   this.vis.append("svg")
       .attr("top", 0)
@@ -109,17 +104,23 @@ plot = function(elemid, dataset, params) {
   // add Chart Title
   if (this.title) {
         tit = add_txt_axis(this.vis, this.title, this.size.width/2, 0)
-        tit.attr("dy","-0.8em")
+        tit.attr("dy","-0.5em")
+           .attr("font-family", "Times New Roman")
+           .attr("font-size", "30px")
   }
   // Add the x-axis label
   if (this.xlabel) {
       var xlab = add_txt(this.vis, this.xlabel, this.size.width/2, this.size.height)
-      xlab.attr("dy","3.4em")
+      xlab.attr("dy","2.4em")
+          .attr("font-family", "Times New Roman")
+          .attr("font-size", "20px")
   }
   // add y-axis label
   if (this.ylabel) {
       var ylab = add_txt(this.vis, this.ylabel, this.size.width/2, this.size.height)
       ylab. attr("transform", tr(-40,this.size.height/2,-90))
+          .attr("font-family", "Times New Roman")
+          .attr("font-size", "20px")
   }
 
   d3.select(this.chart)
@@ -313,7 +314,31 @@ plot.prototype.redraw = function() {
     fx = self.x.tickFormat(10),
     fy = self.y.tickFormat(10);
 
+    var sz_txt_ticks = "14px" // size of ticks text
+
     // Regenerate x-ticks…
+
+
+    // var gax = function(nodename, selfax, txt, trans, ax, valmax){
+
+    //   var node = self.vis.selectAll(nodename)
+    //     .data(selfax.ticks(10), String)
+    //     .attr("transform", tx);
+    //   node.select("text")
+    //       .text(txt);
+    //   var nodee = node.enter().insert("g", "a")
+    //       .attr("class", ax)
+    //       .attr("transform", trans);
+    //   nodee.append("line")
+    //       .attr("stroke", stroke)
+    //       .attr(ax+"1", 0)
+    //       .attr(ax+"2", valmax);
+    // return node
+    // }
+
+    //gx = gax("g.x", self.x, fx, tx, 'y', self.size.height)
+
+
     var gx = self.vis.selectAll("g.x")
         .data(self.x.ticks(10), String)
         .attr("transform", tx);
@@ -330,17 +355,25 @@ plot.prototype.redraw = function() {
         .attr("y1", 0)
         .attr("y2", self.size.height);
 
-    gxe.append("text")
+
+
+    var ticks_txt = function(node,ax,axpos,shift,txt, axdrag){
+        node.append("text")
         .attr("class", "axis")
-        .attr("y", self.size.height)
-        .attr("dy", "1em")
-        .attr("text-anchor", "middle")
-        .text(fx)
+        .attr(ax, axpos)
+        .attr("dy", shift)
+        .attr("text-anchor", "end")
+        .attr("font-family", "Times New Roman")
+        .attr("font-size", sz_txt_ticks)
+        .text(txt)
         .style("cursor", "ew-resize")
         .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
         .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-        .on("mousedown.drag",  self.xaxis_drag())
-        .on("touchstart.drag", self.xaxis_drag());
+        .on("mousedown.drag",  axdrag)
+        .on("touchstart.drag", axdrag);
+    }
+
+    ticks_txt(gxe,"y",self.size.height,"1em",fx, self.xaxis_drag())
 
     gx.exit().remove();
 
@@ -361,18 +394,8 @@ plot.prototype.redraw = function() {
         .attr("stroke", stroke)
         .attr("x1", 0)
         .attr("x2", self.size.width);
-
-    gye.append("text")
-        .attr("class", "axis")
-        .attr("x", -3)
-        .attr("dy", ".35em")
-        .attr("text-anchor", "end")
-        .text(fy)
-        .style("cursor", "ns-resize")
-        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-        .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-        .on("mousedown.drag",  self.yaxis_drag())
-        .on("touchstart.drag", self.yaxis_drag());
+    
+    ticks_txt(gye,"x",-3,".35em",fy, self.yaxis_drag())
 
     gy.exit().remove();
     self.plot.call(d3.behavior.zoom().x(self.x).y(self.y).on("zoom", self.redraw()));
