@@ -62,6 +62,7 @@ plot = function(elemid, dataset, params) {
   this.downy = Math.NaN; // drag y-axis logic
   this.dragged = this.selected = null;
   this.show_circle = false;
+  this.brush = null;
   
   this.line = d3.svg.line()
       .x(function(d, i) { return this.x(this.dataset[i].x); })
@@ -101,6 +102,30 @@ plot = function(elemid, dataset, params) {
           .attr("d", this.line(this.dataset))
           .style({stroke : colrs[this.col], fill : 'none','stroke-width' : '1.5px'})
 
+    // if (this.make_brush == true){
+    //   alert(this.make_brush)
+    //   brush = this.vis.append("g")
+    //     .attr("class", "brush")
+    //     .call(d3.svg.brush()
+    //       .x(d3.scale.identity().domain([0, this.size.width]))
+    //       .y(d3.scale.identity().domain([0, this.size.height])) 
+    //       .on("brush", function() {
+    //       extent = d3.event.target.extent();
+    //       }) // end on
+    //     ); // end call
+    // }
+//   function resetBrush() {
+//   this.brush
+//     .clear()
+//     .event(d3.select(".brush"));
+// }
+
+    // function resetBrush() {
+    //   this.brush
+    //     .clear()
+    //     .event(d3.select(".brush"));
+    //   }
+
   // add Chart Title
   if (this.title) {
         tit = add_txt_axis(this.vis, this.title, this.size.width/2, 0)
@@ -137,6 +162,33 @@ plot = function(elemid, dataset, params) {
           self.vis.selectAll('circle').remove()
           self.redraw()();
       } // end if
+      if(event.keyCode == "q".charCodeAt(0)-32){
+          x1 = self.x.invert(extent[0][0])
+          x2 = self.x.invert(extent[1][0])
+          y1 = self.y.invert(extent[0][1])
+          y2 = self.y.invert(extent[1][1])
+          self.x.domain([x1,x2]);
+          self.y.domain([y1,y2]);
+          self.redraw()();
+      } // end if
+
+
+
+      if(event.keyCode == "b".charCodeAt(0)-32){
+        self.brush = self.vis.append("g")
+          .attr("class", "brush")
+          .call(d3.svg.brush()
+            .x(d3.scale.identity().domain([0, self.size.width]))
+            .y(d3.scale.identity().domain([0, self.size.height])) 
+            .on("brush", function() {
+            extent = d3.event.target.extent();
+            }) // end on
+          ); // end call
+       } // end if
+
+
+
+
   }) // end keydown
   
 };
