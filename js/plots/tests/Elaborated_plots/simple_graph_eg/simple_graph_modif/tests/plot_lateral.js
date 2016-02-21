@@ -3,23 +3,6 @@ registerKeyboardHandler = function(callback) {
   d3.select(window).on("keydown", callback);  
 };
 
-
-// var makeplot = function(elemid, data, params){
-//     // if data is an array do nothing, if json, makes an array
-//      if (typeof(data)=='string'){ 
-//          if (data.match(/\.json/)!=null){
-//              alert('it is a json')
-//              d3.json(data, function(dat) {
-//                     make_plot(elemid, dat, params)
-//                     }); // end d3.json
-//                 }  // end if json
-//            } // end if string     
-//        else{
-//            make_plot(data)
-//          }
-//     }// end function
-
-
 plot = function(elemid, dataset, params) {
   var self = this;
   
@@ -88,6 +71,7 @@ plot = function(elemid, dataset, params) {
   this.downy = Math.NaN; // drag y-axis logic
   this.dragged = this.selected = null;
   
+  //this.brush = null;
   
   this.line = d3.svg.line()
       .x(function(d, i) { return this.x(this.dataset[i].x); })
@@ -110,6 +94,22 @@ plot = function(elemid, dataset, params) {
       .attr("height", this.size.height)
       .style("fill", fillplot) 
       .attr("pointer-events", "all")
+
+  if (this.drag_zoom == true){
+    alert('permitting drag')
+      this.plot
+          .on("mousedown.drag", self.plot_drag())
+          .on("touchstart.drag", self.plot_drag())
+          .call(d3.behavior.zoom().x(this.x).y(this.y)
+          .on("zoom", this.redraw()));
+      }
+
+    d3.select(this.chart)              // drag the points of the curve
+          .on("mousemove.drag", self.mousemove())
+          .on("touchmove.drag", self.mousemove())
+          .on("mouseup.drag",   self.mouseup())
+          .on("touchend.drag",  self.mouseup());
+
 
   this.vis.append("svg")
       .attr("top", 0)
@@ -145,13 +145,13 @@ plot = function(elemid, dataset, params) {
           .attr("font-size", "20px")
   }
 
-  this.redraw_axes()();
+  this.redraw()();
   
   $(document).keydown(function(event){          // add and remove circles.. 
       if(event.keyCode == "c".charCodeAt(0)-32){
           self.show_circle = !self.show_circle;
           self.vis.selectAll('circle').remove()
-          self.redraw_axes()();
+          self.redraw()();
       } // end if
       if(event.keyCode == "q".charCodeAt(0)-32){ // Apply the zoom
           x1 = self.x.invert(extent[0][0])
@@ -160,11 +160,13 @@ plot = function(elemid, dataset, params) {
           y2 = self.y.invert(extent[1][1])
           self.x.domain([x1,x2]);
           self.y.domain([y1,y2]);
-          self.redraw_axes()();
+          self.redraw()();
 
-          // d3.selectAll(".brush").remove();
-          // d3.selectAll('.brush').call(brush.clear());
-          // d3.selectAll(".brush").call(brush());
+          d3.selectAll(".brush").remove();
+          
+          d3.selectAll('.brush').call(brush.clear());
+          d3.selectAll(".brush").call(brush());
+          extent = []
           
 
       } // end if
@@ -180,8 +182,8 @@ plot = function(elemid, dataset, params) {
           ); // end call
        } // end if
       if(event.keyCode == "d".charCodeAt(0)-32){    
-        self.drag_zoom = ! self.drag_zoom; // toggle on zoom
-        self.redraw_axes()();
+        self.drag_zoom = ! self.drag_zoom;
+        self.redraw()();
        } // end if
   }) // end keydown
 };
@@ -189,6 +191,7 @@ plot = function(elemid, dataset, params) {
 //
 // plot methods
 //
+
 
 plot.prototype.update = function() {
   var self = this;
@@ -222,18 +225,10 @@ plot.prototype.update = function() {
   }
 }
 
-plot.prototype.datapoint_drag = function() {    // moving points
-  var self = this;
-  return function(d) {
-    registerKeyboardHandler(self.keydown());
-    document.onselectstart = function() { return false; };
-    self.selected = self.dragged = d;
-    self.update();
-  }
-};
 
 
-plot.prototype.keydown = function() {     
+
+plot.prototype.keydown = function() { // moving points
   var self = this;
   return function() {
     if (!self.selected) return; // if no point selected, pass
@@ -250,7 +245,7 @@ plot.prototype.keydown = function() {
   }
 };
 
-plot.prototype.redraw_axes = function() {         // redraw_axes the whole plot
+plot.prototype.redraw = function() { // Redraw the whole plot
   var self = this;
   return function() {
     var tx = function(d) { 
@@ -267,23 +262,48 @@ plot.prototype.redraw_axes = function() {         // redraw_axes the whole plot
 
     var sz_txt_ticks = "14px" // size of ticks text
 
-    var make_axes = function(nodename, selfax, trans, txt, ax1, ax2, valmax, stroke){
-      var node = self.vis.selectAll(nodename)
-        .data(selfax.ticks(10), String)
-        .attr("transform", trans);
-      node.select("text")
-          .text(txt);
-      var nodee = node.enter().insert("g", "a")
-          .attr("class", ax1)
-          .attr("transform", trans);
-      nodee.append("line")
-          .attr("stroke", stroke)
-          .attr(ax2+"1", 0)
-          .attr(ax2+"2", valmax);
-    return [node, nodee]
-    }
+    // Regenerate x-ticks…
 
-    var ticks_txt = function(node,ax,axpos,shift,txt){
+
+    // var gax = function(nodename, selfax, txt, trans, ax, valmax){
+
+    //   var node = self.vis.selectAll(nodename)
+    //     .data(selfax.ticks(10), String)
+    //     .attr("transform", tx);
+    //   node.select("text")
+    //       .text(txt);
+    //   var nodee = node.enter().insert("g", "a")
+    //       .attr("class", ax)
+    //       .attr("transform", trans);
+    //   nodee.append("line")
+    //       .attr("stroke", stroke)
+    //       .attr(ax+"1", 0)
+    //       .attr(ax+"2", valmax);
+    // return node
+    // }
+
+    //gx = gax("g.x", self.x, fx, tx, 'y', self.size.height)
+
+
+    var gx = self.vis.selectAll("g.x")
+        .data(self.x.ticks(10), String)
+        .attr("transform", tx);
+
+    gx.select("text")
+        .text(fx);
+
+    var gxe = gx.enter().insert("g", "a")
+        .attr("class", "x")
+        .attr("transform", tx);
+
+    gxe.append("line")
+        .attr("stroke", stroke)
+        .attr("y1", 0)
+        .attr("y2", self.size.height);
+
+
+
+    var ticks_txt = function(node,ax,axpos,shift,txt, axdrag){
         node.append("text")
         .attr("class", "axis")
         .attr(ax, axpos)
@@ -293,23 +313,136 @@ plot.prototype.redraw_axes = function() {         // redraw_axes the whole plot
         .attr("font-size", sz_txt_ticks)
         .text(txt)
         .style("cursor", "ew-resize")
+        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+        .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+        .on("mousedown.drag",  axdrag)
+        .on("touchstart.drag", axdrag);
     }
 
-    // Regenerate x-ticks… 
+    ticks_txt(gxe,"y",self.size.height,"1em",fx, self.xaxis_drag())
 
-    gg = make_axes("g.x", self.x, tx, fx, 'x','y', self.size.height, stroke)
-    gx = gg[0]; gxe = gg[1]
-    ticks_txt(gxe,"y",self.size.height,"1em",fx)
     gx.exit().remove();
 
     // Regenerate y-ticks…
+    var gy = self.vis.selectAll("g.y")
+        .data(self.y.ticks(10), String)
+        .attr("transform", ty);
 
-    gg = make_axes("g.y", self.y, ty, fy, 'y','x', self.size.width, stroke)
-    gy = gg[0]; gye = gg[1]
-    ticks_txt(gye,"x",-3,".35em",fy)
+    gy.select("text")
+        .text(fy);
+
+    var gye = gy.enter().insert("g", "a")
+        .attr("class", "y")
+        .attr("transform", ty)
+        .attr("background-fill", "#FFEEB6");
+
+    gye.append("line")
+        .attr("stroke", stroke)
+        .attr("x1", 0)
+        .attr("x2", self.size.width);
+    
+    ticks_txt(gye,"x",-3,".35em",fy, self.yaxis_drag())
+
     gy.exit().remove();
-
+    if (self.drag_zoom == true){
+      self.plot.call(d3.behavior.zoom().x(self.x).y(self.y)
+                                .on("zoom", self.redraw())
+                                //.on("drag", self.redraw())
+                                );
+      }
+    else{
+      self.plot.call(d3.behavior.zoom().x(self.x).y(self.y)
+                                .on("zoom", null)
+                                //.on("drag", null)
+                                );
+      //d3.event.stopPropagation(); 
+    }
     self.update();    
   }  
+}
+
+
+
+var brush = d3.svg.brush()
+    .x(x)
+    .on("brush", brushmove)
+    .on("brushend", brushend);
+
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+
+svg.append("g")
+    .attr("class", "y axis")
+    .call(yAxis);
+
+svg.append("g")
+    .attr("class", "brush")
+    .call(brush)
+  .selectAll('rect')
+    .attr('height', height);
+
+svg.append("defs").append("clipPath")
+    .attr("id", "clip")
+  .append("rect")
+    .attr("width", width)
+    .attr("height", height + 20);
+
+
+
+function brushmove() {
+  var extent = brush.extent();
+  points.classed("selected", function(d) {
+    is_brushed = extent[0] <= d.index && d.index <= extent[1];
+    return is_brushed;
+  });
+}
+
+function brushend() {
+  get_button = d3.select(".clear-button");
+  if(get_button.empty() === true) {
+    clear_button = svg.append('text')
+      .attr("y", 460)
+      .attr("x", 825)
+      .attr("class", "clear-button")
+      .text("Clear Brush");
+  }
+
+  x.domain(brush.extent());
+
+  transition_data();
+  reset_axis();
+
+  points.classed("selected", false);
+  d3.select(".brush").call(brush.clear());
+
+  clear_button.on('click', function(){
+    x.domain([0, 50]);
+    transition_data();
+    reset_axis();
+    clear_button.remove();
+  });
+}
+
+function transition_data() {
+  svg.selectAll(".point")
+    .data(data)
+  .transition()
+    .duration(500)
+    .attr("cx", function(d) { return x(d.index); });
+}
+
+function reset_axis() {
+  svg.transition().duration(500)
+   .select(".x.axis")
+   .call(xAxis);
 }
 

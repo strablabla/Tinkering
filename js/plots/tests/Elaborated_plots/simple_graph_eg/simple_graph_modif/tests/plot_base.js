@@ -111,6 +111,21 @@ plot = function(elemid, dataset, params) {
       .style("fill", fillplot) 
       .attr("pointer-events", "all")
 
+  if (this.drag_zoom == true){
+    alert('permitting drag')
+      this.plot
+          .on("mousedown.drag", self.plot_drag())
+          .on("touchstart.drag", self.plot_drag())
+          .call(d3.behavior.zoom().x(this.x).y(this.y)
+          .on("zoom", this.redraw()));
+      }
+
+  d3.select(this.chart)              // drag the points of the curve
+          .on("mousemove.drag", self.mousemove())
+          .on("touchmove.drag", self.mousemove())
+          .on("mouseup.drag",   self.mouseup())
+          .on("touchend.drag",  self.mouseup());
+
   this.vis.append("svg")
       .attr("top", 0)
       .attr("left", 0)
@@ -145,13 +160,13 @@ plot = function(elemid, dataset, params) {
           .attr("font-size", "20px")
   }
 
-  this.redraw_axes()();
+  this.redraw()();
   
   $(document).keydown(function(event){          // add and remove circles.. 
       if(event.keyCode == "c".charCodeAt(0)-32){
           self.show_circle = !self.show_circle;
           self.vis.selectAll('circle').remove()
-          self.redraw_axes()();
+          self.redraw()();
       } // end if
       if(event.keyCode == "q".charCodeAt(0)-32){ // Apply the zoom
           x1 = self.x.invert(extent[0][0])
@@ -160,7 +175,7 @@ plot = function(elemid, dataset, params) {
           y2 = self.y.invert(extent[1][1])
           self.x.domain([x1,x2]);
           self.y.domain([y1,y2]);
-          self.redraw_axes()();
+          self.redraw()();
 
           // d3.selectAll(".brush").remove();
           // d3.selectAll('.brush').call(brush.clear());
@@ -181,7 +196,7 @@ plot = function(elemid, dataset, params) {
        } // end if
       if(event.keyCode == "d".charCodeAt(0)-32){    
         self.drag_zoom = ! self.drag_zoom; // toggle on zoom
-        self.redraw_axes()();
+        self.redraw()();
        } // end if
   }) // end keydown
 };
@@ -189,6 +204,30 @@ plot = function(elemid, dataset, params) {
 //
 // plot methods
 //
+
+plot.prototype.plot_drag = function() {
+  var self = this;
+  return function() {
+    registerKeyboardHandler(self.keydown());
+    d3.select('body').style("cursor", "move");
+    if (d3.event.altKey) {                // drag the whole window
+      var p = d3.svg.mouse(self.vis.node());
+      var newpoint = {};
+      newpoint.x = self.x.invert(Math.max(0, Math.min(self.size.width,  p[0])));
+      newpoint.y = self.y.invert(Math.max(0, Math.min(self.size.height, p[1])));
+      self.dataset.push(newpoint);
+      self.dataset.sort(function(a, b) {
+        if (a.x < b.x) { return -1 };
+        if (a.x > b.x) { return  1 };
+        return 0
+      });
+      self.selected = newpoint;
+      self.update();
+      d3.event.preventDefault();
+      d3.event.stopPropagation();
+    }    
+  }
+};
 
 plot.prototype.update = function() {
   var self = this;
@@ -222,7 +261,7 @@ plot.prototype.update = function() {
   }
 }
 
-plot.prototype.datapoint_drag = function() {    // moving points
+plot.prototype.datapoint_drag = function() {
   var self = this;
   return function(d) {
     registerKeyboardHandler(self.keydown());
@@ -232,8 +271,74 @@ plot.prototype.datapoint_drag = function() {    // moving points
   }
 };
 
+plot.prototype.mousemove = function() {
+  var self = this;
+  return function() {
+    var p = d3.svg.mouse(self.vis[0][0]),
+        t = d3.event.changedTouches;
+    if (self.dragged) {
+      self.dragged.y = self.y.invert(Math.max(0, Math.min(self.size.height, p[1])));
+      self.update();
+    };
+    if (!isNaN(self.downx)) {           // moving x axis for zooming
+      d3.select('body').style("cursor", "ew-resize");
+      var rupx = self.x.invert(p[0]),
+          xaxis1 = self.x.domain()[0],
+          xaxis2 = self.x.domain()[1],
+          xextent = xaxis2 - xaxis1;
+      if (rupx != 0) {
+        var changex, new_domain;
+        changex = self.downx / rupx;
+        new_domain = [xaxis1, xaxis1 + (xextent * changex)];
+        self.x.domain(new_domain);
+        self.redraw()();
+      }
+      d3.event.preventDefault();
+      d3.event.stopPropagation();
+    };
+    if (!isNaN(self.downy)) { // moving y axis for zooming
+      d3.select('body').style("cursor", "ns-resize");
+      var rupy = self.y.invert(p[1]),
+          yaxis1 = self.y.domain()[1],
+          yaxis2 = self.y.domain()[0],
+          yextent = yaxis2 - yaxis1;
+      if (rupy != 0) {
+        var changey, new_domain;
+        changey = self.downy / rupy;
+        new_domain = [yaxis1 + (yextent * changey), yaxis1];
+        self.y.domain(new_domain);
+        self.redraw()();
+      }
+      d3.event.preventDefault();
+      d3.event.stopPropagation();
+    }
+  }
+};
 
-plot.prototype.keydown = function() {     
+plot.prototype.mouseup = function() { // mouse in its normal state
+  var self = this;
+  return function() {
+    document.onselectstart = function() { return true; };
+    d3.select('body').style("cursor", "auto");
+    if (!isNaN(self.downx)) {
+      self.redraw()();
+      self.downx = Math.NaN;
+      d3.event.preventDefault();
+      d3.event.stopPropagation();
+    };
+    if (!isNaN(self.downy)) { 
+      self.redraw()();
+      self.downy = Math.NaN;
+      d3.event.preventDefault();
+      d3.event.stopPropagation();
+    }
+    if (self.dragged) { 
+      self.dragged = null 
+    }
+  }
+}
+
+plot.prototype.keydown = function() { // moving points
   var self = this;
   return function() {
     if (!self.selected) return; // if no point selected, pass
@@ -250,7 +355,7 @@ plot.prototype.keydown = function() {
   }
 };
 
-plot.prototype.redraw_axes = function() {         // redraw_axes the whole plot
+plot.prototype.redraw = function() { // Redraw the whole plot
   var self = this;
   return function() {
     var tx = function(d) { 
@@ -267,23 +372,46 @@ plot.prototype.redraw_axes = function() {         // redraw_axes the whole plot
 
     var sz_txt_ticks = "14px" // size of ticks text
 
-    var make_axes = function(nodename, selfax, trans, txt, ax1, ax2, valmax, stroke){
-      var node = self.vis.selectAll(nodename)
-        .data(selfax.ticks(10), String)
-        .attr("transform", trans);
-      node.select("text")
-          .text(txt);
-      var nodee = node.enter().insert("g", "a")
-          .attr("class", ax1)
-          .attr("transform", trans);
-      nodee.append("line")
-          .attr("stroke", stroke)
-          .attr(ax2+"1", 0)
-          .attr(ax2+"2", valmax);
-    return [node, nodee]
-    }
+    // Regenerate x-ticks…
 
-    var ticks_txt = function(node,ax,axpos,shift,txt){
+
+    // var gax = function(nodename, selfax, txt, trans, ax, valmax){
+
+    //   var node = self.vis.selectAll(nodename)
+    //     .data(selfax.ticks(10), String)
+    //     .attr("transform", tx);
+    //   node.select("text")
+    //       .text(txt);
+    //   var nodee = node.enter().insert("g", "a")
+    //       .attr("class", ax)
+    //       .attr("transform", trans);
+    //   nodee.append("line")
+    //       .attr("stroke", stroke)
+    //       .attr(ax+"1", 0)
+    //       .attr(ax+"2", valmax);
+    // return node
+    // }
+
+    //gx = gax("g.x", self.x, fx, tx, 'y', self.size.height)
+
+
+    var gx = self.vis.selectAll("g.x")
+        .data(self.x.ticks(10), String)
+        .attr("transform", tx);
+
+    gx.select("text")
+        .text(fx);
+
+    var gxe = gx.enter().insert("g", "a")
+        .attr("class", "x")
+        .attr("transform", tx);
+
+    gxe.append("line")
+        .attr("stroke", stroke)
+        .attr("y1", 0)
+        .attr("y2", self.size.height);
+
+    var ticks_txt = function(node,ax,axpos,shift,txt, axdrag){
         node.append("text")
         .attr("class", "axis")
         .attr(ax, axpos)
@@ -293,23 +421,72 @@ plot.prototype.redraw_axes = function() {         // redraw_axes the whole plot
         .attr("font-size", sz_txt_ticks)
         .text(txt)
         .style("cursor", "ew-resize")
+        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+        .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+        .on("mousedown.drag",  axdrag)
+        .on("touchstart.drag", axdrag);
     }
 
-    // Regenerate x-ticks… 
+    ticks_txt(gxe,"y",self.size.height,"1em",fx, self.xaxis_drag())
 
-    gg = make_axes("g.x", self.x, tx, fx, 'x','y', self.size.height, stroke)
-    gx = gg[0]; gxe = gg[1]
-    ticks_txt(gxe,"y",self.size.height,"1em",fx)
     gx.exit().remove();
 
     // Regenerate y-ticks…
+    var gy = self.vis.selectAll("g.y")
+        .data(self.y.ticks(10), String)
+        .attr("transform", ty);
 
-    gg = make_axes("g.y", self.y, ty, fy, 'y','x', self.size.width, stroke)
-    gy = gg[0]; gye = gg[1]
-    ticks_txt(gye,"x",-3,".35em",fy)
+    gy.select("text")
+        .text(fy);
+
+    var gye = gy.enter().insert("g", "a")
+        .attr("class", "y")
+        .attr("transform", ty)
+        .attr("background-fill", "#FFEEB6");
+
+    gye.append("line")
+        .attr("stroke", stroke)
+        .attr("x1", 0)
+        .attr("x2", self.size.width);
+    
+    ticks_txt(gye,"x",-3,".35em",fy, self.yaxis_drag())
+
     gy.exit().remove();
-
+    if (self.drag_zoom == true){
+      self.plot.call(d3.behavior.zoom().x(self.x).y(self.y)
+                                .on("zoom", self.redraw())
+                                //.on("drag", self.redraw())
+                                );
+      }
+    else{
+      self.plot.call(d3.behavior.zoom().x(self.x).y(self.y)
+                                .on("zoom", null)
+                                //.on("drag", null)
+                                );
+      //d3.event.stopPropagation(); 
+    }
     self.update();    
   }  
 }
 
+plot.prototype.xaxis_drag = function() {
+  var self = this;
+  return function(d) {
+    document.onselectstart = function() { return false; };
+    var p = d3.svg.mouse(self.vis[0][0]);
+    self.downx = self.x.invert(p[0]);
+  }
+};
+
+plot.prototype.yaxis_drag = function(d) {
+  var self = this;
+  return function(d) {
+    document.onselectstart = function() { return false; };
+    var p = d3.svg.mouse(self.vis[0][0]);
+    self.downy = self.y.invert(p[1]);
+  }
+
+
+
+
+};
