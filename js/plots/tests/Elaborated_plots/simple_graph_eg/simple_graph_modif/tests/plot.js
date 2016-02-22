@@ -111,14 +111,14 @@ plot = function(elemid, dataset, params) {
       .style("fill", fillplot) 
       .attr("pointer-events", "all")
 
-  // if (this.drag_zoom == true){
-  //   alert('permitting drag')
-  //     this.plot
-  //         .on("mousedown.drag", self.plot_drag())
-  //         .on("touchstart.drag", self.plot_drag())
-  //         .call(d3.behavior.zoom().x(this.x).y(this.y)
-  //         .on("zoom", this.redraw()));
-  //     }
+  if (this.drag_zoom == true){
+        alert('permitting drag')
+          this.plot
+              .on("mousedown.drag", self.plot_drag())
+              .on("touchstart.drag", self.plot_drag())
+              .call(d3.behavior.zoom().x(this.x).y(this.y)
+              .on("zoom", this.redraw()));
+          }
 
   d3.select(this.chart)              // drag the points of the curve
           .on("mousemove.drag", self.mousemove())
@@ -207,25 +207,26 @@ plot = function(elemid, dataset, params) {
 
 plot.prototype.plot_drag = function() {
   var self = this;
+  alert("plot dragging")
   return function() {
     registerKeyboardHandler(self.keydown());
     d3.select('body').style("cursor", "move");
-    if (d3.event.altKey) {                // drag the whole window
-      var p = d3.svg.mouse(self.vis.node());
-      var newpoint = {};
-      newpoint.x = self.x.invert(Math.max(0, Math.min(self.size.width,  p[0])));
-      newpoint.y = self.y.invert(Math.max(0, Math.min(self.size.height, p[1])));
-      self.dataset.push(newpoint);
-      self.dataset.sort(function(a, b) {
-        if (a.x < b.x) { return -1 };
-        if (a.x > b.x) { return  1 };
-        return 0
-      });
-      self.selected = newpoint;
-      self.update();
-      d3.event.preventDefault();
-      d3.event.stopPropagation();
-    }    
+    // if (d3.event.altKey) {                // drag the whole window
+    //   var p = d3.svg.mouse(self.vis.node());
+    //   var newpoint = {};
+    //   newpoint.x = self.x.invert(Math.max(0, Math.min(self.size.width,  p[0])));
+    //   newpoint.y = self.y.invert(Math.max(0, Math.min(self.size.height, p[1])));
+    //   self.dataset.push(newpoint);
+    //   self.dataset.sort(function(a, b) {
+    //     if (a.x < b.x) { return -1 };
+    //     if (a.x > b.x) { return  1 };
+    //     return 0
+    //   });
+    //   self.selected = newpoint;
+    //   self.update();
+    //   d3.event.preventDefault();
+    //   d3.event.stopPropagation();
+    // }    
   }
 };
 
@@ -375,26 +376,6 @@ plot.prototype.redraw = function() { // Redraw the whole plot
     // Regenerate x-ticks…
 
 
-    // var gax = function(nodename, selfax, txt, trans, ax, valmax){
-
-    //   var node = self.vis.selectAll(nodename)
-    //     .data(selfax.ticks(10), String)
-    //     .attr("transform", tx);
-    //   node.select("text")
-    //       .text(txt);
-    //   var nodee = node.enter().insert("g", "a")
-    //       .attr("class", ax)
-    //       .attr("transform", trans);
-    //   nodee.append("line")
-    //       .attr("stroke", stroke)
-    //       .attr(ax+"1", 0)
-    //       .attr(ax+"2", valmax);
-    // return node
-    // }
-
-    //gx = gax("g.x", self.x, fx, tx, 'y', self.size.height)
-
-
     var gx = self.vis.selectAll("g.x")
         .data(self.x.ticks(10), String)
         .attr("transform", tx);
@@ -485,8 +466,6 @@ plot.prototype.yaxis_drag = function(d) {
     var p = d3.svg.mouse(self.vis[0][0]);
     self.downy = self.y.invert(p[1]);
   }
-
-
 
 
 };

@@ -3,7 +3,6 @@ registerKeyboardHandler = function(callback) {
   d3.select(window).on("keydown", callback);  
 };
 
-
 // var makeplot = function(elemid, data, params){
 //     // if data is an array do nothing, if json, makes an array
 //      if (typeof(data)=='string'){ 
@@ -40,6 +39,7 @@ plot = function(elemid, dataset, params) {
   this.show_circle = false;
   this.moveaxis = false
   this.drag_zoom = false
+  this.brush_active = false
   // Commands
   // * c : show the circles for modifying the plot
   // * b : mode Brush
@@ -64,9 +64,10 @@ plot = function(elemid, dataset, params) {
       }
           
   this.padding = {
-     "top":    this.title  ? 40 : 20,
+     // "top":    this.title  ? 40 : 20,
+      "top":    this.title  ? 80 : 20,
      "right":                 30,
-     "bottom": this.xlabel ? 60 : 10,
+     "bottom": this.xlabel ? 80 : 10,
      "left":   this.ylabel ? 70 : 45
   };
 
@@ -97,6 +98,8 @@ plot = function(elemid, dataset, params) {
       yrange2 = (this.ylim[1] - this.ylim[0]) / 2,
       yrange4 = yrange2 / 2,
       datacount = this.size.width/30;
+  
+  $('#chart1').append($('<div/>').addClass('infos').text("il était une fois"))
 
   this.vis = d3.select(this.chart).append("svg")
       .attr("width",  this.cx)
@@ -109,6 +112,16 @@ plot = function(elemid, dataset, params) {
       .attr("height", this.size.height)
       .style("fill", fillplot) 
       .attr("pointer-events", "all")
+
+
+  if (this.drag_zoom == true){
+    alert('permitting drag')
+      this.plot
+          .on("mousedown.drag", self.plot_drag())
+          .on("touchstart.drag", self.plot_drag())
+          .call(d3.behavior.zoom().x(this.x).y(this.y)
+          .on("zoom", this.redraw_axes()));
+      }
 
   d3.select(this.chart)              // drag the points of the curve
           .on("mousemove.drag", self.mousemove())
@@ -131,9 +144,9 @@ plot = function(elemid, dataset, params) {
   // add Chart Title
   if (this.title) {
         tit = add_txt_axis(this.vis, this.title, this.size.width/2, 0)
-        tit.attr("dy","-0.5em")
+        tit.attr("dy","-1em")
            .attr("font-family", "Times New Roman")
-           .attr("font-size", "30px")
+           .attr("font-size", "25px")
   }
   // Add the x-axis label
   if (this.xlabel) {
@@ -149,8 +162,20 @@ plot = function(elemid, dataset, params) {
           .attr("font-family", "Times New Roman")
           .attr("font-size", "20px")
   }
-
   this.redraw_axes()();
+  
+  make_brush = function(){
+      self.brush = self.vis.append("g")
+         .attr("class", "brush")
+         .call(d3.svg.brush()
+           .x(d3.scale.identity().domain([0, self.size.width]))
+           .y(d3.scale.identity().domain([0, self.size.height])) 
+           .on("brush", function() {
+           extent = d3.event.target.extent();
+           //self.brush_active = !self.brush_active;
+           }) // end on
+         ); // end call
+  }
   
   $(document).keydown(function(event){          // add and remove circles.. 
       if(event.keyCode == "c".charCodeAt(0)-32){
@@ -166,23 +191,21 @@ plot = function(elemid, dataset, params) {
           self.x.domain([x1,x2]);
           self.y.domain([y1,y2]);
           self.redraw_axes()();
-
-          // d3.selectAll(".brush").remove();
-          // d3.selectAll('.brush').call(brush.clear());
-          // d3.selectAll(".brush").call(brush());
+          d3.selectAll(".brush").remove();
+          make_brush()
           
-
       } // end if
       if(event.keyCode == "b".charCodeAt(0)-32){ // select the brush tool
-        self.brush = self.vis.append("g")
-          .attr("class", "brush")
-          .call(d3.svg.brush()
-            .x(d3.scale.identity().domain([0, self.size.width]))
-            .y(d3.scale.identity().domain([0, self.size.height])) 
-            .on("brush", function() {
-            extent = d3.event.target.extent();
-            }) // end on
-          ); // end call
+        
+        if (self.brush_active == true){
+            d3.selectAll(".brush").remove();
+            self.brush_active = false;
+        }
+        else{
+            make_brush();
+            self.brush_active = true;
+            }
+          
        } // end if
       if(event.keyCode == "d".charCodeAt(0)-32){    
         self.drag_zoom = ! self.drag_zoom; // toggle on zoom
@@ -194,6 +217,17 @@ plot = function(elemid, dataset, params) {
 //
 // plot methods
 //
+
+plot.prototype.plot_drag = function() {
+  var self = this;
+  return function() {
+    registerKeyboardHandler(self.keydown());
+    d3.select('body').style("cursor", "move"); 
+    
+  }
+};
+
+
 plot.prototype.update = function() {
   var self = this;
   var lines = this.vis.select("path").attr("d", this.line(this.dataset));
@@ -244,7 +278,7 @@ plot.prototype.mousemove = function() {
       self.dragged.y = self.y.invert(Math.max(0, Math.min(self.size.height, p[1])));
       self.update();
     };
-  } // end function after return.. 
+  }
 };
 
 plot.prototype.mouseup = function() { // mouse in its normal state
@@ -316,7 +350,11 @@ plot.prototype.redraw_axes = function() {         // redraw_axes the whole plot
     gy = gg[0]; gye = gg[1]
     ticks_txt(gye,"x",-3,".35em",fy)
     gy.exit().remove();
-
+    if (self.drag_zoom == true){
+      self.plot.call(d3.behavior.zoom().x(self.x).y(self.y)
+                                .on("zoom", self.redraw_axes())
+                                );
+                            }
     self.update();    
   }  
 }

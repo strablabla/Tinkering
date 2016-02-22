@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>One Graph</title>
+    <script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.v2.js"></script>
+    <script type="text/javascript" src="plot_base.js"></script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+    </script>
+
+    <style type="text/css">
+/*      body { font: 13px sans-serif}*/
+      rect { fill: #fff; }
+      ul {
+        list-style-type: none;
+        margin: 0.5em 0em 0.5em 0em;
+        width: 100%; }
+        ul li {
+          display: table-cell;
+          vertical-align: middle;
+          margin: 0em;
+          padding: 0em 1em; }
+      .axis { font-size: 1 em; }
+      .chart {
+        width: 960px;
+        height: 500px; }
+      circle {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 2px; }
+      circle {
+        fill: white;
+        fill-opacity: 0.2;
+        cursor: move; }
+        circle.selected {
+          fill: #ff7f0e;
+          stroke: #ff7f0e; }
+        circle:hover {
+          fill: #ff7f0e;
+          stroke: #707f0e; }
+        circle.selected:hover {
+          fill: #ff7f0e;
+          stroke: #ff7f0e; }
+
+    .brush .extent {
+        fill-opacity: .2;
+        fill: #707f0e;
+        stroke: steelblue;
+        shape-rendering: crispEdges;
+      }
+
+    </style>
+
+  <body>
+    <div id="chart1" class="chart"></div>
+    <script >
+    params = { "xlim": [0,60], "ylim": [-5,5], "title": "Visualization",
+                "xlabel": "time", "ylabel": "#counts", "color":"g", "fill":"#ffffff"}
+    d3.json('data/data_curve.json', function(data){
+          graph = new plot("chart1", data, params); // end SimpleGraph
+        })// end json
+    </script>
+
+
+
+  </body>
+</html>
+
