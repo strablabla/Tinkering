@@ -3,7 +3,7 @@ registerKeyboardHandler = function(callback) {
   d3.select(window).on("keydown", callback);  
 };
 
-// var makeplot = function(elemid, data, params){
+// var plot = function(elemid, data, params){
 //     // if data is an array do nothing, if json, makes an array
 //      if (typeof(data)=='string'){ 
 //          if (data.match(/\.json/)!=null){
@@ -40,10 +40,11 @@ plot = function(elemid, dataset, params) {
   this.moveaxis = false
   this.drag_zoom = false
   this.brush_active = false
+  this.list_domains = []
   // Commands
   // * c : show the circles for modifying the plot
-  // * b : mode Brush
-  // * q : zoom for mode Brush
+  // * b : mode brush
+  // * q : zoom for mode brush
   // * d : toggle for drag and zoom.
   
   var tr = function(w, h, ang){      // Translation and Rotation
@@ -76,6 +77,8 @@ plot = function(elemid, dataset, params) {
     "height": this.cy - this.padding.top  - this.padding.bottom
   };
   
+  
+
   make_scale = function(lim, size, inv){
       var inv = inv || false
       if (!inv){interv = [lim[0], lim[1]]} else {interv = [lim[1], lim[0]]}
@@ -177,35 +180,48 @@ plot = function(elemid, dataset, params) {
          ); // end call
   }
   
+  set_view = function(extent){
+      x1 = self.x.invert(extent[0][0])
+      x2 = self.x.invert(extent[1][0])
+      y1 = self.y.invert(extent[0][1])
+      y2 = self.y.invert(extent[1][1])
+      self.x.domain([x1,x2]);
+      self.y.domain([y1,y2]);
+      self.list_domains.push([[x1,x2],[y1,y2]])
+  }
+  set_view([[1,1],[500, 250]]) // Save the first view in self.list_domains
+  
   $(document).keydown(function(event){          // add and remove circles.. 
       if(event.keyCode == "c".charCodeAt(0)-32){
           self.show_circle = !self.show_circle;
           self.vis.selectAll('circle').remove()
           self.redraw_axes()();
       } // end if
-      if(event.keyCode == "q".charCodeAt(0)-32){ // Apply the zoom
-          x1 = self.x.invert(extent[0][0])
-          x2 = self.x.invert(extent[1][0])
-          y1 = self.y.invert(extent[0][1])
-          y2 = self.y.invert(extent[1][1])
-          self.x.domain([x1,x2]);
-          self.y.domain([y1,y2]);
+      if(event.keyCode == "w".charCodeAt(0)-32){  // home view
+          var elem_first = self.list_domains[0]
+          self.x.domain(elem_first[0]);
+          self.y.domain(elem_first[1]);
+          self.redraw_axes()();
+          } // end if
+      if(event.keyCode == "q".charCodeAt(0)-32){    // Apply the zoom
+          set_view(extent)
           self.redraw_axes()();
           d3.selectAll(".brush").remove();
-          make_brush()
-          
+          make_brush()                  // remake brush
       } // end if
-      if(event.keyCode == "b".charCodeAt(0)-32){ // select the brush tool
-        
+      if(event.keyCode == "z".charCodeAt(0)-32){
+             alert(self.list_extent)
+             alert(self.list_extent.length)
+            }
+      if(event.keyCode == "b".charCodeAt(0)-32){    // select the brush tool
         if (self.brush_active == true){
-            d3.selectAll(".brush").remove();
+            d3.selectAll(".brush").remove();  // desactivate brush
             self.brush_active = false;
         }
         else{
             make_brush();
             self.brush_active = true;
             }
-          
        } // end if
       if(event.keyCode == "d".charCodeAt(0)-32){    
         self.drag_zoom = ! self.drag_zoom; // toggle on zoom
@@ -223,19 +239,15 @@ plot.prototype.plot_drag = function() {
   return function() {
     registerKeyboardHandler(self.keydown());
     d3.select('body').style("cursor", "move"); 
-    
   }
 };
-
 
 plot.prototype.update = function() {
   var self = this;
   var lines = this.vis.select("path").attr("d", this.line(this.dataset));
-  //alert(this.show_circle)
   if (this.show_circle == true){   // show circle for modifying the points.
       var circle = this.vis.select("svg").selectAll("circle")
           .data(this.dataset, function(d) { return d; });
-
       circle.enter().append("circle")
           .attr("class", function(d) { return d === self.selected ? "selected" : null; })
           .attr("cx",    function(d) { return self.x(d.x); })
@@ -244,16 +256,13 @@ plot.prototype.update = function() {
           .style("cursor", "ns-resize")
           .on("mousedown.drag",  self.datapoint_drag())
           .on("touchstart.drag", self.datapoint_drag());
-
       circle
           .attr("class", function(d) { return d === self.selected ? "selected" : null; })
           .attr("cx",    function(d) { 
             return self.x(d.x); })
           .attr("cy",    function(d) { return self.y(d.y); });
-
       circle.exit().remove();
   }// end if show circle
-
   if (d3.event && d3.event.keyCode) {
     d3.event.preventDefault();
     d3.event.stopPropagation();
@@ -338,14 +347,11 @@ plot.prototype.redraw_axes = function() {         // redraw_axes the whole plot
     }
 
     // Regenerate x-ticks… 
-
     gg = make_axes("g.x", self.x, tx, fx, 'x','y', self.size.height, stroke)
     gx = gg[0]; gxe = gg[1]
     ticks_txt(gxe,"y",self.size.height,"1em",fx)
     gx.exit().remove();
-
     // Regenerate y-ticks…
-
     gg = make_axes("g.y", self.y, ty, fy, 'y','x', self.size.width, stroke)
     gy = gg[0]; gye = gg[1]
     ticks_txt(gye,"x",-3,".35em",fy)
@@ -353,9 +359,8 @@ plot.prototype.redraw_axes = function() {         // redraw_axes the whole plot
     if (self.drag_zoom == true){
       self.plot.call(d3.behavior.zoom().x(self.x).y(self.y)
                                 .on("zoom", self.redraw_axes())
-                                );
-                            }
-    self.update();    
+                                )}// end if
+    self.update();    // update the whole plot
   }  
 }
 
