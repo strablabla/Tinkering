@@ -3,13 +3,13 @@ registerKeyboardHandler = function(callback) {
   d3.select(window).on("keydown", callback);  
 };
 
-var show_plot = function(elemid, data, params){
+var plot = function(elemid, data, params){
      // if data is an array do nothing, if json, makes an array
       if (typeof(data)=='string'){ 
           if (data.match(/\.json/)!=null){
               // alert('it is a json')
               d3.json(data, function(dat) {
-                     new plot(elemid, dat, params)
+                     new make_plot(elemid, dat, params)
                      }); // end d3.json
                  }  // end if json
             } // end if string     
@@ -19,7 +19,7 @@ var show_plot = function(elemid, data, params){
      }// end function
 
 
-plot = function(elemid, dataset, params) {
+make_plot = function(elemid, dataset, params) {
   var self = this;
   
   this.dataset = dataset
@@ -48,6 +48,8 @@ plot = function(elemid, dataset, params) {
   // * q : zoom for mode brush
   // * d : toggle for drag and zoom.
   
+
+  
   var tr = function(w, h, ang){      // Translation and Rotation
      ang = ang || 0
      return "translate(" + w + ","+ h + ") rotate("+ang+")"
@@ -74,7 +76,7 @@ plot = function(elemid, dataset, params) {
       return newax
       }
           
-  this.padding = {
+  this.padding = {                                  // padding
      // "top":    this.title  ? 40 : 20,
       "top":    this.title  ? 80 : 20,
      "right":                 30,
@@ -82,12 +84,11 @@ plot = function(elemid, dataset, params) {
      "left":   this.ylabel ? 70 : 45
   };
 
-  this.size = {
+  this.size = {                                                         // real size of the figure
     "width":  this.cx - this.padding.left - this.padding.right,
     "height": this.cy - this.padding.top  - this.padding.bottom
   };
   
-
 
   make_scale = function(lim, size, inv){            // scale for the axis
       var inv = inv || false
@@ -96,21 +97,19 @@ plot = function(elemid, dataset, params) {
       return scale
   }
 
-  this.x = make_scale(this.xlim,this.size.width)  // x-scale
+  this.x = make_scale(this.xlim,this.size.width)          // x-scale
   this.y = make_scale(this.ylim,this.size.height, true)  // y-scale (inverted domain)
   this.downx = Math.NaN; // drag x-axis logic
   this.downy = Math.NaN; // drag y-axis logic
   this.dragged = this.selected = null;
   
-  this.line = d3.svg.line()
+  this.line = d3.svg.line()                                      // defining line function
       .x(function(d, i) { return this.x(this.dataset[i].x); })
       .y(function(d, i) { return this.y(this.dataset[i].y); })
       .interpolate('linear')
       //
-  var xrange =  (this.xlim[1] - this.xlim[0]),
-      yrange2 = (this.ylim[1] - this.ylim[0]) / 2,
-      yrange4 = yrange2 / 2,
-      datacount = this.size.width/30;
+
+  datacount = this.size.width/30;
   
   // var posleft = this.padding.left+this.size.width
   // $('#chart1').append($('<div/>')
@@ -260,7 +259,7 @@ plot = function(elemid, dataset, params) {
 // plot methods
 //
 
-plot.prototype.plot_drag = function() {
+make_plot.prototype.plot_drag = function() {
   var self = this;
   return function() {
     registerKeyboardHandler(self.keydown());
@@ -268,7 +267,7 @@ plot.prototype.plot_drag = function() {
   }
 };
 
-plot.prototype.update = function() {
+make_plot.prototype.update = function() {
   var self = this;
   var lines = this.vis.select("path").attr("d", this.line(this.dataset));
   if (this.show_circle == true){   // show circle for modifying the points.
@@ -295,7 +294,7 @@ plot.prototype.update = function() {
   }
 }
 
-plot.prototype.datapoint_drag = function() {    // moving points
+make_plot.prototype.datapoint_drag = function() {    // moving points
   var self = this;
   return function(d) {
     document.onselectstart = function() { return false; };
@@ -304,7 +303,7 @@ plot.prototype.datapoint_drag = function() {    // moving points
   }
 };
 
-plot.prototype.mousemove = function() {
+make_plot.prototype.mousemove = function() {
   var self = this;
   return function() {
     var p = d3.svg.mouse(self.vis[0][0]),
@@ -316,7 +315,7 @@ plot.prototype.mousemove = function() {
   }
 };
 
-plot.prototype.mouseup = function() { // mouse in its normal state
+make_plot.prototype.mouseup = function() { // mouse in its normal state
   var self = this;
   return function() {
     document.onselectstart = function() { return true; };
@@ -327,7 +326,7 @@ plot.prototype.mouseup = function() { // mouse in its normal state
   }
 }
 
-plot.prototype.redraw_all = function() {         // redraw_all the whole plot
+make_plot.prototype.redraw_all = function() {         // redraw_all the whole plot
   var self = this;
   return function() {
     var tx = function(d) { 
