@@ -117,7 +117,7 @@ plot = function(elemid, dataset, params) {
       .attr("pointer-events", "all")
 
 
-  if (this.drag_zoom == true){
+  if (this.drag_zoom == true){                  // drag and zoom of the whole plot
     alert('permitting drag')
       this.plot
           .on("mousedown.drag", self.plot_drag())
@@ -126,7 +126,7 @@ plot = function(elemid, dataset, params) {
           .on("zoom", this.redraw_axes()));
       }
 
-  d3.select(this.chart)              // drag the points of the curve
+  d3.select(this.chart)                         // drag the points of the curve
           .on("mousemove.drag", self.mousemove())
           .on("touchmove.drag", self.mousemove())
           .on("mouseup.drag",   self.mouseup())
@@ -167,7 +167,7 @@ plot = function(elemid, dataset, params) {
   }
   this.redraw_axes()();
   
-  make_brush = function(){
+  make_brush = function(){                // zoom box with brush tool
       self.brush = self.vis.append("g")
          .attr("class", "brush")
          .call(d3.svg.brush()
@@ -175,12 +175,11 @@ plot = function(elemid, dataset, params) {
            .y(d3.scale.identity().domain([0, self.size.height])) 
            .on("brush", function() {
            extent = d3.event.target.extent();
-           //self.brush_active = !self.brush_active;
            }) // end on
          ); // end call
   }
   
-  set_view = function(extent){
+  set_view = function(extent){          // set the view for a given extent double list. 
       x1 = self.x.invert(extent[0][0])
       x2 = self.x.invert(extent[1][0])
       y1 = self.y.invert(extent[0][1])
@@ -189,7 +188,14 @@ plot = function(elemid, dataset, params) {
       self.y.domain([y1,y2]);
       self.list_domains.push([[x1,x2],[y1,y2]])
   }
-  set_view([[1,1],[500, 250]]) // Save the first view in self.list_domains
+  set_view([[0,0],[this.size.width, this.size.height]]) // Save the first view in self.list_domains (Initialisation)
+  
+  var desactivate_all_not = function(avoid){  // deasctivate all the tools but.. 
+      if (avoid != 'b'){
+          d3.selectAll(".brush").remove();  // desactivate brush
+          self.brush_active = false;
+        }
+  }
   
   $(document).keydown(function(event){          // add and remove circles.. 
       if(event.keyCode == "c".charCodeAt(0)-32){
@@ -197,7 +203,7 @@ plot = function(elemid, dataset, params) {
           self.vis.selectAll('circle').remove()
           self.redraw_axes()();
       } // end if
-      if(event.keyCode == "w".charCodeAt(0)-32){  // home view
+      if(event.keyCode == "w".charCodeAt(0)-32){        // home view
           var elem_first = self.list_domains[0]
           self.x.domain(elem_first[0]);
           self.y.domain(elem_first[1]);
@@ -215,15 +221,15 @@ plot = function(elemid, dataset, params) {
             }
       if(event.keyCode == "b".charCodeAt(0)-32){    // select the brush tool
         if (self.brush_active == true){
-            d3.selectAll(".brush").remove();  // desactivate brush
-            self.brush_active = false;
+            desactivate_all_not('b')
         }
         else{
             make_brush();
             self.brush_active = true;
             }
        } // end if
-      if(event.keyCode == "d".charCodeAt(0)-32){    
+      if(event.keyCode == "d".charCodeAt(0)-32){ 
+        desactivate_all_not('d')   
         self.drag_zoom = ! self.drag_zoom; // toggle on zoom
         self.redraw_axes()();
        } // end if
