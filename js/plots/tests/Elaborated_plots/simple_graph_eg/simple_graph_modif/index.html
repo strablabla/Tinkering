@@ -3,7 +3,7 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <title>plot</title>
     
-    
+        <script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <!-- Optional theme -->
@@ -11,7 +11,7 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     
-    <script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+
     <script type="text/javascript" src="http://mbostock.github.com/d3/d3.v2.js"></script>
     <script type="text/javascript" src="plot.js"></script>
 
@@ -69,7 +69,6 @@
          position: fixed;
          padding-left: 20px;
          box-shadow: 0.5em 0.5em 0.7em;
-         left: 500px;
          max-height: 500px;
          background-color:#FFCC99; /*#FFF;*/
          font-size:85%;
@@ -99,16 +98,7 @@
     <script >
     params = { "xlim": [0,60], "ylim": [-5,5], "title": "Visualization",
                 "xlabel": "time", "ylabel": "#counts", "color":"g", "fill":"#ffffff"}
-                
-    d3.json('data/data_curve.json', function(data){
-          new plot("chart1", data, params); // end SimpleGraph
-        })// end json  graph = new 
-        
-        
-        // // d3.json('data/data_curve.json', function(data){
-        //       new plot("chart1", 'data/data_curve.json', params); // end SimpleGraph
-        //     // })// end json  graph = new
-        
+    show_plot("chart1", 'data/data_curve.json', params)
         
     </script>
     

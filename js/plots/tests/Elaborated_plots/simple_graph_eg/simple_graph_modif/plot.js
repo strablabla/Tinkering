@@ -3,20 +3,20 @@ registerKeyboardHandler = function(callback) {
   d3.select(window).on("keydown", callback);  
 };
 
-// var plot = function(elemid, data, params){
-//     // if data is an array do nothing, if json, makes an array
-//      if (typeof(data)=='string'){ 
-//          if (data.match(/\.json/)!=null){
-//              alert('it is a json')
-//              d3.json(data, function(dat) {
-//                     make_plot(elemid, dat, params)
-//                     }); // end d3.json
-//                 }  // end if json
-//            } // end if string     
-//        else{
-//            make_plot(data)
-//          }
-//     }// end function
+var show_plot = function(elemid, data, params){
+     // if data is an array do nothing, if json, makes an array
+      if (typeof(data)=='string'){ 
+          if (data.match(/\.json/)!=null){
+              // alert('it is a json')
+              d3.json(data, function(dat) {
+                     new plot(elemid, dat, params)
+                     }); // end d3.json
+                 }  // end if json
+            } // end if string     
+        else{
+            plot(data)
+          }
+     }// end function
 
 
 plot = function(elemid, dataset, params) {
@@ -42,6 +42,7 @@ plot = function(elemid, dataset, params) {
   this.brush_active = false
   this.list_domains = []
   // Commands
+  // Each commands executed is supposed to eliminates the other one in possible conflict.
   // * c : show the circles for modifying the plot
   // * b : mode brush
   // * q : zoom for mode brush
@@ -51,8 +52,17 @@ plot = function(elemid, dataset, params) {
      ang = ang || 0
      return "translate(" + w + ","+ h + ") rotate("+ang+")"
       }
+      
+  // var add_html = function(node,htm,w,h,ang){ // adding html in the plot
+  //     node.append('foreignObject')
+  //         .attr("transform", tr(self.cx/2,self.cy/4, ang))
+  //         .attr('width', 200)
+  //         .attr('height', 100)
+  //         .append("xhtml:body")
+  //         .html(htm)
+  //     }
   
-  var add_txt = function(node, label,w,h,ang){    // adding text in the plot, position : (w, h), angle : ang
+  var add_txt = function(node,label,w,h,ang){    // adding text in the plot, position : (w, h), angle : ang
       newtext = node.append("text").style("text-anchor", "middle")
           .attr("transform", tr(w,h, ang)) 
           .text(label)
@@ -77,9 +87,9 @@ plot = function(elemid, dataset, params) {
     "height": this.cy - this.padding.top  - this.padding.bottom
   };
   
-  
 
-  make_scale = function(lim, size, inv){
+
+  make_scale = function(lim, size, inv){            // scale for the axis
       var inv = inv || false
       if (!inv){interv = [lim[0], lim[1]]} else {interv = [lim[1], lim[0]]}
       var scale = d3.scale.linear().domain(interv).nice().range([0, size]).nice();
@@ -102,7 +112,15 @@ plot = function(elemid, dataset, params) {
       yrange4 = yrange2 / 2,
       datacount = this.size.width/30;
   
-  $('#chart1').append($('<div/>').addClass('infos').text("il était une fois"))
+  // var posleft = this.padding.left+this.size.width
+  // $('#chart1').append($('<div/>')
+  //             .addClass('infos')
+  //             .html("il était une fois <br> a little red hood girl  <br> walking in the wood")
+  //             .css({"left":posleft+'px',
+  //              "width":this.size.width/5+'px',
+  //               // "top":this.padding.top+'px'
+  //               })
+  //             )
 
   this.vis = d3.select(this.chart).append("svg")
       .attr("width",  this.cx)
@@ -116,6 +134,10 @@ plot = function(elemid, dataset, params) {
       .style("fill", fillplot) 
       .attr("pointer-events", "all")
 
+      // htm = '<div style="width: 150px; color:blue">\
+      //         This is some information about whatever</div>'
+      // add_html(this.vis, htm, 100, 130, 0)
+
 
   if (this.drag_zoom == true){                  // drag and zoom of the whole plot
     alert('permitting drag')
@@ -123,7 +145,7 @@ plot = function(elemid, dataset, params) {
           .on("mousedown.drag", self.plot_drag())
           .on("touchstart.drag", self.plot_drag())
           .call(d3.behavior.zoom().x(this.x).y(this.y)
-          .on("zoom", this.redraw_axes()));
+          .on("zoom", this.redraw_all()));
       }
 
   d3.select(this.chart)                         // drag the points of the curve
@@ -165,7 +187,7 @@ plot = function(elemid, dataset, params) {
           .attr("font-family", "Times New Roman")
           .attr("font-size", "20px")
   }
-  this.redraw_axes()();
+  this.redraw_all()();
   
   make_brush = function(){                // zoom box with brush tool
       self.brush = self.vis.append("g")
@@ -179,39 +201,37 @@ plot = function(elemid, dataset, params) {
          ); // end call
   }
   
-  set_view = function(extent){          // set the view for a given extent double list. 
-      x1 = self.x.invert(extent[0][0])
-      x2 = self.x.invert(extent[1][0])
-      y1 = self.y.invert(extent[0][1])
-      y2 = self.y.invert(extent[1][1])
-      self.x.domain([x1,x2]);
-      self.y.domain([y1,y2]);
-      self.list_domains.push([[x1,x2],[y1,y2]])
+  set_view = function(extent){                      // set the view for a given extent double list. 
+        x1 = self.x.invert(extent[0][0]); x2 = self.x.invert(extent[1][0]) // x1, x2
+        y1 = self.y.invert(extent[0][1]); y2 = self.y.invert(extent[1][1])  // y1, y2
+        self.x.domain([x1,x2]);                     // set x domain
+        self.y.domain([y1,y2]);                     // set y domain
+        self.list_domains.push([[x1,x2],[y1,y2]])       // save in history
   }
   set_view([[0,0],[this.size.width, this.size.height]]) // Save the first view in self.list_domains (Initialisation)
   
-  var desactivate_all_not = function(avoid){  // deasctivate all the tools but.. 
+  var desactivate_all_not = function(avoid){  // desactivate all the tools but.. 
       if (avoid != 'b'){
           d3.selectAll(".brush").remove();  // desactivate brush
           self.brush_active = false;
         }
   }
   
-  $(document).keydown(function(event){          // add and remove circles.. 
+  $(document).keydown(function(event){             // add and remove circles.. 
       if(event.keyCode == "c".charCodeAt(0)-32){
           self.show_circle = !self.show_circle;
           self.vis.selectAll('circle').remove()
-          self.redraw_axes()();
+          self.redraw_all()();
       } // end if
       if(event.keyCode == "w".charCodeAt(0)-32){        // home view
           var elem_first = self.list_domains[0]
           self.x.domain(elem_first[0]);
           self.y.domain(elem_first[1]);
-          self.redraw_axes()();
+          self.redraw_all()();
           } // end if
       if(event.keyCode == "q".charCodeAt(0)-32){    // Apply the zoom
           set_view(extent)
-          self.redraw_axes()();
+          self.redraw_all()();
           d3.selectAll(".brush").remove();
           make_brush()                  // remake brush
       } // end if
@@ -231,7 +251,7 @@ plot = function(elemid, dataset, params) {
       if(event.keyCode == "d".charCodeAt(0)-32){ 
         desactivate_all_not('d')   
         self.drag_zoom = ! self.drag_zoom; // toggle on zoom
-        self.redraw_axes()();
+        self.redraw_all()();
        } // end if
   }) // end keydown
 };
@@ -307,7 +327,7 @@ plot.prototype.mouseup = function() { // mouse in its normal state
   }
 }
 
-plot.prototype.redraw_axes = function() {         // redraw_axes the whole plot
+plot.prototype.redraw_all = function() {         // redraw_all the whole plot
   var self = this;
   return function() {
     var tx = function(d) { 
@@ -364,7 +384,7 @@ plot.prototype.redraw_axes = function() {         // redraw_axes the whole plot
     gy.exit().remove();
     if (self.drag_zoom == true){
       self.plot.call(d3.behavior.zoom().x(self.x).y(self.y)
-                                .on("zoom", self.redraw_axes())
+                                .on("zoom", self.redraw_all())
                                 )}// end if
     self.update();    // update the whole plot
   }  
