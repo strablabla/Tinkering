@@ -222,13 +222,14 @@ make_plot = function(elemid, dataset, params) {
           self.vis.selectAll('circle').remove()
           self.redraw_all()();
       } // end if
-      if(event.keyCode == "w".charCodeAt(0)-32){        // home view
+      if(event.keyCode == "w".charCodeAt(0)-32){                            // home view
+          desactivate_all_not('w')   // desactivate all the other tools
           var elem_first = self.list_domains[0]
           self.x.domain(elem_first[0]);
           self.y.domain(elem_first[1]);
           self.redraw_all()();
           } // end if
-      if(event.keyCode == "q".charCodeAt(0)-32){    // Apply the zoom
+      if(event.keyCode == "q".charCodeAt(0)-32){                        // Apply the zoom
           set_view(extent)
           self.redraw_all()();
           d3.selectAll(".brush").remove();
@@ -238,9 +239,9 @@ make_plot = function(elemid, dataset, params) {
              alert(self.list_extent)
              alert(self.list_extent.length)
             }
-      if(event.keyCode == "b".charCodeAt(0)-32){    // select the brush tool
+      if(event.keyCode == "b".charCodeAt(0)-32){                    // select the brush tool
         if (self.brush_active == true){
-            desactivate_all_not('b')
+            desactivate_all_not('b') // desactivate all the other tools
         }
         else{
             make_brush();
@@ -248,8 +249,8 @@ make_plot = function(elemid, dataset, params) {
             }
        } // end if
       if(event.keyCode == "d".charCodeAt(0)-32){ 
-        desactivate_all_not('d')   
-        self.drag_zoom = ! self.drag_zoom; // toggle on zoom
+        desactivate_all_not('d')   // desactivate all the other tools
+        self.drag_zoom = ! self.drag_zoom;                          // toggle drag_zoom
         self.redraw_all()();
        } // end if
   }) // end keydown
