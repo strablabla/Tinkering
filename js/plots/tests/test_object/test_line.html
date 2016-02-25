@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.node .selected {
+  stroke: red;
+}
+
+
+.circle,
+.line {
+  fill: none;
+  stroke: black;
+  stroke-width: 1.5px;
+}
+
+/*stroke: steelblue;*/
+
+circle {
+  fill: #fff;
+  fill-opacity: .2;
+  cursor: move;
+}
+
+.link {
+  stroke: #999;
+}
+
+.brush .extent {
+  fill-opacity: .1;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+</style>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+
+<div id="main"></div>
+
+<script>
+
+var width = 960,
+    height = 500;
+    
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+
+
+    line_eg = function(svg){          // Sequence line
+      svg.append("line")
+         .attr('x1', 30)
+         .attr('y1', 30)
+         .attr('x2', 300)
+         .attr('y2', 300)
+         .attr('stroke', 'black')
+         .attr('class', 'baseline')
+    }
+
+line_eg(svg)
+
+
+
+</script>
+
+</body>

@@ -188,6 +188,7 @@ make_plot = function(elemid, dataset, params) {
   }
   this.redraw_all()();
   
+
   make_brush = function(){                // zoom box with brush tool
       self.brush = self.vis.append("g")
          .attr("class", "brush")
@@ -195,9 +196,23 @@ make_plot = function(elemid, dataset, params) {
            .x(d3.scale.identity().domain([0, self.size.width]))
            .y(d3.scale.identity().domain([0, self.size.height])) 
            .on("brush", function() {
-           extent = d3.event.target.extent();
-           }) // end on
-         ); // end call
+               extent = d3.event.target.extent();
+                    }) // end on
+           .on("brushend", function(){
+                d3.selectAll(".zoom_interact").remove()
+                var rr = self.vis 
+                    .append('rect')
+                    .attr("x", extent[0][0])
+                    .attr("y", extent[0][1])
+                    .attr("width", function(){return Math.abs(extent[0][0]-extent[1][0])})
+                    .attr("height", function(){return Math.abs(extent[0][1]-extent[1][1])})
+                    .attr("class", "zoom_interact")
+                    .style("stroke","red")
+                    // .style("fill","green")
+                    .on('click', function(){zoom_in()})
+               })  // end on      
+            
+            ) // end call
   }
   
   set_view = function(extent){                      // set the view for a given extent double list. 
@@ -216,6 +231,16 @@ make_plot = function(elemid, dataset, params) {
         }
   }
   
+  var zoom_in = function(){
+      
+      d3.selectAll(".zoom_interact").remove()
+      set_view(extent)
+      self.redraw_all()();
+      d3.selectAll(".brush").remove();
+      make_brush()
+      
+  }
+  
   $(document).keydown(function(event){             // add and remove circles.. 
       if(event.keyCode == "c".charCodeAt(0)-32){
           self.show_circle = !self.show_circle;
@@ -230,10 +255,7 @@ make_plot = function(elemid, dataset, params) {
           self.redraw_all()();
           } // end if
       if(event.keyCode == "q".charCodeAt(0)-32){                        // Apply the zoom
-          set_view(extent)
-          self.redraw_all()();
-          d3.selectAll(".brush").remove();
-          make_brush()                  // remake brush
+          zoom_in()
       } // end if
       if(event.keyCode == "z".charCodeAt(0)-32){
              alert(self.list_extent)
@@ -270,6 +292,9 @@ make_plot.prototype.plot_drag = function() {
 
 make_plot.prototype.update = function() {
   var self = this;
+  
+
+
   var lines = this.vis.select("path").attr("d", this.line(this.dataset));
   if (this.show_circle == true){   // show circle for modifying the points.
       var circle = this.vis.select("svg").selectAll("circle")

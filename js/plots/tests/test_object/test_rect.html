@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.node .selected {
+  stroke: red;
+}
+
+
+.circle,
+.line {
+  fill: none;
+  stroke: black;
+  stroke-width: 1.5px;
+}
+
+/*stroke: steelblue;*/
+
+circle {
+  fill: #fff;
+  fill-opacity: .2;
+  cursor: move;
+}
+
+.link {
+  stroke: #999;
+}
+
+.brush .extent {
+  fill-opacity: .1;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+</style>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+
+<div id="main"></div>
+
+<script>
+
+var width = 960,
+    height = 500;
+    
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+
+
+    // var rect = svg
+    //      .selectAll("grad_rect")
+    //      .append("rect")
+    //      .attr("x", 200) // -d.width*10
+    //      .attr("y", 200)
+    //      .attr("width", 25)
+    //      .attr("height", 25)
+    //      .attr("class", "grad_rect")
+    //      .style("fill", "green")
+    //      .style("stroke", 'green')
+
+
+
+         var nodeValues = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
+         var colors = ["aqua", "darkblue", "black", "red", "green", "gray", "navy", "orange", "teal"];
+
+         // var main = d3.select("#main");
+         // 
+         // var svg = main.append("svg")
+         //     .data(nodeValues)
+         //     .attr("width", 300)
+         //     .attr("height", 300);
+
+         var elementAttr = function (index) {
+             return {
+                 x: (index % 3) * 100,
+                 y: Math.floor((index / 3)) * 100,
+                 width: 95,
+                 height: 95
+             }
+         }
+
+         var rectColor = function (index) {
+             return colors[index];
+         }
+
+         svg.selectAll("rect")
+                 .data(nodeValues).enter().append("rect")
+                 .each(function(d) {
+                     var attrs = elementAttr(d);
+                     d3.select(this).attr(attrs);
+                 })
+                 .style("fill", rectColor)
+                 .on("click", function() {
+                     d3.select(this).attr("width", 120);
+                 });
+
+
+</script>
+
+</body>
