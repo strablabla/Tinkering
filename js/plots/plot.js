@@ -49,11 +49,36 @@ make_plot = function(elemid, dataset, params) {
   // * q : zoom for mode brush
   // * d : toggle for drag and zoom.
   
-
+  var help = `
   
+   Commands
+   Each commands executed is supposed to eliminates the other one in possible conflict.
+   * c : show the circles for modifying the plot
+   * b : mode brush
+   * q : zoom for mode brush
+   * d : toggle for drag and zoom.
+  `
+  
+  simple_md = function(text){ // mini markdown for the help
+      var all_text = text.split('\n')
+      var htm = $('<div/>')
+      var ul = $('<ul/>').css({'text-align':'left'})
+      for (i in all_text){
+      	var text_insert = all_text[i].trim().slice(1)
+          if (all_text[i].match(/\s*\*/)){
+          ul.append($('<li/>').text(text_insert))
+          } // end if
+          if (all_text[i].match(/\s*\#/)){
+              htm.append($('<h1/>').text(text_insert))
+          } // end if
+      } // end for
+      htm.append(ul);
+      return htm.html()
+  } // end function
+
   var tr = function(w, h, ang){      // Translation and Rotation
      ang = ang || 0
-     return "translate(" + w + ","+ h + ") rotate("+ang+")"
+     return "translate(" + w + ","+ h + ") rotate(" + ang + ")"
       }
       
   // var add_html = function(node,htm,w,h,ang){ // adding html in the plot
@@ -189,7 +214,6 @@ make_plot = function(elemid, dataset, params) {
   }
   this.redraw_all()();
   
-
   make_brush = function(){                // zoom box with brush tool
       self.brush = self.vis.append("g")
          .attr("class", "brush")
@@ -242,8 +266,14 @@ make_plot = function(elemid, dataset, params) {
       
   }
   
-  $(document).keydown(function(event){             // add and remove circles.. 
-      if(event.keyCode == "c".charCodeAt(0)-32){
+  $(document).keydown(function(event){             
+      if(event.keyCode == "h".charCodeAt(0)-32){    // "h", key for help documentation
+         
+              $('.alertify .alert > *').css({'text-align':'left'});
+              alertify.alert(simple_md(help))
+             
+        } // end if key code
+      if(event.keyCode == "c".charCodeAt(0)-32){    // add and remove circles.. 
           self.show_circle = !self.show_circle;
           self.vis.selectAll('circle').remove()
           self.redraw_all()();
