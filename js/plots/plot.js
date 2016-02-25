@@ -41,6 +41,7 @@ make_plot = function(elemid, dataset, params) {
   this.drag_zoom = false
   this.brush_active = false
   this.list_domains = []
+  this.zoom_margin = 20
   // Commands
   // Each commands executed is supposed to eliminates the other one in possible conflict.
   // * c : show the circles for modifying the plot
@@ -202,16 +203,16 @@ make_plot = function(elemid, dataset, params) {
                 d3.selectAll(".zoom_interact").remove()
                 var rr = self.vis 
                     .append('rect')
-                    .attr("x", extent[0][0])
-                    .attr("y", extent[0][1])
-                    .attr("width", function(){return Math.abs(extent[0][0]-extent[1][0])})
-                    .attr("height", function(){return Math.abs(extent[0][1]-extent[1][1])})
+                    .attr("x", extent[0][0]+self.zoom_margin/2)
+                    .attr("y", extent[0][1]+self.zoom_margin/2)
+                    .attr("width", function(){return Math.abs(extent[0][0]-extent[1][0])-self.zoom_margin})
+                    .attr("height", function(){return Math.abs(extent[0][1]-extent[1][1])-self.zoom_margin})
                     .attr("class", "zoom_interact")
                     .style("stroke","red")
-                    // .style("fill","green")
+                    .style("fill","red")
+                    .style('opacity', .15)
                     .on('click', function(){zoom_in()})
                })  // end on      
-            
             ) // end call
   }
   
@@ -293,8 +294,6 @@ make_plot.prototype.plot_drag = function() {
 make_plot.prototype.update = function() {
   var self = this;
   
-
-
   var lines = this.vis.select("path").attr("d", this.line(this.dataset));
   if (this.show_circle == true){   // show circle for modifying the points.
       var circle = this.vis.select("svg").selectAll("circle")
