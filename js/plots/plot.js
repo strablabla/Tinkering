@@ -94,8 +94,15 @@ make_plot = function(elemid, dataset, params) {
       newtext = node.append("text").style("text-anchor", "middle")
           .attr("transform", tr(w,h, ang)) 
           .text(label)
+          .on("click",function(){
+              alert($(this).prop('tagName'))
+              // var input = .val($(this).text('hello'));
+                //$(this).replaceWith($('<div/>').text("hello"));
+              }) // end on
        return newtext
       }
+      
+
   var add_txt_axis = function(node, label,w,h,ang){    // adding axis, (for Title and axis)
       newax = add_txt(node, label,w,h,ang)
       newax.attr('class','axis')
