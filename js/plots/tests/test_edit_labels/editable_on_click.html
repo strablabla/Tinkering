@@ -5,30 +5,28 @@
 <script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 
 <div class="editable">Editable text</div>
-<button id="save">Save</button> 
 
 <script>
 
 var prep_edit = function(){
+    $('<button/>').text("Save").attr("id",'save').insertAfter($(".editable"));
     $("#save").toggle()
     $(".editable").click(function() {
-        var $this = $(this);
         var input = $('<input class="editing" />').val($(this).text());
-        $(this).replaceWith(input);
-        $this.attr('editing', 1);
+        $(this).replaceWith(input).attr('editing', 1);
         $("#save").toggle()
     });
+    $("#save").click(function() {
+        $("#save").remove();
+        $(document).find('input.editing').each(function() {
+             var div = $('<div class="editable" />').text($(this).val());
+                    $(this).replaceWith(div);
+                    prep_edit()
+            }); // end each
+        }) // end click
 }
 
 prep_edit()
-
-$("#save").click(function() {
-    $(document).find('input.editing').each(function() {
-         var div = $('<div class="editable" />').text($(this).val());
-                $(this).replaceWith(div);
-                prep_edit()
-        });
-})
 
 
 </script>

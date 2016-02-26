@@ -57,7 +57,9 @@ make_plot = function(elemid, dataset, params) {
    * b : mode brush
    * q : zoom for mode brush
    * d : toggle for drag and zoom.
-  `
+
+  ` /// Becareful, end of help
+  
   
   simple_md = function(text){ // mini markdown for the help
       var all_text = text.split('\n')
@@ -94,11 +96,12 @@ make_plot = function(elemid, dataset, params) {
       newtext = node.append("text").style("text-anchor", "middle")
           .attr("transform", tr(w,h, ang)) 
           .text(label)
-          .on("click",function(){
-              alert($(this).prop('tagName'))
-              // var input = .val($(this).text('hello'));
-                //$(this).replaceWith($('<div/>').text("hello"));
-              }) // end on
+          .attr("id", "editable")
+          // .on("click",function(){
+          //     alert($(this).prop('tagName'))
+          //     // var input = .val($(this).text('hello'));
+          //       //$(this).replaceWith($('<div/>').text("hello"));
+          //     }) // end on
        return newtext
       }
       
@@ -122,7 +125,6 @@ make_plot = function(elemid, dataset, params) {
     "height": this.cy - this.padding.top  - this.padding.bottom
   };
   
-
   make_scale = function(lim, size, inv){            // scale for the axis
       var inv = inv || false
       if (!inv){interv = [lim[0], lim[1]]} else {interv = [lim[1], lim[0]]}
@@ -169,7 +171,6 @@ make_plot = function(elemid, dataset, params) {
       // htm = '<div style="width: 150px; color:blue">\
       //         This is some information about whatever</div>'
       // add_html(this.vis, htm, 100, 130, 0)
-
 
   if (this.drag_zoom == true){                  // drag and zoom of the whole plot
     alert('permitting drag')
@@ -315,7 +316,7 @@ make_plot = function(elemid, dataset, params) {
        } // end if
   }) // end keydown
 };
-  
+
 //
 // plot methods
 //
@@ -329,8 +330,8 @@ make_plot.prototype.plot_drag = function() {
 };
 
 make_plot.prototype.update = function() {
+  // update graph, axes, labels, circles..
   var self = this;
-  
   var lines = this.vis.select("path").attr("d", this.line(this.dataset));
   if (this.show_circle == true){   // show circle for modifying the points.
       var circle = this.vis.select("svg").selectAll("circle")
@@ -349,11 +350,11 @@ make_plot.prototype.update = function() {
             return self.x(d.x); })
           .attr("cy",    function(d) { return self.y(d.y); });
       circle.exit().remove();
-  }// end if show circle
+      }// end if show circle
   if (d3.event && d3.event.keyCode) {
     d3.event.preventDefault();
     d3.event.stopPropagation();
-  }
+    } // end if
 }
 
 make_plot.prototype.datapoint_drag = function() {    // moving points

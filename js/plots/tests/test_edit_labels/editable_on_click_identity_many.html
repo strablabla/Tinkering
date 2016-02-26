@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<body>
+<script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+
+<text class="hup" >Editable_text</text>
+<div></div>
+<text class="kludge">ouppss</text>
+
+<script>
+
+var prep_edit = function(){
+    $('text').each(function(){
+        var txt = $(this).text()
+        $('<button/>').text("Save")
+                      .attr("id",'save'+txt)
+                      .insertAfter($(this).addClass("editable"));
+        $(this).next().toggle();        // hide the button
+       })                              // end each
+    $(".editable").click(function() {
+        var next = $(this).next().toggle(); // make button appear
+        next.click(function() {
+             $(this).remove(); // remove the button
+                 $(document).find('input.editing').each(function() {
+                      var div = $('<text id="editable" />').text($(this).val());
+                             $(this).replaceWith(div);
+                             prep_edit() // reinitialize
+                     }); // end each
+             }) // end click next
+        var input = $('<input class="editing" />').val($(this).text());
+        $(this).replaceWith(input).attr('editing', 1);
+        }); // end click editable
+      
+} //
+
+prep_edit()
+
+
+</script>
+
+</body>
