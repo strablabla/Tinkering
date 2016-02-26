@@ -15,7 +15,7 @@ var prep_edit = function(){
         var txt = $(this).text()
         $('<button/>').text("Save")
                       .attr("id",'save'+txt)
-                      .insertAfter($(this).addClass("editable"));
+                      .insertAfter($(this).addClass("editable")); // insert button and add class editable to text.
         $(this).next().toggle();        // hide the button
        })                              // end each
     $(".editable").click(function() {
@@ -23,13 +23,13 @@ var prep_edit = function(){
         next.click(function() {
              $(this).remove(); // remove the button
                  $(document).find('input.editing').each(function() {
-                      var div = $('<text id="editable" />').text($(this).val());
+                      var div = $('<text class="editable" />').text($(this).val());
                              $(this).replaceWith(div);
                              prep_edit() // reinitialize
                      }); // end each
              }) // end click next
         var input = $('<input class="editing" />').val($(this).text());
-        $(this).replaceWith(input).attr('editing', 1);
+        $(this).replaceWith(input); 
         }); // end click editable
       
 } //

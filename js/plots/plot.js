@@ -61,6 +61,32 @@ make_plot = function(elemid, dataset, params) {
   ` /// Becareful, end of help
   
   
+
+  
+  // var prep_edit = function(){
+  //     $('text').each(function(){
+  //         var txt = $(this).text()
+  //         $('<button/>').text("Save")
+  //                       .attr("id",'save'+txt)
+  //                       .insertAfter($(this).addClass("editable"));
+  //         $(this).next().toggle();        // hide the button
+  //        })                              // end each
+  //     $(".editable").click(function() {
+  //         var next = $(this).next().toggle(); // make button appear
+  //         next.click(function() {
+  //              $(this).remove(); // remove the button
+  //                  $(document).find('input.editing').each(function() {
+  //                       var div = $('<text class="editable" />').text($(this).val());
+  //                              $(this).replaceWith(div);
+  //                              prep_edit() // reinitialize
+  //                      }); // end each
+  //              }) // end click next
+  //         var input = $('<input class="editing" />').val($(this).text());
+  //         $(this).replaceWith(input).attr('editing', 1);
+  //         }); // end click editable
+  // 
+  // } //
+  
   simple_md = function(text){ // mini markdown for the help
       var all_text = text.split('\n')
       var htm = $('<div/>')
@@ -315,6 +341,37 @@ make_plot = function(elemid, dataset, params) {
         self.redraw_all()();
        } // end if
   }) // end keydown
+  
+  
+ 
+  
+  // var prep_edit = function(){
+  //     $('text').each(function(){
+  //         var txt = $(this).text()
+  //         $('<button/>').text("Save")
+  //                       .attr("id",'save'+txt)
+  //                       .insertAfter($(this).attr("class",$(this).attr("class")+" editable")); // insert button and add class editable to text.
+  //         $(this).next().toggle();        // hide the button
+  //        })                              // end each
+  //     $(".editable").click(function() {
+  //         var next = $(this).next().toggle(); // make button appear
+  //         next.click(function() {
+  //              $(this).remove(); // remove the button
+  //                  $(document).find('input.editing').each(function() {
+  //                       var div = $('<text class="editable" />').text($(this).val());
+  //                              $(this).replaceWith(div);
+  //                              prep_edit() // reinitialize
+  //                      }); // end each
+  //              }) // end click next
+  //         var input = $('<input class="editing" />').val($(this).text());
+  //         $(this).replaceWith(input); 
+  //         }); // end click editable
+  // 
+  // } //
+  // 
+  // prep_edit()
+  
+  
 };
 
 //
@@ -355,6 +412,7 @@ make_plot.prototype.update = function() {
     d3.event.preventDefault();
     d3.event.stopPropagation();
     } // end if
+  //prep_edit()
 }
 
 make_plot.prototype.datapoint_drag = function() {    // moving points
