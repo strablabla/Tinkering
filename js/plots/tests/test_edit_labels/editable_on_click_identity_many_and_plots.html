@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<body>
+<script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script type="text/javascript" src="http://mbostock.github.com/d3/d3.v2.js"></script>
+
+    <style type="text/css">
+/*      body { font: 13px sans-serif}*/
+      rect { fill: #fff; }
+      ul {
+        list-style-type: none;
+        margin: 0.5em 0em 0.5em 0em;
+        width: 100%; }
+        ul li {
+          display: table-cell;
+          vertical-align: middle;
+          margin: 0em;
+          padding: 0em 1em; }
+      .axis { font-size: 1 em; }
+      .chart {
+        width: 600px;
+        height: 400px;
+        box-shadow: 0.5em 0.5em 0.7em;
+         }
+
+     rect  {
+         fill: none;
+         stroke: steelblue;
+         stroke-width: 2px; }
+
+    </style>
+
+
+<text class="hup" >Editable_text</text>
+<div></div>
+<text class="kludge">ouppss</text>
+<div></div>
+
+<script>
+
+
+var tr = function(w, h, ang){      // Translation and Rotation
+ ang = ang || 0
+ return "translate(" + w + ","+ h + ") rotate(" + ang + ")"
+  }
+  var add_html = function(node,htm,w,h,ang){ // adding html in the plot
+      var hh = 40
+      var htmnode = node.append('foreignObject')
+          .attr("transform", tr(w-50,h-hh+12,ang))
+          .attr('width', 200)
+          .attr('height', hh)
+          .append("xhtml:body")
+          .html(htm)
+      return htmnode
+      }
+
+svg = d3.select('body').append('svg')
+                .attr('height',300)
+                .attr('width',400)
+                .style("fill", "blue")
+
+// svg.append('text')
+//     .attr("transform", tr(100,50))
+//     .text("hello")
+
+// add_html(svg, '<input size="10"></input>', 100, 50)
+
+svg.append('text')
+    .attr("transform", tr(30,80))
+    .text("hipppp")
+    .attr('x', 30)
+    .attr('y', 80)
+    .attr('class', 'editable')
+
+// add_html(svg, '<input size="10"></input>', 30,80)
+
+// svg.append('text')
+//     .attr("transform", tr(30,120))
+//     .text("hipppp")
+
+// add_html(svg, '<input size="10"></input>', 90,120)
+
+var prep_edit = function(){
+    // $('text').each(function(node){
+    //     alert($(this).text())
+    //     // $(this).attr('class', $(this).attr('class')+ " editable")
+
+    //     // var htm = $('<input class="editing" />').val($(this).text())
+    //     // var input = add_html(node, htm, $(this).attr("x"), $(this).attr("y"))
+
+    // });
+    //                         // end each
+    $(".editable").click(function(){
+        alert($(this).text())
+        alert($(this).attr("x"))
+        alert($(this).attr("y"))
+        var htm = $('<input class="editing" />').val($(this).text())
+        var input = add_html(svg, htm, $(this).attr("x"), $(this).attr("y"))
+        alert(typeof(input))
+        $(this).replaceWith(input); 
+        //$(this).replaceWith('<div>ooo</div>'); 
+        }); // end click editable  
+
+} // end prep_edit
+
+prep_edit()
+
+
+
+</script>
+
+</body>
