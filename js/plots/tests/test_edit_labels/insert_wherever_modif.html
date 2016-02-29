@@ -47,7 +47,7 @@ window.getlocalmousecoord = function (svg, evt) {
     return localpoint;
 };
 
-window.createtext = function (localpoint, svg, txt) {
+window.createtext = function (localpoint, svg, txt, cl) {
     var myforeign = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
     var textdiv = document.createElement("div");
     //var textdiv = $("<div/>");
@@ -56,6 +56,7 @@ window.createtext = function (localpoint, svg, txt) {
     textdiv.appendChild(textnode);
     textdiv.setAttribute("contentEditable", "true");
     textdiv.setAttribute("width", "auto");
+    textdiv.setAttribute("class", cl);
     myforeign.setAttribute("width", "100%");
     myforeign.setAttribute("height", "100%");
     myforeign.classList.add("foreign"); //to make div fit text
@@ -83,7 +84,8 @@ $('#thesvg').click(function (evt) {
 });
 
 var svg = document.getElementById('thesvg');
-createtext({"x":30,"y":30}, svg, "hello")
+createtext({"x":30,"y":30}, svg, "hello", "lab1")
+$('.lab1').css({"background-color": "yellow", "font-size": "200%"})
 
 </script>
 

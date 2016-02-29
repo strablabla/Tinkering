@@ -84,6 +84,56 @@ make_plot = function(elemid, dataset, params) {
      ang = ang || 0
      return "translate(" + w + ","+ h + ") rotate(" + ang + ")"
       }
+
+  var mousedownonelement = false;
+
+window.getlocalmousecoord = function (svg, evt) {
+    var pt = svg.createSVGPoint();
+    pt.x = evt.clientX;
+    pt.y = evt.clientY;
+    var localpoint = pt.matrixTransform(svg.getScreenCTM().inverse());
+    localpoint.x = Math.round(localpoint.x);
+    localpoint.y = Math.round(localpoint.y);
+    return localpoint;
+};
+
+window.createtext = function (localpoint, svg, txt) {
+    var myforeign = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
+    var textdiv = document.createElement("div");
+    //var textdiv = $("<div/>");
+    var svgtxt = txt ||  "Click to edit"
+    var textnode = document.createTextNode(svgtxt);
+    textdiv.appendChild(textnode);
+    textdiv.setAttribute("contentEditable", "true");
+    textdiv.setAttribute("width", "auto");
+    myforeign.setAttribute("width", "100%");
+    myforeign.setAttribute("height", "100%");
+    myforeign.classList.add("foreign"); //to make div fit text
+    textdiv.classList.add("insideforeign"); //to make div fit text
+    textdiv.addEventListener("mousedown", elementMousedown, false);
+    myforeign.setAttributeNS(null, "transform", "translate(" + localpoint.x + " " + localpoint.y + ")");
+    svg.appendChild(myforeign);
+    myforeign.appendChild(textdiv);
+
+};
+
+function elementMousedown(evt) {
+    mousedownonelement = true;
+}
+
+
+// $('#thesvg').click(function (evt) {
+//     var svg = document.getElementById('thesvg');
+//     var localpoint = getlocalmousecoord(svg, evt);
+//     if (!mousedownonelement) {
+//         createtext(localpoint, svg);
+//     } else {
+//         mousedownonelement = false;
+//     }
+// });
+
+// var svg = document.getElementById('thesvg');
+// createtext({"x":30,"y":30}, svg, "hello")
       
   var add_html = function(node,htm,w,h,ang){ // adding html in the plot
       var htmnode = node.append('foreignObject')
@@ -96,16 +146,18 @@ make_plot = function(elemid, dataset, params) {
       }
   
   var add_txt = function(node,label,w,h,ang){    // adding text in the plot, position : (w, h), angle : ang
-      var newtext = node.append("text").style("text-anchor", "middle")
-          .attr("transform", tr(w,h, ang)) 
-          .text(label)
-          //.attr("id", "editable")
-          .on("click",function(){
-                var newhtm = add_html(node, '<input type="text"></input>', w, h)
+      createtext({"x":w,"y":h}, node, label)
+
+      // var newtext = node.append("text").style("text-anchor", "middle")
+      //     .attr("transform", tr(w,h, ang)) 
+      //     .text(label)
+      //     //.attr("id", "editable")
+      //     .on("click",function(){
+      //           var newhtm = add_html(node, '<input type="text"></input>', w, h)
                 
-                //$(this).replaceWith(newhtm); <button id="save">Save</button>
-              }) // end on
-       return newtext
+      //           //$(this).replaceWith(newhtm); <button id="save">Save</button>
+      //         }) // end on
+      //  return newtext
       }
 
     // var add_inp = function(node,label,w,h,ang){    // adding text in the plot, position : (w, h), angle : ang

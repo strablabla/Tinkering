@@ -117,25 +117,92 @@ make_plot = function(elemid, dataset, params) {
   //         .append("xhtml:body")
   //         .html(htm)
   //     }
-  
-  var add_txt = function(node,label,w,h,ang){    // adding text in the plot, position : (w, h), angle : ang
-      newtext = node.append("text").style("text-anchor", "middle")
-          .attr("transform", tr(w,h, ang)) 
-          .text(label)
-          .attr("id", "editable")
-          // .on("click",function(){
-          //     alert($(this).prop('tagName'))
-          //     // var input = .val($(this).text('hello'));
-          //       //$(this).replaceWith($('<div/>').text("hello"));
-          //     }) // end on
-       return newtext
-      }
+
+var mousedownonelement = false;
+
+window.getlocalmousecoord = function (svg, evt) {
+    var pt = svg.createSVGPoint();
+    pt.x = evt.clientX;
+    pt.y = evt.clientY;
+    var localpoint = pt.matrixTransform(svg.getScreenCTM().inverse());
+    localpoint.x = Math.round(localpoint.x);
+    localpoint.y = Math.round(localpoint.y);
+    return localpoint;
+};
+
+window.createtext = function (localpoint, svg, txt, cl) {
+    var myforeign = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
+    var textdiv = document.createElement("div");
+    //var textdiv = $("<div/>");
+    var svgtxt = txt ||  "Click to edit"
+    var textnode = document.createTextNode(svgtxt);
+    textdiv.appendChild(textnode);
+    textdiv.setAttribute("contentEditable", "true");
+    textdiv.setAttribute("width", "auto");
+    textdiv.setAttribute("class", cl);
+    myforeign.setAttribute("width", "100%");
+    myforeign.setAttribute("height", "100%");
+    myforeign.classList.add("foreign"); //to make div fit text
+    textdiv.classList.add("insideforeign"); //to make div fit text
+    textdiv.addEventListener("mousedown", elementMousedown, false);
+    myforeign.setAttributeNS(null, "transform", "translate(" + localpoint.x + " " + localpoint.y + ")");
+    svg.appendChild(myforeign);
+    myforeign.appendChild(textdiv);
+    return textdiv
+
+};
+
+function elementMousedown(evt) {
+    mousedownonelement = true;
+}
+
+
+// $('#thesvg').click(function (evt) {
+//     var svg = document.getElementById('thesvg');
+//     var localpoint = getlocalmousecoord(svg, evt);
+//     if (!mousedownonelement) {
+//         createtext(localpoint, svg);
+//     } else {
+//         mousedownonelement = false;
+//     }
+// });
+
+// var svg = document.getElementById('thesvg');
+// createtext({"x":30,"y":30}, svg, "hello")
       
+  var add_html = function(node,htm,w,h,ang){ // adding html in the plot
+      var htmnode = node.append('foreignObject')
+          .attr("transform", tr(w-100,h,ang))
+          .attr('width', 200)
+          .attr('height', 100)
+          .append("xhtml:body")
+          .html(htm)
+      return htmnode
+      }
+  
+  var add_txt = function(node,label,w,h,ang,cl){    // adding text in the plot, position : (w, h), angle : ang
+      alert(w+'  '+h)
+      alert(label)
+      createtext({"x":w,"y":h}, node, label, cl)
+
+      // var newtext = node.append("text").style("text-anchor", "middle")
+      //     .attr("transform", tr(w,h, ang)) 
+      //     .text(label)
+      //     //.attr("id", "editable")
+      //     .on("click",function(){
+      //           var newhtm = add_html(node, '<input type="text"></input>', w, h)
+                
+      //           //$(this).replaceWith(newhtm); <button id="save">Save</button>
+      //         }) // end on
+      //  return newtext
+      }
+  
 
   var add_txt_axis = function(node, label,w,h,ang){    // adding axis, (for Title and axis)
-      newax = add_txt(node, label,w,h,ang)
-      newax.attr('class','axis')
-      return newax
+      add_txt(node, label,w,h,ang,'axis_txt')
+      $('.axis_txt').attr('class','axis')
+                    .attr("id", label)
+      return $('#'+label)
       }
           
   this.padding = {                                  // padding
