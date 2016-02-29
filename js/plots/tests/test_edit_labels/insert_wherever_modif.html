@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<body>
+<script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script type="text/javascript" src="http://mbostock.github.com/d3/d3.v2.js"></script>
+
+<style>
+.foreign {
+    text-align: left;
+    //magically made the div fit the text
+}
+.insideforeign {
+    display: inline-block;
+}
+svg {
+    border:1px solid black;
+}
+
+</style>
+
+<svg id="thesvg" width="50%" height="100%"></svg>
+
+
+
+<script>
+var tr = function(w, h, ang){      // Translation and Rotation
+ ang = ang || 0
+ return "translate(" + w + ","+ h + ") rotate(" + ang + ")"
+  }
+
+// d3.select('#thesvg').append('text')
+//     .attr("transform", tr(20,30))
+//     .text("hello")
+//     .attr("contentEditable", "true")
+
+
+var mousedownonelement = false;
+
+window.getlocalmousecoord = function (svg, evt) {
+    var pt = svg.createSVGPoint();
+    pt.x = evt.clientX;
+    pt.y = evt.clientY;
+    var localpoint = pt.matrixTransform(svg.getScreenCTM().inverse());
+    localpoint.x = Math.round(localpoint.x);
+    localpoint.y = Math.round(localpoint.y);
+    return localpoint;
+};
+
+window.createtext = function (localpoint, svg, txt) {
+    var myforeign = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
+    var textdiv = document.createElement("div");
+    //var textdiv = $("<div/>");
+    var svgtxt = txt ||  "Click to edit"
+    var textnode = document.createTextNode(svgtxt);
+    textdiv.appendChild(textnode);
+    textdiv.setAttribute("contentEditable", "true");
+    textdiv.setAttribute("width", "auto");
+    myforeign.setAttribute("width", "100%");
+    myforeign.setAttribute("height", "100%");
+    myforeign.classList.add("foreign"); //to make div fit text
+    textdiv.classList.add("insideforeign"); //to make div fit text
+    textdiv.addEventListener("mousedown", elementMousedown, false);
+    myforeign.setAttributeNS(null, "transform", "translate(" + localpoint.x + " " + localpoint.y + ")");
+    svg.appendChild(myforeign);
+    myforeign.appendChild(textdiv);
+
+};
+
+function elementMousedown(evt) {
+    mousedownonelement = true;
+}
+
+
+$('#thesvg').click(function (evt) {
+    var svg = document.getElementById('thesvg');
+    var localpoint = getlocalmousecoord(svg, evt);
+    if (!mousedownonelement) {
+        createtext(localpoint, svg);
+    } else {
+        mousedownonelement = false;
+    }
+});
+
+var svg = document.getElementById('thesvg');
+createtext({"x":30,"y":30}, svg, "hello")
+
+</script>
+
+</body>
