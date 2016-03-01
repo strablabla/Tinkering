@@ -89,6 +89,7 @@
          stroke: steelblue;
          stroke-width: 2px; }
          
+
      .foreign {
          text-align: left;
          //magically made the div fit the text
@@ -99,7 +100,6 @@
      svg {
          border:1px solid black;
      }
-
     </style>
 
   <body>
@@ -122,7 +122,7 @@
     </div>
     <script >
     params = { "xlim": [0,60], "ylim": [-5,5], "title": "Visualization",
-                "xlabel": "time", "ylabel": "nb of counts", "color":"g", "fill":"#ffffff"}
+                "xlabel": "time", "ylabel": "#counts", "color":"g", "fill":"#ffffff"}
     plot("chart1", 'data/data_curve.json', params)
     </script>
     
@@ -133,6 +133,7 @@
     ae<br>
 
     <input>hello</input>
+
 
   </body>
 </html>

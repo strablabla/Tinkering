@@ -59,7 +59,8 @@ make_plot = function(elemid, dataset, params) {
    * d : toggle for drag and zoom.
 
   ` /// Becareful, end of help
-
+  
+  
   simple_md = function(text){ // mini markdown for the help
       var all_text = text.split('\n')
       var htm = $('<div/>')
@@ -81,6 +82,7 @@ make_plot = function(elemid, dataset, params) {
      ang = ang || 0
      return "translate(" + w + ","+ h + ") rotate(" + ang + ")"
       }
+      
 
 var mousedownonelement = false;
 
@@ -94,24 +96,22 @@ window.getlocalmousecoord = function (svg, evt) {
     return localpoint;
 };
 
-window.createtext = function (localpoint, svg, txt, cl, ang) {
+window.createtext = function (localpoint, svg, txt, cl) {
     var myforeign = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
     var textdiv = document.createElement("div");
-    var svgtxt = txt ||  "Click to edit";
-    var angle = ang || 0;
+    //var textdiv = $("<div/>");
+    var svgtxt = txt ||  "Click to edit"
     var textnode = document.createTextNode(svgtxt);
     textdiv.appendChild(textnode);
     textdiv.setAttribute("contentEditable", "true");
     textdiv.setAttribute("width", "auto");
     textdiv.setAttribute("class", cl);
-    textdiv.setAttribute("id", txt);
     myforeign.setAttribute("width", "100%");
-    myforeign.setAttribute("height", "60px");
+    myforeign.setAttribute("height", "100%");
     myforeign.classList.add("foreign"); //to make div fit text
     textdiv.classList.add("insideforeign"); //to make div fit text
     textdiv.addEventListener("mousedown", elementMousedown, false);
-    myforeign.setAttributeNS(null, "transform", "translate(" + localpoint.x + " " + localpoint.y + ") rotate(" + angle + ")");
-    //myforeign.setAttributeNS(null, "transform", "rotate(0)");
+    myforeign.setAttributeNS(null, "transform", "translate(" + localpoint.x + " " + localpoint.y + ")");
     svg.appendChild(myforeign);
     myforeign.appendChild(textdiv);
     return textdiv
@@ -122,20 +122,6 @@ function elementMousedown(evt) {
     mousedownonelement = true;
 }
 
-
-// $('#thesvg').click(function (evt) {
-//     var svg = document.getElementById('thesvg');
-//     var localpoint = getlocalmousecoord(svg, evt);
-//     if (!mousedownonelement) {
-//         createtext(localpoint, svg);
-//     } else {
-//         mousedownonelement = false;
-//     }
-// });
-
-// var svg = document.getElementById('thesvg');
-// createtext({"x":30,"y":30}, svg, "hello")
-      
   var add_html = function(node,htm,w,h,ang){ // adding html in the plot
       var htmnode = node.append('foreignObject')
           .attr("transform", tr(w-100,h,ang))
@@ -146,14 +132,18 @@ function elementMousedown(evt) {
       return htmnode
       }
   
-  var add_txt = function(label,w,h,ang,cl){    // adding text in the plot, position : (w, h), angle : ang
-      var vv = document.getElementById('vis');
-      createtext({"x":w,"y":h}, vv, label, cl, ang)  
+  var add_txt = function(node,label,w,h,ang,cl){    // adding text in the plot, position : (w, h), angle : ang
+      // alert(w+'  '+h)
+      // alert(label)
+      createtext({"x":w,"y":h}, node, label, cl)  
+
       }
   
-  var add_txt_axis = function(label,w,h,ang){    // adding axis, (for Title and axis)
-      add_txt(label,w,h,ang,'axis_txt')  
+
+  var add_txt_axis = function(node,label,w,h,ang){    // adding axis, (for Title and axis)
+      add_txt(node, label,w,h,ang,'axis_txt')  
       $('.axis_txt').addClass('axis')  
+                    .attr("id", label)
       return $('#'+label)  
       }  
           
@@ -191,10 +181,10 @@ function elementMousedown(evt) {
 
   datacount = this.size.width/30;
   
+
   this.vis = d3.select(this.chart).append("svg")
       .attr("width",  this.cx)
       .attr("height", this.cy)
-      .attr("id", "vis")
       .append("g")
         .attr("transform", tr(this.padding.left, this.padding.top));
 
@@ -203,21 +193,6 @@ function elementMousedown(evt) {
       .attr("height", this.size.height)
       .style("fill", fillplot) 
       .attr("pointer-events", "all")
-
-  if (this.drag_zoom == true){                  // drag and zoom of the whole plot
-    alert('permitting drag')
-      this.plot
-          .on("mousedown.drag", self.plot_drag())
-          .on("touchstart.drag", self.plot_drag())
-          .call(d3.behavior.zoom().x(this.x).y(this.y)
-          .on("zoom", this.redraw_all()));
-      }
-
-  d3.select(this.chart)                         // drag the points of the curve
-          .on("mousemove.drag", self.mousemove())
-          .on("touchmove.drag", self.mousemove())
-          .on("mouseup.drag",   self.mouseup())
-          .on("touchend.drag",  self.mouseup());
 
   this.vis.append("svg") // line attached to svg block"viewBox
       .attr("top", 0)
@@ -233,47 +208,21 @@ function elementMousedown(evt) {
 
   // add Chart Title
   if (this.title) {
-        tit = add_txt_axis(this.title, this.size.width/2, 20)
-        tit.css({"font-family": "Times New Roman","font-size": "25px"}) //"dy":"-1em",
+        tit = add_txt_axis(this.vis, this.title, this.size.width/2, 0)
+        tit.css({"dy":"-1em","font-family": "Times New Roman","font-size": "25px"})
         }
   // add the x-axis label
   if (this.xlabel) {
-      var xlab = add_txt_axis(this.xlabel, this.size.width/2+50, 1.5*this.size.height)
-          xlab.css({"font-family": "Times New Roman","font-size": "20px"}) //"dy":"2.4em", 
+      var xlab = add_txt_axis(this.vis, this.xlabel, this.size.width/2, this.size.height)
+      xlab.css({"dy":"2.4em", "font-family": "Times New Roman","font-size": "20px"})
         }
   // add y-axis label
   if (this.ylabel) {
-      var ylab = add_txt_axis(this.ylabel, 20, this.size.height, -90)
-          ylab.css({"font-family": "Times New Roman","font-size": "20px"})
+      var ylab = add_txt_axis(this.vis, this.ylabel, this.size.width/2, this.size.height)
+      ylab.attr("transform", tr(-40,this.size.height/2,-90))
+          .css({"font-family": "Times New Roman","font-size": "20px"})
         }
-    
   this.redraw_all()();
-  
-  make_brush = function(){                // zoom box with brush tool
-      self.brush = self.vis.append("g")
-         .attr("class", "brush")
-         .call(d3.svg.brush()
-           .x(d3.scale.identity().domain([0, self.size.width]))
-           .y(d3.scale.identity().domain([0, self.size.height])) 
-           .on("brush", function() {
-               extent = d3.event.target.extent();
-                    }) // end on
-           .on("brushend", function(){
-                d3.selectAll(".zoom_interact").remove()
-                var rr = self.vis 
-                    .append('rect')
-                    .attr("x", extent[0][0]+self.zoom_margin/2)
-                    .attr("y", extent[0][1]+self.zoom_margin/2)
-                    .attr("width", function(){return Math.abs(extent[0][0]-extent[1][0])-self.zoom_margin})
-                    .attr("height", function(){return Math.abs(extent[0][1]-extent[1][1])-self.zoom_margin})
-                    .attr("class", "zoom_interact")
-                    .style("stroke","red")
-                    .style("fill","red")
-                    .style('opacity', .15)
-                    .on('click', function(){zoom_in()})
-               })  // end on      
-            ) // end call
-  }
   
   set_view = function(extent){                      // set the view for a given extent double list. 
         x1 = self.x.invert(extent[0][0]); x2 = self.x.invert(extent[1][0]) // x1, x2
@@ -292,56 +241,12 @@ function elementMousedown(evt) {
   }
   
   var zoom_in = function(){
-      
       d3.selectAll(".zoom_interact").remove()
       set_view(extent)
       self.redraw_all()();
       d3.selectAll(".brush").remove();
       make_brush()
   }
-  
-  $(document).keydown(function(event){             
-      if(event.keyCode == "h".charCodeAt(0)-32){    // "h", key for help documentation
-              $('.alertify .alert > *').css({'text-align':'left'});
-              alertify.alert(simple_md(help))
-             
-        } // end if key code
-      if(event.keyCode == "c".charCodeAt(0)-32){    // add and remove circles.. 
-          self.show_circle = !self.show_circle;
-          self.vis.selectAll('circle').remove()
-          self.redraw_all()();
-      } // end if
-      if(event.keyCode == "w".charCodeAt(0)-32){                            // home view
-          desactivate_all_not('w')   // desactivate all the other tools
-          var elem_first = self.list_domains[0]
-          self.x.domain(elem_first[0]);
-          self.y.domain(elem_first[1]);
-          self.redraw_all()();
-          } // end if
-      if(event.keyCode == "q".charCodeAt(0)-32){                        // Apply the zoom
-          zoom_in()
-      } // end if
-      if(event.keyCode == "z".charCodeAt(0)-32){
-             alert(self.list_extent)
-             alert(self.list_extent.length)
-            }
-      if(event.keyCode == "b".charCodeAt(0)-32){                    // select the brush tool
-        if (self.brush_active == true){
-            desactivate_all_not('b') // desactivate all the other tools
-        }
-        else{
-            make_brush();
-            self.brush_active = true;
-            }
-       } // end if
-      if(event.keyCode == "d".charCodeAt(0)-32){ 
-        desactivate_all_not('d')   // desactivate all the other tools
-        self.drag_zoom = ! self.drag_zoom;                          // toggle drag_zoom
-        self.redraw_all()();
-       } // end if
-  }) // end keydown
-  
- 
 };
 
 //
