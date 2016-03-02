@@ -42,6 +42,9 @@ make_plot = function(elemid, dataset, params) {
   this.brush_active = false
   this.list_domains = []
   this.zoom_margin = 20
+  text_nb = 0
+  list_txt = []
+  insert_text = false
   // Commands
   // Each commands executed is supposed to eliminates the other one in possible conflict.
   // * c : show the circles for modifying the plot
@@ -99,6 +102,7 @@ window.createtext = function (localpoint, svg, txt, cl, ang) {
     var textdiv = document.createElement("div");
     var svgtxt = txt ||  "Click to edit";
     var angle = ang || 0;
+    var clss = cl || 'noclass'
     var textnode = document.createTextNode(svgtxt);
     textdiv.appendChild(textnode);
     textdiv.setAttribute("contentEditable", "true");
@@ -107,14 +111,12 @@ window.createtext = function (localpoint, svg, txt, cl, ang) {
     textdiv.setAttribute("id", txt);
     myforeign.setAttribute("width", "100%");
     myforeign.setAttribute("height", "60px");
-    myforeign.classList.add("foreign"); //to make div fit text
-    textdiv.classList.add("insideforeign"); //to make div fit text
+    myforeign.classList.add("foreign");              //to make div fit text
+    textdiv.classList.add("insideforeign");                   //to make div fit text
     textdiv.addEventListener("mousedown", elementMousedown, false);
     myforeign.setAttributeNS(null, "transform", "translate(" + localpoint.x + " " + localpoint.y + ") rotate(" + angle + ")");
-    //myforeign.setAttributeNS(null, "transform", "rotate(0)");
     svg.appendChild(myforeign);
     myforeign.appendChild(textdiv);
-    return textdiv
 
 };
 
@@ -122,19 +124,6 @@ function elementMousedown(evt) {
     mousedownonelement = true;
 }
 
-
-// $('#thesvg').click(function (evt) {
-//     var svg = document.getElementById('thesvg');
-//     var localpoint = getlocalmousecoord(svg, evt);
-//     if (!mousedownonelement) {
-//         createtext(localpoint, svg);
-//     } else {
-//         mousedownonelement = false;
-//     }
-// });
-
-// var svg = document.getElementById('thesvg');
-// createtext({"x":30,"y":30}, svg, "hello")
       
   var add_html = function(node,htm,w,h,ang){ // adding html in the plot
       var htmnode = node.append('foreignObject')
@@ -246,8 +235,12 @@ function elementMousedown(evt) {
       var ylab = add_txt_axis(this.ylabel, 20, this.size.height, -90)
           ylab.css({"font-family": "Times New Roman","font-size": "20px"})
         }
+        
+  add_html(this.vis, '<p><span class="glyphicon glyphicon-envelope"></span></p>', 60,30)
     
   this.redraw_all()();
+  
+
   
   make_brush = function(){                // zoom box with brush tool
       self.brush = self.vis.append("g")
@@ -289,6 +282,11 @@ function elementMousedown(evt) {
           d3.selectAll(".brush").remove();  // desactivate brush
           self.brush_active = false;
         }
+     if (avoid != 'i'){
+         if (insert_text == true){
+             $("#vis").off('click');
+         }
+     }
   }
   
   var zoom_in = function(){
@@ -301,31 +299,48 @@ function elementMousedown(evt) {
   }
   
   $(document).keydown(function(event){             
-      if(event.keyCode == "h".charCodeAt(0)-32){    // "h", key for help documentation
+      if(event.keyCode == "h".charCodeAt(0)-32 && event.altKey){    // "h", key for help documentation
               $('.alertify .alert > *').css({'text-align':'left'});
               alertify.alert(simple_md(help))
-             
         } // end if key code
-      if(event.keyCode == "c".charCodeAt(0)-32){    // add and remove circles.. 
+        
+     if(event.keyCode == "i".charCodeAt(0)-32 && event.altKey){    // "i", insert text
+        insert_text = ! insert_text;
+        $('#vis').click(function (evt) {
+            var svg = document.getElementById('vis');
+            var localpoint = getlocalmousecoord(svg, evt);
+            if (!mousedownonelement) {
+                createtext(localpoint, svg);
+            } else {
+                mousedownonelement = false;
+            }
+        }); // end vis click
+        if (insert_text == false){
+            $("#vis").off('click');
+        }
+        
+      } // end if key code
+        
+      if(event.keyCode == "c".charCodeAt(0)-32 && event.altKey){    // add and remove circles.. 
           self.show_circle = !self.show_circle;
           self.vis.selectAll('circle').remove()
           self.redraw_all()();
       } // end if
-      if(event.keyCode == "w".charCodeAt(0)-32){                            // home view
+      if(event.keyCode == "w".charCodeAt(0)-32 && event.altKey){                            // home view
           desactivate_all_not('w')   // desactivate all the other tools
           var elem_first = self.list_domains[0]
           self.x.domain(elem_first[0]);
           self.y.domain(elem_first[1]);
           self.redraw_all()();
           } // end if
-      if(event.keyCode == "q".charCodeAt(0)-32){                        // Apply the zoom
+      if(event.keyCode == "q".charCodeAt(0)-32 && event.altKey){                        // Apply the zoom
           zoom_in()
       } // end if
-      if(event.keyCode == "z".charCodeAt(0)-32){
+      if(event.keyCode == "z".charCodeAt(0)-32 && event.altKey){
              alert(self.list_extent)
              alert(self.list_extent.length)
             }
-      if(event.keyCode == "b".charCodeAt(0)-32){                    // select the brush tool
+      if(event.keyCode == "b".charCodeAt(0)-32 && event.altKey){                    // select the brush tool
         if (self.brush_active == true){
             desactivate_all_not('b') // desactivate all the other tools
         }
@@ -334,14 +349,13 @@ function elementMousedown(evt) {
             self.brush_active = true;
             }
        } // end if
-      if(event.keyCode == "d".charCodeAt(0)-32){ 
+      if(event.keyCode == "d".charCodeAt(0)-32 && event.altKey){ 
         desactivate_all_not('d')   // desactivate all the other tools
         self.drag_zoom = ! self.drag_zoom;                          // toggle drag_zoom
         self.redraw_all()();
        } // end if
   }) // end keydown
   
- 
 };
 
 //
