@@ -54,29 +54,41 @@ make_plot = function(elemid, dataset, params) {
   
   var help = `
   
-   Commands
-   Each commands executed is supposed to eliminates the other one in possible conflict.
+   # Commands
+   Each commands executed is supposed to eliminates the other ones in possible conflict.
    * c : show the circles for modifying the plot
    * b : mode brush
    * q : zoom for mode brush
    * d : toggle for drag and zoom.
 
   ` /// Becareful, end of help
+  
+  var tools = `
+  
+   # All tools
+   Click on the tool
+   * c : show the circles for modifying the plot
+   * b : mode brush
+   * q : zoom for mode brush
+   * d : toggle for drag and zoom.
+
+  ` /// Becareful, end of tools
 
   simple_md = function(text){ // mini markdown for the help
       var all_text = text.split('\n')
-      var htm = $('<div/>')
-      var ul = $('<ul/>').css({'text-align':'left'})
+      var htm = $('<div/>') // main html 
+      var ul = $('<ul/>') // preparing lists
       for (i in all_text){
-      	var text_insert = all_text[i].trim().slice(1)
+          var text_insert = all_text[i].trim() // cleaning
           if (all_text[i].match(/\s*\*/)){
-          ul.append($('<li/>').text(text_insert))
-          } // end if
-          if (all_text[i].match(/\s*\#/)){
-              htm.append($('<h1/>').text(text_insert))
-          } // end if
+              ul.append($('<li/>').text(text_insert.slice(1))) // Make li
+              } // end if
+          else if (all_text[i].match(/\s*\#/)){
+              htm.append($('<h1/>').text(text_insert.slice(1))) // Make h1
+              } // end if
+          else{htm.append($('<p/>').text(text_insert)).css({'text-align':'left'})}
       } // end for
-      htm.append(ul);
+      htm.append(ul); // Append the list at the end
       return htm.html()
   } // end function
 
@@ -124,7 +136,6 @@ function elementMousedown(evt) {
     mousedownonelement = true;
 }
 
-      
   var add_html = function(node,htm,w,h,ang){ // adding html in the plot
       var htmnode = node.append('foreignObject')
           .attr("transform", tr(w-100,h,ang))
@@ -240,8 +251,6 @@ function elementMousedown(evt) {
     
   this.redraw_all()();
   
-
-  
   make_brush = function(){                // zoom box with brush tool
       self.brush = self.vis.append("g")
          .attr("class", "brush")
@@ -298,29 +307,30 @@ function elementMousedown(evt) {
       make_brush()
   }
   
-  $(document).keydown(function(event){             
+  $(document).keydown(function(event){   
+      if(event.keyCode == "t".charCodeAt(0)-32 && event.altKey){    // "h", key for help documentation
+              $('.alertify .alert > *').css({'text-align':'left'});
+              alertify.alert(simple_md(tools))
+        } // end if key code          
       if(event.keyCode == "h".charCodeAt(0)-32 && event.altKey){    // "h", key for help documentation
               $('.alertify .alert > *').css({'text-align':'left'});
               alertify.alert(simple_md(help))
         } // end if key code
-        
-     if(event.keyCode == "i".charCodeAt(0)-32 && event.altKey){    // "i", insert text
-        insert_text = ! insert_text;
-        $('#vis').click(function (evt) {
-            var svg = document.getElementById('vis');
-            var localpoint = getlocalmousecoord(svg, evt);
-            if (!mousedownonelement) {
-                createtext(localpoint, svg);
-            } else {
-                mousedownonelement = false;
+      if(event.keyCode == "i".charCodeAt(0)-32 && event.altKey){    // "i", insert text
+            insert_text = ! insert_text;
+            $('#vis').click(function (evt) {
+                var svg = document.getElementById('vis');
+                var localpoint = getlocalmousecoord(svg, evt);
+                if (!mousedownonelement) {
+                    createtext(localpoint, svg); // insert text with mouse
+                } else {
+                    mousedownonelement = false;
+                }
+            }); // end vis click
+            if (insert_text == false){
+                $("#vis").off('click');
             }
-        }); // end vis click
-        if (insert_text == false){
-            $("#vis").off('click');
-        }
-        
       } // end if key code
-        
       if(event.keyCode == "c".charCodeAt(0)-32 && event.altKey){    // add and remove circles.. 
           self.show_circle = !self.show_circle;
           self.vis.selectAll('circle').remove()
