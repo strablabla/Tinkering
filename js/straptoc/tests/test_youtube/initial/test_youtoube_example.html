@@ -1,37 +1,20 @@
-div.onside {
-   position: fixed;
-   padding-left: 20px;
-   box-shadow: 0.5em 0.5em 0.7em;
-   right: 50px;
-   max-height: 500px;
-   background-color:#FFCC99; /*#FFF;*/
-   font-size:85%;
-   overflow: scroll;
- }
- 
- div.under {
-   position: fixed;
-   padding-bottom: 20px;
-   box-shadow: 0.5em 0.5em 0.7em;
-   right: 50px;
-   max-height: 500px;
-   background-color:#FFCC99; /*#FFF;*/
-   font-size:85%;
-   overflow: scroll;
- }
- 
- div.postit {
-    margin-left: 20px;
-    box-shadow: 0.5em 0.5em 0.7em;
-    right: 50px;
-    max-width: 200px;
-    max-height: 300px;
-    background-color:#FFFF00; /*#FFF;*/
-    font-size:85%;
-  }
-  
-.alertify-message {
-    text-align:left;
+<!DOCTYPE html>
+<html>
+
+<meta charset="UTF-8">
+<title>Straptoc local</title>
+
+<script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+
+<style>
+body {
+  text-align: center;
+  background-color: #1D1F20;
+  color: white;
+}
+
+a, a:visited {
+  color: white;  
 }
 
 .youtube {
@@ -52,7 +35,7 @@ iframe {
 .youtube .play {
     background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAERklEQVR4nOWbTWhcVRTHb1IJVoxGtNCNdal2JYJReC6GWuO83PM/59yUS3FRFARdFlwYP1CfiojQWt36sRCUurRIdVFXIn41lAoVdRGrG1M01YpKrWjiYmaSl8ybZJL3cd+YA//NLObd3++eO8x79z5jSq5Gw+8kov0AP8vMR5l1BtBZQM4B8ks75wCdZdYZZj5qLZ4hov2Nht9Z9vhKKSIaB/gI4M4w62KeAO6Mte4lYOq20FxrlqqOibhHmeWbvNC9ZfDX1mLae391aN6limO/gwgvAPJbWeAZuSDingdwXTBw7/0IsyaA/Fkh+KqOkD+YNfHej1QKD+y7iVlOhgLvFqFfNJvNGyuBJ+KDAF8MDd0tgS8y64OlgSdJMsysL4cG7SOHkyQZLhTee7+d2R2rAVy/S+Jd7/32ouBHAP4gNNRGQyTHc/84NhqNywZp5rvjjnnvt21aABFeCQ+RLwAf2hQ8s7sv9OCLk6AHNgQvIrvbfzKCD76g/O6cu7lf/iER/aQGgy448pExZmhdegAPhR9sObFWH1gT3lp7DaA/5bkIgJhZPgsNmz02novj+KqeApj1ubwXWe4kdyeznAgNvTpE/HQmvKqOMeuFogTUVQSRno+iaLRLAJF7uIgL9O4ubgL8aWgB7S44mNX+35YpICUiAvS9sBLkq1WzT+NFffl6AuoiApi6NT37h6sWkBIRZGkQ8YtLgyji6e1mBYTqCEBPG2Naz+0BWQgtoGoRgCzEsd9hAN1X5BfnFZASUfrSAFQNsyZ1FJASUVpHiLinDJG8U2cBZYogkrcNs5waBAGdstbeU9zdqpw0gPwwSAI6VUxHyFlDpOcHUUBBIuYNs14aZAE5RVwyzPr3/0EAEY0TyfGNjBWQvwZ+CTSbehfAH29mrID8bET0+0EUkAd8WYDOmqJ3ecsG30yr9wqRfm6Y+a1BEFDEjHfHvWmY9ck6CygHvBVr8Xhtb4ZE5HZA3y8DvBNA1TjnrmXWf+sioMwZX5V/VHXMGGMMoKdDCxCRvRWBdzKzdHEO+EisilbPyopHYqp6S9UCAsz4iojI7hUDAtyXVQgIDd6KnOoaWNkbI6FaPSuZGyMArsi7MZoloB4zviI/Nhr3X95jltwTRQmoIfgisy5ai+me67OI7fE4nrqjrqfK1t0eby0FPRB6oGVlchL3rgnfrq19RKbVBdhV9IOSwJmfmJi4vi/4ThERitwyCxVAFqydshuCX5awhQ9KtmuIWd8IDZED/nXT77rvVVv6sHRKwjYi91poqP7Dr+Y6JJ1VSZIMA3wkPNy6bX+o8Bcm0sXMdwM8Fxo0A3xORPaWBp6uPXsmbxCRD0NDL0dOANhVCXy6iAjMcjbcrMt3RITKwdMVRdFo+y5yvkL4eWZ+zHt/ZVD4dEVRNGotpst+dZZZH8k86lqn2pIvT/eqrNfn2xuyqYPZ8mv7s8pfn/8Pybm4TIjanscAAAAASUVORK5CYII=") no-repeat center center;
     background-size: 64px 64px;
-    position: relative;
+    position: absolute;
     height: 100%;
     width: 100%;
     opacity: .8;
@@ -65,3 +48,44 @@ iframe {
     filter: alpha(opacity=100);
 }
 
+.p {
+  margin-top: 60px;
+}
+</style>
+
+
+
+<div class="youtube" id="fsrJWUVoXeM" style="width:500px;height:281px;"></div>
+
+<div class="youtube" id="lR4tJr7sMPM" data-params="modestbranding=1&showinfo=0&controls=0&vq=hd720" style="width:640px;height:360px;"></div>
+
+<p class="p">Demo by <a href="http://codepen.io/mancko/" target="_blank">Alexis Ulrich</a>. <a href="http://www.sitepoint.com/faster-youtube-embeds-javascript/" target="_blank">See article</a>.</p>
+
+
+<script>
+"use strict";
+$(function() {
+    $(".youtube").each(function() {
+        // Based on the YouTube ID, we can easily find the thumbnail image
+        $(this).css('background-image', 'url(http://i.ytimg.com/vi/' + this.id + '/sddefault.jpg)');
+
+        // Overlay the Play icon to make it look like a video player
+        $(this).append($('<div/>', {'class': 'play'}));
+
+        $(document).delegate('#'+this.id, 'click', function() {
+            // Create an iFrame with autoplay set to true
+            var iframe_url = "https://www.youtube.com/embed/" + this.id + "?autoplay=1&autohide=1";
+            if ($(this).data('params')) iframe_url+='&'+$(this).data('params');
+
+            // The height and width of the iFrame should be the same as parent
+            var iframe = $('<iframe/>', {'frameborder': '0', 'src': iframe_url, 'width': $(this).width(), 'height': $(this).height() })
+
+            // Replace the YouTube thumbnail with YouTube HTML5 Player
+            $(this).replaceWith(iframe);
+        });
+    });
+ });
+ </script>
+    
+
+</html>

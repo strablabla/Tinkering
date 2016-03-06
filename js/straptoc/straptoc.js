@@ -220,7 +220,7 @@ var maketoc = function(){
     var reg_hyper = /\[\w*.*\]\(\w*.*\)/
     var reg_brack = /\[\w*.*\]/
     var reg_parent = /\(.*\w*.*\)/
-    var sel = [';;','§§']
+    var sel = ['§§'] // ';;',
     var debend = {';;' : {'deb' : '<iframe width='+'"' + param['vid_width']['var'] + '"' + 'height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
                    '§§': {'deb' : '<object width='+'"' + param['pdf_width']['var'] + '"' + ' height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
     $("p, li").each(function(){
@@ -309,6 +309,41 @@ var maketoc = function(){
             $(this).html(newhtm)
             }// end if
     })// end each
+
+
+
+ $('a').each(function(){
+        if ($(this).text().match(';;')){
+            var id = $(this).attr('href').split('v=')[1].trim()
+            var newtag = $('<div/>').addClass('youtube')
+                   .css({'width': '500px', 'height': '281px'})
+                   .attr('id', id)
+            $(this).replaceWith(newtag)
+
+    } // end if
+ }) // end each
+
+
+ $(".youtube").each(function() {
+     // Based on the YouTube ID, we can easily find the thumbnail image
+     $(this).css('background-image', 'url(http://img.youtube.com/vi/' + this.id + '/hqdefault.jpg)');
+     // Overlay the Play icon to make it look like a video player
+     $(this).append($('<div/>', {'class': 'play'}));
+     $(document).delegate('#'+this.id, 'click', function() {
+         // Create an iFrame with autoplay set to true
+         var iframe_url = "https://www.youtube.com/embed/" + this.id + "?autoplay=1&autohide=1";
+         if ($(this).data('params')) iframe_url+='&'+$(this).data('params');
+         // The height and width of the iFrame should be the same as parent
+         var iframe = $('<iframe/>', {'frameborder': '0', 'src': iframe_url, 'width': $(this).width(), 'height': $(this).height() })
+         var div = $('<div/>').css({'text-align':'center'})
+         // Replace the YouTube thumbnail with YouTube HTML5 Player
+         $(this).replaceWith(div.append(iframe));
+     });
+ });
+
+
+
+
 
 }// end maketoc  /\>\>\w*/
 

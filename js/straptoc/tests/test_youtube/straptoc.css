@@ -1,39 +1,3 @@
-div.onside {
-   position: fixed;
-   padding-left: 20px;
-   box-shadow: 0.5em 0.5em 0.7em;
-   right: 50px;
-   max-height: 500px;
-   background-color:#FFCC99; /*#FFF;*/
-   font-size:85%;
-   overflow: scroll;
- }
- 
- div.under {
-   position: fixed;
-   padding-bottom: 20px;
-   box-shadow: 0.5em 0.5em 0.7em;
-   right: 50px;
-   max-height: 500px;
-   background-color:#FFCC99; /*#FFF;*/
-   font-size:85%;
-   overflow: scroll;
- }
- 
- div.postit {
-    margin-left: 20px;
-    box-shadow: 0.5em 0.5em 0.7em;
-    right: 50px;
-    max-width: 200px;
-    max-height: 300px;
-    background-color:#FFFF00; /*#FFF;*/
-    font-size:85%;
-  }
-  
-.alertify-message {
-    text-align:left;
-}
-
 .youtube {
     background-position: center;
     background-repeat: no-repeat;
