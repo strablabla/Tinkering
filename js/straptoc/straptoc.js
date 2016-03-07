@@ -310,6 +310,13 @@ var maketoc = function(){
             $(this).html(newhtm)
             }// end if
     })// end each
+    
+    $("img").each(function(){
+        var reg_im = /\s*\d*x\d*\s*/
+        var sizeim = $(this).attr('alt').match(reg_im)[0];
+        $(this).attr('width',sizeim.split('x')[0]);
+        $(this).attr('height',sizeim.split('x')[1])
+        })
 
 
 
