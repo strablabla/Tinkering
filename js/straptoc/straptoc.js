@@ -17,6 +17,7 @@ var maketoc = function(){
      * insertion of tooltip : after h1 or h2, write the tooltip betweeen {}
      * double ^, is used to hide some text
      * Alt L for folding/unfolding lists.
+     * Set notoc to true for removing the TOC.
     `
     //https://github.com/strablabla/Tinkering/20d93b4/js/straptoc/straptoc.js 
     
@@ -42,6 +43,7 @@ var maketoc = function(){
     var reg_id = /--\w*--/; //regexp for identity
     var reg_col_sublist = reg_func('col_sublist') 
     var reg_col_toc = reg_func('col_toc')
+    var reg_notoc = reg_func('notoc')
     var reg_width_video = reg_func('width_video') 
     var reg_width_pdf = reg_func('width_pdf') 
     var reg_toggle_hide = reg_func('toggle_hide') 
@@ -50,11 +52,12 @@ var maketoc = function(){
     //
     var num_slider = 0
     
-    $('body').prepend($('<div/>').addClass('onside').attr('id',"toc")) // adds the Table of Contents at the beginning
+    
 
     param = {
              'color_sublist':{'reg':reg_col_sublist, 'cut':'§col_sublist', 'var': 'green'},
              'color_toc':{'reg':reg_col_toc, 'cut':'§col_toc', 'var': '#FFCC99'},
+             'notoc':{'reg':reg_notoc, 'cut':'§notoc', 'var': false},
              'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': '80%' },
              'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'},
              'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
@@ -97,6 +100,10 @@ var maketoc = function(){
                }// end if
         } // end for
     }); // end each
+    //alert(param['notoc']['var'])
+    if(param['notoc']['var'] == false){
+        $('body').prepend($('<div/>').addClass('onside').attr('id',"toc")) // adds the Table of Contents at the beginning
+    }
     
     $('.onside').css({'background-color' : param['color_toc']['var']}) // modifying backgnd color for TOC
     
