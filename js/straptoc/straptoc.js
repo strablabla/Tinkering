@@ -342,7 +342,12 @@ var maketoc = function(){
  });
 
 
-
+ $(document).keydown(function(event){   
+      
+     if(event.keyCode == "l".charCodeAt(0)-32 && event.altKey){    
+            $('ul').toggle()
+       } // end if key code
+ }) // end keydown
 
 
 }// end maketoc  /\>\>\w*/
