@@ -16,8 +16,9 @@ var maketoc = function(){
      * key "k", to make appear disappear the sliders.
      * insertion of tooltip : after h1 or h2, write the tooltip betweeen {}
      * double ^, is used to hide some text
+     * Alt L for folding/unfolding lists.
     `
-    //https://github.com/strablabla/Tinkering/211ec23/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/01dd584/js/straptoc/straptoc.js 
     
     simple_md = function(text){ // mini markdown for the help
         var all_text = text.split('\n')
