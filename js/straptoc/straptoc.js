@@ -18,7 +18,7 @@ var maketoc = function(){
      * double ^, is used to hide some text
      * Alt L for folding/unfolding lists.
     `
-    //https://github.com/strablabla/Tinkering/01dd584/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/20d93b4/js/straptoc/straptoc.js 
     
     simple_md = function(text){ // mini markdown for the help
         var all_text = text.split('\n')
