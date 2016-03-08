@@ -65,3 +65,73 @@ iframe {
     filter: alpha(opacity=100);
 }
 
+      rect { fill: #fff; }
+      .axis { font-size: 1 em; }
+      .chart {
+        width: 600px;
+        height: 400px;
+        box-shadow: 0.5em 0.5em 0.7em;
+         }
+      circle {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 2px; }
+      circle {
+        fill: white;
+        fill-opacity: 0.2;
+        cursor: move; }
+        circle.selected {
+          fill: #ff7f0e;
+          stroke: #ff7f0e; }
+        circle:hover {
+          fill: #ff7f0e;
+          stroke: #707f0e; }
+        circle.selected:hover {
+          fill: #ff7f0e;
+          stroke: #ff7f0e; }
+
+    .brush .extent {
+        fill-opacity: .2;
+        fill: #ff9999;
+        stroke: steelblue;
+        shape-rendering: crispEdges;
+      }
+    
+      div.infos {
+         position: fixed;
+         padding-left: 20px;
+         box-shadow: 0.5em 0.5em 0.7em;
+         max-height: 500px;
+         background-color:#FFCC99; /*#FFF;*/
+         font-size:85%;
+         overflow: scroll;
+       }
+       
+       .node {
+         stroke: #fff;
+         stroke-width: 1.5px;
+       }
+
+       .link {
+         stroke: #999;
+         stroke-opacity: .6;
+       }
+       
+     rect  {
+         fill: none;
+         stroke: steelblue;
+         stroke-width: 2px; }
+         
+     .foreign {
+         text-align: left;
+         //magically made the div fit the text
+     }
+     .insideforeign {
+         display: inline-block;
+     }
+     svg {
+         border:1px solid black;
+     }
+
+
+
