@@ -19,7 +19,8 @@ var maketoc = function(){
      * Alt L for folding/unfolding lists.
      * Set notoc to true for removing the TOC.
     `
-    //https://github.com/strablabla/Tinkering/20d93b4/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.css
     
     simple_md = function(text){ // mini markdown for the help
         var all_text = text.split('\n')
@@ -52,8 +53,6 @@ var maketoc = function(){
     //
     var num_slider = 0
     
-    
-
     param = {
              'color_sublist':{'reg':reg_col_sublist, 'cut':'§col_sublist', 'var': 'green'},
              'color_toc':{'reg':reg_col_toc, 'cut':'§col_toc', 'var': '#FFCC99'},
