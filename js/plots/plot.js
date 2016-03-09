@@ -45,11 +45,12 @@ make_plot = function(elemid, dataset, params) {
   text_nb = 0
   list_txt = []
   insert_text = false
+  zoomx = false
   // Commands
   // Each commands executed is supposed to eliminates the other one in possible conflict.
   // * c : show the circles for modifying the plot
   // * b : mode brush
-  // * q : zoom for mode brush
+  // * q : if b selected before, makes a zoom in x.. 
   // * d : toggle for drag and zoom.
   
   var help = `
@@ -259,6 +260,14 @@ function elementMousedown(evt) {
            .y(d3.scale.identity().domain([0, self.size.height])) 
            .on("brush", function() {
                extent = d3.event.target.extent();
+               if (zoomx ==true){
+	               d3.selectAll(".extent")
+	    				.attr('height', self.size.height)
+	    				.attr('y',0)
+	    			extent[0][1] = 0;
+	    			extent[1][1] = self.size.height;
+    			}
+
                     }) // end on
            .on("brushend", function(){
                 d3.selectAll(".zoom_interact").remove()
@@ -273,9 +282,13 @@ function elementMousedown(evt) {
                     .style("fill","red")
                     .style('opacity', .15)
                     .on('click', function(){zoom_in()})
+
+
+
                })  // end on      
             ) // end call
-  }
+
+  } // end make_brush
   
   set_view = function(extent){                      // set the view for a given extent double list. 
         x1 = self.x.invert(extent[0][0]); x2 = self.x.invert(extent[1][0]) // x1, x2
@@ -344,7 +357,7 @@ function elementMousedown(evt) {
           self.redraw_all()();
           } // end if
       if(event.keyCode == "q".charCodeAt(0)-32 && event.altKey){                        // Apply the zoom
-          zoom_in()
+          zoomx = ! zoomx;
       } // end if
       if(event.keyCode == "z".charCodeAt(0)-32 && event.altKey){
              alert(self.list_extent)
