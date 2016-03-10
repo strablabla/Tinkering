@@ -50,7 +50,7 @@ make_plot = function(elemid, dataset, params) {
   // Each commands executed is supposed to eliminates the other one in possible conflict.
   // * c : show the circles for modifying the plot
   // * b : mode brush
-  // * q : if b selected before, makes a zoom in x.. 
+  // * q : makes a zoom in x.. 
   // * d : toggle for drag and zoom.
   
   var help = `
@@ -58,8 +58,8 @@ make_plot = function(elemid, dataset, params) {
    # Commands
    Each commands executed is supposed to eliminates the other ones in possible conflict.
    * c : show the circles for modifying the plot
-   * b : mode brush
-   * q : zoom for mode brush
+   * b : zoom with brush
+   * q : zoom in x with brush
    * d : toggle for drag and zoom.
 
   ` /// Becareful, end of help
@@ -70,7 +70,7 @@ make_plot = function(elemid, dataset, params) {
    Click on the tool
    * c : show the circles for modifying the plot
    * b : mode brush
-   * q : zoom for mode brush
+   * q : zoom in x with brush
    * d : toggle for drag and zoom.
 
   ` /// Becareful, end of tools
@@ -261,14 +261,14 @@ function elementMousedown(evt) {
            .on("brush", function() {
                extent = d3.event.target.extent();
                if (zoomx ==true){
-	               d3.selectAll(".extent")
-	    				.attr('height', self.size.height)
-	    				.attr('y',0)
-	    			extent[0][1] = 0;
-	    			extent[1][1] = self.size.height;
-    			}
+                   d3.selectAll(".extent")
+                        .attr('height', self.size.height)
+                        .attr('y',0)
+                    extent[0][1] = 0;
+                    extent[1][1] = self.size.height;
+                }
 
-                    }) // end on
+            }) // end on brush
            .on("brushend", function(){
                 d3.selectAll(".zoom_interact").remove()
                 var rr = self.vis 
@@ -283,9 +283,7 @@ function elementMousedown(evt) {
                     .style('opacity', .15)
                     .on('click', function(){zoom_in()})
 
-
-
-               })  // end on      
+               })  // end on brushend     
             ) // end call
 
   } // end make_brush
@@ -300,6 +298,11 @@ function elementMousedown(evt) {
   set_view([[0,0],[this.size.width, this.size.height]]) // Save the first view in self.list_domains (Initialisation)
   
   var desactivate_all_not = function(avoid){  // desactivate all the tools but.. 
+      if (avoid != 'q'){
+          zoomx = false;
+          // d3.selectAll(".brush").remove();  // desactivate brush
+          // self.brush_active = false;
+          }
       if (avoid != 'b'){
           d3.selectAll(".brush").remove();  // desactivate brush
           self.brush_active = false;
@@ -358,6 +361,14 @@ function elementMousedown(evt) {
           } // end if
       if(event.keyCode == "q".charCodeAt(0)-32 && event.altKey){                        // Apply the zoom
           zoomx = ! zoomx;
+          alert('zoomx '+zoomx)
+          if (self.brush_active == true){
+              desactivate_all_not('q') // desactivate all the other tools
+          }
+          else{
+              make_brush();
+              self.brush_active = true;
+              }
       } // end if
       if(event.keyCode == "z".charCodeAt(0)-32 && event.altKey){
              alert(self.list_extent)
