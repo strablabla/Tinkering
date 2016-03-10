@@ -277,7 +277,7 @@ function elementMousedown(evt) {
                     .attr("y", extent[0][1]+self.zoom_margin/2)
                     .attr("width", function(){return Math.abs(extent[0][0]-extent[1][0])-self.zoom_margin})
                     .attr("height", function(){return Math.abs(extent[0][1]-extent[1][1])-self.zoom_margin})
-                    .attr("class", "zoom_interact")
+                    .attr("class", "brush zoom_interact")
                     .style("stroke","red")
                     .style("fill","red")
                     .style('opacity', .15)
@@ -298,12 +298,7 @@ function elementMousedown(evt) {
   set_view([[0,0],[this.size.width, this.size.height]]) // Save the first view in self.list_domains (Initialisation)
   
   var desactivate_all_not = function(avoid){  // desactivate all the tools but.. 
-      if (avoid != 'q'){
-          zoomx = false;
-          // d3.selectAll(".brush").remove();  // desactivate brush
-          // self.brush_active = false;
-          }
-      if (avoid != 'b'){
+      if ((avoid != 'b') & (avoid != 'q') ){
           d3.selectAll(".brush").remove();  // desactivate brush
           self.brush_active = false;
         }
@@ -361,7 +356,7 @@ function elementMousedown(evt) {
           } // end if
       if(event.keyCode == "q".charCodeAt(0)-32 && event.altKey){                        // Apply the zoom
           zoomx = ! zoomx;
-          alert('zoomx '+zoomx)
+          //alert('zoomx '+zoomx)
           if (self.brush_active == true){
               desactivate_all_not('q') // desactivate all the other tools
           }
@@ -377,6 +372,7 @@ function elementMousedown(evt) {
       if(event.keyCode == "b".charCodeAt(0)-32 && event.altKey){                    // select the brush tool
         if (self.brush_active == true){
             desactivate_all_not('b') // desactivate all the other tools
+            if (zoomx == true){zoomx = false; alert("passing zoomxto false")}
         }
         else{
             make_brush();
