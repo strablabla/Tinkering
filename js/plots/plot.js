@@ -248,8 +248,20 @@ function elementMousedown(evt) {
           ylab.css({"font-family": "Times New Roman","font-size": "20px"})
         }
         
-  add_html(this.vis, '<p><span class="glyphicon glyphicon-envelope"></span></p>', 60,30)
-    
+  //add_html(this.vis, '<p><span class="glyphicon glyphicon-envelope"></span></p>', 60,30)
+  add_html(this.vis,'<button id="butt" class ="btn btn-success">oups</button>', 30,-40)
+  $('#butt').click(function(){alert("huuuu")});
+  add_html(this.vis,'<div id="nympho" class ="infos">aaaarrrrrrrrrrrrggggggh</div>', 450,-40)
+  $('#nympho').append($('<div/>').text("ouououou"));
+  $('#nympho').append($('<button/>').text('ping')
+              .attr('class','btn btn-warning')
+              .click(function(){alert("this is a button dear")}));
+    $('#nympho').append($('<button/>').text('pong')
+              .attr('class','btn btn-danger')
+              .click(function(){alert("zorgluubb")}));
+  $('#nympho').append($('<p/>').text('   '))
+
+
   this.redraw_all()();
   
   make_brush = function(){                // zoom box with brush tool
@@ -282,10 +294,8 @@ function elementMousedown(evt) {
                     .style("fill","red")
                     .style('opacity', .15)
                     .on('click', function(){zoom_in()})
-
                })  // end on brushend     
             ) // end call
-
   } // end make_brush
   
   set_view = function(extent){                      // set the view for a given extent double list. 
@@ -385,7 +395,6 @@ function elementMousedown(evt) {
         self.redraw_all()();
        } // end if
   }) // end keydown
-  
 };
 
 //
