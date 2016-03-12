@@ -46,6 +46,7 @@ make_plot = function(elemid, dataset, params) {
   list_txt = []
   insert_text = false
   zoomx = false
+  poszoom = 0
   // Commands
   // Each commands executed is supposed to eliminates the other one in possible conflict.
   // * c : show the circles for modifying the plot
@@ -69,9 +70,11 @@ make_plot = function(elemid, dataset, params) {
    # All tools
    Click on the tool
    * c : show the circles for modifying the plot
-   * b : mode brush
-   * q : zoom in x with brush
+   * b : box zoom 
+   * q : zoomx
    * d : toggle for drag and zoom.
+   * x : move backward in the zoom
+   * v : move forward in the zoom
 
   ` /// Becareful, end of tools
 
@@ -131,7 +134,7 @@ window.createtext = function (localpoint, svg, txt, cl, ang) {
     svg.appendChild(myforeign);
     myforeign.appendChild(textdiv);
 
-};
+}; // end createtext
 
 function elementMousedown(evt) {
     mousedownonelement = true;
@@ -283,6 +286,7 @@ function elementMousedown(evt) {
             }) // end on brush
            .on("brushend", function(){
                 d3.selectAll(".zoom_interact").remove()
+                poszoom = self.list_domains.length;
                 var rr = self.vis 
                     .append('rect')
                     .attr("x", extent[0][0]+self.zoom_margin/2)
@@ -297,13 +301,19 @@ function elementMousedown(evt) {
                })  // end on brushend     
             ) // end call
   } // end make_brush
+
+  new_view = function(view_coord){
+          self.x.domain(view_coord[0]);
+          self.y.domain(view_coord[1]);
+          self.redraw_all()();
+  }
   
   set_view = function(extent){                      // set the view for a given extent double list. 
         x1 = self.x.invert(extent[0][0]); x2 = self.x.invert(extent[1][0]) // x1, x2
         y1 = self.y.invert(extent[0][1]); y2 = self.y.invert(extent[1][1])  // y1, y2
         self.x.domain([x1,x2]);                     // set x domain
         self.y.domain([y1,y2]);                     // set y domain
-        self.list_domains.push([[x1,x2],[y1,y2]])       // save in history
+        self.list_domains.push([[x1,x2],[y1,y2]])       // save views in history
   }
   set_view([[0,0],[this.size.width, this.size.height]]) // Save the first view in self.list_domains (Initialisation)
   
@@ -327,17 +337,22 @@ function elementMousedown(evt) {
       d3.selectAll(".brush").remove();
       make_brush()
   }
+
+  var keyev = function(key, event){
+    //desactivate_all_not(key)
+    return (event.keyCode == key.charCodeAt(0)-32 && event.altKey)
+  }
   
   $(document).keydown(function(event){   
-      if(event.keyCode == "t".charCodeAt(0)-32 && event.altKey){    // "h", key for help documentation
+      if(keyev('t', event)){    // "h", key for help documentation
               $('.alertify .alert > *').css({'text-align':'left'});
               alertify.alert(simple_md(tools))
         } // end if key code          
-      if(event.keyCode == "h".charCodeAt(0)-32 && event.altKey){    // "h", key for help documentation
+      if(keyev('h', event)){    // "h", key for help documentation
               $('.alertify .alert > *').css({'text-align':'left'});
               alertify.alert(simple_md(help))
         } // end if key code
-      if(event.keyCode == "i".charCodeAt(0)-32 && event.altKey){    // "i", insert text
+      if(keyev('i', event)){    // "i", insert text
             insert_text = ! insert_text;
             $('#vis').click(function (evt) {
                 var svg = document.getElementById('vis');
@@ -352,19 +367,17 @@ function elementMousedown(evt) {
                 $("#vis").off('click');
             }
       } // end if key code
-      if(event.keyCode == "c".charCodeAt(0)-32 && event.altKey){    // add and remove circles.. 
+      if(keyev('c', event)){    // add and remove circles.. 
           self.show_circle = !self.show_circle;
           self.vis.selectAll('circle').remove()
           self.redraw_all()();
       } // end if
-      if(event.keyCode == "w".charCodeAt(0)-32 && event.altKey){                            // home view
+      if(keyev('w', event)){                            // home view
           desactivate_all_not('w')   // desactivate all the other tools
           var elem_first = self.list_domains[0]
-          self.x.domain(elem_first[0]);
-          self.y.domain(elem_first[1]);
-          self.redraw_all()();
+          new_view(elem_first)
           } // end if
-      if(event.keyCode == "q".charCodeAt(0)-32 && event.altKey){                        // Apply the zoom
+      if(keyev('q', event)){                        // Apply the zoom
           zoomx = ! zoomx;
           //alert('zoomx '+zoomx)
           if (self.brush_active == true){
@@ -375,11 +388,7 @@ function elementMousedown(evt) {
               self.brush_active = true;
               }
       } // end if
-      if(event.keyCode == "z".charCodeAt(0)-32 && event.altKey){
-             alert(self.list_extent)
-             alert(self.list_extent.length)
-            }
-      if(event.keyCode == "b".charCodeAt(0)-32 && event.altKey){                    // select the brush tool
+      if(keyev('b', event)){                    // select the brush tool
         if (self.brush_active == true){
             desactivate_all_not('b') // desactivate all the other tools
             if (zoomx == true){zoomx = false; alert("passing zoomxto false")}
@@ -389,13 +398,28 @@ function elementMousedown(evt) {
             self.brush_active = true;
             }
        } // end if
-      if(event.keyCode == "d".charCodeAt(0)-32 && event.altKey){ 
+      if(keyev('d', event)){ 
         desactivate_all_not('d')   // desactivate all the other tools
         self.drag_zoom = ! self.drag_zoom;                          // toggle drag_zoom
         self.redraw_all()();
        } // end if
+
+      if(keyev('x', event)){      // move backward in the zoom list
+          desactivate_all_not('x')   // desactivate all the other tools
+          var elem_prec = self.list_domains[poszoom-1]
+          poszoom += -1;
+          new_view(elem_prec)
+       } // end if
+
+      if(keyev('v', event)){      // move forward in the zoom list
+          desactivate_all_not('v')   // desactivate all the other tools
+          var elem_prec = self.list_domains[poszoom+1]
+          poszoom += 1;
+          new_view(elem_prec)
+       } // end if
+
   }) // end keydown
-};
+}; // end make_plot
 
 //
 // plot methods
