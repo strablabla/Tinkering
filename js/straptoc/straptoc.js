@@ -22,7 +22,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/fec6406/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.css
     
     simple_md = function(text){ // mini markdown for the help
@@ -442,7 +442,7 @@ make_plot = function(elemid, dataset, params) {
   // * q : zoom for mode brush
   // * d : toggle for drag and zoom.
   
-  var help = `
+  var help_plot = function(){/*
   
    # Commands
    Each commands executed is supposed to eliminates the other ones in possible conflict.
@@ -450,10 +450,9 @@ make_plot = function(elemid, dataset, params) {
    * b : mode brush
    * q : zoom for mode brush
    * d : toggle for drag and zoom.
-
-  ` /// Becareful, end of help
+   */}.toString().slice(14,-3)
   
-  var tools = `
+  var tools = function(){/*
   
    # All tools
    Click on the tool
@@ -461,8 +460,7 @@ make_plot = function(elemid, dataset, params) {
    * b : mode brush
    * q : zoom for mode brush
    * d : toggle for drag and zoom.
-
-  ` /// Becareful, end of tools
+   */}.toString().slice(14,-3)
 
   simple_md = function(text){ // mini markdown for the help
       var all_text = text.split('\n')
@@ -704,7 +702,7 @@ function elementMousedown(evt) {
         } // end if key code          
       if(event.keyCode == "h".charCodeAt(0)-32 && event.altKey){    // "h", key for help documentation
               $('.alertify .alert > *').css({'text-align':'left'});
-              alertify.alert(simple_md(help))
+              alertify.alert(simple_md(help_plot))
         } // end if key code
       if(event.keyCode == "i".charCodeAt(0)-32 && event.altKey){    // "i", insert text
             insert_text = ! insert_text;

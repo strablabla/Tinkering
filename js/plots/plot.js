@@ -54,7 +54,7 @@ make_plot = function(elemid, dataset, params) {
   // * q : makes a zoom in x.. 
   // * d : toggle for drag and zoom.
   
-  var help = `
+  var help_plot = function(){/*
   
    # Commands
    Each commands executed is supposed to eliminates the other ones in possible conflict.
@@ -62,10 +62,9 @@ make_plot = function(elemid, dataset, params) {
    * b : zoom with brush
    * q : zoom in x with brush
    * d : toggle for drag and zoom.
-
-  ` /// Becareful, end of help
+   */}.toString().slice(14,-3)
   
-  var tools = `
+  var tools = function(){/*
   
    # All tools
    Click on the tool
@@ -75,8 +74,7 @@ make_plot = function(elemid, dataset, params) {
    * d : toggle for drag and zoom.
    * x : move backward in the zoom
    * v : move forward in the zoom
-
-  ` /// Becareful, end of tools
+   */}.toString().slice(14,-3)
 
   simple_md = function(text){ // mini markdown for the help
       var all_text = text.split('\n')
@@ -350,7 +348,7 @@ function elementMousedown(evt) {
         } // end if key code          
       if(keyev('h', event)){    // "h", key for help documentation
               $('.alertify .alert > *').css({'text-align':'left'});
-              alertify.alert(simple_md(help))
+              alertify.alert(simple_md(help_plot))
         } // end if key code
       if(keyev('i', event)){    // "i", insert text
             insert_text = ! insert_text;
