@@ -4,7 +4,8 @@ var maketoc = function(){
     // format and transformed with strapdown in html code. 
     // Maketoc supposes the code is yet in html format.
     // The whole code uses extensively jQuery library.
-    var help = `
+
+    var help = function(){/*
     
      # Commands: 
      * :: , makes folding list. Begin close.
@@ -18,7 +19,9 @@ var maketoc = function(){
      * double ^, is used to hide some text
      * Alt L for folding/unfolding lists.
      * Set notoc to true for removing the TOC.
-    `
+     */}.toString().slice(14,-3)
+     //alert(help)
+
     //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.css
     
