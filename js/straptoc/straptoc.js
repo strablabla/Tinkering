@@ -22,7 +22,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/fec6406/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/edcbf25/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.css
     
     simple_md = function(text){ // mini markdown for the help

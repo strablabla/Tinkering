@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Plaque</title>
+
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/js/bootstrap-select.min.js"></script>
+    <script src="http://eligrey.com/demos/FileSaver.js/Blob.js"></script>
+    <script src="http://eligrey.com/demos/FileSaver.js/FileSaver.js"></script>
+    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.css">
+     <link rel="stylesheet" href="https:////cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/css/bootstrap-select.min.css">
+     
+
+<style>
+
+/*.well {
+  fill: #2f225d;
+  stroke: #afa2dc;
+}*/
+
+.well {
+  fill: #afa2dc;
+  stroke: #afa2dc;
+}
+
+.selected {
+  fill: #2f225d;
+  stroke: #2f225d;
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+p {
+  font: 12px sans-serif;
+  margin: 0 0 2px 0;
+  padding: 0;
+}
+
+.clear-button {
+  font: 14px sans-serif;
+  cursor: pointer;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.brush .extent {
+  stroke: #fff;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
+div.onside {
+   position: fixed;
+   padding-left: 20px;
+   padding-right: 20px;
+   padding-bottom: 20px;
+   box-shadow: 0.5em 0.5em 0.7em;
+   right: 50px;
+   max-height: 500px;
+   background-color:#FFCC99; /*#FFF;*/
+   font-size:85%;
+ }
+
+</style>
+<body>
+
+<script>
+
+size_rect = 10
+//spacing = 20
+
+plate = {'96':{'m':8,'n':12, 'spacing':40},'384':{'m':16,'n':24, 'spacing':25}}
+col_biotine = 'yellow'
+col_peptide = '#00ff99'
+col_peptide = '#afa2dc'
+
+var opt = function(val){
+	return $('<option/>').text(val).attr('value',val)
+	}
+var col1 = $('<div/>').attr('class',"col-sm-8")
+var col2 = $('<div/>').attr('class',"col-sm-4")
+var divonside = $('<div/>').attr('class','onside')
+
+var type_plate = $('<h3/>').css({'text-align':'left'})
+						   .text('type plate')
+var sel_plate = $('<select/>').attr('id','select_plate')
+              .attr('class','selectpicker')
+              .attr('data-width','70px')
+              .append(opt('96'))
+              .append(opt('384'))
+var inp = $('<input/>').attr('size',5) //.attr('type','submit')
+					   .keypress(function(event) {
+        					if (event.keyCode == 13) {
+            				alert('Domain is '+ $(this).val());
+        					}
+    					});
+
+var nameinput = $('<p/>').text('domain name : ')
+						 .append(inp)
+var command =  divonside.append(type_plate)
+						.append(sel_plate)
+						.append(nameinput)
+
+
+$('body').append(command)
+$('body').append(col1.append($('<h3/>').css({'text-align':'center'}).text('Plate designer')))
+$('body').append(col2)
+
+var tr = function(w, h, ang){      // Translation and Rotation
+   ang = ang || 0
+   return "translate(" + w + ","+ h + ") rotate(" + ang + ")"
+    }
+
+var add_html = function(node,htm,w,h,ang){ // adding html in the plot
+    var htmnode = node.append('foreignObject')
+        .attr("transform", tr(w-100,h,ang))
+        .attr('width', 200)
+        .attr('height', 100)
+        .append("xhtml:body")
+        .html(htm)
+    return htmnode
+    }
+
+d3.well_select = {};
+d3.well_select.tooltip = function(){
+    var tooltipDiv;
+    var bodyNode = d3.select('body').node();
+
+    function tooltip(selection){
+
+        selection.on('mouseover.tooltip', function(pD, pI){
+            // Clean up lost tooltips
+            d3.select('body').selectAll('div.tooltip').remove();
+            // Append tooltip
+            tooltipDiv = d3.select('body')
+                           .append('div')
+                           .attr('class', 'tooltip')
+            var absoluteMousePos = d3.mouse(bodyNode);
+            tooltipDiv.style({
+                left: (absoluteMousePos[0] + 10)+'px',
+                top: (absoluteMousePos[1] - 40)+'px',
+                'background-color': '#d8d5e4',
+                width: '65px',
+                height: '30px',
+                padding: '5px',
+                position: 'absolute',
+                'z-index': 1001,
+                'box-shadow': '0 1px 2px 0 #656565'
+            });
+
+            var first_line = '<p>X-Value: ' + pD.xcoord + '</p>'
+            var second_line = '<p>Y-Value: ' + pD.ycoord + '</p>'
+
+            tooltipDiv.html(first_line + second_line)
+        })
+        .on('mousemove.tooltip', function(pD, pI){
+            // Move tooltip
+            var absoluteMousePos = d3.mouse(bodyNode);
+            tooltipDiv.style({
+                left: (absoluteMousePos[0] + 10)+'px',
+                top: (absoluteMousePos[1] - 40)+'px'
+            });
+        })
+        .on('mouseout.tooltip', function(pD, pI){
+            // Remove tooltip
+            tooltipDiv.remove();
+        });
+    }
+
+    tooltip.attr = function(_x){
+        if (!arguments.length) return attrs;
+        attrs = _x;
+        return this;
+    };
+
+    tooltip.style = function(_x){
+        if (!arguments.length) return styles;
+        styles = _x;
+        return this;
+    };
+
+    return tooltip;
+};
+
+var make_plate = function(m,n, spacing){
+    // make a plate
+    well_col = '#afa2dc';
+    offsety = 0.75   // offset for last blocks not touching the bottom edge in y
+    offsetx = 0.25 // offset for the blocks on the left not touching the edges in x
+    var data = []; // list contianing the coordinates of the wells. 
+    for (var i = 0; i <= m*n-1 ; i++) { // make the position of the wells
+        data.push({xcoord: i%n+offsetx, ycoord: Math.floor(i/n)+offsety});
+    }
+
+    var margin = {top: 20, right: 20, bottom: 60, left: 100},
+        width = n*spacing - margin.left - margin.right,
+        height =  m*spacing - margin.top - margin.bottom;
+
+    var x = d3.scale.linear()
+        .range([0, width])
+        .domain([0, n]);
+
+    var y = d3.scale.linear()
+        .range([height, 0])
+        .domain([0, m]); 
+
+    var brush = d3.svg.brush()
+        .x(x)
+        .y(y)
+        .on("brush", brushmove)
+        .on("brushend", brushend);
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .attr('class','plate')
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+    for(i=0;i<m;i++){                // lines numbering
+      var letter = String.fromCharCode(65+i)
+      add_html(svg,'<p>'+letter+'</p>', margin.left-20, (i+1-offsety)*height/m)
+    }
+    for(i=0;i<n;i++){               // columns numbering
+      var j= i+1
+      add_html(svg,'<p>'+j+'</p>',(i+offsetx)*width/n+margin.left, margin.top-35)
+    }
+
+    svg.append("g")
+        .attr("class", "brush")
+        .call(brush)
+      .selectAll('rect')
+        .attr('height', height);
+
+    svg.append("defs").append("clipPath")
+        .attr("id", "clip")
+      .append("rect")
+        .attr("width", width)
+        .attr("height", height + 20);
+
+    wells = svg.selectAll(".well")
+        .data(data)
+      .enter().append("rect")
+        .attr("class", "well")
+        .attr("clip-path", "url(#clip)")
+        .attr("height", size_rect)
+        .attr("width", size_rect)
+        .attr("x", function(d) { return x(d.xcoord); })
+        .attr("y", function(d) { return y(d.ycoord); })
+        .attr("id", function(d){
+          var xcorr = d.xcoord+1-offsetx;
+          var ycorr = m-d.ycoord-1+offsety;
+          return String.fromCharCode(65+ycorr)+ xcorr
+        })
+        .call(d3.well_select.tooltip());
+
+    $('.well').click(function(){
+      if($(this).attr("class") == "well selected"){
+        //alert('has class selected');
+        $('.selected').css({'fill':well_col})
+      }
+      else{
+        $(this).css({'fill': well_col})
+      }
+    }) // end click
+
+    function brushmove() {
+      var extent = brush.extent();
+      wells.classed("selected", function(d) {
+        is_brushedx = extent[0][0]-0.5 <= d.xcoord && d.xcoord <= extent[1][0];
+        is_brushedy = extent[0][1]+0.5 <= d.ycoord && d.ycoord <= extent[1][1];
+        is_brushed = is_brushedx && is_brushedy;
+        return is_brushed;
+      });
+    }
+
+    function brushend() {
+      reset_axis();
+      wells.classed("selected", false);
+      d3.select(".brush").call(brush.clear());
+    }
+
+    function reset_axis() {
+      svg.transition().duration(500)
+       .select(".x.axis")
+       .call(xAxis);
+    }
+
+    var keyev = function(key, event){
+        return (event.keyCode == key.charCodeAt(0)-32 )
+      }
+      
+      $(document).keydown(function(event){   
+          if(keyev('t', event)){    //
+                show_coord = ! show_coord
+              alert(show_coord)
+            } // end if key code   
+          if(keyev('b', event)){    // color for biotine
+                well_col = col_biotine
+            } // end if key code 
+          if(keyev('p', event)){    // color for peptide
+                well_col = col_peptide
+            } // end if key code   
+          if(keyev('d', event)){    // deactivate biotine and peptide.
+                well_col = col_domain
+            } // end if key code  
+          if(keyev('a', event)){    // show selected wells
+              $('.selected').each(function(){
+                  var id = $(this).attr("id");
+                  if (typeof(id)=='string'){
+                      alert(id)
+                    } // end if
+                })// end each            
+            } // end if key code       
+      }) // end keydown
+
+} // end make_plate
+
+make_plate(8, 12, 40) // initialization of the plate
+
+$('#select_plate').change(function() { // select a plate 96 or 384
+  d3.selectAll('.plate').remove()
+  pl = $('#select_plate').val()
+  var m = plate[pl]['m'];
+  var n = plate[pl]['n'];
+  var spacing = plate[pl]['spacing'];
+  make_plate(m, n, spacing)
+
+})// end change
+
+</script>
