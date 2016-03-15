@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<title>Plaque</title>
+<title>Table d3.js</title>
 
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -86,35 +86,36 @@ col_peptide = '#00ff99'
 col_peptide = '#afa2dc'
 
 var opt = function(val){
-	return $('<option/>').text(val).attr('value',val)
-	}
+    return $('<option/>').text(val).attr('value',val)
+    }
 var col1 = $('<div/>').attr('class',"col-sm-8")
 var col2 = $('<div/>').attr('class',"col-sm-4")
 var divonside = $('<div/>').attr('class','onside')
 
 var type_plate = $('<h3/>').css({'text-align':'left'})
-						   .text('type plate')
+                           .text('type plate')
 var sel_plate = $('<select/>').attr('id','select_plate')
               .attr('class','selectpicker')
               .attr('data-width','70px')
               .append(opt('96'))
               .append(opt('384'))
+
+
 var inp = $('<input/>').attr('size',5) //.attr('type','submit')
-					   .keypress(function(event) {
-        					if (event.keyCode == 13) {
-            				alert('Domain is '+ $(this).val());
-        					}
-    					});
+                       .keypress(function(event) {
+                            if (event.keyCode == 13) {
+                            alert('Domain is '+ $(this).val());
+                            }
+                        });
 
 var nameinput = $('<p/>').text('domain name : ')
-						 .append(inp)
+                         .append(inp)
 var command =  divonside.append(type_plate)
-						.append(sel_plate)
-						.append(nameinput)
-
+                        .append(sel_plate)
+                        .append(nameinput)
 
 $('body').append(command)
-$('body').append(col1.append($('<h3/>').css({'text-align':'center'}).text('Plate designer')))
+$('body').append(col1.append($('<h3/>').css({'text-align':'center'}).text('Table')))
 $('body').append(col2)
 
 var tr = function(w, h, ang){      // Translation and Rotation
@@ -229,12 +230,13 @@ var make_plate = function(m,n, spacing){
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     
     for(i=0;i<m;i++){                // lines numbering
-      var letter = String.fromCharCode(65+i)
-      add_html(svg,'<p>'+letter+'</p>', margin.left-20, (i+1-offsety)*height/m)
+      var line= i+1
+      add_html(svg,'<p>'+line+'</p>', margin.left-20, (i+1-offsety)*height/m)
     }
     for(i=0;i<n;i++){               // columns numbering
-      var j= i+1
-      add_html(svg,'<p>'+j+'</p>',(i+offsetx)*width/n+margin.left, margin.top-35)
+      
+      var letter = String.fromCharCode(65+i)
+      add_html(svg,'<p>'+letter+'</p>',(i+offsetx)*width/n+margin.left, margin.top-35)
     }
 
     svg.append("g")
@@ -259,11 +261,16 @@ var make_plate = function(m,n, spacing){
         .attr("x", function(d) { return x(d.xcoord); })
         .attr("y", function(d) { return y(d.ycoord); })
         .attr("id", function(d){
-          var xcorr = d.xcoord+1-offsetx;
-          var ycorr = m-d.ycoord-1+offsety;
-          return String.fromCharCode(65+ycorr)+ xcorr
+          var xcorr = d.xcoord-offsetx;
+          var ycorr = m-d.ycoord+offsety;
+          return String.fromCharCode(65+xcorr)+ ycorr
         })
         .call(d3.well_select.tooltip());
+    
+    $('.well').click(function(){
+        alert($(this).attr('id'))
+            }
+        )
 
     $('.well').click(function(){
       if($(this).attr("class") == "well selected"){
