@@ -248,22 +248,28 @@ function elementMousedown(evt) {
       var ylab = add_txt_axis(this.ylabel, 20, this.size.height, -90)
           ylab.css({"font-family": "Times New Roman","font-size": "20px"})
         }
-        
-  //add_html(this.vis, '<p><span class="glyphicon glyphicon-envelope"></span></p>', 60,30)
-  add_html(this.vis,'<button id="butt" class ="btn btn-success">oups</button>', 30,-40)
-  $('#butt').click(function(){alert("huuuu")});
-  add_html(this.vis,'<div id="nympho" class ="infos">aaaarrrrrrrrrrrrggggggh</div>', 450,-40)
-  $('#nympho').append($('<div/>').text("ouououou"));
-  $('#nympho').append($('<button/>').text('ping')
-              .attr('class','btn btn-warning')
-              .click(function(){alert("this is a button dear")}));
-    $('#nympho').append($('<button/>').text('pong')
-              .attr('class','btn btn-danger')
-              .click(function(){alert("zorgluubb")}));
-  $('#nympho').append($('<p/>').text('   '))
+    menuplot = function(fig){
 
+        //add_html(this.vis, '<p><span class="glyphicon glyphicon-envelope"></span></p>', 60,30)
+        add_html(fig,'<button id="butt" class ="btn btn-success">oups</button>', 30,-40)
+        $('#butt').click(function(){alert("huuuu")});
+        add_html(fig,'<div id="nympho" class ="infos">aaaarrrrrrrrrrrrggggggh</div>', 450,-40)
+        $('#nympho').append($('<div/>').text("ouououou"));
+        $('#nympho').append($('<button/>').text('ping')
+                    .attr('class','btn btn-warning')
+                    .click(function(){alert("this is a button dear")}));
+          $('#nympho').append($('<button/>').text('pong')
+                    .attr('class','btn btn-danger')
+                    .click(function(){alert("zorgluubb")}));
+        $('#nympho').append($('<p/>').text('   '))
+
+
+    }
 
   this.redraw_all()();
+  menuplot(this.vis)
+
+  
   
   make_brush = function(){                // zoom box with brush tool
       self.brush = self.vis.append("g")
@@ -389,7 +395,7 @@ function elementMousedown(evt) {
       if(keyev('b', event)){                    // select the brush tool
         if (self.brush_active == true){
             desactivate_all_not('b') // desactivate all the other tools
-            if (zoomx == true){zoomx = false; alert("passing zoomxto false")}
+            if (zoomx == true){zoomx = false; } //alert("passing zoomxto false")
         }
         else{
             make_brush();
@@ -509,7 +515,7 @@ make_plot.prototype.redraw_all = function() {         // redraw_all the whole pl
 
     var sz_txt_ticks = "14px" // size of ticks text
 
-    var make_axes = function(nodename, selfax, trans, txt, ax1, ax2, valmax, stroke){
+    var make_axes = function(nodename, selfax, trans, txt, ax1, ax2, valmax, stroke){  // grid
       var node = self.vis.selectAll(nodename)
         .data(selfax.ticks(10), String)
         .attr("transform", trans);
@@ -518,14 +524,14 @@ make_plot.prototype.redraw_all = function() {         // redraw_all the whole pl
       var nodee = node.enter().insert("g", "a")
           .attr("class", ax1)
           .attr("transform", trans);
-      nodee.append("line")
+      nodee.append("line") // make the lines
           .attr("stroke", stroke)
           .attr(ax2+"1", 0)
           .attr(ax2+"2", valmax);
     return [node, nodee]
     }
 
-    var ticks_txt = function(node,ax,axpos,shift,txt){
+    var ticks_txt = function(node, ax, axpos, shift, txt){
         node.append("text")
         .attr("class", "axis")
         .attr(ax, axpos)
@@ -551,7 +557,25 @@ make_plot.prototype.redraw_all = function() {         // redraw_all the whole pl
       self.plot.call(d3.behavior.zoom().x(self.x).y(self.y)
                                 .on("zoom", self.redraw_all())
                                 )}// end if
+                        
     self.update();    // update the whole plot
+    //self.menuplot()
   }  
 }
 
+
+// make_plot.prototype.menuplot = function() { 
+//     var self = this;
+//     //add_html(this.vis, '<p><span class="glyphicon glyphicon-envelope"></span></p>', 60,30)
+//     add_html(self.vis,'<button id="butt" class ="btn btn-success">oups</button>', 30,-40)
+//     $('#butt').click(function(){alert("huuuu")});
+//     add_html(self.vis,'<div id="nympho" class ="infos">aaaarrrrrrrrrrrrggggggh</div>', 450,-40)
+//     $('#nympho').append($('<div/>').text("ouououou"));
+//     $('#nympho').append($('<button/>').text('ping')
+//                 .attr('class','btn btn-warning')
+//                 .click(function(){alert("this is a button dear")}));
+//       $('#nympho').append($('<button/>').text('pong')
+//                 .attr('class','btn btn-danger')
+//                 .click(function(){alert("zorgluubb")}));
+//     $('#nympho').append($('<p/>').text('   '))
+//     }
