@@ -83,9 +83,9 @@ size_rect = 10
 //spacing = 20
 
 plate = {'96':{'m':8,'n':12, 'spacing':40},'384':{'m':16,'n':24, 'spacing':25}}
-col_biotine = 'yellow'
-col_peptide = '#00ff99'
-col_peptide = '#afa2dc'
+col_0 = 'yellow'
+col_1 = '#00ff99'
+col_2 = '#afa2dc'
 
 var opt = function(val){
     return $('<option/>').text(val).attr('value',val)
@@ -125,7 +125,7 @@ var tr = function(w, h, ang){      // Translation and Rotation
    return "translate(" + w + ","+ h + ") rotate(" + ang + ")"
     }
 
-var add_html = function(node,htm,w,h,ang){ // adding html in the plot
+var add_html = function(node, htm, w, h, ang){ // adding html in the plot
     var htmnode = node.append('foreignObject')
         .attr("transform", tr(w-100,h,ang))
         .attr('width', 200)
@@ -134,6 +134,7 @@ var add_html = function(node,htm,w,h,ang){ // adding html in the plot
         .html(htm)
     return htmnode
     }
+
 
 d3.well_select = {};
 d3.well_select.tooltip = function(){
@@ -263,18 +264,18 @@ var make_plate = function(m,n, spacing){
         .attr("x", function(d) { return x(d.xcoord); })
         .attr("y", function(d) { return y(d.ycoord); })
         .attr("id", function(d){
-          var xcorr = d.xcoord-offsetx;
-          var ycorr = m-d.ycoord+offsety;
-          return String.fromCharCode(65+xcorr)+ ycorr // id from position of the cell
+            var xcorr = d.xcoord-offsetx;
+            var ycorr = m-d.ycoord+offsety;
+            return String.fromCharCode(65+xcorr)+ ycorr // id from position of the cell
         })
-        .call(d3.well_select.tooltip());
-    
-    $('.well').click(function(){
-        alert($(this).attr('id'))
-        $(this).attr('width', $(this).attr('width')*2)
+        .call(d3.well_select.tooltip())
 
-            }
-        )
+    // $('.well').click(function(){
+    //     alert($(this).attr('id'))
+    //     $(this).attr('width', $(this).attr('width')*2)
+
+    //         }
+    //     )
 
     $('.well').click(function(){
       if($(this).attr("class") == "well selected"){
@@ -317,14 +318,14 @@ var make_plate = function(m,n, spacing){
                 show_coord = ! show_coord
               alert(show_coord)
             } // end if key code   
-          if(keyev('b', event)){    // color for biotine
-                well_col = col_biotine
+          if(keyev('b', event)){    // 
+                well_col = col_0
             } // end if key code 
           if(keyev('p', event)){    // color for peptide
-                well_col = col_peptide
+                well_col = col_1
             } // end if key code   
           if(keyev('d', event)){    // deactivate biotine and peptide.
-                well_col = col_domain
+                well_col = col_2
             } // end if key code  
           if(keyev('a', event)){    // show selected cells
               $('.selected').each(function(){
