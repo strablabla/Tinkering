@@ -72,6 +72,8 @@ div.onside {
    font-size:85%;
  }
 
+
+
 </style>
 <body>
 
@@ -92,13 +94,13 @@ var col1 = $('<div/>').attr('class',"col-sm-8")
 var col2 = $('<div/>').attr('class',"col-sm-4")
 var divonside = $('<div/>').attr('class','onside')
 
-var type_plate = $('<h3/>').css({'text-align':'left'})
-                           .text('type plate')
-var sel_plate = $('<select/>').attr('id','select_plate')
+var val = $('<h3/>').css({'text-align':'left'})
+                           .text('values')
+var sel_val = $('<select/>').attr('id','select_plate')
               .attr('class','selectpicker')
               .attr('data-width','70px')
-              .append(opt('96'))
-              .append(opt('384'))
+              .append(opt('1'))
+              .append(opt('2'))
 
 
 var inp = $('<input/>').attr('size',5) //.attr('type','submit')
@@ -110,8 +112,8 @@ var inp = $('<input/>').attr('size',5) //.attr('type','submit')
 
 var nameinput = $('<p/>').text('domain name : ')
                          .append(inp)
-var command =  divonside.append(type_plate)
-                        .append(sel_plate)
+var command =  divonside.append(val)
+                        .append(sel_val)
                         .append(nameinput)
 
 $('body').append(command)
@@ -199,8 +201,8 @@ var make_plate = function(m,n, spacing){
     well_col = '#afa2dc';
     offsety = 0.75   // offset for last blocks not touching the bottom edge in y
     offsetx = 0.25 // offset for the blocks on the left not touching the edges in x
-    var data = []; // list contianing the coordinates of the wells. 
-    for (var i = 0; i <= m*n-1 ; i++) { // make the position of the wells
+    var data = []; // list contianing the coordinates of the cells. 
+    for (var i = 0; i <= m*n-1 ; i++) { // make the position of the cells
         data.push({xcoord: i%n+offsetx, ycoord: Math.floor(i/n)+offsety});
     }
 
@@ -251,7 +253,7 @@ var make_plate = function(m,n, spacing){
         .attr("width", width)
         .attr("height", height + 20);
 
-    wells = svg.selectAll(".well")
+    cells = svg.selectAll(".well")
         .data(data)
       .enter().append("rect")
         .attr("class", "well")
@@ -263,12 +265,14 @@ var make_plate = function(m,n, spacing){
         .attr("id", function(d){
           var xcorr = d.xcoord-offsetx;
           var ycorr = m-d.ycoord+offsety;
-          return String.fromCharCode(65+xcorr)+ ycorr
+          return String.fromCharCode(65+xcorr)+ ycorr // id from position of the cell
         })
         .call(d3.well_select.tooltip());
     
     $('.well').click(function(){
         alert($(this).attr('id'))
+        $(this).attr('width', $(this).attr('width')*2)
+
             }
         )
 
@@ -284,7 +288,7 @@ var make_plate = function(m,n, spacing){
 
     function brushmove() {
       var extent = brush.extent();
-      wells.classed("selected", function(d) {
+      cells.classed("selected", function(d) {
         is_brushedx = extent[0][0]-0.5 <= d.xcoord && d.xcoord <= extent[1][0];
         is_brushedy = extent[0][1]+0.5 <= d.ycoord && d.ycoord <= extent[1][1];
         is_brushed = is_brushedx && is_brushedy;
@@ -294,7 +298,7 @@ var make_plate = function(m,n, spacing){
 
     function brushend() {
       reset_axis();
-      wells.classed("selected", false);
+      cells.classed("selected", false);
       d3.select(".brush").call(brush.clear());
     }
 
@@ -322,7 +326,7 @@ var make_plate = function(m,n, spacing){
           if(keyev('d', event)){    // deactivate biotine and peptide.
                 well_col = col_domain
             } // end if key code  
-          if(keyev('a', event)){    // show selected wells
+          if(keyev('a', event)){    // show selected cells
               $('.selected').each(function(){
                   var id = $(this).attr("id");
                   if (typeof(id)=='string'){
@@ -334,15 +338,15 @@ var make_plate = function(m,n, spacing){
 
 } // end make_plate
 
-make_plate(8, 12, 40) // initialization of the plate
+make_plate(120, 8, 35) // initialization of the plate
 
 $('#select_plate').change(function() { // select a plate 96 or 384
-  d3.selectAll('.plate').remove()
+  //d3.selectAll('.plate').remove()
   pl = $('#select_plate').val()
-  var m = plate[pl]['m'];
-  var n = plate[pl]['n'];
-  var spacing = plate[pl]['spacing'];
-  make_plate(m, n, spacing)
+  // var m = plate[pl]['m'];
+  // var n = plate[pl]['n'];
+  // var spacing = plate[pl]['spacing'];
+  //make_plate(m, n, spacing)
 
 })// end change
 
