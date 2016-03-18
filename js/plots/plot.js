@@ -263,14 +263,11 @@ function elementMousedown(evt) {
                     .click(function(){alert("zorgluubb")}));
         $('#nympho').append($('<p/>').text('   '))
 
-
     }
 
   this.redraw_all()();
   menuplot(this.vis)
 
-  
-  
   make_brush = function(){                // zoom box with brush tool
       self.brush = self.vis.append("g")
          .attr("class", "brush")

@@ -72,20 +72,18 @@ div.onside {
    font-size:85%;
  }
 
-
-
 </style>
 <body>
 
 <script>
 
 size_rect = 10
-//spacing = 20
 
-plate = {'96':{'m':8,'n':12, 'spacing':40},'384':{'m':16,'n':24, 'spacing':25}}
 col_0 = 'yellow'
 col_1 = '#00ff99'
 col_2 = '#afa2dc'
+
+  
 
 var opt = function(val){
     return $('<option/>').text(val).attr('value',val)
@@ -101,7 +99,6 @@ var sel_val = $('<select/>').attr('id','select_plate')
               .attr('data-width','70px')
               .append(opt('1'))
               .append(opt('2'))
-
 
 var inp = $('<input/>').attr('size',5) //.attr('type','submit')
                        .keypress(function(event) {
@@ -134,7 +131,6 @@ var add_html = function(node, htm, w, h, ang){ // adding html in the plot
         .html(htm)
     return htmnode
     }
-
 
 d3.well_select = {};
 d3.well_select.tooltip = function(){
@@ -197,6 +193,8 @@ d3.well_select.tooltip = function(){
     return tooltip;
 };
 
+
+
 var make_plate = function(m,n, spacing){
     // make a plate
     well_col = '#afa2dc';
@@ -208,8 +206,8 @@ var make_plate = function(m,n, spacing){
     }
 
     var margin = {top: 20, right: 20, bottom: 60, left: 100},
-        width = n*spacing - margin.left - margin.right,
-        height =  m*spacing - margin.top - margin.bottom;
+        width = n*spacing[0] - margin.left - margin.right,
+        height =  m*spacing[1] - margin.top - margin.bottom;
 
     var x = d3.scale.linear()
         .range([0, width])
@@ -229,6 +227,7 @@ var make_plate = function(m,n, spacing){
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .attr('class','plate')
+        .attr('id','table')
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     
@@ -241,6 +240,8 @@ var make_plate = function(m,n, spacing){
       var letter = String.fromCharCode(65+i)
       add_html(svg,'<p>'+letter+'</p>',(i+offsetx)*width/n+margin.left, margin.top-35)
     }
+    
+  
 
     svg.append("g")
         .attr("class", "brush")
@@ -259,8 +260,8 @@ var make_plate = function(m,n, spacing){
       .enter().append("rect")
         .attr("class", "well")
         .attr("clip-path", "url(#clip)")
-        .attr("height", size_rect)
-        .attr("width", size_rect)
+        .attr("height", 2*size_rect)
+        .attr("width", 6*size_rect)
         .attr("x", function(d) { return x(d.xcoord); })
         .attr("y", function(d) { return y(d.ycoord); })
         .attr("id", function(d){
@@ -270,12 +271,10 @@ var make_plate = function(m,n, spacing){
         })
         .call(d3.well_select.tooltip())
 
-    // $('.well').click(function(){
-    //     alert($(this).attr('id'))
-    //     $(this).attr('width', $(this).attr('width')*2)
-
-    //         }
-    //     )
+    $('.well').click(function(){
+        alert($(this).attr('id'))
+            }
+        )
 
     $('.well').click(function(){
       if($(this).attr("class") == "well selected"){
@@ -336,18 +335,13 @@ var make_plate = function(m,n, spacing){
                 })// end each            
             } // end if key code       
       }) // end keydown
-
 } // end make_plate
 
-make_plate(120, 8, 35) // initialization of the plate
+make_plate(120, 8, [100, 30]) // initialization of the plate
 
 $('#select_plate').change(function() { // select a plate 96 or 384
-  //d3.selectAll('.plate').remove()
   pl = $('#select_plate').val()
-  // var m = plate[pl]['m'];
-  // var n = plate[pl]['n'];
-  // var spacing = plate[pl]['spacing'];
-  //make_plate(m, n, spacing)
+
 
 })// end change
 
