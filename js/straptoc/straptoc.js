@@ -22,7 +22,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/edcbf25/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/0d3f270/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.css
     
     simple_md = function(text){ // mini markdown for the help
@@ -235,12 +235,12 @@ var maketoc = function(){
                    '§§': {'deb' : '<object width='+'"' + param['pdf_width']['var'] + '"' + ' height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
     $("p, li").each(function(){
          var textp = $(this).text()
-         if (textp.match(reg_hyper)){ // search for format [blabla](addr blabla)
-             var text1 = textp.match(reg_brack)[0].slice(1,-1) // takes [blabla]
-             var text2 = textp.match(reg_parent)[0].slice(1,-1) // takes (addr blabla)
+         if (textp.match(reg_hyper)){    // search for format [blabla](addr blabla)
+             var text1 = textp.match(reg_brack)[0].slice(1,-1)    // takes [blabla]
+             var text2 = textp.match(reg_parent)[0].slice(1,-1)    // takes (addr blabla)
              var newtag = $('<a/>').text(text1).attr('href',text2)
-             if ($(this).prop('tagName')== 'LI'){var newtag = $('<li/>').append(newtag)} // correction of link to local file.
-             if ($(this).prop('tagName')== 'P'){var newtag = $('<p/>').append(newtag)} // correction to avoid gluing lines.. 
+             if ($(this).prop('tagName')== 'LI'){var newtag = $('<li/>').append(newtag)}    // correction of link to local file.
+             if ($(this).prop('tagName')== 'P'){var newtag = $('<p/>').append(newtag)}   // correction to avoid gluing lines.. 
              $(this).replaceWith(newtag) // Replace the original tag
             }// end if
          if (textp.match('§novideo')){ 
@@ -336,19 +336,25 @@ var maketoc = function(){
         $(this).attr('height',sizeim.split('x')[1])
         })
 
-
-
  $('a').each(function(){
-        if ($(this).text().match(';;')){
+        if ($(this).text().match(';;')){  // replace the address with a div with 'youtube' class. 
             var id = $(this).attr('href').split('v=')[1].trim()
             var newtag = $('<div/>').addClass('youtube')
                    .css({'width': '500px', 'height': '281px'})
                    .attr('id', id)
             var title = $('<p/>').text($(this).text().split(';;')[0])
-            title.insertBefore($(this))
-            $(this).replaceWith(newtag)
-
-    } // end if
+            title.insertBefore($(this)) // insert the video title before.
+            $(this).replaceWith(newtag) // replace the <a> with a <div> with class 'youtube'
+         } // end if
+        if  ($(this).text().match(',,')){       // insertion of iframes with regexp ',,'
+            var iframe_url = $(this).attr('href')
+            var iframe = $('<iframe/>', {'frameborder': '0', 'src': iframe_url, 'width': '600', 'height': '400' })
+            var div = $('<div/>').css({'text-align':'center'})
+            var keeplink = $('<a/>').text($(this).text().split(',,')[0])
+                                    .attr('href',$(this).attr('href'))
+            keeplink.insertBefore($(this))
+            $(this).replaceWith(div.append(iframe)); // replace the <a> with a <div> with iframe.
+        }
  }) // end each
 
 
@@ -386,8 +392,7 @@ var maketoc = function(){
  }) // end keydown
 
 
-}// end maketoc  /\>\>\w*/
-
+}// end maketoc  
 
 
 registerKeyboardHandler = function(callback) { // begin plot
