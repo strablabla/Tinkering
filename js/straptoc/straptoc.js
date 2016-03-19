@@ -344,6 +344,8 @@ var maketoc = function(){
             var newtag = $('<div/>').addClass('youtube')
                    .css({'width': '500px', 'height': '281px'})
                    .attr('id', id)
+            var title = $('<p/>').text($(this).text().split(';;')[0])
+            title.insertBefore($(this))
             $(this).replaceWith(newtag)
 
     } // end if
