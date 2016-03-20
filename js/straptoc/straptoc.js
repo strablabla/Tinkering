@@ -22,8 +22,16 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/0d3f270/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/13254b9/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.css
+
+    basename = function(path) {
+    return path.replace( /.*\//, "" );
+    }
+
+    dirname = function(path) {
+         return path.match( /.*\// );
+    }
     
     simple_md = function(text){ // mini markdown for the help
         var all_text = text.split('\n')
@@ -53,6 +61,10 @@ var maketoc = function(){
     var reg_toggle_hide = reg_func('toggle_hide') 
     var reg_help = reg_func('help')
     var reg_sign = /[^§]§[^§]\w*/
+    var reg_folder = /\<\</
+    var reg_hyper = /\[\w*.*\]\(\w*.*\)/
+    var reg_brack = /\[\w*.*\]/
+    var reg_parent = /\(.*\w*.*\)/
     //
     var num_slider = 0
     
@@ -227,9 +239,7 @@ var maketoc = function(){
               }); // each
           }// end if key code
         })
-    var reg_hyper = /\[\w*.*\]\(\w*.*\)/
-    var reg_brack = /\[\w*.*\]/
-    var reg_parent = /\(.*\w*.*\)/
+
     var sel = ['§§'] // ';;',
     var debend = {';;' : {'deb' : '<iframe width='+'"' + param['vid_width']['var'] + '"' + 'height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
                    '§§': {'deb' : '<object width='+'"' + param['pdf_width']['var'] + '"' + ' height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
@@ -263,7 +273,7 @@ var maketoc = function(){
         var nameslider = 'slider_' + num_slider
         var tag = $("<ul/>").append($("<li/>")
                             .append(deb+self.attr('href')
-                            .replace(patt[select][0],patt[select][1])+end)) // make doc                                    
+                            .replace(patt[select][0], patt[select][1])+end)) // make doc                                    
         var text = self.text().replace(select,'')
         $('<a/>').text(text).append($('<a/>').append($('<span/>').text( " [-]").addClass(select))
                                              .append($('<a/>').attr('id', nameslider))) // insert slider
@@ -346,7 +356,7 @@ var maketoc = function(){
             title.insertBefore($(this)) // insert the video title before.
             $(this).replaceWith(newtag) // replace the <a> with a <div> with class 'youtube'
          } // end if
-        if  ($(this).text().match(',,')){       // insertion of iframes with regexp ',,'
+        if  ($(this).text().match(',,')){       // insertion of iframes with regexp ',,' for inserting web pages
             var iframe_url = $(this).attr('href')
             var iframe = $('<iframe/>', {'frameborder': '0', 'src': iframe_url, 'width': '600', 'height': '400' })
             var div = $('<div/>').css({'text-align':'center'})
@@ -391,6 +401,30 @@ var maketoc = function(){
        } // end if key code
  }) // end keydown
 
+     $("a").each(function(){                // Insert pdf from folder
+         var txt = $(this).text()
+         if (txt.match(reg_folder)){
+            var txt_short = txt.split('<<')[0].trim()
+            var jsoname = 'json/' + txt_short + ".json"
+            $(this).text(txt_short)
+            alert(jsoname)
+            pdf_folder = $('<div/>')
+            pdf_folder.insertAfter($(this))
+            $.getJSON(jsoname, function(result){
+                for (i in result){
+                    alert(result[i])
+
+                var obj = $('<object/>').attr('data',result[i])
+                                        .attr('type', "application/pdf")
+                                        .attr('width',"100%")
+                                        .attr('height',"100%")
+                pdf_folder.append(obj)
+                }
+            }) // end get json
+         }// end if 
+     }) // end each
+
+ 
 
 }// end maketoc  
 
