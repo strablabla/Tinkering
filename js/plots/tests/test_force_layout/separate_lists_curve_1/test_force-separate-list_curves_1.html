@@ -28,9 +28,9 @@
 queue()
     .defer(d3.json, "nodes.json")
     .defer(d3.json, "links.json")
-    .await(makeplot); 
+    .await(make_labels); 
 /* Define the main worker or execution function */
-function makeplot(error, nodes, links, table) {
+function make_labels(error, nodes, links, table) {
     /* Draw the node labels first */
   var factx = 15
   var facty = 70
@@ -92,7 +92,7 @@ function makeplot(error, nodes, links, table) {
                         return "translate(" + d.x + "," + d.y + ")";
                         });
                }); // End tick func
-}; // End makeDiag worker func
+}; // 
 </script>
 </body>
 </html>

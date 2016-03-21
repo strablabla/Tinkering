@@ -9,12 +9,12 @@ var plot = function(elemid, data, params){
           if (data.match(/\.json/)!=null){
               // alert('it is a json')
               d3.json(data, function(dat) {
-                     new make_plot(elemid, dat, params)
+                     new make_plot(elemid, dat, params); 
                      }); // end d3.json
                  }  // end if json
             } // end if string     
         else{
-            plot(data)
+            plot(data) // data yet an array. 
           }
      }// end function
 
@@ -25,8 +25,8 @@ make_plot = function(elemid, dataset, params) {
   this.dataset = dataset
   this.chart = document.getElementById(elemid);
   this.params = params || {};
-  this.xlim = this.params['xlim']
-  this.ylim = this.params['ylim']
+  this.xlim = this.params['xlim']  // xlim for the plot
+  this.ylim = this.params['ylim']  // ylim for the plot
   this.xlabel = this.params['xlabel']
   this.ylabel = this.params['ylabel']
   this.title = this.params['title']
@@ -262,11 +262,15 @@ function elementMousedown(evt) {
                     .attr('class','btn btn-danger')
                     .click(function(){alert("zorgluubb")}));
         $('#nympho').append($('<p/>').text('   '))
-
     }
 
   this.redraw_all()();
   menuplot(this.vis)
+  queue()
+    .defer(d3.json, "nodes.json")
+    .defer(d3.json, "links.json")
+    .await(make_labels); 
+
 
   make_brush = function(){                // zoom box with brush tool
       self.brush = self.vis.append("g")
@@ -318,9 +322,9 @@ function elementMousedown(evt) {
   }
   set_view([[0,0],[this.size.width, this.size.height]]) // Save the first view in self.list_domains (Initialisation)
   
-  var desactivate_all_not = function(avoid){  // desactivate all the tools but.. 
+  var desactivate_all_not = function(avoid){  // deactivate all the tools but.. 
       if ((avoid != 'b') & (avoid != 'q') ){
-          d3.selectAll(".brush").remove();  // desactivate brush
+          d3.selectAll(".brush").remove();  // deactivate brush
           self.brush_active = false;
         }
      if (avoid != 'i'){
@@ -576,3 +580,85 @@ make_plot.prototype.redraw_all = function() {         // redraw_all the whole pl
 //                 .click(function(){alert("zorgluubb")}));
 //     $('#nympho').append($('<p/>').text('   '))
 //     }
+
+
+make_plot.prototype.make_labels = function(error, nodes, links, table) {
+    var self = this;
+    alert('helllloooo')
+    //alert(self.vis.attr('width'))
+    var texts = self.vis.selectAll("text")
+                .data(nodes)
+                .enter()
+                .append("text")
+                .attr("fill", "black")
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "10px")
+                .text(function(d) { alert(d.name); return d.name; });
+
+}
+
+make_plot.prototype.make_labelssss = function(error, nodes, links, table) {
+  var self = this;
+  /* Draw the node labels first */
+  alert('make_labels')
+  var factx = 15
+  var facty = 70
+  var shift = 50
+  nodes.forEach(function(data, i){
+      data["x"] *= factx;
+      data["y"] = data["y"]*facty+shift;
+      data["fixed"] = true;
+  }) // end for each
+  links.forEach(function(data, i){
+      var n = nodes[links[i]["source"]]
+      n["fixed"] = false                            // not fixed 
+      n["name"] = parseFloat(n["x"]).toFixed(3)     // value of position
+      n["y"] += -100                                // begin above.
+  }) // end for each
+   var texts = self.vis.selectAll("text")
+                    .data(nodes)
+                    .enter()
+                    .append("text")
+                    .attr("fill", "black")
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", "10px")
+                    .text(function(d) { return d.name; }); 
+    /* Establish the dynamic force behavor of the nodes */
+    var force = d3.layout.force()
+                    .nodes(nodes)
+                    .links(links)
+                    .size([500, 950])
+                    .linkDistance([10])
+                    .charge([-200])
+                    .gravity(0.1)
+                    .start();
+    /* Draw the edges/links between the nodes */
+    var edges = self.vis.selectAll("line")
+                    .data(links)
+                    .enter()
+                    .append("line")
+                    .style("stroke", "#ccc")
+                    .style("stroke-width", 1)
+                    .attr("marker-end", "url(#end)");
+    /* Draw the nodes themselves */                
+    var nodes = self.vis.selectAll("circle")
+                    .data(nodes)
+                    .enter()
+                    .append("circle")
+                    .attr("r", 5)
+                    .attr("opacity", function(d,i) {if (d.fixed == false){return 0.8} else {return 0}})
+                    .style("fill", function(d,i) { return color(i);})
+                    .call(force.drag);
+    /* Run the Force effect */
+    force.on("tick", function() {
+               edges.attr("x1", function(d) { return d.source.x; })
+                    .attr("y1", function(d) { return d.source.y; })
+                    .attr("x2", function(d) { return d.target.x; })
+                    .attr("y2", function(d) { return d.target.y; });
+               nodes.attr("cx", function(d) { return d.x; })
+                    .attr("cy", function(d) { return d.y; })
+               texts.attr("transform", function(d) {
+                        return "translate(" + d.x + "," + d.y + ")";
+                        });
+               }); // End tick func
+}; // end make_labels

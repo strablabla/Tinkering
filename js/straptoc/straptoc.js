@@ -22,7 +22,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/13254b9/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/c4f70c3/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.css
 
     basename = function(path) {
@@ -316,7 +316,6 @@ var maketoc = function(){
                  var addr = txt[2].trim()
                  var xmin = parseFloat(txt[3]); var xmax = parseFloat(txt[4])
                  var ymin = parseFloat(txt[5]); var ymax = parseFloat(txt[6])
-                 //alert(xmin + '_' + xmax + '_' + ymin + '_' + ymax)
                  var title = txt[7].trim()
                  var xlabel = txt[8].trim()
                  var ylabel = txt[9].trim()
@@ -347,7 +346,7 @@ var maketoc = function(){
         })
 
  $('a').each(function(){
-        if ($(this).text().match(';;')){  // replace the address with a div with 'youtube' class. 
+        if ($(this).text().match(';;')){      // replace the address with a div with 'youtube' class. 
             var id = $(this).attr('href').split('v=')[1].trim()
             var newtag = $('<div/>').addClass('youtube')
                    .css({'width': '500px', 'height': '281px'})
@@ -368,8 +367,7 @@ var maketoc = function(){
  }) // end each
 
 
- $(".youtube").each(function() {
-     // Based on the YouTube ID, we can easily find the thumbnail image
+ $(".youtube").each(function() { // take the youtube class element and replace.. 
      $(this).css('background-image', 'url(http://img.youtube.com/vi/' + this.id + '/hqdefault.jpg)');
      // Overlay the Play icon to make it look like a video player
      $(this).append($('<div/>', {'class': 'play'}));
@@ -394,37 +392,35 @@ var maketoc = function(){
 //             }// end if
 //     })
 
- $(document).keydown(function(event){   
-      
-     if(event.keyCode == "l".charCodeAt(0)-32 && event.altKey){    
-            $('ul').toggle()
-       } // end if key code
- }) // end keydown
+     $(document).keydown(function(event){   
+          
+         if(event.keyCode == "l".charCodeAt(0)-32 && event.altKey){    
+                $('ul').toggle() // alt + l open all the lists. 
+           } // end if key code
+     }) // end keydown
 
-     $("a").each(function(){                // Insert pdf from folder
+     $("a").each(function(){                             // insert pdf from folder
          var txt = $(this).text()
-         if (txt.match(reg_folder)){
-            var txt_short = txt.split('<<')[0].trim()
-            var jsoname = 'json/' + txt_short + ".json"
-            $(this).text(txt_short)
+         if (txt.match(reg_folder)){                     // check <<
+            var txt_short = txt.split('<<')[0].trim()    // take the title
+            var jsoname = 'json/' + txt_short + ".json"  // make the adress for the json
+            $(this).text(txt_short)                      // remove << in the title
             alert(jsoname)
-            pdf_folder = $('<div/>')
-            pdf_folder.insertAfter($(this))
+            pdf_folder = $('<div/>')                    // make a div for inserting the pdfs
+            pdf_folder.insertAfter($(this))             // insert the idv after the initial element.
             $.getJSON(jsoname, function(result){
-                for (i in result){
+                for (i in result){                      // for each address in the json.. 
                     alert(result[i])
 
                 var obj = $('<object/>').attr('data',result[i])
                                         .attr('type', "application/pdf")
                                         .attr('width',"100%")
                                         .attr('height',"100%")
-                pdf_folder.append(obj)
-                }
+                pdf_folder.append(obj)                  // append the obj to the div.
+                } // end for
             }) // end get json
          }// end if 
      }) // end each
-
- 
 
 }// end maketoc  
 
