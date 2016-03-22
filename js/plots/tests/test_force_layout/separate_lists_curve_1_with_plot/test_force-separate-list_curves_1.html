@@ -12,41 +12,65 @@
       type="text/javascript"
       src="http://d3js.org/queue.v1.min.js"> 
   </script>
+  <script type="text/javascript"  src="plot_markdown.js">  </script>
+  
+  <style>
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+  }
+  </style>
+  
+  
 </head>
 <body>
+    
+    <h1 style="text-align:center"> Curve </h1>
+
+     <div id="ok"></div>
+     <div id="val"></div>
+
 <script type="text/javascript">
- 
-/* Set the diagrams Height & Width */
-    var h = 500, w = 950;
-/* Set the color scale we want to use */
-    var color = d3.scale.category20();
-/* Establish/instantiate an SVG container object */
-    var svg = d3.select("body")
-                    .append("svg")
-                    .attr("height",h)
-                    .attr("width",w);
+
 queue()
-    .defer(d3.json, "nodes.json")
-    .defer(d3.json, "links.json")
-    .await(make_labels); 
-/* Define the main worker or execution function */
-function make_labels(error, nodes, links) { //, table
+  .defer(d3.json, "nodes.json")
+  .defer(d3.json, "links.json")
+  .defer(d3.json, "data/data_curve.json")
+  .await(function(error, nodes, links, dat){
+      var w = 500, // with of the picture
+          h = 200; // height of the picture
+      var color = d3.scale.category20();
+      var svg = d3.select('#ok')                //Create SVG element
+                  .append("svg")
+                  .attr("width", w)
+                  .attr("height", h);
+      make_labels(error, nodes, links, w, h, svg, color); 
+      plot(svg, dat, w, h);
+    } // end function
+ ); // end await
+
+function make_labels(error, nodes, links, w, h, svg, color) {
     /* Draw the node labels first */
-    alert(typeof(nodes))
+    alert('in make_labels')
   var factx = 15
   var facty = 70
   var shift = 200
+  //alert('width is'+w)
   nodes.forEach(function(data, i){
+      
       data["x"] *= factx;
       data["y"] = data["y"]*facty+shift;
       data["fixed"] = true;
   })
   links.forEach(function(data, i){
+     
       var n = nodes[links[i]["source"]]
       n["fixed"] = false                            // not fixed 
       n["name"] = parseFloat(n["x"]).toFixed(3)     // value of position
       n["y"] += -100                                // begin above.
   })
+  //alert('before text')
    var texts = svg.selectAll("text")
                     .data(nodes)
                     .enter()
@@ -54,8 +78,10 @@ function make_labels(error, nodes, links) { //, table
                     .attr("fill", "black")
                     .attr("font-family", "sans-serif")
                     .attr("font-size", "10px")
-                    .text(function(d) { return d.name; }); 
-    /* Establish the dynamic force behavor of the nodes */
+                    .text(function(d) { 
+                        return d.name; }); 
+   
+    //alert('before force')
     var force = d3.layout.force()
                     .nodes(nodes)
                     .links(links)
@@ -65,6 +91,7 @@ function make_labels(error, nodes, links) { //, table
                     .gravity(0.1)
                     .start();
     /* Draw the edges/links between the nodes */
+    //alert('before line')
     var edges = svg.selectAll("line")
                     .data(links)
                     .enter()
@@ -72,7 +99,7 @@ function make_labels(error, nodes, links) { //, table
                     .style("stroke", "#ccc")
                     .style("stroke-width", 1)
                     .attr("marker-end", "url(#end)");
-    /* Draw the nodes themselves */                
+    //alert('before circle')               
     var nodes = svg.selectAll("circle")
                     .data(nodes)
                     .enter()
@@ -81,7 +108,7 @@ function make_labels(error, nodes, links) { //, table
                     .attr("opacity", function(d,i) {if (d.fixed == false){return 0.8} else {return 0}})
                     .style("fill", function(d,i) { return color(i);})
                     .call(force.drag);
-    /* Run the Force effect */
+    //alert('run the force')
     force.on("tick", function() {
                edges.attr("x1", function(d) { return d.source.x; })
                     .attr("y1", function(d) { return d.source.y; })
