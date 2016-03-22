@@ -269,8 +269,7 @@ function elementMousedown(evt) {
   queue()
     .defer(d3.json, "nodes.json")
     .defer(d3.json, "links.json")
-    .await(make_labels); 
-
+    .await(self.make_labels); 
 
   make_brush = function(){                // zoom box with brush tool
       self.brush = self.vis.append("g")
