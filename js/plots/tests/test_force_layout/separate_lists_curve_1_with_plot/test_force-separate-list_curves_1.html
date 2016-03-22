@@ -33,22 +33,23 @@
 
 <script type="text/javascript">
 
-queue()
-  .defer(d3.json, "nodes.json")
-  .defer(d3.json, "links.json")
-  .defer(d3.json, "data/data_curve.json")
-  .await(function(error, nodes, links, dat){
-      var w = 500, // with of the picture
-          h = 200; // height of the picture
-      var color = d3.scale.category20();
-      var svg = d3.select('#ok')                //Create SVG element
-                  .append("svg")
-                  .attr("width", w)
-                  .attr("height", h);
-      make_labels(error, nodes, links, w, h, svg, color); 
-      plot(svg, dat, w, h);
-    } // end function
- ); // end await
+
+    queue()
+      .defer(d3.json, "nodes.json")
+      .defer(d3.json, "links.json")
+      .defer(d3.json, "data/data_curve.json")
+      .await(function(error, nodes, links, dat){
+          var w = 500, // with of the picture
+              h = 200; // height of the picture
+          var color = d3.scale.category20();
+          var svg = d3.select('#ok')                //Create SVG element
+                      .append("svg")
+                      .attr("width", w)
+                      .attr("height", h);
+          make_labels(error, nodes, links, w, h, svg, color); 
+          plot(svg, dat, w, h);
+        } // end function
+     ); // end await
 
 function make_labels(error, nodes, links, w, h, svg, color) {
     /* Draw the node labels first */

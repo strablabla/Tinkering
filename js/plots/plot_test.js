@@ -3,27 +3,42 @@ registerKeyboardHandler = function(callback) {
   d3.select(window).on("keydown", callback);  
 };
 
-var plot = function(elemid, dataset, params){
-     // if data is an array do nothing, if json, makes an array
-      if (typeof(dataset)=='string'){ 
-          if (dataset.match(/\.json/)!=null){
-              // alert('it is a json')
-              d3.json(dataset, function(dat) {
-                     new make_plot(elemid, dat, params); 
-                     }); // end d3.json
-                 }  // end if json
-            } // end if string     
-        else{
-            make_plot(elemid, dataset, params) // data yet an array. 
-          }
-     }// end function
+var plot = function(elemid, path_nodes, path_links, path_curve, params){
+    alert(path_nodes)
+    alert(path_links)
+    alert(path_curve)
+    
+    queue()
+      .defer(d3.json, path_nodes)
+      .defer(d3.json, path_links)
+      .defer(d3.json, path_curve)
+      .await(function(error, nodes, links, dataset, params){
+          alert(elemid)
+          alert(nodes.length)
+          alert(links.length)
+          this.chart = document.getElementById(elemid);
+          w = this.chart.clientWidth;
+          h = this.chart.clientHeight;
+          alert(h)
+          var color = d3.scale.category20();
+          var svg = d3.select(this.chart)                //Create SVG element
+                      .append("svg")
+                      .attr("width", w)
+                      .attr("height", h)
+                      .attr("id", "vis")
+          make_labels(error, nodes, links, w, h, svg, color); 
+          //make_plot(svg, dataset, params, w, h)  //plot(svg, dat, w, h);
+        } // end of the function in await
+     ); // end await
+} ; // end function plot
 
 
-make_plot = function(elemid, dataset, params) {
+make_plot = function(svg, dataset, params, w, h) {
   var self = this;
   
   this.dataset = dataset
-  this.chart = document.getElementById(elemid);
+  // this.chart = document.getElementById(elemid);
+  this.vis = svg
   this.params = params || {};
   this.xlim = this.params['xlim']  // xlim for the plot
   this.ylim = this.params['ylim']  // ylim for the plot
@@ -31,8 +46,8 @@ make_plot = function(elemid, dataset, params) {
   this.ylabel = this.params['ylabel']
   this.title = this.params['title']
   this.col = this.params['color'] || 'k';
-  this.cx = this.chart.clientWidth;
-  this.cy = this.chart.clientHeight;
+  this.cx = w;
+  this.cy = h;
   fillplot = this.params['fill'] || "#EEEEEE"
   var colrs = {'r':'red', 'k':'black', 'b':'blue', 'g':'green'};
   // Interaction Parameters 
@@ -193,11 +208,8 @@ function elementMousedown(evt) {
 
   datacount = this.size.width/30;
   
-  this.vis = d3.select(this.chart).append("svg")
-      .attr("width",  this.cx)
-      .attr("height", this.cy)
-      .attr("id", "vis")
-      .append("g")
+
+  this.vis.append("g")
         .attr("transform", tr(this.padding.left, this.padding.top));
 
   this.plot = this.vis.append("rect")
@@ -564,83 +576,59 @@ make_plot.prototype.redraw_all = function() {         // redraw_all the whole pl
 }
 
 
-// make_plot.prototype.menuplot = function() { 
-//     var self = this;
-//     //add_html(this.vis, '<p><span class="glyphicon glyphicon-envelope"></span></p>', 60,30)
-//     add_html(self.vis,'<button id="butt" class ="btn btn-success">oups</button>', 30,-40)
-//     $('#butt').click(function(){alert("huuuu")});
-//     add_html(self.vis,'<div id="nympho" class ="infos">aaaarrrrrrrrrrrrggggggh</div>', 450,-40)
-//     $('#nympho').append($('<div/>').text("ouououou"));
-//     $('#nympho').append($('<button/>').text('ping')
-//                 .attr('class','btn btn-warning')
-//                 .click(function(){alert("this is a button dear")}));
-//       $('#nympho').append($('<button/>').text('pong')
-//                 .attr('class','btn btn-danger')
-//                 .click(function(){alert("zorgluubb")}));
-//     $('#nympho').append($('<p/>').text('   '))
-//     }
-
-
-make_plot.prototype.make_labels = function(error, nodes, links, table) {
-    var self = this;
-    alert('helllloooo')
-    //alert(self.vis.attr('width'))
-    var texts = self.vis.selectAll("text")
-                .data(nodes)
-                .enter()
-                .append("text")
-                .attr("fill", "black")
-                .attr("font-family", "sans-serif")
-                .attr("font-size", "10px")
-                .text(function(d) { alert(d.name); return d.name; });
-
-}
-
-make_plot.prototype.make_labelssss = function(error, nodes, links, table) {
-  var self = this;
-  /* Draw the node labels first */
-  alert('make_labels')
+function make_labels(error, nodes, links, w, h, svg, color) {
+    /* Draw the node labels first */
+    alert('in make_labels')
   var factx = 15
   var facty = 70
-  var shift = 50
+  var shift = 200
+  alert('width is '+w)
+  alert('height is '+h)
+  alert(nodes.length)
+  alert(links.length)
   nodes.forEach(function(data, i){
+      alert(i)
       data["x"] *= factx;
       data["y"] = data["y"]*facty+shift;
       data["fixed"] = true;
-  }) // end for each
+  })
+  alert('links')
   links.forEach(function(data, i){
+      
       var n = nodes[links[i]["source"]]
       n["fixed"] = false                            // not fixed 
       n["name"] = parseFloat(n["x"]).toFixed(3)     // value of position
       n["y"] += -100                                // begin above.
-  }) // end for each
-   var texts = self.vis.selectAll("text")
+  })
+  alert('text')
+   var texts = svg.selectAll("text")
                     .data(nodes)
                     .enter()
                     .append("text")
                     .attr("fill", "black")
                     .attr("font-family", "sans-serif")
                     .attr("font-size", "10px")
-                    .text(function(d) { return d.name; }); 
-    /* Establish the dynamic force behavor of the nodes */
+                    .text(function(d) { 
+                        return d.name; }); 
+    alert('force')
     var force = d3.layout.force()
                     .nodes(nodes)
                     .links(links)
-                    .size([500, 950])
+                    .size([w,h])
                     .linkDistance([10])
                     .charge([-200])
                     .gravity(0.1)
                     .start();
-    /* Draw the edges/links between the nodes */
-    var edges = self.vis.selectAll("line")
+    alert('edges')
+    var edges = svg.selectAll("line")
                     .data(links)
                     .enter()
                     .append("line")
                     .style("stroke", "#ccc")
                     .style("stroke-width", 1)
-                    .attr("marker-end", "url(#end)");
-    /* Draw the nodes themselves */                
-    var nodes = self.vis.selectAll("circle")
+                    .attr("marker-end", "url(#end)"); 
+    alert('nodes')             
+    var nodes = svg.selectAll("circle")
                     .data(nodes)
                     .enter()
                     .append("circle")
@@ -648,7 +636,7 @@ make_plot.prototype.make_labelssss = function(error, nodes, links, table) {
                     .attr("opacity", function(d,i) {if (d.fixed == false){return 0.8} else {return 0}})
                     .style("fill", function(d,i) { return color(i);})
                     .call(force.drag);
-    /* Run the Force effect */
+    alert('ticks')
     force.on("tick", function() {
                edges.attr("x1", function(d) { return d.source.x; })
                     .attr("y1", function(d) { return d.source.y; })
