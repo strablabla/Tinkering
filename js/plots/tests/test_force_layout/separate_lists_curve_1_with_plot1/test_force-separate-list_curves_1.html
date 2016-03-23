@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<html lang="en">
+<html>
+<head>
+      
+<script  type="text/javascript" src="http://d3js.org/d3.v3.min.js"> </script>
+<script  type="text/javascript" src="http://d3js.org/queue.v1.min.js">  </script> 
+<script type="text/javascript"  src="plot_markdown.js">  </script>
+    
+  <style>
+  .chart {
+    width: 600px;
+    height: 400px;
+    box-shadow: 0.5em 0.5em 0.7em;
+     }
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+  }
+  </style>
+  
+</head>
+
+<body>
+    
+    <h1 style="text-align:center"> Curve </h1>
+    <div id="chart1" class="chart"></div>
+
+<script >
+    plot_with_labels('chart1', "data/data_curve.json","nodes.json", "links.json")
+</script>
+
+</body>
+</html>
