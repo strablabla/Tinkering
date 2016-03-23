@@ -6,20 +6,34 @@
       
 <script  type="text/javascript" src="http://d3js.org/d3.v3.min.js"> </script>
 <script  type="text/javascript" src="http://d3js.org/queue.v1.min.js">  </script> 
-<script type="text/javascript"  src="plot_markdown.js">  </script>
+<script type="text/javascript"  src="plot.js">  </script>
+
+
+
     
-  <style>
-  .chart {
-    width: 600px;
-    height: 400px;
-    box-shadow: 0.5em 0.5em 0.7em;
-     }
-  .axis path,
-  .axis line {
-    fill: none;
-    stroke: #000;
-  }
-  </style>
+<style>
+
+.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
+
+   .chart {
+     width: 600px;
+     height: 400px;
+     box-shadow: 0.5em 0.5em 0.7em;
+      }
+   .axis path,
+   .axis line {
+     fill: none;
+     stroke: #000;
+   }
+   </style>
   
 </head>
 
@@ -29,7 +43,7 @@
     <div id="chart1" class="chart"></div>
 
 <script >
-    plot_with_labels('chart1', "data/data_curve.json","nodes_links.json") // "nodes_links.json"
+    plot_with_labels('chart1', "data/data_curve.json","data/nodes_links.json") // "nodes_links.json"
 </script>
 
 </body>

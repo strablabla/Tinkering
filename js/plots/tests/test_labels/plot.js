@@ -579,7 +579,6 @@ function make_labels(svg, nodes_links, w, h) {
     var color = d3.scale.category20();
     var nodes = nodes_links.nodes
     var links = nodes_links.links
-    //alert(links.length)
     var factx = 15
     var facty = 70
     var shift = 200

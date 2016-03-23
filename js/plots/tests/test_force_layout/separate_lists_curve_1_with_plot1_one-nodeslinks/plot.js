@@ -4,44 +4,36 @@ var plot_with_labels = function(elemid, add_data, add_nodes_links){
       .defer(d3.json, add_nodes_links)
       .defer(d3.json, add_data)
       .await(function(error, nodes_links, dat){
-          alert('helllloooo')
-          nodes = nodes_links.nodes
-          links = nodes_links.links
-          //var nodes = nodes_links[0]
-          //var links = nodes_links[1]
-          
-         this.chart = document.getElementById(elemid);
-          var w = this.chart.clientWidth, // with of the picture
-              h = this.chart.clientHeight; // height of the picture
-        alert(h)
-        alert(w)
-          var color = d3.scale.category20();
+          // nodes = nodes_links.nodes
+          // links = nodes_links.links
+          alert(nodes_links.nodes[0].y)
+          this.chart = document.getElementById(elemid);
+          var w = chart.clientWidth, // with of the picture
+              h = chart.clientHeight; // height of the picture
+          //var color = d3.scale.category20();
           var svg = d3.select('#'+elemid)                //Create SVG element
                       .append("svg")
                       .attr("width", w)
                       .attr("height", h);
-          make_labels(error, nodes, links, w, h, svg, color); 
-          plot(svg, dat, w, h);
+          //make_labels(error, nodes, links, w, h, svg, color); 
+          make_plot(svg, dat, w, h, nodes_links);
         } // end function
      ); // end await
 }
 
-var plot = function(svg, data, w, h){
-    // Utility for plotting curves with d3.js
-    alert("in plot  !!!")
+var make_plot = function(svg, data, w, h, nodes_links ){
+    var color = d3.scale.category20();
+    nodes = nodes_links.nodes
+    links = nodes_links.links
     var xoffset = 100
     var col = 'k';
     var pos_line = 150;
     var curve_h = 100;
     var colrs = {'r':'red', 'k':'black', 'b':'blue', 'g':'green'};
-    // var svg = d3.select(dom)                //Create SVG element
-    //             .append("svg")
-    //             .attr("w", w)
-    //             .attr("h", h);
     var valueline = d3.svg.line()           // Define the line 
         .x(function(d) { return d.x*5; })
         .y(function(d) { return d.y*curve_h + pos_line; }) // positionned on the line
-    var curve = function(data_curve){
+    var curve = function(svg, data_curve){
         
         var x = d3.scale.linear()
             .domain([-w / 2, w / 2])
@@ -54,7 +46,7 @@ var plot = function(svg, data, w, h){
         var curved = svg.append("path")  
             .attr("class", "line")
             .attr("d", valueline(data_curve))
-            .attr("transform", "translate(" + xoffset.toString() + ", 0)" ) // Translationin x
+            .attr("transform", "translate(" + xoffset.toString() + ", 0)" ) // Translation in x
             .style({stroke : colrs[col],
                     fill : 'none',
                     'stroke-w' : '1.5px',
@@ -69,21 +61,18 @@ var plot = function(svg, data, w, h){
             .attr("class", "y axis")
             .call(yAxis);
             
-        }; // end curve()
-
-    curve(data)
-
+        }; // end curve() 
+    make_labels(svg, nodes, links, w, h, color); 
+    curve(svg, data)
+    
+    
 } // end plot
 
-function make_labels(error, nodes, links, w, h, svg, color) {
-    /* Draw the node labels first */
-    alert('in make_labels')
+function make_labels(svg, nodes, links, w, h, color) {
   var factx = 15
   var facty = 70
   var shift = 200
-  //alert('width is'+w)
   nodes.forEach(function(data, i){
-      
       data["x"] *= factx;
       data["y"] = data["y"]*facty+shift;
       data["fixed"] = true;
