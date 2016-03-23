@@ -1,11 +1,15 @@
-var plot_with_labels = function(elemid, add_data, add_nodes, add_links){
+var plot_with_labels = function(elemid, add_data, add_nodes_links){
     
     queue()
-      .defer(d3.json, add_nodes)
-      .defer(d3.json, add_links)
+      .defer(d3.json, add_nodes_links)
       .defer(d3.json, add_data)
-      .await(function(error, nodes, links, dat){
-          alert(nodes.length)
+      .await(function(error, nodes_links, dat){
+          alert('helllloooo')
+          nodes = nodes_links.nodes
+          links = nodes_links.links
+          //var nodes = nodes_links[0]
+          //var links = nodes_links[1]
+          
          this.chart = document.getElementById(elemid);
           var w = this.chart.clientWidth, // with of the picture
               h = this.chart.clientHeight; // height of the picture
@@ -20,7 +24,6 @@ var plot_with_labels = function(elemid, add_data, add_nodes, add_links){
           plot(svg, dat, w, h);
         } // end function
      ); // end await
-    
 }
 
 var plot = function(svg, data, w, h){
