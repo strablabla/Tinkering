@@ -112,7 +112,8 @@ function make_labels(svg, nodes, links, w, h, color) {
                     .append("line")
                     .style("stroke", "#ccc")
                     .style("stroke-width", 1)
-                    .attr("marker-end", "url(#end)");
+                    .attr("marker-end", "url(#end)")
+                    .attr("class","lll")
     //alert('before circle')               
     var nodes = svg.selectAll("circle")
                     .data(nodes)

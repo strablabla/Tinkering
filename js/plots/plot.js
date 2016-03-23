@@ -260,10 +260,11 @@ function elementMousedown(evt) {
                     .click(function(){alert("zorgluubb")}));
         $('#nympho').append($('<p/>').text('   '))
     }
-
+    
+  make_labels(this.vis, nodes_links, this.cx, this.cy) // make the labels
   this.redraw_all()();
   menuplot(this.vis) // make the menu
-  make_labels(this.vis, nodes_links, this.cx, this.cy) // make the labels
+
 
   make_brush = function(){                // zoom box with brush tool
       self.brush = self.vis.append("g")
@@ -623,7 +624,8 @@ function make_labels(svg, nodes_links, w, h) {
                     .append("line")
                     .style("stroke", "#ccc")
                     .style("stroke-width", 1)
-                    .attr("marker-end", "url(#end)");
+                    .attr("marker-end", "url(#end)")
+                    .attr("class","lll")
     //alert('before circle')               
     var nodes = svg.selectAll("circle")
                     .data(nodes)
