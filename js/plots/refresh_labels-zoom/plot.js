@@ -245,7 +245,7 @@ function elementMousedown(evt) {
           ylab.css({"font-family": "Times New Roman","font-size": "20px"})
         }
 
-  make_labels(this.vis, this.nodes_links, this.cx, this.cy) // make the labels
+  this.make_labels(this.nodes_links) // make the labels
   this.redraw_all()();
  
   menuplot(this.vis, add_html) // make the menu
@@ -279,7 +279,7 @@ function elementMousedown(evt) {
                     .style("stroke","red")
                     .style("fill","red")
                     .style('opacity', .15)
-                    .on('click', function(){zoom_in()})
+                    .on('click', function(){zoom_in(self.nodes_links)})
                })  // end on brushend     
             ) // end call
   } // end make_brush
@@ -311,13 +311,23 @@ function elementMousedown(evt) {
      }
   }
   
-  var zoom_in = function(){
+  clear_labels = function(){
+      self.vis.selectAll(".label_graph").remove()
+  } // end clear_labels
+  
+  var zoom_in = function(nodes_links){
       
-      d3.selectAll(".zoom_interact").remove() // remove the additional zoom windows
-      set_view(extent) // change the view
-      self.redraw_all()(); // redraw axis etc
+      d3.selectAll(".zoom_interact").remove()
+      set_view(extent)
+      //alert("in zoom in")
+      //alert(self.cx)
+      clear_labels()
+      //alert('after clear_labels')
+      self.make_labels(nodes_links) // make the labels
+      self.redraw_all()();
       d3.selectAll(".brush").remove();
-      make_brush() // reimplement the brush tool
+      alert('after brush remove')
+      make_brush()
   }
 
   var keyev = function(key, event){
@@ -482,8 +492,6 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
   var self = this;
   return function() {
       
-    //make_labels(self.vis, self.nodes_links, self.cx, self.cy) // make the labels
-    
     var tx = function(d) { 
       return "translate(" + self.x(d) + ",0)"; 
     },
@@ -562,29 +570,36 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
 //     $('#nympho').append($('<p/>').text('   '))
 //     }
 
-function clear_labels(svg){
-    var texts = svg.selectAll("text")
-    texts.exit().remove()
-    var edges = svg.selectAll("line")
-    edges.exit().remove()
-    var nodes = svg.selectAll("circle")
-    nodes.exit().remove()
-}
 
-function make_labels(svg, nodes_links, w, h) {
+
+
+make_plot.prototype.make_labels = function(nodes_links) {
+    var self = this;
+    //this.vis, this.nodes_links, this.cx, this.cy
+    alert('in make_labels')
+    alert(typeof(nodes_links))
     var color = d3.scale.category20();
     var nodes = nodes_links.nodes
     var links = nodes_links.links
-    //alert(links.length)
+    alert(links.length)
     var factx = 15
     var facty = 70
     var shift = 200
+    alert("nodes.length "+nodes.length)
+    alert(typeof(nodes.length))
+    alert(nodes[1]["y"])
     nodes.forEach(function(data, i){
+        if (i == 1){alert('in  nodes.forEach')};
           data["x"] *= factx;
           data["y"] = data["y"]*facty+shift;
           data["fixed"] = true;
         })
+    alert("just before links for each")
+    alert("links.length "+links.length)
+    alert(typeof(links.length))
+    alert(links[1]["source"])
     links.forEach(function(data, i){
+        if (i == 1){alert('in  links.forEach')};
           var n = nodes[links[i]["source"]]
           n["fixed"] = false                            // not fixed 
           n["name"] = parseFloat(n["x"]).toFixed(3)     // value of position
@@ -592,39 +607,41 @@ function make_labels(svg, nodes_links, w, h) {
         })
     //alert('before text')
 
-    var texts = svg.selectAll("text")
+    var texts = self.vis.selectAll("text.nodes")
                     .data(nodes)
                     .enter()
                     .append("text")
+                    .attr("class","label_graph")
                     .attr("fill", "black")
                     .attr("font-family", "sans-serif")
                     .attr("font-size", "10px")
-                    .text(function(d) { 
+                    .text(function(d, i) { if (i == 1){alert('making text')};
                         return d.name; }); 
     //alert('before force')
     var force = d3.layout.force()
                     .nodes(nodes)
                     .links(links)
-                    .size([w,h])
+                    .size([self.cx, self.cy])
                     .linkDistance([10])
                     .charge([-200])
                     .gravity(0.1)
                     .start();
     /* Draw the edges/links between the nodes */
     //alert('before line')
-    var edges = svg.selectAll("line")
+    var edges = self.vis.selectAll("line.links")
                     .data(links)
                     .enter()
                     .append("line")
+                    .attr("class","label_graph")
                     .style("stroke", "#ccc")
                     .style("stroke-width", 1)
                     .attr("marker-end", "url(#end)")
-                    .attr("class","lll")
     //alert('before circle')               
-    var nodes = svg.selectAll("circle")
+    var nodes = self.vis.selectAll("circle.nodes")
                     .data(nodes)
                     .enter()
                     .append("circle")
+                    .attr("class","label_graph")
                     .attr("r", 5)
                     .attr("opacity", function(d,i) {if (d.fixed == false){return 0.8} else {return 0}})
                     .style("fill", function(d,i) { return color(i);})
