@@ -134,7 +134,9 @@ function elementMousedown(evt) {
     mousedownonelement = true;
 }
 
-  this.add_html = function(node, htm, w, h, ang){ // adding html in the plot
+
+
+  var add_html = function(node, htm, w, h, ang){ // adding html in the plot
       var htmnode = node.append('foreignObject')
           .attr("transform", tr(w-100, h, ang))
           .attr('width', 200)
@@ -195,6 +197,7 @@ function elementMousedown(evt) {
       .attr("id", "vis")
       .append("g")
         .attr("transform", tr(this.padding.left, this.padding.top));
+  this.g = this.vis.append('g');
 
   this.plot = this.vis.append("rect")  // For pointer events
       .attr("width", this.size.width)
@@ -204,12 +207,12 @@ function elementMousedown(evt) {
 
   if (this.drag_zoom == true){                  // drag and zoom in the whole plot
     alert('permitting drag')
-      this.plot
+    this.plot
           .on("mousedown.drag", self.plot_drag())
           .on("touchstart.drag", self.plot_drag())
           .call(d3.behavior.zoom().x(this.x).y(this.y)
-          .on("zoom", this.redraw_all()));
-      }
+                ); // end call
+      } // end if
 
   d3.select(this.chart)                         // drag the points of the curve
       .on("mousemove.drag", self.mousemove())
@@ -245,10 +248,10 @@ function elementMousedown(evt) {
           ylab.css({"font-family": "Times New Roman","font-size": "20px"})
         }
 
-  //make_labels(this.vis.select('svg'), this.nodes_links, this.cx, this.cy) // make the labels
+  //sthis.make_labels(this.vis, this.nodes_links, this.cx, this.cy) // make the labels
   this.redraw_all()();
  
-  //menuplot(this.vis, this.add_html) // make the menu
+  menuplot(this.vis, add_html) // make the menu
 
   make_brush = function(){                // zoom box with brush tool
       self.brush = self.vis.append("g")
@@ -315,6 +318,10 @@ function elementMousedown(evt) {
       
       d3.selectAll(".zoom_interact").remove() // remove the additional zoom windows
       set_view(extent) // change the view
+      // d3.selectAll(".node_label").attr('r', 10)
+      // d3.selectAll(".line_edges").attr('x2', 100)
+      //                             .attr('y2', 100)
+
       self.redraw_all()(); // redraw axis etc
       d3.selectAll(".brush").remove();
       make_brush() // reimplement the brush tool
@@ -415,48 +422,43 @@ make_plot.prototype.plot_drag = function() {
   }
 };
 
+make_plot.prototype.move_circle = function(circle){
+  circle.enter().append("circle")
+          .attr("class", function(d) { return d === self.selected ? "selected" : null; })
+          .attr("cx",    function(d) { return self.x(d.x); })
+          .attr("cy",    function(d) { return self.y(d.y); })
+          .attr("r", 3.0)
+          .style("cursor", "ns-resize")
+          .on("mousedown.drag",  self.datapoint_drag())
+          .on("touchstart.drag", self.datapoint_drag());
+      circle
+          .attr("class", function(d) { return d === self.selected ? "selected" : null; })
+          .attr("cx",    function(d) { 
+            return self.x(d.x); })
+          .attr("cy",    function(d) { return self.y(d.y); });
+      circle.exit().remove();
+}
+
 make_plot.prototype.update = function() {
     // update graph, axes, labels, circles..
     var self = this;
-    //self.menuplot()
-    $('#nympho').remove()
-    menuplot(this.vis, this.add_html) // make the menu
- 
+    var lines = this.vis.select("path").attr("d", this.line(this.dataset));
     if (this.show_circle == true){   // show circle for modifying the points.
-
-      var circle = this.vis.select("svg").selectAll("circle") //.select("svg")
-
-          .data(self.dataset); //, function(d) { return d; }
-      circle.enter().append("circle")
-          .style("cursor", "ns-resize")
-
-      circle
-          .classed("selected", function(d) { return d === self.selected; })
-          .attr("cx", function(d) { return self.x(d.x) })
-          .attr("cy", function(d) { return self.y(d.y) })
-          .attr("r", 3.0)
-          .on("mousedown.drag", function(d) {
-                 self.selected = self.dragged = d;
-                 self.update()}); 
-
-      circle.exit().remove();
-
+      var circle = this.vis.select("svg").selectAll("circle")
+          .data(this.dataset, function(d) { return d; });
+      self.move_circle (circle);
       }// end if show circle
 
-    var lines = this.vis.select("path").attr("d", this.line(this.dataset));
-    
     if (d3.event && d3.event.keyCode) {
     d3.event.preventDefault();
     d3.event.stopPropagation();
     } // end if
     //prep_edit()
-  
 }
 
 make_plot.prototype.datapoint_drag = function() {    // moving points
   var self = this;
   return function(d) {
-    //alert('dragging '+d.x)
     document.onselectstart = function() { return false; };
     self.selected = self.dragged = d;
     self.update();
@@ -469,7 +471,6 @@ make_plot.prototype.mousemove = function() { // handling mouse movements
     var p = d3.svg.mouse(self.vis[0][0]),
         t = d3.event.changedTouches;
     if (self.dragged) {
-      alert('being dragged')
       self.dragged.y = self.y.invert(Math.max(0, Math.min(self.size.height, p[1])));
       self.update();
     };
@@ -488,22 +489,18 @@ make_plot.prototype.mouseup = function() { // mouse in its normal state
 }
 
 
+
 make_plot.prototype.redraw_all = function() {         // redraw the whole plot
   var self = this;
   return function() {
+      
+    //make_labels(self.vis, self.nodes_links, self.cx, self.cy) // make the labels
+    var tx = function(d) { return "translate(" + self.x(d) + ",0)";},
+        ty = function(d) { return "translate(0," + self.y(d) + ")";},
+        stroke = function(d) { return d ? "#ccc" : "#666"; }
 
-    
-    var tx = function(d) { 
-      return "translate(" + self.x(d) + ",0)"; 
-    },
-    ty = function(d) { 
-      return "translate(0," + self.y(d) + ")";
-    },
-    stroke = function(d) { 
-      return d ? "#ccc" : "#666"; 
-    },
-    fx = self.x.tickFormat(10),
-    fy = self.y.tickFormat(10);
+    var fx = self.x.tickFormat(10),
+        fy = self.y.tickFormat(10);
 
     var sz_txt_ticks = "14px" // size of ticks text
 
@@ -536,30 +533,28 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
     }
 
     // Regenerate x-ticks… 
-    gg = make_axes("g.x", self.x, tx, fx, 'x','y', self.size.height, stroke)
+    gg = make_axes("g.x", self.x, tx, fx, 'x','y', self.size.height, stroke) // make axes
     gx = gg[0]; gxe = gg[1]
-    ticks_txt(gxe,"y",self.size.height,"1em",fx)
+    ticks_txt(gxe,"y",self.size.height,"1em",fx) // make text of ticks
     gx.exit().remove();
     // Regenerate y-ticks…
     gg = make_axes("g.y", self.y, ty, fy, 'y','x', self.size.width, stroke)
     gy = gg[0]; gye = gg[1]
     ticks_txt(gye,"x",-3,".35em",fy)
     gy.exit().remove();
+    ///
     if (self.drag_zoom == true){
-      
-         self.plot
-         .call(d3.behavior.zoom().x(self.x).y(self.y)
-                                .on("zoom", self.redraw_all())
-                                )}  // end if self.drag_zoom
+         self.plot.call(d3.behavior.zoom().x(self.x).y(self.y)
+                        .on("zoom", self.redraw_all())
+                        )}  // end if self.drag_zoom
     self.update();    // update the whole plot
-    //self.menuplot()
   }  
 }
 
 
 
-
-function make_labels(svg, nodes_links, w, h) {
+make_plot.prototype.make_labels = function(g, nodes_links, w, h) {
+    var self = this;
     var color = d3.scale.category20();
     var nodes = nodes_links.nodes
     var links = nodes_links.links
@@ -567,6 +562,9 @@ function make_labels(svg, nodes_links, w, h) {
     var factx = 15
     var facty = 70
     var shift = 200
+    coord_correct = function(x, y){
+        return [self.x(self.x.invert(x)), self.y(self.y.invert(y))]
+    }
     nodes.forEach(function(data, i){
           data["x"] *= factx;
           data["y"] = data["y"]*facty+shift;
@@ -580,7 +578,7 @@ function make_labels(svg, nodes_links, w, h) {
         })
     //alert('before text')
 
-    var texts = svg.selectAll("text")
+    var texts = g.selectAll("text")
                     .data(nodes)
                     .enter()
                     .append("text")
@@ -600,19 +598,20 @@ function make_labels(svg, nodes_links, w, h) {
                     .start();
     /* Draw the edges/links between the nodes */
     //alert('before line')
-    var edges = svg.selectAll("line")
+    var edges = g.selectAll("line")
                     .data(links)
                     .enter()
                     .append("line")
                     .style("stroke", "#ccc")
                     .style("stroke-width", 1)
                     .attr("marker-end", "url(#end)")
-                    .attr("class","lll")
+                    .attr("class","line_edges")
     //alert('before circle')               
-    var nodes = svg.selectAll("circle")
+    var nodes = g.selectAll("circle")
                     .data(nodes)
                     .enter()
                     .append("circle")
+                    .attr("class", "node_label")
                     .attr("r", 5)
                     .attr("opacity", function(d,i) {if (d.fixed == false){return 0.8} else {return 0}})
                     .style("fill", function(d,i) { return color(i);})
@@ -634,7 +633,7 @@ function make_labels(svg, nodes_links, w, h) {
 menuplot = function(fig, add_html){
 
     //add_html(this.vis, '<p><span class="glyphicon glyphicon-envelope"></span></p>', 60,30)
-    add_html(fig, '<button id="butt" class ="btn btn-success">oups</button>', 30,-40)
+    add_html(fig,'<button id="butt" class ="btn btn-success">oups</button>', 30,-40)
     $('#butt').click(function(){alert("huuuu")});
     add_html(fig,'<div id="nympho" class ="infos">aaaarrrrrrrrrrrrggggggh</div>', 450,-40)
     $('#nympho').append($('<div/>').text("ouououou"));

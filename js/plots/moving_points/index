@@ -1,7 +1,7 @@
 <!DOCTYPE html>
+<meta charset="utf-8">
 <html>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> -->
     <title>plot</title>
     
     <script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
@@ -12,8 +12,10 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdn.rawgit.com/alertifyjs/alertify.js/v1.0.6/dist/js/alertify.js"></script>
-    <script  type="text/javascript" src="http://d3js.org/d3.v3.min.js"> </script>
-    <script  type="text/javascript" src="http://d3js.org/queue.v1.min.js">  </script>
+    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+<!--         type="text/javascript" src="http://d3js.org/d3.v3.min.js">  -->
+<!--         type="text/javascript" src="http://mbostock.github.com/d3/d3.v2.js">  -->
+    <script type="text/javascript" src="http://d3js.org/queue.v1.min.js">  </script>
     <script type="text/javascript" src="plot.js"></script>
 
     <script type="text/x-mathjax-config">
@@ -22,6 +24,8 @@
     <script type="text/javascript" async
       src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
     </script>
+
+
 
     <style type="text/css">
 /*      body { font: 13px sans-serif}*/
@@ -125,7 +129,7 @@
     <script >
     params = { "xlim": [0,60], "ylim": [-5,5], "title": "Visualization",
                 "xlabel": "time", "ylabel": "nb of counts", "color":"g", "fill":"#ffffff"}
-    plot("chart1", 'data/data_curve.json', 'data/nodes_links.json', params)
+    plot("chart1", 'data/data_curve.json', params)
     </script>
     
    <br>
