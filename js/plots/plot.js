@@ -58,6 +58,8 @@ make_plot = function(elemid, dataset, nodes_links,   params) {
    * b : zoom with brush
    * q : zoom in x with brush
    * d : toggle for drag and zoom.
+   * x : move backward in the zoom
+   * v : move forward in the zoom
    */}.toString().slice(14,-3)
   
   var tools = function(){/*
@@ -134,11 +136,13 @@ function elementMousedown(evt) {
     mousedownonelement = true;
 }
 
-  this.add_html = function(node, htm, w, h, ang){ // adding html in the plot
+  this.add_html = function(node, htm, w, h, ang, width, height){ // adding html in the plot
+      ww = width || 200;
+      hh = height || 100;
       var htmnode = node.append('foreignObject')
           .attr("transform", tr(w-100, h, ang))
-          .attr('width', 200)
-          .attr('height', 100)
+          .attr('width', ww)
+          .attr('height', hh)
           .append("xhtml:body")
           .html(htm)
       return htmnode
@@ -419,17 +423,13 @@ make_plot.prototype.update = function() {
     // update graph, axes, labels, circles..
     var self = this;
     //self.menuplot()
-    $('#nympho').remove()
+    $('#nympho').remove() // removing the menu
     menuplot(this.vis, this.add_html) // make the menu
- 
     if (this.show_circle == true){   // show circle for modifying the points.
-
       var circle = this.vis.select("svg").selectAll("circle") //.select("svg")
-
           .data(self.dataset); //, function(d) { return d; }
       circle.enter().append("circle")
           .style("cursor", "ns-resize")
-
       circle
           .classed("selected", function(d) { return d === self.selected; })
           .attr("cx", function(d) { return self.x(d.x) })
@@ -438,19 +438,14 @@ make_plot.prototype.update = function() {
           .on("mousedown.drag", function(d) {
                  self.selected = self.dragged = d;
                  self.update()}); 
-
       circle.exit().remove();
-
       }// end if show circle
-
     var lines = this.vis.select("path").attr("d", this.line(this.dataset));
-    
     if (d3.event && d3.event.keyCode) {
     d3.event.preventDefault();
     d3.event.stopPropagation();
     } // end if
     //prep_edit()
-  
 }
 
 make_plot.prototype.datapoint_drag = function() {    // moving points
@@ -487,12 +482,9 @@ make_plot.prototype.mouseup = function() { // mouse in its normal state
   }
 }
 
-
 make_plot.prototype.redraw_all = function() {         // redraw the whole plot
   var self = this;
   return function() {
-
-    
     var tx = function(d) { 
       return "translate(" + self.x(d) + ",0)"; 
     },
@@ -504,9 +496,7 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
     },
     fx = self.x.tickFormat(10),
     fy = self.y.tickFormat(10);
-
     var sz_txt_ticks = "14px" // size of ticks text
-
     var make_axes = function(nodename, selfax, trans, txt, ax1, ax2, valmax, stroke){  // grid
       var node = self.vis.selectAll(nodename)
         .data(selfax.ticks(10), String)
@@ -546,7 +536,6 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
     ticks_txt(gye,"x",-3,".35em",fy)
     gy.exit().remove();
     if (self.drag_zoom == true){
-      
          self.plot
          .call(d3.behavior.zoom().x(self.x).y(self.y)
                                 .on("zoom", self.redraw_all())
@@ -555,9 +544,6 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
     //self.menuplot()
   }  
 }
-
-
-
 
 function make_labels(svg, nodes_links, w, h) {
     var color = d3.scale.category20();
@@ -578,8 +564,6 @@ function make_labels(svg, nodes_links, w, h) {
           n["name"] = parseFloat(n["x"]).toFixed(3)     // value of position
           n["y"] += -100                                // begin above.
         })
-    //alert('before text')
-
     var texts = svg.selectAll("text")
                     .data(nodes)
                     .enter()
@@ -633,10 +617,10 @@ function make_labels(svg, nodes_links, w, h) {
     
 menuplot = function(fig, add_html){
 
-    //add_html(this.vis, '<p><span class="glyphicon glyphicon-envelope"></span></p>', 60,30)
+    //add_html(fig, '<p><span class="glyphicon glyphicon-envelope"></span></p>', 60,-30)
     add_html(fig, '<button id="butt" class ="btn btn-success">oups</button>', 30,-40)
     $('#butt').click(function(){alert("huuuu")});
-    add_html(fig,'<div id="nympho" class ="infos">aaaarrrrrrrrrrrrggggggh</div>', 450,-40)
+    add_html(fig,'<div id="nympho" class ="infos">aaaarrrrrrrrrrrrggggggh</div>', 450,-80, 0, 200, 300)
     $('#nympho').append($('<div/>').text("ouououou"));
     $('#nympho').append($('<button/>').text('ping')
                 .attr('class','btn btn-warning')
@@ -644,5 +628,25 @@ menuplot = function(fig, add_html){
       $('#nympho').append($('<button/>').text('pong')
                 .attr('class','btn btn-danger')
                 .click(function(){alert("zorgluubb")}));
-    $('#nympho').append($('<p/>').text('   '))
+      
+      $('#nympho').append($('<div/>').append($('<button/>').append($('<span/>')
+                                        .attr('class', "glyphicon glyphicon-search"))
+                .click(function(){alert("searching")})));
+      $('#nympho').append($('<div/>').append($('<button/>').append($('<span/>')
+                                  .attr('class', "glyphicon glyphicon-home"))
+          .click(function(){alert("go to first view")})));
+
+          $('#nympho').append($('<div/>').append($('<button/>').append($('<span/>')
+                                            .attr('class', "glyphicon glyphicon-chevron-left"))
+                                            .click(function(){alert("go to precedent view")}))
+                                          .append($('<button/>').append($('<span/>')
+                                            .attr('class', "glyphicon glyphicon-chevron-right"))
+                                            .click(function(){alert("go to next view")}))
+                            );
+
+    //$('#nympho').append('<p><span class="glyphicon glyphicon-envelope"></span></p>')
+    $('#nympho').append($('<div/>').text('ee'))
+    $('#nympho').append($('<div/>').text('aa'))
+    $('#nympho').append($('<div/>').text('oo'))
+    
 }
