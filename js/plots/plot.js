@@ -516,18 +516,11 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
       var nodee = node.enter().insert("g", "a")
           .attr("class", ax1)
           .attr("transform", trans);
-      // if (self.show_grid == false){ valmax = 0 }
-          //alert('in redraw_all self.show_grid '+self.show_grid)
-          //alert('adding grid')
-          nodee.append("line") // make the lines
+      nodee.append("line") // make the lines
             .attr("class", "grid")
             .attr("stroke", stroke)
             .attr(ax2+"1", 0)
             .attr(ax2+"2", valmax);
-          
-      // else { $('g.y').each(function(){$('line.grid').attr("x2", 0)}) 
-      //        $('g.x').each(function(){$('line.grid').attr("y2", 0)}) 
-    //}
 
     return [node, nodee]
     } // end make_axes
@@ -559,14 +552,10 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
          .call(d3.behavior.zoom().x(self.x).y(self.y)
                                 .on("zoom", self.redraw_all())
                                 )}  // end if self.drag_zoom
-    if (self.show_grid == false){  // adding removing the grid
-        $('g.y line.grid').each(function(){$(this).attr("x2", 0)}) 
-        $('g.x line.grid').each(function(){$(this).attr("y2", 0)}) 
-     }
-    else {
-        $('g.y line.grid').each(function(){$(this).attr("x2", self.size.width)}) 
-        $('g.x line.grid').each(function(){$(this).attr("y2", self.size.height)}) 
-    }
+    grid_dic = {'x2':{true:self.size.width, false:0}, 'y2':{true:self.size.height, false:0}}
+    $('g.y line.grid').each(function(){$(this).attr("x2", grid_dic['x2'][self.show_grid])}) 
+    $('g.x line.grid').each(function(){$(this).attr("y2", grid_dic['y2'][self.show_grid])}) 
+
     self.update();    // update the whole plot
   }  
 }
