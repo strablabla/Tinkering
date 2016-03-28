@@ -21,29 +21,29 @@ make_plot = function(elemid, dataset, nodes_links,   params) {
   this.nodes_links = nodes_links
   this.chart = document.getElementById(elemid);
   this.params = params || {};
-  this.xlim = this.params['xlim']  // xlim for the plot
-  this.ylim = this.params['ylim']  // ylim for the plot
-  this.xlabel = this.params['xlabel']
-  this.ylabel = this.params['ylabel']
-  this.title = this.params['title']
+  this.xlim = this.params['xlim']  // xlim 
+  this.ylim = this.params['ylim']  // ylim 
+  this.xlabel = this.params['xlabel'] // xlabel
+  this.ylabel = this.params['ylabel']  // ylabel
+  this.title = this.params['title'] // title
   this.col = this.params['color'] || 'k'; // Color used for the line
-  this.cx = this.chart.clientWidth;
-  this.cy = this.chart.clientHeight;
+  this.cx = this.chart.clientWidth; // chart width
+  this.cy = this.chart.clientHeight; // chart height
   fillplot = this.params['fill'] || "#EEEEEE"
   var colrs = {'r':'red', 'k':'black', 'b':'blue', 'g':'green'};
   // Interaction Parameters 
   this.show_circle = false;
   this.moveaxis = false
-  this.drag_zoom = false
-  this.brush_active = false
+  this.drag_zoom = false  // drag and mouse rolling zoom. 
+  this.brush_active = false // brush tool for zoom
   this.list_domains = []
-  this.zoom_margin = 20
-  this.show_grid = true;
+  this.zoom_margin = 20 // margin for dragging zoom 
+  this.show_grid = true; // boolean for plotting the grid or not. 
   text_nb = 0
   list_txt = []
-  insert_text = false
-  zoomx = false
-  poszoom = 0
+  insert_text = false // boolean for inserting text in the plot or not.
+  zoomx = false // boolean for zoom only in x. 
+  this.poszoom = 0
   // Commands
   // Each commands executed is supposed to eliminates the other one in possible conflict.
   // * c : show the circles for modifying the plot
@@ -252,8 +252,6 @@ function elementMousedown(evt) {
 
   //make_labels(this.vis.select('svg'), this.nodes_links, this.cx, this.cy) // make the labels
   this.redraw_all()();
- 
-  //menuplot(this.vis, this.add_html) // make the menu
 
   make_brush = function(){                // zoom box with brush tool
       self.brush = self.vis.append("g")
@@ -273,7 +271,7 @@ function elementMousedown(evt) {
             }) // end on brush
            .on("brushend", function(){
                 d3.selectAll(".zoom_interact").remove()
-                poszoom = self.list_domains.length;
+                self.poszoom = self.list_domains.length;
                 var rr = self.vis 
                     .append('rect') // rectangle inside the brush rectangle
                     .attr("x", extent[0][0]+self.zoom_margin/2)
@@ -289,7 +287,7 @@ function elementMousedown(evt) {
             ) // end call
   } // end make_brush
 
-  new_view = function(view_coord){
+  this.new_view = function(view_coord){
           self.x.domain(view_coord[0]);
           self.y.domain(view_coord[1]);
           self.redraw_all()();
@@ -362,7 +360,7 @@ function elementMousedown(evt) {
       if(keyev('w', event)){                            // home view
           deactivate_all_not('w')   // deactivate all the other tools
           var elem_first = self.list_domains[0]
-          new_view(elem_first)
+          self.new_view(elem_first)
           } // end if
       if(keyev('q', event)){                        // Apply the zoom
           zoomx = ! zoomx;
@@ -393,24 +391,21 @@ function elementMousedown(evt) {
 
       if(keyev('x', event)){      // move backward in the zoom list
           deactivate_all_not('x')   // deactivate all the other tools
-          var elem_prec = self.list_domains[poszoom-1]
-          poszoom += -1;
-          new_view(elem_prec)
+          var elem_prec = self.list_domains[self.poszoom-1]
+          self.poszoom += -1;
+          self.new_view(elem_prec)
           } // end if
 
       if(keyev('v', event)){      // move forward in the zoom list
           deactivate_all_not('v')   // deactivate all the other tools
-          var elem_prec = self.list_domains[poszoom+1]
-          poszoom += 1;
-          new_view(elem_prec)
+          var elem_next = self.list_domains[self.poszoom+1]
+          self.poszoom += 1;
+          self.new_view(elem_next)
        } // end if
 
       if(keyev('g', event)){      // 
           deactivate_all_not('g')   // deactivate all the other tools
-          //alert('changing the grid')
           self.show_grid = ! self.show_grid;
-          //alert(self.show_grid)
-          //$('.grid').remove()
           self.redraw_all()();
           }     // end if
 
@@ -432,9 +427,9 @@ make_plot.prototype.plot_drag = function() {
 make_plot.prototype.update = function() {
     // update graph, axes, labels, circles..
     var self = this;
-    //self.menuplot()
+
     $('#nympho').remove() // removing the menu
-    menuplot(this.vis, this.add_html) // make the menu
+    self.menuplot(this.vis, this.add_html) // make the menu
     if (this.show_circle == true){   // show circle for modifying the points.
       var circle = this.vis.select("svg").selectAll("circle") //.select("svg")
           .data(self.dataset); //, function(d) { return d; }
@@ -629,8 +624,25 @@ function make_labels(svg, nodes_links, w, h) {
                         });
                }); // End tick func
     }; //
+
+
+make_plot.prototype.zoom_nav = function(dir){
+    self = this;
+    //alert(dir)
+    if (dir == 'forward'){
+        var elem_next = self.list_domains[self.poszoom+1]
+        if (self.poszoom != self.list_domains.length-2){self.poszoom += 1}
+        self.new_view(elem_next)
+        }
+    else if (dir == 'back'){
+        var elem_prec = self.list_domains[self.poszoom-1]
+        if (self.poszoom != 0){self.poszoom += -1;}
+        self.new_view(elem_prec)
+        }
+  } // zoom_nav
     
-menuplot = function(fig, add_html){
+make_plot.prototype.menuplot = function(fig, add_html){
+    self = this;
 
     add_html(fig,'<div id="nympho" class ="infos"></div>', 450,-80, 0, 200, 300)
     $('#nympho').append($('<button/>').text('ping')
@@ -644,19 +656,25 @@ menuplot = function(fig, add_html){
                 .click(function(){alert("searching")})));
       $('#nympho').append($('<div/>').append($('<button/>').append($('<span/>')
                                   .attr('class', "glyphicon glyphicon-home"))
-          .click(function(){alert("go to first view")})));
-
-          $('#nympho').append($('<div/>').append($('<button/>').append($('<span/>')
-                                            .attr('class', "glyphicon glyphicon-chevron-left"))
-                                            .click(function(){alert("go to precedent view")}))
-                                          .append($('<button/>').append($('<span/>')
-                                            .attr('class', "glyphicon glyphicon-chevron-right"))
-                                            .click(function(){alert("go to next view")}))
-                            );
+                 .click(function(){alert("go to first view")})));
+      $('#nympho').append($('<div/>')
+                    .append($('<button/>')
+                        .append($('<span/>')
+                          .attr('class', "glyphicon glyphicon-chevron-left"))
+                          .click(function(){
+                           self.zoom_nav('back')
+                          }))
+                        .append($('<button/>').append($('<span/>')
+                          .attr('class', "glyphicon glyphicon-chevron-right"))
+                          .click(function(){
+                              self.zoom_nav('forward')
+                          }))
+                    );
 
     //$('#nympho').append('<p><span class="glyphicon glyphicon-envelope"></span></p>')
     $('#nympho').append($('<div/>').text('ee'))
     $('#nympho').append($('<div/>').text('aa'))
     $('#nympho').append($('<div/>').text('oo'))
+
     
 }
