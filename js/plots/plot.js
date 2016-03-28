@@ -631,7 +631,7 @@ make_plot.prototype.zoom_nav = function(dir){
     //alert(dir)
     if (dir == 'forward'){
         var elem_next = self.list_domains[self.poszoom+1]
-        if (self.poszoom != self.list_domains.length-2){self.poszoom += 1}
+        if (self.poszoom != self.list_domains.length-1){self.poszoom += 1}
         self.new_view(elem_next)
         }
     else if (dir == 'back'){
@@ -664,17 +664,19 @@ make_plot.prototype.menuplot = function(fig, add_html){
                           .click(function(){
                            self.zoom_nav('back')
                           }))
-                        .append($('<button/>').append($('<span/>')
+                    .append($('<button/>')
+                        .append($('<span/>')
                           .attr('class', "glyphicon glyphicon-chevron-right"))
                           .click(function(){
-                              self.zoom_nav('forward')
+                          self.zoom_nav('forward')
                           }))
-                    );
+                    .append( function(){
+                      var numtot = Math.max(1, self.list_domains.length)
+                      var pos = self.poszoom+1
+                      return $('<p/>').text((pos+'/'+numtot))
+                      }// end function
+                      
+                    )// end append pos+'/'+numtot
+                ); // end append div
 
-    //$('#nympho').append('<p><span class="glyphicon glyphicon-envelope"></span></p>')
-    $('#nympho').append($('<div/>').text('ee'))
-    $('#nympho').append($('<div/>').text('aa'))
-    $('#nympho').append($('<div/>').text('oo'))
-
-    
 }
