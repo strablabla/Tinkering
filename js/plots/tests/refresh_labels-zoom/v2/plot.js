@@ -38,7 +38,6 @@ make_plot = function(elemid, dataset, nodes_links,   params) {
   this.brush_active = false
   this.list_domains = []
   this.zoom_margin = 20
-  this.show_grid = true;
   text_nb = 0
   list_txt = []
   insert_text = false
@@ -59,8 +58,6 @@ make_plot = function(elemid, dataset, nodes_links,   params) {
    * b : zoom with brush
    * q : zoom in x with brush
    * d : toggle for drag and zoom.
-   * x : move backward in the zoom
-   * v : move forward in the zoom
    */}.toString().slice(14,-3)
   
   var tools = function(){/*
@@ -137,13 +134,13 @@ function elementMousedown(evt) {
     mousedownonelement = true;
 }
 
-  this.add_html = function(node, htm, w, h, ang, width, height){ // adding html in the plot
-      ww = width || 200;
-      hh = height || 100;
+
+
+  var add_html = function(node, htm, w, h, ang){ // adding html in the plot
       var htmnode = node.append('foreignObject')
           .attr("transform", tr(w-100, h, ang))
-          .attr('width', ww)
-          .attr('height', hh)
+          .attr('width', 200)
+          .attr('height', 100)
           .append("xhtml:body")
           .html(htm)
       return htmnode
@@ -200,6 +197,7 @@ function elementMousedown(evt) {
       .attr("id", "vis")
       .append("g")
         .attr("transform", tr(this.padding.left, this.padding.top));
+  this.g = this.vis.append('g');
 
   this.plot = this.vis.append("rect")  // For pointer events
       .attr("width", this.size.width)
@@ -209,12 +207,12 @@ function elementMousedown(evt) {
 
   if (this.drag_zoom == true){                  // drag and zoom in the whole plot
     alert('permitting drag')
-      this.plot
+    this.plot
           .on("mousedown.drag", self.plot_drag())
           .on("touchstart.drag", self.plot_drag())
           .call(d3.behavior.zoom().x(this.x).y(this.y)
-          .on("zoom", this.redraw_all()));
-      }
+                ); // end call
+      } // end if
 
   d3.select(this.chart)                         // drag the points of the curve
       .on("mousemove.drag", self.mousemove())
@@ -250,10 +248,10 @@ function elementMousedown(evt) {
           ylab.css({"font-family": "Times New Roman","font-size": "20px"})
         }
 
-  //make_labels(this.vis.select('svg'), this.nodes_links, this.cx, this.cy) // make the labels
+  //sthis.make_labels(this.vis, this.nodes_links, this.cx, this.cy) // make the labels
   this.redraw_all()();
  
-  //menuplot(this.vis, this.add_html) // make the menu
+  menuplot(this.vis, add_html) // make the menu
 
   make_brush = function(){                // zoom box with brush tool
       self.brush = self.vis.append("g")
@@ -320,6 +318,10 @@ function elementMousedown(evt) {
       
       d3.selectAll(".zoom_interact").remove() // remove the additional zoom windows
       set_view(extent) // change the view
+      // d3.selectAll(".node_label").attr('r', 10)
+      // d3.selectAll(".line_edges").attr('x2', 100)
+      //                             .attr('y2', 100)
+
       self.redraw_all()(); // redraw axis etc
       d3.selectAll(".brush").remove();
       make_brush() // reimplement the brush tool
@@ -389,14 +391,14 @@ function elementMousedown(evt) {
         deactivate_all_not('d')   // deactivate all the other tools
         self.drag_zoom = ! self.drag_zoom;                          // toggle drag_zoom
         self.redraw_all()();
-        } // end if
+       } // end if
 
       if(keyev('x', event)){      // move backward in the zoom list
           deactivate_all_not('x')   // deactivate all the other tools
           var elem_prec = self.list_domains[poszoom-1]
           poszoom += -1;
           new_view(elem_prec)
-          } // end if
+       } // end if
 
       if(keyev('v', event)){      // move forward in the zoom list
           deactivate_all_not('v')   // deactivate all the other tools
@@ -404,15 +406,6 @@ function elementMousedown(evt) {
           poszoom += 1;
           new_view(elem_prec)
        } // end if
-
-      if(keyev('g', event)){      // 
-          deactivate_all_not('g')   // deactivate all the other tools
-          //alert('changing the grid')
-          self.show_grid = ! self.show_grid;
-          //alert(self.show_grid)
-          //$('.grid').remove()
-          self.redraw_all()();
-          }     // end if
 
   }) // end keydown
 }; // end make_plot
@@ -429,28 +422,33 @@ make_plot.prototype.plot_drag = function() {
   }
 };
 
+make_plot.prototype.move_circle = function(circle){
+  circle.enter().append("circle")
+          .attr("class", function(d) { return d === self.selected ? "selected" : null; })
+          .attr("cx",    function(d) { return self.x(d.x); })
+          .attr("cy",    function(d) { return self.y(d.y); })
+          .attr("r", 3.0)
+          .style("cursor", "ns-resize")
+          .on("mousedown.drag",  self.datapoint_drag())
+          .on("touchstart.drag", self.datapoint_drag());
+      circle
+          .attr("class", function(d) { return d === self.selected ? "selected" : null; })
+          .attr("cx",    function(d) { 
+            return self.x(d.x); })
+          .attr("cy",    function(d) { return self.y(d.y); });
+      circle.exit().remove();
+}
+
 make_plot.prototype.update = function() {
     // update graph, axes, labels, circles..
     var self = this;
-    //self.menuplot()
-    $('#nympho').remove() // removing the menu
-    menuplot(this.vis, this.add_html) // make the menu
-    if (this.show_circle == true){   // show circle for modifying the points.
-      var circle = this.vis.select("svg").selectAll("circle") //.select("svg")
-          .data(self.dataset); //, function(d) { return d; }
-      circle.enter().append("circle")
-          .style("cursor", "ns-resize")
-      circle
-          .classed("selected", function(d) { return d === self.selected; })
-          .attr("cx", function(d) { return self.x(d.x) })
-          .attr("cy", function(d) { return self.y(d.y) })
-          .attr("r", 3.0)
-          .on("mousedown.drag", function(d) {
-                 self.selected = self.dragged = d;
-                 self.update()}); 
-      circle.exit().remove();
-      }// end if show circle
     var lines = this.vis.select("path").attr("d", this.line(this.dataset));
+    if (this.show_circle == true){   // show circle for modifying the points.
+      var circle = this.vis.select("svg").selectAll("circle")
+          .data(this.dataset, function(d) { return d; });
+      self.move_circle (circle);
+      }// end if show circle
+
     if (d3.event && d3.event.keyCode) {
     d3.event.preventDefault();
     d3.event.stopPropagation();
@@ -461,7 +459,6 @@ make_plot.prototype.update = function() {
 make_plot.prototype.datapoint_drag = function() {    // moving points
   var self = this;
   return function(d) {
-    //alert('dragging '+d.x)
     document.onselectstart = function() { return false; };
     self.selected = self.dragged = d;
     self.update();
@@ -474,7 +471,6 @@ make_plot.prototype.mousemove = function() { // handling mouse movements
     var p = d3.svg.mouse(self.vis[0][0]),
         t = d3.event.changedTouches;
     if (self.dragged) {
-      alert('being dragged')
       self.dragged.y = self.y.invert(Math.max(0, Math.min(self.size.height, p[1])));
       self.update();
     };
@@ -492,21 +488,22 @@ make_plot.prototype.mouseup = function() { // mouse in its normal state
   }
 }
 
+
+
 make_plot.prototype.redraw_all = function() {         // redraw the whole plot
   var self = this;
   return function() {
-    var tx = function(d) { 
-      return "translate(" + self.x(d) + ",0)"; 
-    },
-    ty = function(d) { 
-      return "translate(0," + self.y(d) + ")";
-    },
-    stroke = function(d) { 
-      return d ? "#ccc" : "#666"; 
-    },
-    fx = self.x.tickFormat(10),
-    fy = self.y.tickFormat(10);
+      
+    //make_labels(self.vis, self.nodes_links, self.cx, self.cy) // make the labels
+    var tx = function(d) { return "translate(" + self.x(d) + ",0)";},
+        ty = function(d) { return "translate(0," + self.y(d) + ")";},
+        stroke = function(d) { return d ? "#ccc" : "#666"; }
+
+    var fx = self.x.tickFormat(10),
+        fy = self.y.tickFormat(10);
+
     var sz_txt_ticks = "14px" // size of ticks text
+
     var make_axes = function(nodename, selfax, trans, txt, ax1, ax2, valmax, stroke){  // grid
       var node = self.vis.selectAll(nodename)
         .data(selfax.ticks(10), String)
@@ -516,21 +513,12 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
       var nodee = node.enter().insert("g", "a")
           .attr("class", ax1)
           .attr("transform", trans);
-      // if (self.show_grid == false){ valmax = 0 }
-          //alert('in redraw_all self.show_grid '+self.show_grid)
-          //alert('adding grid')
-          nodee.append("line") // make the lines
-            .attr("class", "grid")
-            .attr("stroke", stroke)
-            .attr(ax2+"1", 0)
-            .attr(ax2+"2", valmax);
-          
-      // else { $('g.y').each(function(){$('line.grid').attr("x2", 0)}) 
-      //        $('g.x').each(function(){$('line.grid').attr("y2", 0)}) 
-    //}
-
+      nodee.append("line") // make the lines
+          .attr("stroke", stroke)
+          .attr(ax2+"1", 0)
+          .attr(ax2+"2", valmax);
     return [node, nodee]
-    } // end make_axes
+    }
 
     var ticks_txt = function(node, ax, axpos, shift, txt){ // text for the axes
         node.append("text")
@@ -545,33 +533,28 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
     }
 
     // Regenerate x-ticks… 
-    gg = make_axes("g.x", self.x, tx, fx, 'x','y', self.size.height, stroke)
+    gg = make_axes("g.x", self.x, tx, fx, 'x','y', self.size.height, stroke) // make axes
     gx = gg[0]; gxe = gg[1]
-    ticks_txt(gxe,"y",self.size.height,"1em",fx)
+    ticks_txt(gxe,"y",self.size.height,"1em",fx) // make text of ticks
     gx.exit().remove();
     // Regenerate y-ticks…
     gg = make_axes("g.y", self.y, ty, fy, 'y','x', self.size.width, stroke)
     gy = gg[0]; gye = gg[1]
     ticks_txt(gye,"x",-3,".35em",fy)
     gy.exit().remove();
+    ///
     if (self.drag_zoom == true){
-         self.plot
-         .call(d3.behavior.zoom().x(self.x).y(self.y)
-                                .on("zoom", self.redraw_all())
-                                )}  // end if self.drag_zoom
-    if (self.show_grid == false){  // adding removing the grid
-        $('g.y line.grid').each(function(){$(this).attr("x2", 0)}) 
-        $('g.x line.grid').each(function(){$(this).attr("y2", 0)}) 
-     }
-    else {
-        $('g.y line.grid').each(function(){$(this).attr("x2", self.size.width)}) 
-        $('g.x line.grid').each(function(){$(this).attr("y2", self.size.height)}) 
-    }
+         self.plot.call(d3.behavior.zoom().x(self.x).y(self.y)
+                        .on("zoom", self.redraw_all())
+                        )}  // end if self.drag_zoom
     self.update();    // update the whole plot
   }  
 }
 
-function make_labels(svg, nodes_links, w, h) {
+
+
+make_plot.prototype.make_labels = function(g, nodes_links, w, h) {
+    var self = this;
     var color = d3.scale.category20();
     var nodes = nodes_links.nodes
     var links = nodes_links.links
@@ -579,6 +562,9 @@ function make_labels(svg, nodes_links, w, h) {
     var factx = 15
     var facty = 70
     var shift = 200
+    coord_correct = function(x, y){
+        return [self.x(self.x.invert(x)), self.y(self.y.invert(y))]
+    }
     nodes.forEach(function(data, i){
           data["x"] *= factx;
           data["y"] = data["y"]*facty+shift;
@@ -590,7 +576,9 @@ function make_labels(svg, nodes_links, w, h) {
           n["name"] = parseFloat(n["x"]).toFixed(3)     // value of position
           n["y"] += -100                                // begin above.
         })
-    var texts = svg.selectAll("text")
+    //alert('before text')
+
+    var texts = g.selectAll("text")
                     .data(nodes)
                     .enter()
                     .append("text")
@@ -610,19 +598,20 @@ function make_labels(svg, nodes_links, w, h) {
                     .start();
     /* Draw the edges/links between the nodes */
     //alert('before line')
-    var edges = svg.selectAll("line")
+    var edges = g.selectAll("line")
                     .data(links)
                     .enter()
                     .append("line")
                     .style("stroke", "#ccc")
                     .style("stroke-width", 1)
                     .attr("marker-end", "url(#end)")
-                    .attr("class","lll")
+                    .attr("class","line_edges")
     //alert('before circle')               
-    var nodes = svg.selectAll("circle")
+    var nodes = g.selectAll("circle")
                     .data(nodes)
                     .enter()
                     .append("circle")
+                    .attr("class", "node_label")
                     .attr("r", 5)
                     .attr("opacity", function(d,i) {if (d.fixed == false){return 0.8} else {return 0}})
                     .style("fill", function(d,i) { return color(i);})
@@ -643,31 +632,16 @@ function make_labels(svg, nodes_links, w, h) {
     
 menuplot = function(fig, add_html){
 
-    add_html(fig,'<div id="nympho" class ="infos"></div>', 450,-80, 0, 200, 300)
+    //add_html(this.vis, '<p><span class="glyphicon glyphicon-envelope"></span></p>', 60,30)
+    add_html(fig,'<button id="butt" class ="btn btn-success">oups</button>', 30,-40)
+    $('#butt').click(function(){alert("huuuu")});
+    add_html(fig,'<div id="nympho" class ="infos">aaaarrrrrrrrrrrrggggggh</div>', 450,-40)
+    $('#nympho').append($('<div/>').text("ouououou"));
     $('#nympho').append($('<button/>').text('ping')
                 .attr('class','btn btn-warning')
                 .click(function(){alert("this is a button dear")}));
       $('#nympho').append($('<button/>').text('pong')
                 .attr('class','btn btn-danger')
                 .click(function(){alert("zorgluubb")}));
-      $('#nympho').append($('<div/>').append($('<button/>').append($('<span/>')
-                                        .attr('class', "glyphicon glyphicon-search"))
-                .click(function(){alert("searching")})));
-      $('#nympho').append($('<div/>').append($('<button/>').append($('<span/>')
-                                  .attr('class', "glyphicon glyphicon-home"))
-          .click(function(){alert("go to first view")})));
-
-          $('#nympho').append($('<div/>').append($('<button/>').append($('<span/>')
-                                            .attr('class', "glyphicon glyphicon-chevron-left"))
-                                            .click(function(){alert("go to precedent view")}))
-                                          .append($('<button/>').append($('<span/>')
-                                            .attr('class', "glyphicon glyphicon-chevron-right"))
-                                            .click(function(){alert("go to next view")}))
-                            );
-
-    //$('#nympho').append('<p><span class="glyphicon glyphicon-envelope"></span></p>')
-    $('#nympho').append($('<div/>').text('ee'))
-    $('#nympho').append($('<div/>').text('aa'))
-    $('#nympho').append($('<div/>').text('oo'))
-    
+    $('#nympho').append($('<p/>').text('   '))
 }
