@@ -13,7 +13,6 @@ var plot = function(elemid, add_data, add_nodes_links, params){
         });
     }
 
-
 make_plot = function(elemid, dataset, nodes_links,   params) {
   var self = this;
   
@@ -283,15 +282,15 @@ function elementMousedown(evt) {
                     .style("fill","red")
                     .style('opacity', .15)
                     .on('click', function(){zoom_in()})
-               })  // end on brushend     
+               })  // end on("brushend")     
             ) // end call
-  } // end make_brush
+        } // end make_brush
 
   this.new_view = function(view_coord){
           self.x.domain(view_coord[0]);
           self.y.domain(view_coord[1]);
           self.redraw_all()();
-  }
+     }
   
   set_view = function(extent){                      // set the view for a given extent double list. 
         x1 = self.x.invert(extent[0][0]); x2 = self.x.invert(extent[1][0]) // x1, x2
@@ -299,7 +298,7 @@ function elementMousedown(evt) {
         self.x.domain([x1,x2]);                     // set x domain
         self.y.domain([y1,y2]);                     // set y domain
         self.list_domains.push([[x1,x2],[y1,y2]])       // save views in history
-  }
+     }
   set_view([[0,0],[this.size.width, this.size.height]]) // Save the first view in self.list_domains (Initialisation)
   
   var deactivate_all_not = function(avoid){  // deactivate all the tools but.. 
@@ -317,10 +316,10 @@ function elementMousedown(evt) {
   var zoom_in = function(){
       
       d3.selectAll(".zoom_interact").remove() // remove the additional zoom windows
-      set_view(extent) // change the view
-      self.redraw_all()(); // redraw axis etc
+      set_view(extent)      // change the view
+      self.redraw_all()();    // redraw axis etc
       d3.selectAll(".brush").remove();
-      make_brush() // reimplement the brush tool
+      make_brush()    // reimplement the brush tool
   }
 
   var keyev = function(key, event){
@@ -357,11 +356,6 @@ function elementMousedown(evt) {
           self.vis.selectAll('circle').remove()
           self.redraw_all()();
       } // end if
-      if(keyev('w', event)){                            // home view
-          deactivate_all_not('w')   // deactivate all the other tools
-          var elem_first = self.list_domains[0]
-          self.new_view(elem_first)
-          } // end if
       if(keyev('q', event)){                        // Apply the zoom
           zoomx = ! zoomx;
           //alert('zoomx '+zoomx)
@@ -372,36 +366,23 @@ function elementMousedown(evt) {
               make_brush();
               self.brush_active = true;
               }
-      } // end if
-      if(keyev('b', event)){                    // select the brush tool
-        if (self.brush_active == true){
-            deactivate_all_not('b') // deactivate all the other tools
-            if (zoomx == true){zoomx = false; } //alert("passing zoomxto false")
-        }
-        else{
-            make_brush();
-            self.brush_active = true;
-            }
-       } // end if
-      if(keyev('d', event)){ 
-        deactivate_all_not('d')   // deactivate all the other tools
-        self.drag_zoom = ! self.drag_zoom;                          // toggle drag_zoom
-        self.redraw_all()();
-        } // end if
-
-      if(keyev('x', event)){      // move backward in the zoom list
-          deactivate_all_not('x')   // deactivate all the other tools
-          var elem_prec = self.list_domains[self.poszoom-1]
-          self.poszoom += -1;
-          self.new_view(elem_prec)
           } // end if
-
-      if(keyev('v', event)){      // move forward in the zoom list
-          deactivate_all_not('v')   // deactivate all the other tools
-          var elem_next = self.list_domains[self.poszoom+1]
-          self.poszoom += 1;
-          self.new_view(elem_next)
-       } // end if
+      if(keyev('b', event)){                    // select the brush tool
+            if (self.brush_active == true){
+                deactivate_all_not('b') // deactivate all the other tools
+                if (zoomx == true){zoomx = false} //alert("passing zoomx to false")
+            }
+            else{
+                make_brush();
+                self.brush_active = true;
+                }
+           } // end if
+    
+      if(keyev('d', event)){                    // select the brush tool
+           deactivate_all_not('d')   // deactivate all the other tools
+           self.drag_zoom = ! self.drag_zoom;                          // toggle drag_zoom
+           self.redraw_all()();
+          } // end if
 
       if(keyev('g', event)){      // 
           deactivate_all_not('g')   // deactivate all the other tools
@@ -430,27 +411,13 @@ make_plot.prototype.update = function() {
 
     $('#nympho').remove() // removing the menu
     self.menuplot(this.vis, this.add_html) // make the menu
-    if (this.show_circle == true){   // show circle for modifying the points.
-      var circle = this.vis.select("svg").selectAll("circle") //.select("svg")
-          .data(self.dataset); //, function(d) { return d; }
-      circle.enter().append("circle")
-          .style("cursor", "ns-resize")
-      circle
-          .classed("selected", function(d) { return d === self.selected; })
-          .attr("cx", function(d) { return self.x(d.x) })
-          .attr("cy", function(d) { return self.y(d.y) })
-          .attr("r", 3.0)
-          .on("mousedown.drag", function(d) {
-                 self.selected = self.dragged = d;
-                 self.update()}); 
-      circle.exit().remove();
-      }// end if show circle
     var lines = this.vis.select("path").attr("d", this.line(this.dataset));
     if (d3.event && d3.event.keyCode) {
     d3.event.preventDefault();
     d3.event.stopPropagation();
     } // end if
-    //prep_edit()
+    
+    //d3.selectAll('.navigation').style("cursor", "hand"); 
 }
 
 make_plot.prototype.datapoint_drag = function() {    // moving points
@@ -522,14 +489,14 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
 
     var ticks_txt = function(node, ax, axpos, shift, txt){ // text for the axes
         node.append("text")
-        .attr("class", "axis")
-        .attr(ax, axpos)
-        .attr("dy", shift)
-        .attr("text-anchor", "end")
-        .attr("font-family", "Times New Roman")
-        .attr("font-size", sz_txt_ticks)
-        .text(txt)
-        .style("cursor", "ew-resize")
+            .attr("class", "axis")
+            .attr(ax, axpos)
+            .attr("dy", shift)
+            .attr("text-anchor", "end")
+            .attr("font-family", "Times New Roman")
+            .attr("font-size", sz_txt_ticks)
+            .text(txt)
+            .style("cursor", "ew-resize")
     }
 
     // Regenerate x-ticks… 
@@ -639,12 +606,18 @@ make_plot.prototype.zoom_nav = function(dir){
         if (self.poszoom != 0){self.poszoom += -1;}
         self.new_view(elem_prec)
         }
-  } // zoom_nav
+    else if (dir == 'home'){
+        var elem_first = self.list_domains[0];
+        self.new_view(elem_first);
+        self.poszoom = 0;
+        }
+        
+  } // end zoom_nav
     
 make_plot.prototype.menuplot = function(fig, add_html){
     self = this;
 
-    add_html(fig,'<div id="nympho" class ="infos"></div>', 450,-80, 0, 200, 300)
+    add_html(fig,'<div id="nympho" class ="infos"></div>', 450,-20, 0, 200, 300)
     $('#nympho').append($('<button/>').text('ping')
                 .attr('class','btn btn-warning')
                 .click(function(){alert("this is a button dear")}));
@@ -654,26 +627,54 @@ make_plot.prototype.menuplot = function(fig, add_html){
       $('#nympho').append($('<div/>').append($('<button/>').append($('<span/>')
                                         .attr('class', "glyphicon glyphicon-search"))
                 .click(function(){alert("searching")})));
-      $('#nympho').append($('<div/>').append($('<button/>').append($('<span/>')
-                                  .attr('class', "glyphicon glyphicon-home"))
-                 .click(function(){alert("go to first view")})));
+      $('#nympho').append($('<div/>')
+                     .append($('<button/>').attr("class", "navigation")
+                        .append($('<span/>')
+                            .attr('class', "glyphicon glyphicon-home"))
+                        .click(function(){
+                            self.zoom_nav('home')
+                            var numtot = Math.max(1, self.list_domains.length)
+                            var pos = 1
+                            $('#poszoom').text(pos+'/'+numtot)
+                        })// end click
+                    )// end append button
+                ) // end append div
+    $('#nympho').append($('<div/>')
+                   .append($('<button/>')
+                      .append($('<span/>')
+                          .attr('class', "glyphicon glyphicon-move"))
+                      .click(function(){
+                          //deactivate_all_not('d')   // deactivate all the other tools
+                          self.drag_zoom = ! self.drag_zoom;                          // toggle drag_zoom
+                          self.redraw_all()();
+                      })// end click
+                  )// end append button
+              ) // end append div      
+                
+                // if(keyev('d', event)){ 
+                //   deactivate_all_not('d')   // deactivate all the other tools
+                //   self.drag_zoom = ! self.drag_zoom;                          // toggle drag_zoom
+                //   self.redraw_all()();
+                //   } // end if
+                
+                
       $('#nympho').append($('<div/>')
                     .append($('<button/>')
                         .append($('<span/>')
-                          .attr('class', "glyphicon glyphicon-chevron-left"))
-                          .click(function(){
+                          .attr('class', "glyphicon glyphicon-chevron-left")) // zoom backward
+                        .click(function(){
                            self.zoom_nav('back')
                           }))
                     .append($('<button/>')
                         .append($('<span/>')
-                          .attr('class', "glyphicon glyphicon-chevron-right"))
-                          .click(function(){
+                          .attr('class', "glyphicon glyphicon-chevron-right")) // zoom forward
+                        .click(function(){
                           self.zoom_nav('forward')
                           }))
                     .append( function(){
                       var numtot = Math.max(1, self.list_domains.length)
                       var pos = self.poszoom+1
-                      return $('<p/>').text((pos+'/'+numtot))
+                      return $('<span/>').attr('id','poszoom').text(pos+'/'+numtot)
                       }// end function
                       
                     )// end append pos+'/'+numtot
