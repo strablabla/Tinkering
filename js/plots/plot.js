@@ -41,7 +41,7 @@ make_plot = function(elemid, dataset, nodes_links,   params) {
   this.show_grid = true; // boolean for plotting the grid or not. 
   text_nb = 0
   list_txt = []
-  insert_text = false // boolean for inserting text in the plot or not.
+  this.insert_text = false // boolean for inserting text in the plot or not.
   this.zoomx = false // boolean for zoom only in x. 
   this.poszoom = 0
   this.show_navig_plot = true;
@@ -99,7 +99,7 @@ make_plot = function(elemid, dataset, nodes_links,   params) {
      return "translate(" + w + ","+ h + ") rotate(" + ang + ")"
       }
 
-var mousedownonelement = false;
+this.mousedownonelement = false;
 
 window.getlocalmousecoord = function (svg, evt) {
     var pt = svg.createSVGPoint();
@@ -135,7 +135,7 @@ window.createtext = function (localpoint, svg, txt, cl, ang) { // Create editabl
 }; // end createtext
 
 function elementMousedown(evt) {
-    mousedownonelement = true;
+    self.mousedownonelement = true;
 }
 
   this.add_html = function(node, htm, w, h, ang, width, height){ // adding html in the plot
@@ -306,7 +306,7 @@ function elementMousedown(evt) {
           self.brush_active = false;
         }
      if (avoid != 'i'){
-         if (insert_text == true){
+         if (self.insert_text == true){
              $("#vis"+self.id).off('click');
          }
      }
@@ -336,21 +336,10 @@ function elementMousedown(evt) {
               $('.alertify .alert > *').css({'text-align':'left'});
               alertify.alert(simple_md(help_plot))
         } // end if key code
-      if(keyev('i', event)){    // "i", insert text
-            insert_text = ! insert_text;
-            $('#vis'+self.id).click(function (evt) {
-                var svg = document.getElementById('vis'+self.id);
-                var localpoint = getlocalmousecoord(svg, evt);
-                if (!mousedownonelement) {
-                    createtext(localpoint, svg); // insert text with mouse
-                } else {
-                    mousedownonelement = false;
-                }
-            }); // end vis click
-            if (insert_text == false){
-                $("#vis"+self.id).off('click');
-            }
-      } // end if key code
+      // if(keyev('i', event)){    // "i", insert text
+      // 
+      //      
+      // } // end if key code
       if(keyev('c', event)){    // add and remove circles.. 
           self.show_circle = !self.show_circle;
           self.vis.selectAll('circle').remove()
@@ -617,14 +606,50 @@ make_plot.prototype.menuplot = function(fig, add_html){
     self = this;
 
     add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 450,100, 0, 200, 300)
-    $('#navig_plot'+self.id).append($('<button/>').text('ping')
-                .attr('class','btn btn-warning')
-                .click(function(){alert("this is a button dear")}));
-    $('#navig_plot'+self.id).append($('<button/>').text('pong')
-            .attr('class','btn btn-danger')
-            .click(function(){alert("zorgluubb")}));
-    $('#navig_plot'+self.id).append($('<div/>').append($('<button/>').append($('<span/>')
-                                    .attr('class', "glyphicon glyphicon-search"))
+    $('#navig_plot'+self.id).append($('<div/>')
+                                .append($('<button/>')
+                                    .append($('<span/>')
+                                        .attr('class', "glyphicon glyphicon-pencil"))                        
+                                .click(function(){
+                                    
+                                    self.insert_text = ! self.insert_text;
+                                    $('#vis'+self.id).click(function (evt) {
+                                        var svg = document.getElementById('vis'+self.id);
+                                        var localpoint = getlocalmousecoord(svg, evt);
+                                        if (!self.mousedownonelement) {
+                                            createtext(localpoint, svg); // insert text with mouse
+                                        } else {
+                                            self.mousedownonelement = false;
+                                        }
+                                    }); // end vis click
+                                    if (self.insert_text == false){
+                                        $("#vis"+self.id).off('click');
+                                        } // end if
+                                    self.redraw_all()()
+                                })// end click
+                        ) // end append button
+                     ) // end append div
+    
+     $('#navig_plot'+self.id).append($('<div/>')
+                                 .append($('<button/>')
+                                    .append($('<span/>')
+                                      .attr('class', "glyphicon glyphicon-th"))
+                                 .click(function(){
+                                     self.deactivate_all_not('g')   // deactivate all the other tools
+                                     self.show_grid = ! self.show_grid;
+                                     self.redraw_all()();
+                                 })// end click
+                         ) // end append button
+                      ) // end append div
+                
+    // $('#navig_plot'+self.id).append($('<button/>').text('pong')
+    //          .attr('class','btn btn-danger')
+    //          .click(function(){alert("zorgluubb")}));
+            
+    $('#navig_plot'+self.id).append($('<div/>')
+                                .append($('<button/>')
+                                    .append($('<span/>')
+                                        .attr('class', "glyphicon glyphicon-search"))
                 .click(function(){
                     if (self.brush_active == true){
                         self.deactivate_all_not('b')           // deactivate all the other tools
