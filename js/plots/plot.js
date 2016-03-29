@@ -222,17 +222,7 @@ function elementMousedown(evt) {
       .on("mouseup.drag",   self.mouseup())
       .on("touchend.drag",  self.mouseup());
 
-  this.vis.append("svg") // line attached to svg block"viewBox
-      .attr("top", 0)
-      .attr("left", 0)
-      .attr("width", this.size.width)
-      .attr("height", this.size.height)
-      .attr("viewBox", "0 0 "+this.size.width+" "+this.size.height)
-      .attr("class", "line")
-      .append("path")
-          .attr("class", "line")
-          .attr("d", this.line(this.dataset))
-          .style({stroke : colrs[this.col], fill : 'none','stroke-width' : '1.5px'})
+
 
   // add Chart Title
   if (this.title) {
@@ -250,6 +240,18 @@ function elementMousedown(evt) {
           ylab.css({"font-family": "Times New Roman","font-size": "20px"})
         }
   this.redraw_all()();
+
+    this.vis.append("svg") // line attached to svg block"viewBox
+      .attr("top", 0)
+      .attr("left", 0)
+      .attr("width", this.size.width)
+      .attr("height", this.size.height)
+      .attr("viewBox", "0 0 "+this.size.width+" "+this.size.height)
+      .attr("class", "line")
+      .append("path")
+          .attr("class", "line")
+          .attr("d", this.line(this.dataset))
+          .style({stroke : colrs[this.col], fill : 'none','stroke-width' : '1.5px'})
 
   this.make_brush = function(){                // zoom box with brush tool
       self.brush = self.vis.append("g")
@@ -336,10 +338,6 @@ function elementMousedown(evt) {
               $('.alertify .alert > *').css({'text-align':'left'});
               alertify.alert(simple_md(help_plot))
         } // end if key code
-      // if(keyev('i', event)){    // "i", insert text
-      // 
-      //      
-      // } // end if key code
       if(keyev('c', event)){    // add and remove circles.. 
           self.show_circle = !self.show_circle;
           self.vis.selectAll('circle').remove()
@@ -376,7 +374,7 @@ function elementMousedown(evt) {
            self.redraw_all()();
           } // end if
 
-      if(keyev('g', event)){      // 
+      if(keyev('g', event)){      //  activate deactivate the grid
           self.deactivate_all_not('g')   // deactivate all the other tools
           self.show_grid = ! self.show_grid;
           self.redraw_all()();
@@ -399,7 +397,6 @@ make_plot.prototype.plot_drag = function() {
 make_plot.prototype.update = function() {
     // update graph, axes, labels, circles..
     var self = this;
-
     var lines = this.vis.select("path").attr("d", this.line(this.dataset));
     $('#navig_plot'+self.id).remove() // removing the menu
     self.menuplot(this.vis, this.add_html) // make the menu
@@ -413,15 +410,6 @@ make_plot.prototype.update = function() {
     } // end if
 }
 
-make_plot.prototype.datapoint_drag = function() {    // moving points
-  var self = this;
-  return function(d) {
-    //alert('dragging '+d.x)
-    document.onselectstart = function() { return false; };
-    self.selected = self.dragged = d;
-    self.update();
-  }
-};
 
 make_plot.prototype.mousemove = function() { // handling mouse movements
   var self = this;
@@ -500,14 +488,15 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
     gy = gg[0]; gye = gg[1]
     ticks_txt(gye,"x",-3,".35em",fy)
     gy.exit().remove();
+    grid_dic = {'x2':{true:self.size.width, false:0}, 'y2':{true:self.size.height, false:0}}
+    $('g.y line.grid').each(function(){$(this).attr("x2", grid_dic['x2'][self.show_grid])}) 
+    $('g.x line.grid').each(function(){$(this).attr("y2", grid_dic['y2'][self.show_grid])}) 
     if (self.drag_zoom == true){
          self.plot
          .call(d3.behavior.zoom().x(self.x).y(self.y)
                                 .on("zoom", self.redraw_all())
                                 )}  // end if self.drag_zoom
-    grid_dic = {'x2':{true:self.size.width, false:0}, 'y2':{true:self.size.height, false:0}}
-    $('g.y line.grid').each(function(){$(this).attr("x2", grid_dic['x2'][self.show_grid])}) 
-    $('g.x line.grid').each(function(){$(this).attr("y2", grid_dic['y2'][self.show_grid])}) 
+
     self.update();    // update the whole plot
   }  
 }
@@ -605,7 +594,7 @@ make_plot.prototype.zoom_nav = function(dir){
 make_plot.prototype.menuplot = function(fig, add_html){
     self = this;
 
-    add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 450,100, 0, 200, 300)
+    add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 500,100, 0, 200, 300)
     $('#navig_plot'+self.id).append($('<div/>')
                                 .append($('<button/>')
                                     .append($('<span/>')
