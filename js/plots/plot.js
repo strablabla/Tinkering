@@ -290,7 +290,12 @@ function elementMousedown(evt) {
            .on("brushend", function(){
                 d3.selectAll(".zoom_interact").remove()
                 self.poszoom = self.list_domains.length;
-                var rr = self.vis 
+                if ($('#direct_zoom').prop('checked')){
+                  self.direct_zoom = true;
+                  zoom_in()
+                }
+                else{
+                    var rr = self.vis 
                     .append('rect') // rectangle inside the brush rectangle
                     .attr("x", extent[0][0]+self.zoom_margin/2)
                     .attr("y", extent[0][1]+self.zoom_margin/2)
@@ -300,7 +305,12 @@ function elementMousedown(evt) {
                     .style("stroke","red")
                     .style("fill","red")
                     .style('opacity', .15)
-                    .on('click', function(){zoom_in()})
+                    .on('click', function(){
+                      self.direct_zoom = false;
+                      zoom_in()
+                    })
+                }
+
                })  // end "brushend"
             ) // end call
         } // end make_brush
@@ -311,7 +321,6 @@ function elementMousedown(evt) {
           self.redraw_all()();
      }
      
-  
   this.deactivate_all_not = function(avoid){  // deactivate all the tools but.. 
       if ((avoid != 'b') & (avoid != 'q') ){
           d3.selectAll(".brush").remove();  // deactivate brush
@@ -353,16 +362,16 @@ function elementMousedown(evt) {
           self.vis.selectAll('circle').remove()
           self.redraw_all()();
       } // end if keyev
-      if(keyev('q', event)){                        // Apply the zoom
-          self.zoomx = ! self.zoomx;
-          if (self.brush_active == true){
-              self.deactivate_all_not('q')            // deactivate all the other tools
-          }
-          else{
-              self.make_brush();
-              self.brush_active = true;
-              }
-          } // end if keyev
+      // if(keyev('q', event)){                        // Apply the zoom
+      //     self.zoomx = ! self.zoomx;
+      //     if (self.brush_active == true){
+      //         self.deactivate_all_not('q')            // deactivate all the other tools
+      //     }
+      //     else{
+      //         self.make_brush();
+      //         self.brush_active = true;
+      //         }
+      //     } // end if keyev
       if(keyev('b', event)){                    // select the brush tool
             if (self.brush_active == true){
                 self.deactivate_all_not('b')           // deactivate all the other tools
@@ -389,6 +398,11 @@ function elementMousedown(evt) {
           self.show_grid = ! self.show_grid;
           self.redraw_all()();
           }     // end if keyev
+
+      if(keyev('q', event)){      //  activate deactivate the grid
+          alert($('#direct_zoom').prop('checked'))
+          }     // end if keyev
+
   }) // end keydown
 }; // end make_plot
 
@@ -604,6 +618,8 @@ make_plot.prototype.navig_button = function(func, glyph, arg, tooltip){
 make_plot.prototype.menuplot = function(fig, add_html){
     self = this;
 
+
+
     add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 320,-0, 0, 600, 300) // x, y, ang, w, h
     
     show_poszoom = function(){  // show current zoom position in the list of saved zoomed
@@ -710,8 +726,11 @@ make_plot.prototype.menuplot = function(fig, add_html){
                                         ) // end append input
                             ) // end append div
     
-    $('#navig_plot'+self.id).append($('<div/>').text('  '))
-
+    $('#navig_plot'+self.id).append($('<div/>').append($('<span/>').text('direct zoom'))
+                                                .append($('<input/>').attr('type','checkbox').attr('id','direct_zoom')
+                                        )// end append input
+                            ) // end append div
+    if (self.direct_zoom == true){$('#direct_zoom').prop('checked', true)} // checkbox true for direct zoom
     $(document).ready(function(){ // activates the tooltips
     			$('[data-toggle="tooltip"]').tooltip(); 
 			})
