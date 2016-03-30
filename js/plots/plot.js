@@ -45,6 +45,8 @@ make_plot = function(elemid, dataset, nodes_links,   params) {
   this.zoomx = false // boolean for zoom only in x. 
   this.poszoom = 0
   this.show_navig_plot = true;
+  this.nbdecim = 3;
+  this.zoom_direct = false;
   // Commands
   // Each commands executed is supposed to eliminates the other one in possible conflict.
   // * c : show the circles for modifying the plot
@@ -584,13 +586,12 @@ function make_labels(svg, nodes_links, w, h) {
                }); // End tick func
     }; //
 
-make_plot.prototype.navig_button = function(func, glyph, arg){
+make_plot.prototype.navig_button = function(func, glyph, arg, tooltip){
       self = this;
       navmenu = $('#navig_plot'+self.id) 
       if (glyph != null){
-            navmenu.append($('<button/>')
-                .append($('<span/>')
-                  .attr('class', glyph))
+            navmenu.append($('<button/>').attr('title',tooltip)
+                .append($('<span/>').attr('class', glyph))
               .click(function(){
                   if (arg != null){func(arg)} // code with glyphicon and arg
                   else{func()} // code with glyphicon without arg
@@ -600,11 +601,10 @@ make_plot.prototype.navig_button = function(func, glyph, arg){
       else{navmenu.append(func())} // code without glyphicon
     } // end navig_button
 
-
 make_plot.prototype.menuplot = function(fig, add_html){
     self = this;
 
-    add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 350,-0, 0, 600, 300) // x, y, ang, w, h
+    add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 320,-0, 0, 600, 300) // x, y, ang, w, h
     
     show_poszoom = function(){  // show current zoom position in the list of saved zoomed
         var numtot = Math.max(1, self.list_domains.length)
@@ -687,29 +687,33 @@ make_plot.prototype.menuplot = function(fig, add_html){
         self.redraw_all()();
     }
     
-    self.navig_button(put_text, "glyphicon glyphicon-pencil")
-    self.navig_button(grid_on_off, "glyphicon glyphicon-th")
-    self.navig_button(brush_b, "glyphicon glyphicon-search")
-    self.navig_button(brush_q, "glyphicon glyphicon-pause")
-    self.navig_button(go_home, "glyphicon glyphicon-home")
-    self.navig_button(drag_plot, "glyphicon glyphicon-move")
-    self.navig_button(zoom_nav, "glyphicon glyphicon-chevron-left", "back")
-    self.navig_button(zoom_nav, "glyphicon glyphicon-chevron-right", "forward")
-    self.navig_button(show_poszoom)
+    self.navig_button(put_text, "glyphicon glyphicon-pencil", null, 'add text')  // add text
+    self.navig_button(grid_on_off, "glyphicon glyphicon-th", null, 'toggle the grid')   // toggle grid
+    self.navig_button(brush_b, "glyphicon glyphicon-search", null, 'pass to zoom box') // zoom box
+    self.navig_button(brush_q, "glyphicon glyphicon-pause", null, 'pass to zoom in x')  // zoomx
+    self.navig_button(go_home, "glyphicon glyphicon-home", null, 'go to first zoom') // go to first zoom
+    self.navig_button(drag_plot, "glyphicon glyphicon-move", null, 'drag the plot')   // drag the plot
+    self.navig_button(zoom_nav, "glyphicon glyphicon-chevron-left", "back", 'got to previous zoom')    // go to previous zoom
+    self.navig_button(zoom_nav, "glyphicon glyphicon-chevron-right", "forward", 'got to next zoom')   // go to next zoom
+    self.navig_button(show_poszoom)					 // indicate where is the view in all the views
     //alert("menu_plot "+self.x1)
     $('#navig_plot'+self.id).append($('<div/>')
                                 .append($('<span/>').text('x coord : '))
                                 .append($('<input/>').attr("size","25px")
-                                                     .val(self.x1.toFixed(2)+','+self.x2.toFixed(2))
+                                                     .val(self.x1.toFixed(self.nbdecim)+','+self.x2.toFixed(self.nbdecim))
                                         ) // end append input
                             ) // end append div
     $('#navig_plot'+self.id).append($('<div/>')
                                 .append($('<span/>').text('y coord : '))
                                     .append($('<input/>').attr("size","25px")
-                                                     .val(self.y1.toFixed(2)+','+self.y2.toFixed(2))
+                                                     .val(self.y1.toFixed(self.nbdecim)+','+self.y2.toFixed(self.nbdecim))
                                         ) // end append input
                             ) // end append div
     
     $('#navig_plot'+self.id).append($('<div/>').text('  '))
+
+    $(document).ready(function(){ // activates the tooltips
+    			$('[data-toggle="tooltip"]').tooltip(); 
+			})
     
 } // end menu_plot

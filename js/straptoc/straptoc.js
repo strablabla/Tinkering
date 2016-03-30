@@ -78,12 +78,12 @@ var maketoc = function(){
              'help':{'reg':reg_help, 'cut':'§help', 'var': false}
          }
     
-    for (i=0;i<4;i++){     // Tooltips, iteration for nested list
-        $("li, h1, h2").each(function(){  // Tooltips for h1, h2 and li
+    for (i=0; i<4; i++){     // Tooltips, iteration for nested list
+        $("li, h1, h2, h3, h4").each(function(){     // Tooltips for h1, h2, h3, h4 and li
             var text = $(this).html().split('\n')[0]
             if (text.match(/\{.*\}/)){
-                $(this).attr('title', text.match(/\{.*\}/)[0].slice(1,-1))
-                var newhtm = $(this).html().replace(/\{.*\}/, ' ')
+                $(this).attr('title', text.match(/\{.*\}/)[0].slice(1,-1)) // attribute title
+                var newhtm = $(this).html().replace(/\{.*\}/, ' ') // remove the brackets
                 $(this).html(newhtm)
                 } // end match
             })
@@ -106,20 +106,20 @@ var maketoc = function(){
                }) // end replaceWith
            } // end if
         for (elem in param){
-            if ($(this).text().match(param[elem]['reg']) ){  // finds loading parameters
+            if ($(this).text().match(param[elem]['reg']) ){     // finds loading parameters
                 var interm = $(this).text().split(param[elem]['cut'])[1]
                 var newtag = $('<p/>').text('')
-                $(this).replaceWith(newtag) // remove text of the optional parameters
-                param[elem]['var'] = interm.trim() // retrieve the value of parameters in the dic param
+                $(this).replaceWith(newtag)     // remove text of the optional parameters
+                param[elem]['var'] = interm.trim()    // retrieve the value of parameters in the dic param
                }// end if
         } // end for
     }); // end each
     //alert(param['notoc']['var'])
     if(param['notoc']['var'] == false){
-        $('body').prepend($('<div/>').addClass('onside').attr('id',"toc")) // adds the Table of Contents at the beginning
+        $('body').prepend($('<div/>').addClass('onside').attr('id',"toc"))     // adds the Table of Contents at the beginning
     }
     
-    $('.onside').css({'background-color' : param['color_toc']['var']}) // modifying backgnd color for TOC
+    $('.onside').css({'background-color' : param['color_toc']['var']})    // modifying backgnd color for TOC
     
     $('#toc').append($('<a/>').append($('<span/>').text("[--]").addClass('li_h1')));
     var ul1 = $("<ul/>"); // first levels with class
