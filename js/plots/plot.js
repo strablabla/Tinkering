@@ -590,106 +590,98 @@ make_plot.prototype.zoom_nav = function(dir){
         self.poszoom = 0;
         }
   } // end zoom_nav
-    
+
+make_plot.prototype.navig_button = function(func, glyph){
+      self = this;
+      $('#navig_plot'+self.id).append($('<div/>')
+                                   .append($('<button/>')
+                                      .append($('<span/>')
+                                        .attr('class', glyph))
+                                    .click(function(){
+                                        func()
+                                    })
+                                ) // end append button
+                            )  // end append div
+                        }// end navig button
+
 make_plot.prototype.menuplot = function(fig, add_html){
     self = this;
 
     add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 500,100, 0, 200, 300)
-    $('#navig_plot'+self.id).append($('<div/>')
-                                .append($('<button/>')
-                                    .append($('<span/>')
-                                        .attr('class', "glyphicon glyphicon-pencil"))                        
-                                .click(function(){
-                                    
-                                    self.insert_text = ! self.insert_text;
-                                    $('#vis'+self.id).click(function (evt) {
-                                        var svg = document.getElementById('vis'+self.id);
-                                        var localpoint = getlocalmousecoord(svg, evt);
-                                        if (!self.mousedownonelement) {
-                                            createtext(localpoint, svg); // insert text with mouse
-                                        } else {
-                                            self.mousedownonelement = false;
-                                        }
-                                    }); // end vis click
-                                    if (self.insert_text == false){
-                                        $("#vis"+self.id).off('click');
-                                        } // end if
-                                    self.redraw_all()()
-                                })// end click
-                        ) // end append button
-                     ) // end append div
     
-     $('#navig_plot'+self.id).append($('<div/>')
-                                 .append($('<button/>')
-                                    .append($('<span/>')
-                                      .attr('class', "glyphicon glyphicon-th"))
-                                 .click(function(){
-                                     self.deactivate_all_not('g')   // deactivate all the other tools
-                                     self.show_grid = ! self.show_grid;
-                                     self.redraw_all()();
-                                 })// end click
-                         ) // end append button
-                      ) // end append div
-                
-    // $('#navig_plot'+self.id).append($('<button/>').text('pong')
-    //          .attr('class','btn btn-danger')
-    //          .click(function(){alert("zorgluubb")}));
-            
+    put_text = function(){
+         self.insert_text = ! self.insert_text;
+            $('#vis'+self.id).click(function (evt) {
+                var svg = document.getElementById('vis'+self.id);
+                var localpoint = getlocalmousecoord(svg, evt);
+                if (!self.mousedownonelement) {
+                    createtext(localpoint, svg); // insert text with mouse
+                } else {
+                    self.mousedownonelement = false;
+                }
+            }); // end vis click
+            if (self.insert_text == false){
+                $("#vis"+self.id).off('click');
+                } // end if
+            self.redraw_all()()
+    }
+    
+    grid_on_off = function(){
+        self.deactivate_all_not('g')   // deactivate all the other tools
+        self.show_grid = ! self.show_grid;
+        self.redraw_all()();
+    }
+    
+    
+    brush_b = function(){
+        if (self.brush_active == true){
+            self.deactivate_all_not('b')           // deactivate all the other tools
+            if (self.zoomx == true){self.zoomx = false} //alert("passing zoomx to false")
+        }
+        else {
+            self.make_brush();
+            self.brush_active = true;
+            }
+    }
+    
+    go_home = function(){
+        self.zoom_nav('home')
+        var numtot = Math.max(1, self.list_domains.length)
+        var pos = 1
+        $('#poszoom').text(pos+'/'+numtot)
+    }
+    
+    drag_plot = function(){
+        self.deactivate_all_not('d')   // deactivate all the other tools
+        self.drag_zoom = ! self.drag_zoom;                          // toggle drag_zoom
+        self.redraw_all()();
+    }
+    
+    self.navig_button(put_text, "glyphicon glyphicon-pencil")
+    self.navig_button(grid_on_off, "glyphicon glyphicon-th")
+    self.navig_button(brush_b, "glyphicon glyphicon-search")
+    self.navig_button(go_home, "glyphicon glyphicon-home")
+    self.navig_button(drag_plot, "glyphicon glyphicon-move")
+    
+                 
     $('#navig_plot'+self.id).append($('<div/>')
-                                .append($('<button/>')
-                                    .append($('<span/>')
-                                        .attr('class', "glyphicon glyphicon-search"))
-                .click(function(){
-                    if (self.brush_active == true){
-                        self.deactivate_all_not('b')           // deactivate all the other tools
-                        if (self.zoomx == true){self.zoomx = false} //alert("passing zoomx to false")
-                    }
-                    else {
-                        self.make_brush();
-                        self.brush_active = true;
-                        }
-                    })));
-    $('#navig_plot'+self.id).append($('<div/>')
-                 .append($('<button/>').attr("class", "navigation")
-                    .append($('<span/>')
-                        .attr('class', "glyphicon glyphicon-home"))
-                    .click(function(){
-                        self.zoom_nav('home')
-                        var numtot = Math.max(1, self.list_domains.length)
-                        var pos = 1
-                        $('#poszoom').text(pos+'/'+numtot)
-                    })// end click
-                )// end append button
-            ) // end append div
-    $('#navig_plot'+self.id).append($('<div/>')
-                   .append($('<button/>')
-                      .append($('<span/>')
-                          .attr('class', "glyphicon glyphicon-move"))
-                      .click(function(){
-                          self.deactivate_all_not('d')   // deactivate all the other tools
-                          self.drag_zoom = ! self.drag_zoom;                          // toggle drag_zoom
-                          self.redraw_all()();
-                      })// end click
-                  )// end append button
-              ) // end append div      
-    $('#navig_plot'+self.id).append($('<div/>')
-                .append($('<button/>')
-                    .append($('<span/>')
-                      .attr('class', "glyphicon glyphicon-chevron-left")) // zoom backward
-                    .click(function(){
-                       self.zoom_nav('back')
-                      }))
-                .append($('<button/>')
-                    .append($('<span/>')
-                      .attr('class', "glyphicon glyphicon-chevron-right")) // zoom forward
-                    .click(function(){
-                      self.zoom_nav('forward')
-                      }))
-                .append( function(){
-                  var numtot = Math.max(1, self.list_domains.length)
-                  var pos = self.poszoom+1
-                  return $('<span/>').attr('id','poszoom').text(pos+'/'+numtot) // show current zoom position
-                  }// end function
-                )// end append pos+'/'+numtot
-            ); // end append div
+        .append($('<button/>')
+            .append($('<span/>')
+              .attr('class', "glyphicon glyphicon-chevron-left")) // zoom backward
+            .click(function(){
+               self.zoom_nav('back')
+              }))
+        .append($('<button/>')
+            .append($('<span/>')
+              .attr('class', "glyphicon glyphicon-chevron-right")) // zoom forward
+            .click(function(){
+              self.zoom_nav('forward')
+              }))
+        .append( function(){
+          var numtot = Math.max(1, self.list_domains.length)
+          var pos = self.poszoom+1
+          return $('<span/>').attr('id','poszoom').text(pos+'/'+numtot) // show current zoom position
+          }// end function
+        )// end append pos+'/'+numtot
+    ); // end append div
 }
