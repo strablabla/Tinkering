@@ -293,14 +293,14 @@ function elementMousedown(evt) {
           self.redraw_all()();
      }
   
-  set_view = function(extent){                      // set the view for a given extent double list. 
+  this.set_view = function(extent){                      // set the view for a given extent double list. 
         x1 = self.x.invert(extent[0][0]); x2 = self.x.invert(extent[1][0]) // x1, x2
         y1 = self.y.invert(extent[0][1]); y2 = self.y.invert(extent[1][1])  // y1, y2
         self.x.domain([x1,x2]);                     // set x domain
         self.y.domain([y1,y2]);                     // set y domain
         self.list_domains.push([[x1,x2],[y1,y2]])       // save views in history
      }
-  set_view([[0,0],[this.size.width, this.size.height]]) // Save the first view in self.list_domains (Initialisation)
+  self.set_view([[0,0],[this.size.width, this.size.height]]) // Save the first view in self.list_domains (Initialisation)
   
   this.deactivate_all_not = function(avoid){  // deactivate all the tools but.. 
       if ((avoid != 'b') & (avoid != 'q') ){
@@ -317,7 +317,7 @@ function elementMousedown(evt) {
   var zoom_in = function(){
       
       d3.selectAll(".zoom_interact").remove() // remove the additional zoom windows
-      set_view(extent)      // change the view
+      self.set_view(extent)      // change the view
       self.redraw_all()();    // redraw axis etc
       d3.selectAll(".brush").remove();
       self.make_brush()    // reimplement the brush tool
@@ -342,7 +342,7 @@ function elementMousedown(evt) {
           self.show_circle = !self.show_circle;
           self.vis.selectAll('circle').remove()
           self.redraw_all()();
-      } // end if
+      } // end if keyev
       if(keyev('q', event)){                        // Apply the zoom
           self.zoomx = ! self.zoomx;
           if (self.brush_active == true){
@@ -352,7 +352,7 @@ function elementMousedown(evt) {
               self.make_brush();
               self.brush_active = true;
               }
-          } // end if
+          } // end if keyev
       if(keyev('b', event)){                    // select the brush tool
             if (self.brush_active == true){
                 self.deactivate_all_not('b')           // deactivate all the other tools
@@ -362,23 +362,23 @@ function elementMousedown(evt) {
                 self.make_brush();
                 self.brush_active = true;
                 }
-           } // end if
+           } // end if keyev
       if(keyev('d', event)){         // select the brush tool
            self.deactivate_all_not('d')   // deactivate all the other tools
            self.drag_zoom = ! self.drag_zoom;                          // toggle drag_zoom
            self.redraw_all()();
-          } // end if
+          } // end if keyev
           
       if(keyev('n', event)){         // select the brush tool
           self.show_navig_plot = ! self.show_navig_plot
            self.redraw_all()();
-          } // end if
+          } // end if keyev
 
       if(keyev('g', event)){      //  activate deactivate the grid
           self.deactivate_all_not('g')   // deactivate all the other tools
           self.show_grid = ! self.show_grid;
           self.redraw_all()();
-          }     // end if
+          }     // end if keyev
   }) // end keydown
 }; // end make_plot
 
@@ -593,7 +593,7 @@ make_plot.prototype.zoom_nav = function(dir){
 
 make_plot.prototype.navig_button = function(func, glyph){
       self = this;
-      $('#navig_plot'+self.id).append($('<div/>')
+      $('#navig_plot'+self.id) //.append($('<div/>')
                                    .append($('<button/>')
                                       .append($('<span/>')
                                         .attr('class', glyph))
@@ -601,13 +601,13 @@ make_plot.prototype.navig_button = function(func, glyph){
                                         func()
                                     })
                                 ) // end append button
-                            )  // end append div
+                            // )  // end append div
                         }// end navig button
 
 make_plot.prototype.menuplot = function(fig, add_html){
     self = this;
 
-    add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 500,100, 0, 200, 300)
+    add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 450,100, 0, 200, 300)
     
     put_text = function(){
          self.insert_text = ! self.insert_text;
@@ -630,7 +630,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
         self.deactivate_all_not('g')   // deactivate all the other tools
         self.show_grid = ! self.show_grid;
         self.redraw_all()();
-    }
+        } // end grid_on_off
     
     
     brush_b = function(){
@@ -642,8 +642,18 @@ make_plot.prototype.menuplot = function(fig, add_html){
             self.make_brush();
             self.brush_active = true;
             }
-    }
+        } // end brush_b
     
+    brush_q = function(){
+        self.zoomx = ! self.zoomx;
+        if (self.brush_active == true){
+            self.deactivate_all_not('q')            // deactivate all the other tools
+        }
+        else{
+            self.make_brush();
+            self.brush_active = true;
+            } 
+        } // end brush_q
     go_home = function(){
         self.zoom_nav('home')
         var numtot = Math.max(1, self.list_domains.length)
@@ -660,28 +670,45 @@ make_plot.prototype.menuplot = function(fig, add_html){
     self.navig_button(put_text, "glyphicon glyphicon-pencil")
     self.navig_button(grid_on_off, "glyphicon glyphicon-th")
     self.navig_button(brush_b, "glyphicon glyphicon-search")
+    self.navig_button(brush_q, "glyphicon glyphicon-pause")
     self.navig_button(go_home, "glyphicon glyphicon-home")
     self.navig_button(drag_plot, "glyphicon glyphicon-move")
+    //self.navig_button(self.zoom_nav('back'), "glyphicon glyphicon-chevron-left")
     
                  
     $('#navig_plot'+self.id).append($('<div/>')
-        .append($('<button/>')
-            .append($('<span/>')
-              .attr('class', "glyphicon glyphicon-chevron-left")) // zoom backward
-            .click(function(){
-               self.zoom_nav('back')
-              }))
-        .append($('<button/>')
-            .append($('<span/>')
-              .attr('class', "glyphicon glyphicon-chevron-right")) // zoom forward
-            .click(function(){
-              self.zoom_nav('forward')
-              }))
-        .append( function(){
-          var numtot = Math.max(1, self.list_domains.length)
-          var pos = self.poszoom+1
-          return $('<span/>').attr('id','poszoom').text(pos+'/'+numtot) // show current zoom position
-          }// end function
-        )// end append pos+'/'+numtot
-    ); // end append div
-}
+         .append($('<button/>')
+             .append($('<span/>')
+               .attr('class', "glyphicon glyphicon-chevron-left")) // zoom backward
+             .click(function(){
+                self.zoom_nav('back')
+               }))
+         .append($('<button/>')
+             .append($('<span/>')
+               .attr('class', "glyphicon glyphicon-chevron-right")) // zoom forward
+             .click(function(){
+               self.zoom_nav('forward')
+               }))
+         .append( function(){
+           var numtot = Math.max(1, self.list_domains.length)
+           var pos = self.poszoom+1
+           return $('<span/>').attr('id','poszoom').text(pos+'/'+numtot) // show current zoom position
+           }// end function
+         )// end append pos+'/'+numtot
+     ); // end append div
+ 
+    
+    $('#navig_plot'+self.id).append($('<div/>')
+                                .append($('<span/>').text('x coord : '))
+                                .append($('<input/>').attr("size","25px")
+                                                     .val("hop")
+                                )
+                            )
+    $('#navig_plot'+self.id).append($('<div/>')
+                                .append($('<span/>').text('y coord : '))
+                                .append($('<input/>').attr("size","25px"))
+                            )
+    
+    $('#navig_plot'+self.id).append($('<div/>').text('  '))
+    
+} // end menu_plot
