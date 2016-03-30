@@ -239,8 +239,21 @@ function elementMousedown(evt) {
       var ylab = add_txt_axis(this.ylabel, 20, this.size.height, -90)
           ylab.css({"font-family": "Times New Roman","font-size": "20px"})
         }
+        
+    this.set_view = function(extent){                      // set the view for a given extent double list. 
+          self.x1 = self.x.invert(extent[0][0]); self.x2 = self.x.invert(extent[1][0]) // x1, x2
+          self.y1 = self.y.invert(extent[0][1]); self.y2 = self.y.invert(extent[1][1])  // y1, y2
+          self.x.domain([self.x1, self.x2]);                     // set x domain
+          self.y.domain([self.y1, self.y2]);                     // set y domain
+          self.list_domains.push([[self.x1, self.x2], [self.y1, self.y2]])       // save views in history
+          //alert("set_view "+self.x1)
+       }
+        
+   self.set_view([[0,0],[this.size.width, this.size.height]]) // Save the first view in self.list_domains (Initialisation)
   
     this.redraw_all()();
+    
+     
     
     this.vis.append("svg") // line attached to svg block"viewBox
       .attr("top", 0)
@@ -255,7 +268,7 @@ function elementMousedown(evt) {
           .style({stroke : colrs[this.col], fill : 'none','stroke-width' : '1.5px'})
     
     self.refresh_navig_plot() // passing the navig plot above the line
-    
+
   this.make_brush = function(){                // zoom box with brush tool
       self.brush = self.vis.append("g")
          .attr("class", "brush")
@@ -295,15 +308,7 @@ function elementMousedown(evt) {
           self.y.domain(view_coord[1]);
           self.redraw_all()();
      }
-  
-  this.set_view = function(extent){                      // set the view for a given extent double list. 
-        x1 = self.x.invert(extent[0][0]); x2 = self.x.invert(extent[1][0]) // x1, x2
-        y1 = self.y.invert(extent[0][1]); y2 = self.y.invert(extent[1][1])  // y1, y2
-        self.x.domain([x1,x2]);                     // set x domain
-        self.y.domain([y1,y2]);                     // set y domain
-        self.list_domains.push([[x1,x2],[y1,y2]])       // save views in history
-     }
-  self.set_view([[0,0],[this.size.width, this.size.height]]) // Save the first view in self.list_domains (Initialisation)
+     
   
   this.deactivate_all_not = function(avoid){  // deactivate all the tools but.. 
       if ((avoid != 'b') & (avoid != 'q') ){
@@ -579,7 +584,6 @@ function make_labels(svg, nodes_links, w, h) {
                }); // End tick func
     }; //
 
-
 make_plot.prototype.navig_button = function(func, glyph, arg){
       self = this;
       navmenu = $('#navig_plot'+self.id) 
@@ -588,12 +592,12 @@ make_plot.prototype.navig_button = function(func, glyph, arg){
                 .append($('<span/>')
                   .attr('class', glyph))
               .click(function(){
-                  if (arg != null){func(arg)}
-                  else{func()}
+                  if (arg != null){func(arg)} // code with glyphicon and arg
+                  else{func()} // code with glyphicon without arg
               })
           ) // end append button
        } // end if glyph
-      else{navmenu.append(func())}
+      else{navmenu.append(func())} // code without glyphicon
     } // end navig_button
 
 
@@ -602,15 +606,13 @@ make_plot.prototype.menuplot = function(fig, add_html){
 
     add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 350,-0, 0, 600, 300) // x, y, ang, w, h
     
-    show_poszoom = function(){
+    show_poszoom = function(){  // show current zoom position in the list of saved zoomed
         var numtot = Math.max(1, self.list_domains.length)
-        var pos = self.poszoom+1
-        return $('<span/>').attr('id','poszoom').text(pos+'/'+numtot) // show current zoom position 
+        var pos = self.poszoom+1 // increment zoom position
+        return $('<span/>').attr('id','poszoom').text(pos+'/'+numtot)  // return position with number total of zooms saved.
     }
 
-    zoom_nav = function(dir){
-        //self = this;
-        //alert(dir)
+    zoom_nav = function(dir){         // Zoom navigation
         if (dir == 'forward'){              //  Go to next zoom view
             var elem_next = self.list_domains[self.poszoom+1]
             if (self.poszoom != self.list_domains.length-1){self.poszoom += 1}
@@ -628,7 +630,6 @@ make_plot.prototype.menuplot = function(fig, add_html){
             }
       } // end zoom_nav
     
-    
     put_text = function(){
          self.insert_text = ! self.insert_text;
             $('#vis'+self.id).click(function (evt) {
@@ -644,7 +645,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
                 $("#vis"+self.id).off('click');
                 } // end if
             self.redraw_all()()
-    }
+       }
     
     grid_on_off = function(){
         self.deactivate_all_not('g')   // deactivate all the other tools
@@ -652,8 +653,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
         self.redraw_all()();
         } // end grid_on_off
     
-    
-    brush_b = function(){
+    brush_b = function(){ // zoom box
         if (self.brush_active == true){
             self.deactivate_all_not('b')           // deactivate all the other tools
             if (self.zoomx == true){self.zoomx = false} //alert("passing zoomx to false")
@@ -664,7 +664,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
             }
         } // end brush_b
     
-    brush_q = function(){
+    brush_q = function(){   // zoom only in x
         self.zoomx = ! self.zoomx;
         if (self.brush_active == true){
             self.deactivate_all_not('q')            // deactivate all the other tools
@@ -674,16 +674,16 @@ make_plot.prototype.menuplot = function(fig, add_html){
             self.brush_active = true;
             } 
         } // end brush_q
-    go_home = function(){
+    go_home = function(){       // return to the first view
         zoom_nav('home')
         var numtot = Math.max(1, self.list_domains.length)
         var pos = 1
         $('#poszoom').text(pos+'/'+numtot)
     }
     
-    drag_plot = function(){
+    drag_plot = function(){    // drag the plot
         self.deactivate_all_not('d')   // deactivate all the other tools
-        self.drag_zoom = ! self.drag_zoom;                          // toggle drag_zoom
+        self.drag_zoom = ! self.drag_zoom;     // toggle drag_zoom
         self.redraw_all()();
     }
     
@@ -696,17 +696,19 @@ make_plot.prototype.menuplot = function(fig, add_html){
     self.navig_button(zoom_nav, "glyphicon glyphicon-chevron-left", "back")
     self.navig_button(zoom_nav, "glyphicon glyphicon-chevron-right", "forward")
     self.navig_button(show_poszoom)
-    
+    //alert("menu_plot "+self.x1)
     $('#navig_plot'+self.id).append($('<div/>')
                                 .append($('<span/>').text('x coord : '))
                                 .append($('<input/>').attr("size","25px")
-                                                     .val("hop")
-                                )
-                            )
+                                                     .val(self.x1.toFixed(2)+','+self.x2.toFixed(2))
+                                        ) // end append input
+                            ) // end append div
     $('#navig_plot'+self.id).append($('<div/>')
                                 .append($('<span/>').text('y coord : '))
-                                .append($('<input/>').attr("size","25px"))
-                            )
+                                    .append($('<input/>').attr("size","25px")
+                                                     .val(self.y1.toFixed(2)+','+self.y2.toFixed(2))
+                                        ) // end append input
+                            ) // end append div
     
     $('#navig_plot'+self.id).append($('<div/>').text('  '))
     
