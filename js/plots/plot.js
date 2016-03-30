@@ -239,8 +239,9 @@ function elementMousedown(evt) {
       var ylab = add_txt_axis(this.ylabel, 20, this.size.height, -90)
           ylab.css({"font-family": "Times New Roman","font-size": "20px"})
         }
-  this.redraw_all()();
-
+  
+    this.redraw_all()();
+    
     this.vis.append("svg") // line attached to svg block"viewBox
       .attr("top", 0)
       .attr("left", 0)
@@ -252,7 +253,9 @@ function elementMousedown(evt) {
           .attr("class", "line")
           .attr("d", this.line(this.dataset))
           .style({stroke : colrs[this.col], fill : 'none','stroke-width' : '1.5px'})
-
+    
+    self.refresh_navig_plot() // passing the navig plot above the line
+    
   this.make_brush = function(){                // zoom box with brush tool
       self.brush = self.vis.append("g")
          .attr("class", "brush")
@@ -394,15 +397,20 @@ make_plot.prototype.plot_drag = function() {
   }
 };
 
-make_plot.prototype.update = function() {
-    // update graph, axes, labels, circles..
+make_plot.prototype.refresh_navig_plot = function() {
     var self = this;
-    var lines = this.vis.select("path").attr("d", this.line(this.dataset));
     $('#navig_plot'+self.id).remove() // removing the menu
     self.menuplot(this.vis, this.add_html) // make the menu
     if (self.show_navig_plot == false){
         $('#navig_plot'+self.id).hide(); 
-        } 
+        }
+    }
+
+make_plot.prototype.update = function() {
+    // update graph, axes, labels, circles..
+    var self = this;
+    var lines = this.vis.select("path").attr("d", this.line(this.dataset));
+    self.refresh_navig_plot()
                
     if (d3.event && d3.event.keyCode) {
     d3.event.preventDefault();
@@ -571,43 +579,55 @@ function make_labels(svg, nodes_links, w, h) {
                }); // End tick func
     }; //
 
-make_plot.prototype.zoom_nav = function(dir){
-    self = this;
-    //alert(dir)
-    if (dir == 'forward'){              //  Go to next zoom view
-        var elem_next = self.list_domains[self.poszoom+1]
-        if (self.poszoom != self.list_domains.length-1){self.poszoom += 1}
-        self.new_view(elem_next)
-        }
-    else if (dir == 'back'){             //  Go to previous zoom view
-        var elem_prec = self.list_domains[self.poszoom-1]
-        if (self.poszoom != 0){self.poszoom += -1;}
-        self.new_view(elem_prec)
-        }
-    else if (dir == 'home'){            //  Go to first view
-        var elem_first = self.list_domains[0];
-        self.new_view(elem_first);
-        self.poszoom = 0;
-        }
-  } // end zoom_nav
 
-make_plot.prototype.navig_button = function(func, glyph){
+make_plot.prototype.navig_button = function(func, glyph, arg){
       self = this;
-      $('#navig_plot'+self.id) //.append($('<div/>')
-                                   .append($('<button/>')
-                                      .append($('<span/>')
-                                        .attr('class', glyph))
-                                    .click(function(){
-                                        func()
-                                    })
-                                ) // end append button
-                            // )  // end append div
-                        }// end navig button
+      navmenu = $('#navig_plot'+self.id) 
+      if (glyph != null){
+            navmenu.append($('<button/>')
+                .append($('<span/>')
+                  .attr('class', glyph))
+              .click(function(){
+                  if (arg != null){func(arg)}
+                  else{func()}
+              })
+          ) // end append button
+       } // end if glyph
+      else{navmenu.append(func())}
+    } // end navig_button
+
 
 make_plot.prototype.menuplot = function(fig, add_html){
     self = this;
 
-    add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 450,100, 0, 200, 300)
+    add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 350,-0, 0, 600, 300) // x, y, ang, w, h
+    
+    show_poszoom = function(){
+        var numtot = Math.max(1, self.list_domains.length)
+        var pos = self.poszoom+1
+        return $('<span/>').attr('id','poszoom').text(pos+'/'+numtot) // show current zoom position 
+    }
+
+    zoom_nav = function(dir){
+        //self = this;
+        //alert(dir)
+        if (dir == 'forward'){              //  Go to next zoom view
+            var elem_next = self.list_domains[self.poszoom+1]
+            if (self.poszoom != self.list_domains.length-1){self.poszoom += 1}
+            self.new_view(elem_next)
+            }
+        else if (dir == 'back'){             //  Go to previous zoom view
+            var elem_prec = self.list_domains[self.poszoom-1]
+            if (self.poszoom != 0){self.poszoom += -1;}
+            self.new_view(elem_prec)
+            }
+        else if (dir == 'home'){            //  Go to first view
+            var elem_first = self.list_domains[0];
+            self.new_view(elem_first);
+            self.poszoom = 0;
+            }
+      } // end zoom_nav
+    
     
     put_text = function(){
          self.insert_text = ! self.insert_text;
@@ -655,7 +675,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
             } 
         } // end brush_q
     go_home = function(){
-        self.zoom_nav('home')
+        zoom_nav('home')
         var numtot = Math.max(1, self.list_domains.length)
         var pos = 1
         $('#poszoom').text(pos+'/'+numtot)
@@ -673,30 +693,9 @@ make_plot.prototype.menuplot = function(fig, add_html){
     self.navig_button(brush_q, "glyphicon glyphicon-pause")
     self.navig_button(go_home, "glyphicon glyphicon-home")
     self.navig_button(drag_plot, "glyphicon glyphicon-move")
-    //self.navig_button(self.zoom_nav('back'), "glyphicon glyphicon-chevron-left")
-    
-                 
-    $('#navig_plot'+self.id).append($('<div/>')
-         .append($('<button/>')
-             .append($('<span/>')
-               .attr('class', "glyphicon glyphicon-chevron-left")) // zoom backward
-             .click(function(){
-                self.zoom_nav('back')
-               }))
-         .append($('<button/>')
-             .append($('<span/>')
-               .attr('class', "glyphicon glyphicon-chevron-right")) // zoom forward
-             .click(function(){
-               self.zoom_nav('forward')
-               }))
-         .append( function(){
-           var numtot = Math.max(1, self.list_domains.length)
-           var pos = self.poszoom+1
-           return $('<span/>').attr('id','poszoom').text(pos+'/'+numtot) // show current zoom position
-           }// end function
-         )// end append pos+'/'+numtot
-     ); // end append div
- 
+    self.navig_button(zoom_nav, "glyphicon glyphicon-chevron-left", "back")
+    self.navig_button(zoom_nav, "glyphicon glyphicon-chevron-right", "forward")
+    self.navig_button(show_poszoom)
     
     $('#navig_plot'+self.id).append($('<div/>')
                                 .append($('<span/>').text('x coord : '))
