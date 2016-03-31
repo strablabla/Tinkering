@@ -16,7 +16,7 @@ var plot = function(elemid, add_data, add_nodes_links, params){
 make_plot = function(elemid, dataset, nodes_links,   params) {
   var self = this;
   
-  this.id = elemid
+  this.id = elemid        // identity for the plot
   this.dataset = dataset
   this.nodes_links = nodes_links
   this.chart = document.getElementById(elemid);
@@ -32,7 +32,7 @@ make_plot = function(elemid, dataset, nodes_links,   params) {
   fillplot = this.params['fill'] || "#EEEEEE"
   var colrs = {'r':'red', 'k':'black', 'b':'blue', 'g':'green'};
   // Interaction Parameters 
-  this.show_circle = false;
+  this.show_circle = false; //
   this.moveaxis = false
   this.drag_zoom = false  // drag and mouse rolling zoom. 
   this.brush_active = false // brush tool for zoom
@@ -43,9 +43,9 @@ make_plot = function(elemid, dataset, nodes_links,   params) {
   list_txt = []
   this.insert_text = false // boolean for inserting text in the plot or not.
   this.zoomx = false // boolean for zoom only in x. 
-  this.poszoom = 0
+  this.poszoom = 0   // index of the current zoom
   this.show_navig_plot = true;
-  this.nbdecim = 3;
+  this.nbdecim = 3; // number of decimals
   this.zoom_direct = false;
   // Commands
   // Each commands executed is supposed to eliminates the other one in possible conflict.
@@ -224,8 +224,6 @@ function elementMousedown(evt) {
       .on("mouseup.drag",   self.mouseup())
       .on("touchend.drag",  self.mouseup());
 
-
-
   // add Chart Title
   if (this.title) {
         tit = add_txt_axis(this.title, this.size.width/2, 20)
@@ -255,8 +253,6 @@ function elementMousedown(evt) {
   
     this.redraw_all()();
     
-     
-    
     this.vis.append("svg") // line attached to svg block"viewBox
       .attr("top", 0)
       .attr("left", 0)
@@ -279,7 +275,7 @@ function elementMousedown(evt) {
            .y(d3.scale.identity().domain([0, self.size.height])) 
            .on("brush", function() {
                extent = d3.event.target.extent();
-               if (self.zoomx ==true){
+               if (self.zoomx ==true){                // zoomx
                    d3.selectAll(".extent")
                         .attr('height', self.size.height)
                         .attr('y',0)
@@ -308,9 +304,8 @@ function elementMousedown(evt) {
                     .on('click', function(){
                       self.direct_zoom = false;
                       zoom_in()
-                    })
-                }
-
+                    }) // end on
+                } // end else
                })  // end "brushend"
             ) // end call
         } // end make_brush
@@ -333,7 +328,7 @@ function elementMousedown(evt) {
      }
   }
   
-  var zoom_in = function(){
+  var zoom_in = function(){ // zoom in for zoom_b and zoomx
       
       d3.selectAll(".zoom_interact").remove() // remove the additional zoom windows
       self.set_view(extent)      // change the view
@@ -362,26 +357,7 @@ function elementMousedown(evt) {
           self.vis.selectAll('circle').remove()
           self.redraw_all()();
       } // end if keyev
-      // if(keyev('q', event)){                        // Apply the zoom
-      //     self.zoomx = ! self.zoomx;
-      //     if (self.brush_active == true){
-      //         self.deactivate_all_not('q')            // deactivate all the other tools
-      //     }
-      //     else{
-      //         self.make_brush();
-      //         self.brush_active = true;
-      //         }
-      //     } // end if keyev
-      if(keyev('b', event)){                    // select the brush tool
-            if (self.brush_active == true){
-                self.deactivate_all_not('b')           // deactivate all the other tools
-                if (self.zoomx == true){self.zoomx = false} //alert("passing self.zoomx to false")
-            }
-            else{
-                self.make_brush();
-                self.brush_active = true;
-                }
-           } // end if keyev
+
       if(keyev('d', event)){         // select the brush tool
            self.deactivate_all_not('d')   // deactivate all the other tools
            self.drag_zoom = ! self.drag_zoom;                          // toggle drag_zoom
@@ -438,7 +414,6 @@ make_plot.prototype.update = function() {
     d3.event.stopPropagation();
     } // end if
 }
-
 
 make_plot.prototype.mousemove = function() { // handling mouse movements
   var self = this;
@@ -618,8 +593,6 @@ make_plot.prototype.navig_button = function(func, glyph, arg, tooltip){
 make_plot.prototype.menuplot = function(fig, add_html){
     self = this;
 
-
-
     add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 320,-0, 0, 600, 300) // x, y, ang, w, h
     
     show_poszoom = function(){  // show current zoom position in the list of saved zoomed
@@ -663,7 +636,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
             self.redraw_all()()
        }
     
-    grid_on_off = function(){
+    grid_on_off = function(){    // grid on/off
         self.deactivate_all_not('g')   // deactivate all the other tools
         self.show_grid = ! self.show_grid;
         self.redraw_all()();
