@@ -10,7 +10,7 @@ var plot = function(elemid, add_data, add_nodes_links, params){
         .defer(d3.json, add_nodes_links)
         .await(function(error, dataset, nodes_links){
             new make_plot(elemid, dataset, nodes_links, params); 
-        });
+        }); // end await
     }
 
 make_plot = function(elemid, dataset, nodes_links,   params) {
@@ -124,7 +124,7 @@ window.createtext = function (localpoint, svg, txt, cl, ang) { // Create editabl
     textdiv.setAttribute("contentEditable", "true");   // Editable
     textdiv.setAttribute("width", "auto");
     textdiv.setAttribute("class", cl);
-    textdiv.setAttribute("id", txt+self.id); //+self.id
+    textdiv.setAttribute("id", txt + self.id);   //+self.id
     myforeign.setAttribute("width", "100%");
     myforeign.setAttribute("height", "60px");
     myforeign.classList.add("foreign");                      //to make div fit text
@@ -153,17 +153,17 @@ function elementMousedown(evt) {
       }
   
   var add_txt = function(label, w, h, ang, cl){    // adding text in the plot, position : (w, h), angle : ang
-      var vv = document.getElementById('vis'+self.id);
+      var vv = document.getElementById('vis' + self.id);
       createtext({"x":w,"y":h}, vv, label, cl, ang)  
       }
   
   var add_txt_axis = function(label, w, h, ang){    // adding axis, (for Title and axis)
       add_txt(label, w, h, ang, 'axis_txt')  
       $('.axis_txt').addClass('axis')  
-      return $('#'+label+self.id)  
+      return $('#' + label + self.id)  
       }  
           
-  this.padding = {                                  // padding
+  this.padding = {                                  // padding for the plot
      // "top":    this.title  ? 40 : 20,
      "top":    this.title  ? 80 : 20,
      "right":                 30,
@@ -185,8 +185,8 @@ function elementMousedown(evt) {
 
   this.x = make_scale(this.xlim,this.size.width)          // x-scale
   this.y = make_scale(this.ylim,this.size.height, true)  // y-scale (inverted domain)
-  this.downx = Math.NaN; // drag x-axis logic
-  this.downy = Math.NaN; // drag y-axis logic
+  this.downx = Math.NaN;       // drag x-axis logic
+  this.downy = Math.NaN;        // drag y-axis logic
   this.dragged = this.selected = null;
   
   this.line = d3.svg.line()                                      // defining line function
@@ -199,7 +199,7 @@ function elementMousedown(evt) {
   this.vis = d3.select(this.chart).append("svg") // Create the main svg 
       .attr("width",  this.cx)
       .attr("height", this.cy)
-      .attr("id", "vis"+self.id)
+      .attr("id", "vis" + self.id)
       .append("g")
         .attr("transform", tr(this.padding.left, this.padding.top));
 
@@ -208,6 +208,7 @@ function elementMousedown(evt) {
       .attr("height", this.size.height)
       .style("fill", fillplot) 
       .attr("pointer-events", "all")
+      .attr('class', self.id)
 
   if (this.drag_zoom == true){                  // drag and zoom in the whole plot
     alert('permitting drag')
@@ -240,16 +241,15 @@ function elementMousedown(evt) {
           ylab.css({"font-family": "Times New Roman","font-size": "20px"})
         }
         
-    this.set_view = function(extent){                      // set the view for a given extent double list. 
+    this.set_view = function(extent){                      // set the view for a given extent (double list). 
           self.x1 = self.x.invert(extent[0][0]); self.x2 = self.x.invert(extent[1][0]) // x1, x2
           self.y1 = self.y.invert(extent[0][1]); self.y2 = self.y.invert(extent[1][1])  // y1, y2
           self.x.domain([self.x1, self.x2]);                     // set x domain
           self.y.domain([self.y1, self.y2]);                     // set y domain
           self.list_domains.push([[self.x1, self.x2], [self.y1, self.y2]])       // save views in history
-          //alert("set_view "+self.x1)
        }
         
-   self.set_view([[0,0],[this.size.width, this.size.height]]) // Save the first view in self.list_domains (Initialisation)
+    self.set_view([[0,0],[this.size.width, this.size.height]]) // Save the first view in self.list_domains (Initialisation)
   
     this.redraw_all()();
     
@@ -261,13 +261,14 @@ function elementMousedown(evt) {
       .attr("viewBox", "0 0 "+this.size.width+" "+this.size.height)
       .attr("class", "line")
       .append("path")
-          .attr("class", "line")
+          .attr("class", "line") // line above grid
           .attr("d", this.line(this.dataset))
           .style({stroke : colrs[this.col], fill : 'none','stroke-width' : '1.5px'})
     
-    self.refresh_navig_plot() // passing the navig plot above the line
+    self.refresh_navig_plot() // navig plot above the line
 
   this.make_brush = function(){                // zoom box with brush tool
+      //alert("make brush")
       self.brush = self.vis.append("g")
          .attr("class", "brush")
          .call(d3.svg.brush()
@@ -288,7 +289,7 @@ function elementMousedown(evt) {
                 self.poszoom = self.list_domains.length;
                 if ($('#direct_zoom').prop('checked')){
                   self.direct_zoom = true;
-                  zoom_in()
+                  zoom_in()   // at the end of the brush action make a zoom
                 }
                 else{
                     var rr = self.vis 
@@ -302,7 +303,7 @@ function elementMousedown(evt) {
                     .style("fill","red")
                     .style('opacity', .15)
                     .on('click', function(){
-                      self.direct_zoom = false;
+                      self.direct_zoom = false; // no direct zoom
                       zoom_in()
                     }) // end on
                 } // end else
@@ -407,8 +408,7 @@ make_plot.prototype.update = function() {
     // update graph, axes, labels, circles..
     var self = this;
     var lines = this.vis.select("path").attr("d", this.line(this.dataset));
-    self.refresh_navig_plot()
-               
+    self.refresh_navig_plot()   
     if (d3.event && d3.event.keyCode) {
     d3.event.preventDefault();
     d3.event.stopPropagation();
@@ -421,7 +421,6 @@ make_plot.prototype.mousemove = function() { // handling mouse movements
     var p = d3.svg.mouse(self.vis[0][0]),
         t = d3.event.changedTouches;
     if (self.dragged) {
-      alert('being dragged')
       self.dragged.y = self.y.invert(Math.max(0, Math.min(self.size.height, p[1])));
       self.update();
     };
@@ -453,7 +452,7 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
     },
     fx = self.x.tickFormat(10),
     fy = self.y.tickFormat(10);
-    var sz_txt_ticks = "14px" // size of ticks text
+    var sz_txt_ticks = "14px"                   // size of ticks text
     var make_axes = function(nodename, selfax, trans, txt, ax1, ax2, valmax, stroke){  // grid
       var node = self.vis.selectAll(nodename)
         .data(selfax.ticks(10), String)
@@ -463,15 +462,15 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
       var nodee = node.enter().insert("g", "a")
           .attr("class", ax1)
           .attr("transform", trans);
-      nodee.append("line") // make the lines
-            .attr("class", "grid")
+      nodee.append("line")                          // make the lines
+            .attr("class", "grid "+self.id)
             .attr("stroke", stroke)
             .attr(ax2+"1", 0)
             .attr(ax2+"2", valmax);
 
     return [node, nodee]
     } // end make_axes
-    var ticks_txt = function(node, ax, axpos, shift, txt){ // text for the axes
+    var ticks_txt = function(node, ax, axpos, shift, txt){          // text for the axes
         node.append("text")
             .attr("class", "axis")
             .attr(ax, axpos)
@@ -483,12 +482,12 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
             .style("cursor", "ew-resize")
     }
     // Regenerate x-ticks… 
-    gg = make_axes("g.x", self.x, tx, fx, 'x','y', self.size.height, stroke)
+    gg = make_axes("g.x", self.x, tx, fx, 'x', 'y', self.size.height, stroke)
     gx = gg[0]; gxe = gg[1]
-    ticks_txt(gxe,"y",self.size.height,"1em",fx)
+    ticks_txt(gxe, "y", self.size.height, "1em", fx)
     gx.exit().remove();
     // Regenerate y-ticks…
-    gg = make_axes("g.y", self.y, ty, fy, 'y','x', self.size.width, stroke)
+    gg = make_axes("g.y", self.y, ty, fy, 'y', 'x', self.size.width, stroke)
     gy = gg[0]; gye = gg[1]
     ticks_txt(gye,"x",-3,".35em",fy)
     gy.exit().remove();
@@ -499,9 +498,8 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
          self.plot
          .call(d3.behavior.zoom().x(self.x).y(self.y)
                                 .on("zoom", self.redraw_all())
-                                )}  // end if self.drag_zoom
-
-    self.update();    // update the whole plot
+                                )}            // end if self.drag_zoom
+    self.update();       // update the whole plot
   }  
 }
 
@@ -509,7 +507,6 @@ function make_labels(svg, nodes_links, w, h) {
     var color = d3.scale.category20();
     var nodes = nodes_links.nodes
     var links = nodes_links.links
-    //alert(links.length)
     var factx = 15
     var facty = 70
     var shift = 200
