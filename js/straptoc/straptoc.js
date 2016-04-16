@@ -13,6 +13,7 @@ var maketoc = function(){
      * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
      * [pdf §§](hyperlink) insert a pdf with object tag.
      * [blabla ,,](hyperlink) insert whatever iframe
+     * [blabla %%](hyperlink) insert a local video with no autoplay by default (works with Chrome but not with Firefox)
      * novideo, at the beginning of the document to avoid loading of videos.
      * @@blabla, copy the li, blabla@@ paste the li
      * key "k", to make appear disappear the sliders.
@@ -364,7 +365,16 @@ var maketoc = function(){
                                     .attr('href',$(this).attr('href'))
             keeplink.insertBefore($(this))
             $(this).replaceWith(div.append(iframe)); // replace the <a> with a <div> with iframe.
-        }
+        } // end if
+        if  ($(this).text().match('%%')){       // insertion of iframes with regexp ',,' for inserting web pages
+            var vid_url = $(this).attr('href')
+            var vid = $('<video/>', {'frameborder': '0', 'src': vid_url, 'width': '600', 'height': '400' })
+            var div = $('<div/>').css({'text-align':'center'})
+            var keeplink = $('<a/>').text($(this).text().split('%%')[0])
+                                    .attr('href',$(this).attr('href'))
+            keeplink.insertBefore($(this))
+            $(this).replaceWith(div.append(vid)); // replace the <a> with a <div> with iframe.
+        } // end if
  }) // end each
 
 
