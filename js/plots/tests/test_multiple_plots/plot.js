@@ -18,7 +18,7 @@ make_plot = function(elemid, dataset, nodes_links,   params) {
   this.id = elemid        // identity for the plot
   this.dataset = dataset
   this.nodes_links = nodes_links
-  this.chart = document.getElementById(elemid);
+  //this.chart = $('#'+elemid)        //document.getElementById(elemid);
   this.params = params || {};
   this.xlim = this.params['xlim']  // xlim 
   this.ylim = this.params['ylim']  // ylim 
@@ -26,8 +26,8 @@ make_plot = function(elemid, dataset, nodes_links,   params) {
   this.ylabel = this.params['ylabel']  // ylabel
   this.title = this.params['title'] // title
   this.col = this.params['color'] || 'k'; // Color used for the line
-  this.cx = this.chart.clientWidth; // chart width
-  this.cy = this.chart.clientHeight; // chart height
+  this.cx = '600px'; // chart width
+  this.cy = '400px'; // chart height
   fillplot = this.params['fill'] || "#EEEEEE"
   var colrs = {'r':'red', 'k':'black', 'b':'blue', 'g':'green'};
   // Interaction Parameters 
@@ -148,7 +148,7 @@ function elementMousedown(evt) {
       
   datacount = this.size.width/30;
   
-  this.vis = d3.select(this.chart).append("svg") // Create the main svg 
+  this.vis = d3.select('#'+elemid).append("svg") // Create the main svg 
       .attr("width",  this.cx)
       .attr("height", this.cy)
       .attr("id", "vis"+self.id)
@@ -170,7 +170,7 @@ function elementMousedown(evt) {
           .on("zoom", this.redraw_all()));
       }
 
-  d3.select(this.chart)                         // drag the points of the curve
+  d3.select('#'+elemid)                         // drag the points of the curve
       .on("mousemove.drag", self.mousemove())
       .on("touchmove.drag", self.mousemove())
       .on("mouseup.drag",   self.mouseup())

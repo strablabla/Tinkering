@@ -124,24 +124,30 @@
     </div>
     
     <script >
-    params = { "xlim": [0,60], "ylim": [-5,5], "title": "Visualization",
-                "xlabel": "time", "ylabel": "nb of counts", "color":"g", "fill":"#ffffff"}
-   plot("chart1", 'data/data_curve.json', 'data/nodes_links.json', params)
-    
 
-    params = { "xlim": [0,60], "ylim": [-5,5], "title": "Visualization",
+
+    (function(){
+      params = { "xlim": [0,60], "ylim": [-5,5], "title": "Visualization",
                 "xlabel": "time", "ylabel": "nb of counts", "color":"g", "fill":"#ffffff"}
-    plot("chart2", 'data/data_curve.json', 'data/nodes_links.json', params)
+      plot("chart1", 'data/data_curve.json', 'data/nodes_links.json', params)
+    })()
+    
+    (function(){
+      params = { "xlim": [0,60], "ylim": [-5,5], "title": "Visualization",
+                "xlabel": "time", "ylabel": "nb of counts", "color":"g", "fill":"#ffffff"}
+      plot("chart2", 'data/data_curve.json', 'data/nodes_links.json', params)
+    })()
     
     
-    var plot = function(elemid, add_data, add_nodes_links, params){
-        queue() // important !!! need of d3.js v3 at least for using queue correctly
-            .defer(d3.json, add_data)
-            .defer(d3.json, add_nodes_links)
-            .await(function(error, dataset, nodes_links){
-                new make_plot(elemid, dataset, nodes_links, params); 
-            });// end await
-        }
+    plot = function(elemid, add_data, add_nodes_links, params){
+                    queue() // important !!! need of d3.js v3 at least for using queue correctly
+                      .defer(d3.json, add_data)
+                      .defer(d3.json, add_nodes_links)
+                      .await(function(error, dataset, nodes_links){
+                          new make_plot(elemid, dataset, nodes_links, params); 
+                      });// end await
+                    }
+        
 
     make_plot = function(elemid, dataset, nodes_links,   params) {
       var self = this;

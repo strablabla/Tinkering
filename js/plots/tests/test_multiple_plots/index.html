@@ -134,14 +134,63 @@
     </div>
     
     <script >
-    params = { "xlim": [0,60], "ylim": [-5,5], "title": "Visualization",
-                "xlabel": "time", "ylabel": "nb of counts", "color":"g", "fill":"#ffffff"}
-    p0 = new plot("chart1", 'data/data_curve.json', 'data/nodes_links.json', params)
-    
 
-    params = { "xlim": [0,60], "ylim": [-5,5], "title": "Visualization",
-                "xlabel": "time", "ylabel": "nb of counts", "color":"g", "fill":"#ffffff"}
-    p1 = new plot("chart2", 'data/data_curve.json', 'data/nodes_links.json', params)
+    //    (function(){
+    //   params = { "xlim": [0,60], "ylim": [-5,5], "title": "Visualization",
+    //             "xlabel": "time", "ylabel": "nb of counts", "color":"g", "fill":"#ffffff"};
+    //   plot("chart1", 'data/data_curve.json', 'data/nodes_links.json', params)
+    // })()
+
+
+      params = { "xlim": [0,60], "ylim": [-5,5], "title": "Visualization",
+                "xlabel": "time", "ylabel": "nb of counts", "color":"g", "fill":"#ffffff"};
+
+
+ //    plotgene('chart2', params)
+
+ // plotgene = (function(chart, params){
+
+ //      var plotgene = {};
+
+ //      plotgene.plot = function(chart, params){
+ //        alert(chart)
+
+ //      plot(chart, 'data/data_curve.json', 'data/nodes_links.json', params)
+ //      }
+
+ //       window.plotgene = plotgene;
+
+ //    })(ch, par)
+
+    pouetGenerator = (function(chaine_du_pouet){
+    var pouetGenerator = {};
+    pouetGenerator.fairePouet = function(){alert(chaine_du_pouet)}
+    pouetGenerator.nePasFairePouet = function(){alert('pas pouet');}
+    return pouetGenerator;
+    })('pouet')
+
+    pouetGenerator.fairePouet('tytyt')
+
+
+        plotGenerator1 = (function(chart, params){
+    var plotGenerator = {};
+    plotGenerator.plot = function(){plot(chart, 'data/data_curve.json', 'data/nodes_links.json', params)}
+    return plotGenerator;
+    })('chart1', params)
+    
+    //plot(chart, 'data/data_curve.json', 'data/nodes_links.json', params)
+
+    plotGenerator1.plot()
+
+    plotGenerator2 = (function(chart, params){
+    var plotGenerator = {};
+    plotGenerator.plot = function(){plot(chart, 'data/data_curve.json', 'data/nodes_links.json', params)}
+    return plotGenerator;
+    })('chart2', params)
+    
+    //plot(chart, 'data/data_curve.json', 'data/nodes_links.json', params)
+
+    
     
     </script>
     

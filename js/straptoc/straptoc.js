@@ -12,6 +12,7 @@ var maketoc = function(){
      * --link-- , creates a tag with id "link" 
      * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
      * [pdf §§](hyperlink) insert a pdf with object tag.
+     * [blabla ,,](hyperlink) insert whatever iframe
      * novideo, at the beginning of the document to avoid loading of videos.
      * @@blabla, copy the li, blabla@@ paste the li
      * key "k", to make appear disappear the sliders.
