@@ -21,6 +21,9 @@ var maketoc = function(){
      * double ^, is used to hide some text
      * Alt L for folding/unfolding lists.
      * Set notoc to true for removing the TOC.
+     * Size image, enter the size after the name eg: [blabla 500x500](address)
+     * @color to change color, for the moment works onl for lists.
+     * [blabla %caption%](address) insert the caption under the image
      */}.toString().slice(14,-3)
      //alert(help)
 
@@ -340,11 +343,19 @@ var maketoc = function(){
             }// end if
     })// end each
     
-    $("img").each(function(){
-        var reg_im = /\s*\d*x\d*\s*/
-        var sizeim = $(this).attr('alt').match(reg_im)[0];
-        $(this).attr('width',sizeim.split('x')[0]);
-        $(this).attr('height',sizeim.split('x')[1])
+    $("img").each(function(){               // retrieve and change size images
+            var reg_im = /\s*\d*x\d*\s*/
+            var sizeim = $(this).attr('alt').match(reg_im)[0];
+            $(this).attr('width',sizeim.split('x')[0]);
+            $(this).attr('height',sizeim.split('x')[1])
+        })
+    $("img").each(function(){               // retrieve the caption and insert it under the image.
+            var reg_caption = /\%.*\%/
+            var capt = $(this).attr('alt').match(reg_caption)[0].slice(1,-1);
+            var captcl = capt.replace(/\s+/g, '')
+            var caption = $('<figcaption/>').text(capt).css({'text-align': 'center'})
+            $(this).wrap($('<figure/>').attr('class', captcl))
+            $('.'+captcl).append(caption)
         })
 
  $('a').each(function(){

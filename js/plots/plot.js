@@ -619,7 +619,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
     put_text = function(){
          self.insert_text = ! self.insert_text;
             $('#vis'+self.id).click(function (evt) {
-                var svg = document.getElementById('vis'+self.id);
+                var svg = document.getElementById('vis' + self.id);
                 var localpoint = getlocalmousecoord(svg, evt);
                 if (!self.mousedownonelement) {
                     createtext(localpoint, svg); // insert text with mouse

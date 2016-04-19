@@ -12,13 +12,15 @@
 
 <xmp theme="cerulean" style="display:none;">
     
-# Origines @red
+# Origines
 
     Les langues italiques formaient, à côté des langues celtiques, germaniques et helléniques, une sous-famille « centum » de langues indo-européennes qui incluait le latin, parlé par la population du Latium en Italie centrale (les Latins), et d'autres parlers comme l'ombrien et l'osque, au voisinage immédiat d'une langue étrusque non indo-européenne mais dont le latin a subi l'influence culturelle. De nos jours, les langues italiques sont représentées par les langues romanes, issues du latin (l'italien, le roumain/moldave, l'aroumain, le français, l'occitan, le francoprovençal, le catalan, l'espagnol, le portugais, le sarde, le ladin, le corse, …, ainsi que des langues aujourd'hui éteintes comme le dalmate ou le mozarabe).
 
-* Il était une fois @red
-    * parfois les aléas de  la vie. 
+* Il était une fois 
+    * parfois les aléas de  la vie.
         * bien que le hasard soit une chose pour le moins étrange.
+* blabla
+    * ![Navire 100x100 %here is caption%](../data/DaliNavire.jpg)
 
 </xmp>
 
@@ -26,21 +28,14 @@
 
 <script>
 
-var regcol = /@\w*/
-$("li").each(function(i){                   
-    if($(this).html().search(regcol)!=-1){
-        var col = $(this).html().match(regcol)[0].split('@')[1]
-        //alert(col);
-        //alert(col[0].split('ccc')[1])
-        var text = $(this).html()
-        text = text.replace(regcol,""); // remove ::
-        $(this).html(text); 
-
-        $(this).css({"background":col}); 
-        //$(this).children().css({"background":"red"}); 
-
-        }// end if
-    }); // each
+$("img").each(function(){               // retrieve and change size images
+        var reg_caption = /\%.*\%/
+        var capt = $(this).attr('alt').match(reg_caption)[0].slice(1,-1);
+        var captcl = capt.replace(/\s+/g, '')
+        var caption = $('<figcaption/>').text(capt).css({'text-align': 'center'})
+        $(this).wrap($('<figure/>').attr('class', captcl))
+        $('.'+captcl).append(caption)
+        })
     
 
  </script>
