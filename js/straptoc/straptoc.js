@@ -353,8 +353,8 @@ var maketoc = function(){
             var reg_caption = /\%.*\%/
             var capt = $(this).attr('alt').match(reg_caption)[0].slice(1,-1);
             var captcl = capt.replace(/\s+/g, '')
-            var caption = $('<figcaption/>').text(capt).css({'text-align': 'center'})
-            $(this).wrap($('<figure/>').attr('class', captcl))
+            var caption = $('<figcaption/>').text(capt)
+            $(this).wrap($('<figure/>').attr('class', captcl).css({'text-align': 'center'})) // center image with caption
             $('.'+captcl).append(caption)
         })
 
