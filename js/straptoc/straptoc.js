@@ -182,6 +182,16 @@ var maketoc = function(){
             }) // end each
         }// end if
      })// end each
+
+ $('a').each(function(){  // modifying videos for permitting list mechanism.
+        if ($(this).text().match(';;')){    
+            var tlist = $(this).text().split(';;')[0] +' ::'
+            var underthis = $('<ul/>').append($('<li/>').append($(this).clone()))
+            var ulvid = $('<li/>').append(tlist).append(underthis)
+            $(this).parent().replaceWith(ulvid)
+         } // end if
+    })
+
     // bit of code for closing list when it finds :: in the code.
     $("li").each(function(i){    // need to be placed before  $("a").click    
         var htm = $(this).html(); var childr = $(this).children('ul')
@@ -202,9 +212,9 @@ var maketoc = function(){
                 if ($(this).children('a').length >0){
                     $(this).children('ul').prepend($("<a/>").attr("id", idslice))
                     } // yet existing <a> for folding list.
-                else{$("<a/>").attr("id",idslice).insertBefore($(this).children('ul'))} // no  <a> for folding list.
+                else{$("<a/>").attr("id", idslice).insertBefore($(this).children('ul'))} // no  <a> for folding list.
                 }
-            else{$("<p/>").attr("id",idslice).insertBefore($(this))} // general case, insert <p> before the tag
+            else{$("<p/>").attr("id", idslice).insertBefore($(this))} // general case, insert <p> before the tag
             }// end if
         }); // each
     $('ul').each(function (){  // remove the :: (closing list sign)
@@ -364,8 +374,6 @@ var maketoc = function(){
             var newtag = $('<div/>').addClass('youtube')
                    .css({'width': '500px', 'height': '281px'})
                    .attr('id', id)
-            var title = $('<p/>').text($(this).text().split(';;')[0])
-            title.insertBefore($(this)) // insert the video title before.
             $(this).replaceWith(newtag) // replace the <a> with a <div> with class 'youtube'
          } // end if
         if  ($(this).text().match(',,')){       // insertion of iframes with regexp ',,' for inserting web pages
@@ -377,14 +385,14 @@ var maketoc = function(){
             keeplink.insertBefore($(this))
             $(this).replaceWith(div.append(iframe)); // replace the <a> with a <div> with iframe.
         } // end if
-        if  ($(this).text().match('%%')){       // insertion of iframes with regexp ',,' for inserting web pages
+        if  ($(this).text().match('%%')){       // insert local video, works with Chrome
             var vid_url = $(this).attr('href')
             var vid = $('<video/>', {'frameborder': '0', 'src': vid_url, 'width': '600', 'height': '400' })
             var div = $('<div/>').css({'text-align':'center'})
             var keeplink = $('<a/>').text($(this).text().split('%%')[0])
                                     .attr('href',$(this).attr('href'))
             keeplink.insertBefore($(this))
-            $(this).replaceWith(div.append(vid)); // replace the <a> with a <div> with iframe.
+            $(this).replaceWith(div.append(vid)); 
         } // end if
  }) // end each
 
