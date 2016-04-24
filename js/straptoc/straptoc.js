@@ -27,7 +27,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/c4f70c3/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/cb69b23/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.css
 
     basename = function(path) {
@@ -183,7 +183,7 @@ var maketoc = function(){
         }// end if
      })// end each
 
- $('a').each(function(){  // modifying videos for permitting list mechanism.
+ $('a').each(function(){            // modifying videos for permitting folded list mechanism.
         if ($(this).text().match(';;')){    
             var tlist = $(this).text().split(';;')[0] +' ::'
             var underthis = $('<ul/>').append($('<li/>').append($(this).clone()))
@@ -226,12 +226,7 @@ var maketoc = function(){
         )// end each
     $('ul.lev1').toggle();                          //  close level 1 in TOC
     $('ul.lev2').toggle();                          //  close level 2 in TOC
-    $("a").click(function (evt) {                   // toggle for H1
-        var evtc = evt.target.className;
-        if(evtc == 'li_h1' | evtc == 'li_h2' | evtc == 'li_h3' | evtc == '::')  // open close list on click
-            $(this).next().toggle();
-        });// end click
-    
+
     $(document).keydown(function(event){
         if(event.keyCode == "h".charCodeAt(0)-32){    // "h", key for help documentation
             if (param['help']['var'] != false){
@@ -343,7 +338,7 @@ var maketoc = function(){
 
             }// end if
         })// end each
-    $("li").each(function(){ //
+    $("li").each(function(){                // hide lists
         var reg_hide = /\s*\^\^\s*/
          var htm = $(this).html()
          if (htm.match(reg_hide)){
@@ -352,6 +347,14 @@ var maketoc = function(){
             $(this).html(newhtm)
             }// end if
     })// end each
+
+
+    $("a").click(function (evt) {                   // toggle for H1, H2, H3 etc..( has to be after hide lists)
+        var evtc = evt.target.className;
+        //alert(evtc)
+        if(evtc == 'li_h1' | evtc == 'li_h2' | evtc == 'li_h3' | evtc == '::')  // open close list on click
+            $(this).next().toggle();
+        });// end click
     
     $("img").each(function(){               // retrieve and change size images
             var reg_im = /\s*\d*x\d*\s*/
