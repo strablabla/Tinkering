@@ -27,7 +27,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/cb69b23/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/9380259/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.css
 
     basename = function(path) {
@@ -314,7 +314,7 @@ var maketoc = function(){
     $("p").each(function(){ // POST'IT
              var html = $(this).html()
              if (html.match(/^\$post\s*/)){
-                 var newtag = $('<div/>').html(html.split('$post')[1]).addClass('postit')
+                 var newtag = $('<div/>').html(html.split('$post')[1]).addClass('postit').draggable()
                  $(this).replaceWith(newtag)
                 }// end if
         })
