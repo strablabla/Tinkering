@@ -20,6 +20,7 @@ make_plot = function(elemid, dataset, nodes_links,   params) {
   this.dataset = dataset
   this.nodes_links = nodes_links
   this.chart = document.getElementById(elemid);
+  $('#'+elemid).draggable()
   this.params = params || {};
   this.xlim = this.params['xlim']  // xlim 
   this.ylim = this.params['ylim']  // ylim 
@@ -700,9 +701,11 @@ make_plot.prototype.menuplot = function(fig, add_html){
                                                 .append($('<input/>').attr('type','checkbox').attr('id','direct_zoom')
                                         )// end append input
                             ) // end append div
+     $('#navig_plot'+self.id).draggable()
     if (self.direct_zoom == true){$('#direct_zoom').prop('checked', true)} // checkbox true for direct zoom
     $(document).ready(function(){ // activates the tooltips
     			$('[data-toggle="tooltip"]').tooltip(); 
 			})
+
     
 } // end menu_plot
