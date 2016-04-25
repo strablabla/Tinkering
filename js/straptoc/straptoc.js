@@ -27,7 +27,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/9380259/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/0032020/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.css
 
     basename = function(path) {
@@ -129,6 +129,7 @@ var maketoc = function(){
     $('#toc').append($('<a/>').append($('<span/>').text("[--]").addClass('li_h1')));
     var ul1 = $("<ul/>"); // first levels with class
     $('#toc').append(ul1);
+    $('#toc').draggable()
     // read all the headers and make the TOC (with ref) and the id names
     for(var i = 0,  elems = $(":header"); i < elems.length; i++) {
         var nameh = elems[i].innerHTML.trim().split(reg_id)[0];
