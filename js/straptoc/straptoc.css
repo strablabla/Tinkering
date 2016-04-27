@@ -34,6 +34,34 @@ div.onside {
     text-align:left;
 }
 
+/*==================================================
+ * Show current title
+ * ===============================================*/
+
+section {
+    overflow:hidden;
+    padding:0 20%;
+    position:relative;
+}
+section h1 {
+    float:left;
+    width:17%;
+    background:#fff;
+}
+section .summary {
+    float:right;
+    width:70%;
+}
+.fixed h1:first-child {
+    position:fixed;
+    top:0;
+}
+
+/*==================================================
+ * 
+ * ===============================================*/
+
+
 .box {
   width:70%;
   height:200px;

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="UTF-8 ">
+<title>suivi_rubrique_modif_withstrap</title>
+
+<script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script  src="https://cdn.rawgit.com/strablabla/Tinkering/1815d13/js/straptoc/straptoc.js"></script>
+<link rel="stylesheet" href="https://cdn.rawgit.com/strablabla/Tinkering/7f4f31c/js/straptoc/straptoc.css">
+
+<style>
+
+section {
+    overflow:hidden;
+    padding:0 20%;
+    position:relative;
+}
+section h1 {
+    float:left;
+    width:17%;
+    background:#fff;
+}
+section .summary {
+    float:right;
+    width:70%;
+}
+.fixed h1:first-child {
+    position:fixed;
+    top:0;
+}
+
+</style>
+
+<xmp theme="simplex" style="display:none;">
+
+
+# Title 1
+
+## qfqf
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in justo lectus. Praesent suscipit lacus malesuada, lacinia libero sit amet, placerat justo. Praesent aliquam dignissim tellus quis feugiat. Aenean ac varius nulla. Suspendisse nec mauris ac ligula tempor pharetra ut ac massa. Aenean lacinia consectetur facilisis. Proin eget velit mi. Duis metus risus, viverra ac lacus eu, vestibulum condimentum diam. Fusce molestie nulla felis, sit amet volutpat enim elementum vel. Praesent libero augue, scelerisque in lacus eget, malesuada vestibulum tellus. Curabitur vel nisi enim. In congue, urna vel rhoncus accumsan, velit neque ultrices diam, at dapibus erat ante et augue. Etiam enim tellus, accumsan a velit id, mollis tincidunt augue. Morbi ullamcorper ipsum feugiat vestibulum egestas. Proin porta lacus id sollicitudin vulputate. Nullam tristique neque ac velit lacinia, ut suscipit ligula accumsan.
+      
+ 
+# Title 2 
+
+
+## bipbop a Loula
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in justo lectus. Praesent suscipit lacus malesuada, lacinia libero sit amet, placerat justo. Praesent aliquam dignissim tellus quis feugiat. Aenean ac varius nulla. Suspendisse nec mauris ac ligula tempor pharetra ut ac massa. Aenean lacinia consectetur facilisis. Proin eget velit mi. Duis metus risus, viverra ac lacus eu, vestibulum condimentum diam. Fusce molestie nulla felis, sit amet volutpat enim elementum vel. Praesent libero augue, scelerisque in lacus eget, malesuada vestibulum tellus. Curabitur vel nisi enim. In congue, urna vel rhoncus accumsan, velit neque ultrices diam, at dapibus erat ante et augue. Etiam enim tellus, accumsan a velit id, mollis tincidunt augue. Morbi ullamcorper ipsum feugiat vestibulum egestas. Proin porta lacus id sollicitudin vulputate. Nullam tristique neque ac velit lacinia, ut suscipit ligula accumsan.
+        
+ 
+# Title 3
+
+## bingo
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in justo lectus. Praesent suscipit lacus malesuada, lacinia libero sit amet, placerat justo. Praesent aliquam dignissim tellus quis feugiat. Aenean ac varius nulla. Suspendisse nec mauris ac ligula tempor pharetra ut ac massa. Aenean lacinia consectetur facilisis. Proin eget velit mi. Duis metus risus, viverra ac lacus eu, vestibulum condimentum diam. Fusce molestie nulla felis, sit amet volutpat enim elementum vel. Praesent libero augue, scelerisque in lacus eget, malesuada vestibulum tellus. Curabitur vel nisi enim. In congue, urna vel rhoncus accumsan, velit neque ultrices diam, at dapibus erat ante et augue. Etiam enim tellus, accumsan a velit id, mollis tincidunt augue. Morbi ullamcorper ipsum feugiat vestibulum egestas. Proin porta lacus id sollicitudin vulputate. Nullam tristique neque ac velit lacinia, ut suscipit ligula accumsan.
+Aliquam porttitor id erat et tempus. Aliquam interdum quis lacus ac mollis. Nullam sit amet rutrum leo, vitae fringilla quam. Praesent at lacus et est cursus dictum sed ut elit. Suspendisse sed hendrerit arcu, vel consequat tellus. Cras in tellus commodo, ultricies velit ac, euismod dolor. Donec sollicitudin nisi sit amet augue porta interdum. Vestibulum pulvinar, nisl vel condimentum auctor, nisl dolor laoreet lorem, eget laoreet nunc eros a velit. Cras fermentum ipsum id posuere dignissim.
+Donec vehicula justo sit amet dui euismod dapibus. Sed nulla lacus, lacinia id placerat at, eleifend id libero. Nam gravida neque eu tellus euismod, a consectetur ante interdum. In hac habitasse platea dictumst. In hac habitasse platea dictumst. Sed ut felis at orci tristique mollis. Donec quis tristique urna. Nunc vitae tristique quam. Cras non urna molestie, aliquam nunc sit amet, venenatis dolor.
+
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+
+<script>
+
+maketoc()
+
+var newhtml = ''
+var list_split_h1 = $('#content').html().split('<h1')
+alert($('#content').html())
+alert(list_split_h1.length)
+for (i in list_split_h1){
+    if ((i>=1)&(i<list_split_h1.length)){
+        newhtml += '<div class="section" id="'+i+'">\n<h1'+ list_split_h1[i] + '</div>\n'
+        }
+    } // end for
+
+$('#content').html(newhtml)
+
+function fixTitle() {
+    $('div.section').each(function () {
+        var $this = $(this);
+        var offset = $this.offset().top;
+        var scrollTop = $(window).scrollTop();
+        if (scrollTop > offset) {
+           var ind = $this.attr('id') //.slice(-1)
+           var origcol = $('#toc').css("background-color")
+           $('#toc li a').css("background-color", origcol)
+           $('#toc li:nth-child('+ind+') a').css("background-color", "yellow")
+        }
+    });
+}
+
+$(document).ready(function () {
+    $(window).scroll(fixTitle);
+});
+
+</script>
+
+
+
+</html>

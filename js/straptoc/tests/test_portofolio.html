@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="UTF-8 ">
+<title>Portofolio</title>
+
+<style type="text/css">
+    
+#portfolio {
+    width: 100%;
+    max-width: 600px;
+    margin: 2em auto;
+}
+
+#portfolio-sort {
+    text-align: center;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #999;
+    margin-bottom: 1em;
+}
+
+#portfolio-sort a {
+    color: #fff;
+    background: #a00;
+    display: inline-block;
+    padding: 3px 9px;
+    text-decoration: none;
+    margin-right: 1em;
+}
+
+#portfolio-content {
+    overflow: hidden;
+}
+
+div.portfolio-item {
+    float: left;
+    margin: 0 3% 1em 0;
+    width: 29%;
+    height: 10em;
+    line-height: 10;
+    text-align: center;
+}
+
+div[data-cat="a"] {
+    background: #ccc;
+}
+
+div[data-cat="b"] {
+    background: #666;
+    color: #fff;
+}
+
+div[data-cat="c"] {
+    background: #333;
+    color: #fff;
+}
+
+</style>
+
+<body>
+    
+
+
+
+<div id="portfolio">
+    <div id="portfolio-sort">
+        <a href="#" id="all">ALL</a>
+        <a href="#" data-cat="a">A</a>
+        <a href="#" data-cat="b">B</a>
+        <a href="#" data-cat="c">C</a>
+    </div>
+    <div id="portfolio-content">
+        <div class="portfolio-item" data-cat="a">A</div>
+        <div class="portfolio-item" data-cat="b">B</div>
+        <div class="portfolio-item" data-cat="c">C</div>
+        <div class="portfolio-item" data-cat="c">C</div>
+        <div class="portfolio-item" data-cat="b">B</div>
+        <div class="portfolio-item" data-cat="a">A</div>
+        <div class="portfolio-item" data-cat="a">A</div>
+        <div class="portfolio-item" data-cat="c">C</div>
+        <div class="portfolio-item" data-cat="b">B</div>
+    </div>
+
+</div>
+
+<script>
+    var Portfolio = {
+    sort: function(items) {
+        items.show();
+        $('#portfolio-content').find('div.portfolio-item').not(items).fadeOut(500);
+    },
+    showAll: function(items) {
+        alert('hop')
+        items.fadeIn(500);
+    },
+    doSort: function() {
+        $('a', '#portfolio-sort').on('click', function() {
+
+            var $a = $(this);
+            alert('hello')
+            if (!$a.is('#all')) {
+
+                var items = $('div[data-cat=' + $a.data('cat') + ']', '#portfolio-content');
+
+                Portfolio.sort(items);
+
+            } else {
+
+                Portfolio.showAll($('div.portfolio-item', '#portfolio-content'));
+
+
+            }
+
+        });
+    }
+};
+
+Portfolio.doSort();
+
+</script>
+
+</body>
+
+</html>

@@ -82,6 +82,17 @@ var maketoc = function(){
              'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
              'help':{'reg':reg_help, 'cut':'§help', 'var': false}
          }
+
+
+var newhtml = ''
+var list_split_h1 = $('#content').html().split('<h1')  // insert div for following position in toc
+for (i in list_split_h1){
+    if ((i>=1)&(i<list_split_h1.length)){
+        newhtml += '<div class="section" id="'+i+'">\n<h1'+ list_split_h1[i] + '</div>\n'
+        }
+    } // end for
+
+$('#content').html(newhtml)
     
     for (i=0; i<4; i++){     // Tooltips, iteration for nested list
         $("li, h1, h2, h3, h4").each(function(){     // Tooltips for h1, h2, h3, h4 and li
@@ -192,7 +203,6 @@ var maketoc = function(){
             $(this).parent().replaceWith(ulvid)
          } // end if
     })
-
     // bit of code for closing list when it finds :: in the code.
     $("li").each(function(i){    // need to be placed before  $("a").click    
         var htm = $(this).html(); var childr = $(this).children('ul')
@@ -1019,7 +1029,27 @@ function dragstarted(d) {
 
 function dragended(d){ d3.select(this).classed("dragging", false) }
 
-$(document).ready(function(){ // activates the tooltips
-    $('[data-toggle="tooltip"]').tooltip(); 
+
+
+function fixTitle() {
+    $('div.section').each(function () { // follow postion in toc
+        var $this = $(this);
+        var offset = $this.offset().top;
+        var scrollTop = $(window).scrollTop();
+        if (scrollTop > offset) {
+           var ind = $this.attr('id') //.slice(-1)
+           var origcol = $('#toc').css("background-color")
+           $('#toc li a').css("background-color", origcol)
+           $('#toc li:nth-child('+ind+') a').css("background-color", "yellow")
+        }
+    });
+}
+
+$(document).ready(function () {
+    $(window).scroll(fixTitle);
+});
+
+$(document).ready(function(){ 
+    $('[data-toggle="tooltip"]').tooltip(); // activates the tooltips
 });
 
