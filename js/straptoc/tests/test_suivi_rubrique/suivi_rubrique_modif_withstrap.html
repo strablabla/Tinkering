@@ -10,28 +10,7 @@
 <script  src="https://cdn.rawgit.com/strablabla/Tinkering/1815d13/js/straptoc/straptoc.js"></script>
 <link rel="stylesheet" href="https://cdn.rawgit.com/strablabla/Tinkering/7f4f31c/js/straptoc/straptoc.css">
 
-<style>
 
-section {
-    overflow:hidden;
-    padding:0 20%;
-    position:relative;
-}
-section h1 {
-    float:left;
-    width:17%;
-    background:#fff;
-}
-section .summary {
-    float:right;
-    width:70%;
-}
-.fixed h1:first-child {
-    position:fixed;
-    top:0;
-}
-
-</style>
 
 <xmp theme="simplex" style="display:none;">
 
@@ -70,8 +49,6 @@ maketoc()
 
 var newhtml = ''
 var list_split_h1 = $('#content').html().split('<h1')
-alert($('#content').html())
-alert(list_split_h1.length)
 for (i in list_split_h1){
     if ((i>=1)&(i<list_split_h1.length)){
         newhtml += '<div class="section" id="'+i+'">\n<h1'+ list_split_h1[i] + '</div>\n'
@@ -86,10 +63,13 @@ function fixTitle() {
         var offset = $this.offset().top;
         var scrollTop = $(window).scrollTop();
         if (scrollTop > offset) {
-           var ind = $this.attr('id') //.slice(-1)
-           var origcol = $('#toc').css("background-color")
-           $('#toc li a').css("background-color", origcol)
-           $('#toc li:nth-child('+ind+') a').css("background-color", "yellow")
+           var ind = $this.attr('id') 
+           // var origcol = $('#toc').css("background-color")
+           // $('#toc li a').css("background-color", origcol)
+           var origftsize = $('#toc').css("font-size")
+           $('#toc li a').css("font-size", origftsize)
+           //$('#toc li:nth-child('+ind+') a').css("background-color", "yellow")
+           $('#toc li:nth-child('+ind+') a').css("font-size", "150%")
         }
     });
 }

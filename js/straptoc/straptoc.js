@@ -27,7 +27,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/0032020/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/4361f8f/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.css
 
     basename = function(path) {
@@ -1030,17 +1030,16 @@ function dragstarted(d) {
 function dragended(d){ d3.select(this).classed("dragging", false) }
 
 
-
 function fixTitle() {
-    $('div.section').each(function () { // follow postion in toc
+    $('div.section').each(function () {  // change fontsize with position in toc
         var $this = $(this);
         var offset = $this.offset().top;
         var scrollTop = $(window).scrollTop();
         if (scrollTop > offset) {
-           var ind = $this.attr('id') //.slice(-1)
-           var origcol = $('#toc').css("background-color")
-           $('#toc li a').css("background-color", origcol)
-           $('#toc li:nth-child('+ind+') a').css("background-color", "yellow")
+           var ind = $this.attr('id') 
+           var origftsize = $('#toc').css("font-size")
+           $('#toc li a').css("font-size", origftsize)
+           $('#toc li:nth-child('+ind+') a').css("font-size", "150%")
         }
     });
 }
