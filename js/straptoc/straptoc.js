@@ -24,10 +24,11 @@ var maketoc = function(){
      * Size image, enter the size after the name eg: [blabla 500x500](address)
      * @color to change color, for the moment works onl for lists.
      * [blabla %caption%](address) insert the caption under the image
+     * %%% for deleting symbolically a line, replacing  the tilde. 
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/4361f8f/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/10f26fa/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.css
 
     basename = function(path) {
@@ -84,15 +85,24 @@ var maketoc = function(){
          }
 
 
-var newhtml = ''
-var list_split_h1 = $('#content').html().split('<h1')  // insert div for following position in toc
-for (i in list_split_h1){
-    if ((i>=1)&(i<list_split_h1.length)){
-        newhtml += '<div class="section" id="'+i+'">\n<h1'+ list_split_h1[i] + '</div>\n'
-        }
-    } // end for
+    var newhtml = ''
+    var list_split_h1 = $('#content').html().split('<h1')  // insert div for following position in toc
+    for (i in list_split_h1){
+        if ((i>=1)&(i<list_split_h1.length)){
+            newhtml += '<div class="section" id="'+i+'">\n<h1'+ list_split_h1[i] + '</div>\n'
+            }
+        } // end for
 
-$('#content').html(newhtml)
+    $('#content').html(newhtml)
+
+    var regcbarree = /[A-Za-z0-9\.\'\s\u0080-\u00FF]*\%\%\%/g  // replace %%% by deleted text. 
+    var htm = $('#content').html()  
+    var m = htm.replace(regcbarree,function(content){
+        var barr = content.split('%%%')[0].trim()
+        var barrcorr = '<del>'+barr+'</del>'
+        return barrcorr
+        }) // end replace
+    $('#content').html(m) 
     
     for (i=0; i<4; i++){     // Tooltips, iteration for nested list
         $("li, h1, h2, h3, h4").each(function(){     // Tooltips for h1, h2, h3, h4 and li
@@ -140,7 +150,7 @@ $('#content').html(newhtml)
     $('#toc').append($('<a/>').append($('<span/>').text("[--]").addClass('li_h1')));
     var ul1 = $("<ul/>"); // first levels with class
     $('#toc').append(ul1);
-    $('#toc').draggable()
+    $('#toc').draggable() // make the toc draggable with jquery-ui widget draggable. 
     // read all the headers and make the TOC (with ref) and the id names
     for(var i = 0,  elems = $(":header"); i < elems.length; i++) {
         var nameh = elems[i].innerHTML.trim().split(reg_id)[0];
