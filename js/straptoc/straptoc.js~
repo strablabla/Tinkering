@@ -28,7 +28,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/d36ffcc/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/10f26fa/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.css
 
     basename = function(path) {
@@ -64,7 +64,6 @@ var maketoc = function(){
     var reg_notoc = reg_func('notoc')
     var reg_width_video = reg_func('width_video') 
     var reg_width_pdf = reg_func('width_pdf') 
-    var reg_width_iframe = reg_func('width_iframe') 
     var reg_toggle_hide = reg_func('toggle_hide') 
     var reg_help = reg_func('help')
     var reg_sign = /[^§]§[^§]\w*/
@@ -81,7 +80,6 @@ var maketoc = function(){
              'notoc':{'reg':reg_notoc, 'cut':'§notoc', 'var': false},
              'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': '80%' },
              'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'},
-             'iframe_width':{'reg':reg_width_iframe, 'cut':'§width_iframe', 'var': '900'},
              'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
              'help':{'reg':reg_help, 'cut':'§help', 'var': false}
          }
@@ -404,8 +402,7 @@ var maketoc = function(){
          } // end if
         if  ($(this).text().match(',,')){       // insertion of iframes with regexp ',,' for inserting web pages
             var iframe_url = $(this).attr('href')
-            var wid = param['iframe_width']['var'].toString()
-            var iframe = $('<iframe/>', {'frameborder': '0', 'src': iframe_url, 'width':  wid, 'height': '400' })
+            var iframe = $('<iframe/>', {'frameborder': '0', 'src': iframe_url, 'width': '600', 'height': '400' })
             var div = $('<div/>').css({'text-align':'center'})
             var keeplink = $('<a/>').text($(this).text().split(',,')[0])
                                     .attr('href',$(this).attr('href'))
