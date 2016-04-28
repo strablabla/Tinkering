@@ -28,7 +28,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/d36ffcc/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/814ca7a/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.css
 
     basename = function(path) {
@@ -85,7 +85,43 @@ var maketoc = function(){
              'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
              'help':{'reg':reg_help, 'cut':'§help', 'var': false}
          }
+//===================================================================== retrieving config param
 
+    $("p").each(function(){   // rewriting the option from bloc to <p>
+    if ($(this).text().match(/^§/)) {              
+        var txtsplit = $(this).text().split(/§/).slice(1)
+        for (i in txtsplit){
+            $('body').prepend($('<p/>').text('§'+txtsplit[i]))
+            $(this).hide()
+        }
+      }
+    }); // each
+    $("p").each(function() {          // Need to be placed before position in TOC.                       
+        for (elem in param){
+            //alert(param[elem]['reg'])
+            if ($(this).text().match(param[elem]['reg']) ){     // finds loading parameters
+                //alert(param[elem])
+                var interm = $(this).text().split(param[elem]['cut'])[1]
+                var newtag = $('<p/>').text('')
+                $(this).replaceWith(newtag)     // remove text of the optional parameters
+                param[elem]['var'] = interm.trim()    // retrieve the value of parameters in the dic param
+               }// end if
+        } // end for
+    }); // end each
+
+//=====================================================================  Dates
+
+    $("p").each(function() { 
+      if ($(this).html().match(reg_date)){
+                $(this).replaceWith(function(){                 // Replacing dates with p in date with h2 and 
+                    var h1prev = $(this).prev("h1").text()
+                    var dateh2 = $('<h2/>').text($(this).text())
+                    return dateh2; 
+                   }) // end replaceWith
+               } // end if
+      }); // end each
+
+//=====================================================================   Position in TOC.
 
     var newhtml = ''
     var list_split_h1 = $('#content').html().split('<h1')  // insert div for following position in toc
@@ -105,6 +141,8 @@ var maketoc = function(){
         return barrcorr
         }) // end replace
     $('#content').html(m) 
+
+//=====================================================================  Tooltips
     
     for (i=0; i<4; i++){     // Tooltips, iteration for nested list
         $("li, h1, h2, h3, h4").each(function(){     // Tooltips for h1, h2, h3, h4 and li
@@ -116,32 +154,9 @@ var maketoc = function(){
                 } // end match
             })
     	}
-    $("p").each(function(){   // rewriting the option from bloc to <p>
-    if ($(this).text().match(/^§/)) {              
-        var txtsplit = $(this).text().split(/§/).slice(1)
-        for (i in txtsplit){
-            $('body').prepend($('<p/>').text('§'+txtsplit[i]))
-            $(this).hide()
-        }
-      }
-    }); // each
-    $("p").each(function() {                                
-        if ($(this).html().match(reg_date)){
-            $(this).replaceWith(function(){                 // Replacing dates with p in date with h2 and 
-                var h1prev = $(this).prev("h1").text()
-                var dateh2 = $('<h2/>').text($(this).text())
-                return dateh2; 
-               }) // end replaceWith
-           } // end if
-        for (elem in param){
-            if ($(this).text().match(param[elem]['reg']) ){     // finds loading parameters
-                var interm = $(this).text().split(param[elem]['cut'])[1]
-                var newtag = $('<p/>').text('')
-                $(this).replaceWith(newtag)     // remove text of the optional parameters
-                param[elem]['var'] = interm.trim()    // retrieve the value of parameters in the dic param
-               }// end if
-        } // end for
-    }); // end each
+
+//===================================================================== TOC
+
     //alert(param['notoc']['var'])
     if(param['notoc']['var'] == false){
         $('body').prepend($('<div/>').addClass('onside').attr('id',"toc"))     // adds the Table of Contents at the beginning
@@ -189,6 +204,9 @@ var maketoc = function(){
                 .css({'list-style': 'circle inside','line-height': '20px'}) // end append li3
             } // end else if H3
        }                                                                   // end for elems
+
+//===================================================================== Glue elsewhere
+
     $("li").each(function(){                // plugin list from one place to another..
          var htm = $(this).html();
          if (htm.split('\n')[0].match(/@@\w+/)){
@@ -207,17 +225,21 @@ var maketoc = function(){
         }// end if
      })// end each
 
- $('a').each(function(){            // modifying videos for permitting folded list mechanism.
-        if ($(this).text().match(';;')){    
-            var tlist = $(this).text().split(';;')[0] +' ::'
-            var underthis = $('<ul/>').append($('<li/>').append($(this).clone()))
-            var ulvid = $('<li/>').append(tlist).append(underthis)
-            $(this).parent().replaceWith(ulvid)
-         } // end if
-    })
-    // bit of code for closing list when it finds :: in the code.
+//=====================================================================
+
+    $('a').each(function(){            // modifying videos for permitting folded list mechanism.
+            if ($(this).text().match(';;')){    
+                var tlist = $(this).text().split(';;')[0] +' ::'
+                var underthis = $('<ul/>').append($('<li/>').append($(this).clone()))
+                var ulvid = $('<li/>').append(tlist).append(underthis)
+                $(this).parent().replaceWith(ulvid)
+             } // end if
+        })
+
+//===================================================================== Deal with lists
+
     $("li").each(function(i){    // need to be placed before  $("a").click    
-        var htm = $(this).html(); var childr = $(this).children('ul')
+        var htm = $(this).html(); var childr = $(this).children('ul') // closing list when it finds :: in the code
         if(htm.split('\n')[0].search('::')!=-1){ 
                 childr.toggle();                // close the sub lists 
                 childr.css({'color': param['color_sublist']['var']})   // change color children
@@ -225,6 +247,9 @@ var maketoc = function(){
                          .insertBefore(childr)
             } // end if 
         }); // end each
+
+//=====================================================================  Deal with folding lists
+
     $("H1, H2, p, a, li").each(function(){       // insertion of <p> with id in tag <a>
         if($(this).html().split('\n')[0].search(reg_id)!=-1){
             match_id = $(this).html().match(reg_id)[0]
@@ -250,6 +275,8 @@ var maketoc = function(){
     $('ul.lev1').toggle();                          //  close level 1 in TOC
     $('ul.lev2').toggle();                          //  close level 2 in TOC
 
+//===================================================================== key actions
+
     $(document).keydown(function(event){
         if(event.keyCode == "h".charCodeAt(0)-32){    // "h", key for help documentation
             if (param['help']['var'] != false){
@@ -272,6 +299,8 @@ var maketoc = function(){
               }); // each
           }// end if key code
         })
+
+//===================================================================== 
 
     var sel = ['§§'] // ';;',
     var debend = {';;' : {'deb' : '<iframe width='+'"' + param['vid_width']['var'] + '"' + 'height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
@@ -404,8 +433,8 @@ var maketoc = function(){
          } // end if
         if  ($(this).text().match(',,')){       // insertion of iframes with regexp ',,' for inserting web pages
             var iframe_url = $(this).attr('href')
-            var wid = param['iframe_width']['var'].toString()
-            var iframe = $('<iframe/>', {'frameborder': '0', 'src': iframe_url, 'width':  wid, 'height': '400' })
+            var wid = (param['iframe_width']['var']).toString()
+            var iframe = $('<iframe/>', {'frameborder': '0', 'src': iframe_url, 'width': wid, 'height': '400' })
             var div = $('<div/>').css({'text-align':'center'})
             var keeplink = $('<a/>').text($(this).text().split(',,')[0])
                                     .attr('href',$(this).attr('href'))
@@ -448,6 +477,7 @@ var maketoc = function(){
 
 //             }// end if
 //     })
+//===================================================================== Open all the lists
 
      $(document).keydown(function(event){   
           
@@ -455,6 +485,8 @@ var maketoc = function(){
                 $('ul').toggle() // alt + l open all the lists. 
            } // end if key code
      }) // end keydown
+
+//===================================================================== 
 
      $("a").each(function(){                             // insert pdf from folder
          var txt = $(this).text()
@@ -486,6 +518,8 @@ registerKeyboardHandler = function(callback) { // begin plot
   var callback = callback;
   d3.select(window).on("keydown", callback);  
 };
+
+//=====================================================================  Plot
 
 var plot = function(elemid, data, params){
      // if data is an array do nothing, if json, makes an array
