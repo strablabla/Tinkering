@@ -29,7 +29,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/bfa0dcb/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/1c8d853/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/4561e51/js/straptoc/straptoc.css
 
     basename = function(path) {
@@ -455,9 +455,11 @@ var maketoc = function(){
     
     $("img").each(function(){               // retrieve and change size images
             var reg_im = /\s*\d*x\d*\s*/
-            var sizeim = $(this).attr('alt').match(reg_im)[0];
-            $(this).attr('width',sizeim.split('x')[0]);
-            $(this).attr('height',sizeim.split('x')[1])
+            if ($(this).attr('alt').match(reg_im)){
+                var sizeim = $(this).attr('alt').match(reg_im)[0];
+                $(this).attr('width',sizeim.split('x')[0]);
+                $(this).attr('height',sizeim.split('x')[1])
+            }
         })
     $("img").each(function(){               // retrieve the caption and insert it under the image.
             var reg_caption = /\%.*\%/
