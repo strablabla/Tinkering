@@ -257,9 +257,11 @@ var maketoc = function(){
 
  $('a').each(function(){            // modifying videos for permitting folded list mechanism.
         if ($(this).text().match(';;')){    
+            alert("dealing with video")
             var tlist = $(this).text().split(';;')[0] +' ::'
             var underthis = $('<ul/>').append($('<li/>').append($(this).clone()))
             var ulvid = $('<li/>').append(tlist).append(underthis)
+            alert($(this).parent().prop('tagName'))
             $(this).parent().replaceWith(ulvid)
          } // end if
     })

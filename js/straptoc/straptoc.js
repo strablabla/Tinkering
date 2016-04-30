@@ -25,10 +25,11 @@ var maketoc = function(){
      * @color to change color, for the moment works onl for lists.
      * [blabla %caption%](address) insert the caption under the image
      * %%% for deleting symbolically a line, replacing  the tilde. 
+     * $carr and list of ![]()  after for making a carrousel with pictures. 
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/4561e51/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/bfa0dcb/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/4561e51/js/straptoc/straptoc.css
 
     basename = function(path) {
@@ -460,12 +461,14 @@ var maketoc = function(){
         })
     $("img").each(function(){               // retrieve the caption and insert it under the image.
             var reg_caption = /\%.*\%/
-            var capt = $(this).attr('alt').match(reg_caption)[0].slice(1,-1);
-            var captcl = capt.replace(/\s+/g, '')
-            var caption = $('<figcaption/>').text(capt)
-            $(this).wrap($('<figure/>').attr('class', captcl).css({'text-align': 'center'})) // center image with caption
-            $('.'+captcl).append(caption)
-        })
+            if ($(this).attr('alt').match(reg_caption)){ 
+              var capt = $(this).attr('alt').match(reg_caption)[0].slice(1,-1);
+              var captcl = capt.replace(/\s+/g, '')
+              var caption = $('<figcaption/>').text(capt)
+              $(this).wrap($('<figure/>').attr('class', captcl).css({'text-align': 'center'})) // center image with caption
+              $('.'+captcl).append(caption)
+            } // end if
+        }) // end each
 
  $('a').each(function(){
         if ($(this).text().match(';;')){      // replace the address with a div with 'youtube' class. 
