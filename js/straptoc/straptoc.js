@@ -28,8 +28,8 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/cd698d0/js/straptoc/straptoc.js 
-    //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.css
+    //https://github.com/strablabla/Tinkering/4561e51/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/4561e51/js/straptoc/straptoc.css
 
     basename = function(path) {
     return path.replace( /.*\//, "" );
@@ -88,7 +88,7 @@ var maketoc = function(){
 
 //===================================================================== Carrousel
 
-  $("p").each(function(){
+  $("p, li").each(function(){
     //alert($(this).text())
     if ($(this).text().match(/^\$carr/)) { 
         var divcarr = $('<div/>').addClass("carousel slide")
