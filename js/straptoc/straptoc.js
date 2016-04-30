@@ -28,7 +28,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/814ca7a/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/cd698d0/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/72f2d1e/js/straptoc/straptoc.css
 
     basename = function(path) {
@@ -85,6 +85,50 @@ var maketoc = function(){
              'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
              'help':{'reg':reg_help, 'cut':'§help', 'var': false}
          }
+
+//===================================================================== Carrousel
+
+  $("p").each(function(){
+    //alert($(this).text())
+    if ($(this).text().match(/^\$carr/)) { 
+        var divcarr = $('<div/>').addClass("carousel slide")
+                                 .attr('id','mycarr')
+        var ol = $('<ol/>').addClass("carousel-indicators")
+        var divcarrinner = $('<div/>').addClass("carousel-inner").attr('role','listbox')
+        var aprev = $('<a/>').addClass("left carousel-control")
+                             .attr('role','button')
+                             .attr('data-slide','prev')
+                             .attr('href','#mycarr')
+                             .append($('<span/>').addClass("glyphicon glyphicon-chevron-left")
+                                                 .attr("aria-hidden","true")
+                                )
+        var anext = $('<a/>').addClass("right carousel-control")
+                 .attr('role','button')
+                 .attr('data-slide','next')
+                 .attr('href','#mycarr')
+                 .append($('<span/>').addClass("glyphicon glyphicon-chevron-right")
+                                     .attr("aria-hidden","true")
+                    )
+
+        $(this).children('img').each(function(i){
+            var litarget = $('<li/>').attr("data-target","#mycarr")
+                                .attr("data-slide-to", i)
+            if (i == 0){litarget.addClass("active")}
+            ol.append( litarget ) // end append
+            var divitem = $('<div/>').addClass("item")
+                           .append($(this)
+                                .attr('width','460')
+                                .attr('height','365')
+                           ) // end append
+            if (i == 0){divitem.addClass("active")}
+            divcarrinner.append( divitem) // end append
+            }) // end each
+        divcarr.append(ol)
+               .append(divcarrinner.append(aprev).append(anext))
+        $(this).replaceWith(divcarr)
+    } // end if regexp
+}) // end each p
+
 //===================================================================== retrieving config param
 
     $("p").each(function(){   // rewriting the option from bloc to <p>
@@ -1098,4 +1142,9 @@ $(document).ready(function () {
 $(document).ready(function(){ 
     $('[data-toggle="tooltip"]').tooltip(); // activates the tooltips
 });
+
+$(document).ready(function() {
+    $('.carousel').carousel({ interval: false })
+});
+
 
