@@ -29,7 +29,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/1c8d853/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/dc2bd8e/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/4561e51/js/straptoc/straptoc.css
 
     basename = function(path) {
@@ -192,9 +192,10 @@ var maketoc = function(){
     for (i=0; i<4; i++){     // Tooltips, iteration for nested list
         $("li, h1, h2, h3, h4").each(function(){     // Tooltips for h1, h2, h3, h4 and li
             var text = $(this).html().split('\n')[0]
-            if (text.match(/\{.*\}/)){
-                $(this).attr('title', text.match(/\{.*\}/)[0].slice(1,-1)) // attribute title
-                var newhtm = $(this).html().replace(/\{.*\}/, ' ') // remove the brackets
+            var reg_tooltip = /\{.*\}/
+            if (text.match(reg_tooltip)){
+                $(this).attr('title', text.match(reg_tooltip)[0].slice(1,-1)) // add the attribute title
+                var newhtm = $(this).html().replace(reg_tooltip, ' ') // remove the brackets
                 $(this).html(newhtm)
                 } // end match
             })
@@ -275,9 +276,9 @@ var maketoc = function(){
     $('a').each(function(){            // modifying videos for permitting folded list mechanism.
             if ($(this).text().match(';;')){    
                 var tlist = $(this).text().split(';;')[0] +' ::'
-                var underthis = $('<ul/>').append($('<li/>').append($(this).clone()))
+                var underthis = $('<ul/>').append($('<li/>').append($(this).clone())) // put inside a list
                 var ulvid = $('<li/>').append(tlist).append(underthis)
-                $(this).parent().replaceWith(ulvid)
+                $(this).parent().replaceWith(ulvid) // replace <a> with a <ul> containing <a>
              } // end if
         })
 
