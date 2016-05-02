@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="UTF-8">
+<title>test parent list</title>
+
+<script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script  src="straptoc.js"></script>
+<link rel="stylesheet" href="straptoc.css">
+
+<div class="onside" id="toc"></div>
+
+<xmp theme="cerulean" style="display:none;">
+    
+# Origines 
+
+    Les langues italiques formaient, à côté des langues celtiques, germaniques et helléniques, une sous-famille « centum » de langues indo-européennes qui incluait le 
+
+aaaa  2 %%%
+
+* Il était une fois red %%%
+    * parfois les aléas de  la vie. 
+        * bien que le hasard soit une chose pour le moins étrange.%%%
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+
+<script>
+
+var regcbarree = /[A-Za-z0-9\.\'\s\u0080-\u00FF]*\%\%\%/g
+
+ 
+    var htm = $('#content').html()  
+    //alert(htm)
+    m = htm.replace(regcbarree,function(content){
+        var barr = content.split('%%%')[0].trim()
+        var barrcorr = '<del>'+barr+'</del>'
+        return barrcorr
+    })
+    //alert(m)
+    $('#content').html(m) 
+
+
+
+ </script>
+
+</html>

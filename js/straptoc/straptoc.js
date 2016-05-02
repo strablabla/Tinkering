@@ -26,6 +26,7 @@ var maketoc = function(){
      * [blabla %caption%](address) insert the caption under the image
      * %%% for deleting symbolically a line, replacing  the tilde. 
      * $carr and list of ![]()  after for making a carrousel with pictures. 
+     * $portf and list of ![]()  after for making a portfolio with pictures. 
      */}.toString().slice(14,-3)
      //alert(help)
 
@@ -86,6 +87,25 @@ var maketoc = function(){
              'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
              'help':{'reg':reg_help, 'cut':'§help', 'var': false}
          }
+
+
+ //===================================================================== Portfolio
+
+   $("p, li").each(function(){
+     if ($(this).text().match(/^\$portf/)) { 
+         var divportf = $('<div/>').addClass("row")
+         $(this).children('img').each(function(i){
+             var divportfinner = $('<div/>').addClass("col-md-3")
+                                     .append(
+                                           $('<div/>').addClass("thumbnail")
+                                             .append($(this))
+                                             .append($('<p/>').addClass("caption").text("hop"))
+                                        ) // end append thumbnail
+                divportf.append(divportfinner)
+        }) // end each img
+        $(this).replaceWith(divportf)
+     } // end if regexp
+ }) // end each p
 
 //===================================================================== Carrousel
 
