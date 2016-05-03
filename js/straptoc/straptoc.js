@@ -294,14 +294,27 @@ var maketoc = function(){
         }// end if
      })// end each
 
-//=====================================================================
+//===================================================================== Folding videos
 
     $('a').each(function(){            // modifying videos for permitting folded list mechanism.
             if ($(this).text().match(';;')){    
                 var tlist = $(this).text().split(';;')[0] +' ::'
-                var underthis = $('<ul/>').append($('<li/>').append($(this).clone())) // put inside a list
-                var ulvid = $('<li/>').append(tlist).append(underthis)
+                var underthis = $('<ul/>').append($('<li/>').append($(this).clone())) // put inside a list, inserted in ulvid
+                var ulvid = $('<li/>').append(tlist).append(underthis) // <li> with text then clone
                 $(this).parent().replaceWith(ulvid) // replace <a> with a <ul> containing <a>
+             } // end if
+        })
+
+//===================================================================== Folding iframe
+
+    $('a').each(function(){            // modifying iframe for permitting folded list mechanism.
+            if ($(this).text().match(',,')){  
+                var txt = $(this).text().split(',,')[0]
+                var ifhref =  '<a href="'+ $(this).attr('href') + '">' + txt + '</a>' 
+                var tlist = ifhref+ ' ::'
+                var underthis = $('<ul/>').append($('<li/>').append($(this).clone())) // put inside a list
+                var ulframe = $('<li/>').append(tlist).append(underthis).addClass('iframe')  // insert class iframe
+                $(this).parent().replaceWith(ulframe) // replace <a> with a <ul> containing <a>
              } // end if
         })
 
@@ -529,12 +542,9 @@ var maketoc = function(){
         //=====================================================================   Insert iframe
         if  ($(this).text().match(',,')){       // insertion of iframes with regexp ',,' for inserting web pages
             var iframe_url = $(this).attr('href')
-            var wid = (param['iframe_width']['var']).toString()
+            var wid = (param['iframe_width']['var']).toString()  // width from configuration parameters
             var iframe = $('<iframe/>', {'frameborder': '0', 'src': iframe_url, 'width': wid, 'height': '400' })
             var div = $('<div/>').css({'text-align':'center'})
-            var keeplink = $('<a/>').text($(this).text().split(',,')[0])
-                                    .attr('href',$(this).attr('href'))
-            keeplink.insertBefore($(this))
             $(this).replaceWith(div.append(iframe)); // replace the <a> with a <div> with iframe.
         } // end if
         //=====================================================================   Local video
@@ -566,6 +576,7 @@ var maketoc = function(){
      });
  });
 
+//===================================================================== 
 
 // $("p").each(function(){ // plot
 //          var html = $(this).html()
@@ -980,7 +991,7 @@ function elementMousedown(evt) {
   }) // end keydown
   
 };
-
+ //=====================================================================  methods for plot
 //
 // plot methods
 //
@@ -1117,6 +1128,7 @@ make_plot.prototype.redraw_all = function() {         // redraw_all the whole pl
   }  
 }
 
+//===================================================================== End plot
 
 var drag_slider = d3.behavior.drag()
     .origin(function(d) {  return d }) 
@@ -1173,6 +1185,7 @@ function dragstarted(d) {
 
 function dragended(d){ d3.select(this).classed("dragging", false) }
 
+//=====================================================================  position in TOC
 
 function fixTitle() {
     $('div.section').each(function () {  // change fontsize with position in toc
@@ -1183,21 +1196,19 @@ function fixTitle() {
            var ind = $this.attr('id') 
            var origftsize = $('#toc').css("font-size")
            $('#toc li a').css("font-size", origftsize)
-           $('#toc li:nth-child('+ind+') a').css("font-size", "150%")
+           $('#toc li:nth-child(' + ind + ') a').css("font-size", "150%")
         }
     });
 }
 
+//===================================================================== 
+
 $(document).ready(function () {
     $(window).scroll(fixTitle);
-});
-
-$(document).ready(function(){ 
     $('[data-toggle="tooltip"]').tooltip(); // activates the tooltips
+    $('.carousel').carousel({ interval: false }) // removing automatic carousel
 });
 
-$(document).ready(function() {
-    $('.carousel').carousel({ interval: false })
-});
+
 
 
