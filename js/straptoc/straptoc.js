@@ -238,6 +238,7 @@ var maketoc = function(){
     for(var i = 0,  elems = $(":header"); i < elems.length; i++) {
         var nameh = elems[i].innerHTML.trim().split(reg_id)[0];
         elems[i].id = nameh; 
+        //===================================================================== H1
         if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H1'){    // if H1                    
             var nameh1 = nameh
             var li1 = $("<li/>");
@@ -247,6 +248,7 @@ var maketoc = function(){
                          .append($('<span/>').text(" [-]").addClass('li_h2'))) // en append ul
             li1.append(ul2);
         } // end if H1
+        //===================================================================== H2
         else if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H2'){ // if H2
             elems[i].id = nameh1 +'_'+ nameh;                               // makes an id for H2
             var nameh2 = elems[i].id
@@ -259,6 +261,7 @@ var maketoc = function(){
                 .css({'list-style': 'square inside','line-height': '20px'}) // end append li2
             li2.append(ul3)
             } // end else if H2
+        //===================================================================== H3
         else if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H3'){
             elems[i].id = nameh2 +'_'+ nameh;                               // makes an id for H3
             var nameh3 = elems[i].id
@@ -423,12 +426,18 @@ var maketoc = function(){
                  } // end if
               }// end for
          }); // end each
+
+//=====================================================================  Toggle ;; and §§
+
     $("a").click(function (evt) {  
         var evtc = evt.target.className;              
         if(evtc == ';;' | evtc == '§§') {      // toggle 
             $(this).parent().next().toggle(); // if click, activate next <ul>
             } // end if event      
         });// end click
+
+//=====================================================================  Post it
+
     $("p").each(function(){ // POST'IT
              var html = $(this).html()
              if (html.match(/^\$post\s*/)){
@@ -436,6 +445,9 @@ var maketoc = function(){
                  $(this).replaceWith(newtag)
                 }// end if
         })
+
+//=====================================================================  Plot
+
     $("p").each(function(){ // detect plot and apply plot function..
          var text = $(this).text()
          if (text.match(/^\$plot\s*/)){
@@ -456,6 +468,9 @@ var maketoc = function(){
 
             }// end if
         })// end each
+
+//=====================================================================  Hide list
+
     $("li").each(function(){                // hide lists
         var reg_hide = /\s*\^\^\s*/
          var htm = $(this).html()
@@ -467,12 +482,16 @@ var maketoc = function(){
     })// end each
 
 
+//=====================================================================  Toggle titles and list
+
     $("a").click(function (evt) {                   // toggle for H1, H2, H3 etc..( has to be after hide lists)
         var evtc = evt.target.className;
         //alert(evtc)
         if(evtc == 'li_h1' | evtc == 'li_h2' | evtc == 'li_h3' | evtc == '::')  // open close list on click
             $(this).next().toggle();
         });// end click
+        
+//=====================================================================  Change size img 
     
     $("img").each(function(){               // retrieve and change size images
             var reg_im = /\s*\d*x\d*\s*/
@@ -482,6 +501,9 @@ var maketoc = function(){
                 $(this).attr('height',sizeim.split('x')[1])
             }
         })
+
+//=====================================================================  Catption img 
+
     $("img").each(function(){               // retrieve the caption and insert it under the image.
             var reg_caption = /\%.*\%/
             if ($(this).attr('alt').match(reg_caption)){ 
@@ -492,8 +514,11 @@ var maketoc = function(){
               $('.'+captcl).append(caption)
             } // end if
         }) // end each
+        
+//=====================================================================  
 
  $('a').each(function(){
+        //=====================================================================   Youtube
         if ($(this).text().match(';;')){      // replace the address with a div with 'youtube' class. 
             var id = $(this).attr('href').split('v=')[1].trim()
             var newtag = $('<div/>').addClass('youtube')
@@ -501,6 +526,7 @@ var maketoc = function(){
                    .attr('id', id)
             $(this).replaceWith(newtag) // replace the <a> with a <div> with class 'youtube'
          } // end if
+        //=====================================================================   Insert iframe
         if  ($(this).text().match(',,')){       // insertion of iframes with regexp ',,' for inserting web pages
             var iframe_url = $(this).attr('href')
             var wid = (param['iframe_width']['var']).toString()
@@ -511,6 +537,7 @@ var maketoc = function(){
             keeplink.insertBefore($(this))
             $(this).replaceWith(div.append(iframe)); // replace the <a> with a <div> with iframe.
         } // end if
+        //=====================================================================   Local video
         if  ($(this).text().match('%%')){       // insert local video, works with Chrome
             var vid_url = $(this).attr('href')
             var vid = $('<video/>', {'frameborder': '0', 'src': vid_url, 'width': '600', 'height': '400' })
