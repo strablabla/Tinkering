@@ -30,7 +30,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/dee02fa/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/cd647b0/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/4561e51/js/straptoc/straptoc.css
 
     basename = function(path) {
@@ -92,14 +92,16 @@ var maketoc = function(){
  //===================================================================== Portfolio
 
    $("p, li").each(function(){
-     if ($(this).text().match(/^\$portf/)) { 
-         var divportf = $('<div/>').addClass("row")
-         $(this).children('img').each(function(i){
+     if ($(this).text().match(/^\$portf/)) {  // detect portfolio
+        var reg_caption = /\%.*\%/
+        var capt = $(this).text().match(reg_caption) || '' // caption for thumbnail
+        var divportf = $('<div/>').addClass("row")
+        $(this).children('img').each(function(i){
              var divportfinner = $('<div/>').addClass("col-md-3")
                                      .append(
                                            $('<div/>').addClass("thumbnail")
                                              .append($(this))
-                                             .append($('<p/>').addClass("caption").text("hop"))
+                                             .append($('<p/>').addClass("caption").text(capt))
                                         ) // end append thumbnail
                 divportf.append(divportfinner)
         }) // end each img
