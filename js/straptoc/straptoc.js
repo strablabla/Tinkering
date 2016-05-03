@@ -1196,7 +1196,7 @@ function fixTitle() {
            var ind = $this.attr('id') 
            var origftsize = $('#toc').css("font-size")
            $('#toc li a').css("font-size", origftsize)
-           $('#toc li:nth-child(' + ind + ') a').css("font-size", "150%")
+           $('#toc  li:nth-child(' + ind + ') > a').css("font-size", "150%")
         }
     });
 }
