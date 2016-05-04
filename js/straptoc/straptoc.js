@@ -30,7 +30,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/cd647b0/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/523c7ea/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/4561e51/js/straptoc/straptoc.css
 
     basename = function(path) {
@@ -96,8 +96,11 @@ var maketoc = function(){
         var reg_caption = /\%.*\%/
         var capt = $(this).text().match(reg_caption) || '' // caption for thumbnail
         var divportf = $('<div/>').addClass("row")
+        var nbcol = $(this).text().split(/^\$portf/)[1].trim() || 3
+        var nbsuffix = 12/parseInt(nbcol)
+        var classportf = "col-md-" +  nbsuffix
         $(this).children('img').each(function(i){
-             var divportfinner = $('<div/>').addClass("col-md-3")
+             var divportfinner = $('<div/>').addClass(classportf)
                                      .append(
                                            $('<div/>').addClass("thumbnail")
                                              .append($(this))
