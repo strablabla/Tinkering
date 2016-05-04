@@ -27,6 +27,7 @@ var maketoc = function(){
      * %%% for deleting symbolically a line, replacing  the tilde. 
      * $carr and list of ![]()  after for making a carrousel with pictures. 
      * $portf and list of ![]()  after for making a portfolio with pictures. 
+     * +++ roothpath for registering root path for $carr or $portf when muliple path with same root. 
      */}.toString().slice(14,-3)
      //alert(help)
 
@@ -88,6 +89,22 @@ var maketoc = function(){
              'help':{'reg':reg_help, 'cut':'§help', 'var': false}
          }
 
+ //===================================================================== register root path for $portf or $carr
+
+  $("p, li").each(function(){
+    
+    txt = $(this).html().split('\n')[1] || ' '
+    if (txt.match(/\+\+\+\.*/)) { 
+        alert(txt.split('+++')[1].trim())
+        var addroot = txt.split('+++')[1].trim()+'/'
+        //$(this).text(txt.split('\\n')[0])
+        $(this).find('img').each(function(){
+            $(this).attr('src', addroot+$(this).attr('src'))
+            alert($(this).attr('src'))
+            }) // end each
+        }
+    }) // end each p
+    
 
  //===================================================================== Portfolio
 
