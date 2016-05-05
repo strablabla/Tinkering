@@ -31,7 +31,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/523c7ea/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/da8181a/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/4561e51/js/straptoc/straptoc.css
 
     basename = function(path) {
@@ -98,7 +98,7 @@ var maketoc = function(){
         var addroot = txt.split('+++')[1].trim()+'/'
         $(this).find('img').each(function(){
             $(this).attr('src', addroot+$(this).attr('src'))
-            alert($(this).attr('src'))
+            //alert($(this).attr('src'))
             }) // end each
         } // end if txt.mtch
     }) // end each p, li
@@ -110,8 +110,9 @@ var maketoc = function(){
         var reg_caption = /\%.*\%/
         var capt = $(this).text().match(reg_caption) || '' // caption for thumbnail
         var divportf = $('<div/>').addClass("row")
-        var nbcol = $(this).text().split(/^\$portf/)[1].trim() || 3
-        var nbsuffix = 12/parseInt(nbcol)
+        var nbcol = $(this).text().split(/^\$portf/)[1].split('\n')[0].trim() || 3 // number of columns
+        // salert(nbcol)
+        var nbsuffix = 12/parseInt(nbcol) // suffix for bootstrap
         var classportf = "col-md-" +  nbsuffix
         $(this).children('img').each(function(i){
              var divportfinner = $('<div/>').addClass(classportf)
