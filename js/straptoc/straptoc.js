@@ -92,20 +92,17 @@ var maketoc = function(){
  //===================================================================== register root path for $portf or $carr
 
   $("p, li").each(function(){
-    
     txt = $(this).html().split('\n')[1] || ' '
     if (txt.match(/\+\+\+\.*/)) { 
-        alert(txt.split('+++')[1].trim())
+        // alert(txt.split('+++')[1].trim())
         var addroot = txt.split('+++')[1].trim()+'/'
-        //$(this).text(txt.split('\\n')[0])
         $(this).find('img').each(function(){
             $(this).attr('src', addroot+$(this).attr('src'))
             alert($(this).attr('src'))
             }) // end each
-        }
-    }) // end each p
+        } // end if txt.mtch
+    }) // end each p, li
     
-
  //===================================================================== Portfolio
 
    $("p, li").each(function(){
@@ -125,7 +122,7 @@ var maketoc = function(){
                                         ) // end append thumbnail
                 divportf.append(divportfinner)
         }) // end each img
-        $(this).replaceWith(divportf)
+        $(this).replaceWith(divportf) // replace whole p or li with portfolio. 
      } // end if regexp
  }) // end each p
 
@@ -138,6 +135,7 @@ var maketoc = function(){
                                  .attr('id','mycarr')
         var ol = $('<ol/>').addClass("carousel-indicators")
         var divcarrinner = $('<div/>').addClass("carousel-inner").attr('role','listbox')
+        //======================== go to previous
         var aprev = $('<a/>').addClass("left carousel-control")
                              .attr('role','button')
                              .attr('data-slide','prev')
@@ -145,6 +143,7 @@ var maketoc = function(){
                              .append($('<span/>').addClass("glyphicon glyphicon-chevron-left")
                                                  .attr("aria-hidden","true")
                                 )
+        //======================= go to next
         var anext = $('<a/>').addClass("right carousel-control")
                  .attr('role','button')
                  .attr('data-slide','next')
@@ -152,7 +151,7 @@ var maketoc = function(){
                  .append($('<span/>').addClass("glyphicon glyphicon-chevron-right")
                                      .attr("aria-hidden","true")
                     )
-
+        //======================= partial elements
         $(this).children('img').each(function(i){
             var litarget = $('<li/>').attr("data-target","#mycarr")
                                 .attr("data-slide-to", i)
@@ -166,6 +165,7 @@ var maketoc = function(){
             if (i == 0){divitem.addClass("active")}
             divcarrinner.append( divitem) // end append
             }) // end each
+        //=========================  make the whole div.
         divcarr.append(ol)
                .append(divcarrinner.append(aprev).append(anext))
         $(this).replaceWith(divcarr)
@@ -174,20 +174,19 @@ var maketoc = function(){
 
 //===================================================================== retrieving config param
 
-    $("p").each(function(){   // rewriting the option from bloc to <p>
-    if ($(this).text().match(/^§/)) {              
-        var txtsplit = $(this).text().split(/§/).slice(1)
-        for (i in txtsplit){
-            $('body').prepend($('<p/>').text('§'+txtsplit[i]))
-            $(this).hide()
-        }
-      }
-    }); // each
+    $("p").each(function(){   // correction if there is no line feeding after each parameter. 
+        if ($(this).text().match(/^§/)) {              
+            var txtsplit = $(this).text().split(/§/).slice(1)
+            for (i in txtsplit){
+                $('body').prepend($('<p/>').text('§'+txtsplit[i])) 
+                $(this).hide()
+            } // end for
+        } // end if
+    }); // end each
+    //============================ Load the parameters
     $("p").each(function() {          // Need to be placed before position in TOC.                       
         for (elem in param){
-            //alert(param[elem]['reg'])
             if ($(this).text().match(param[elem]['reg']) ){     // finds loading parameters
-                //alert(param[elem])
                 var interm = $(this).text().split(param[elem]['cut'])[1]
                 var newtag = $('<p/>').text('')
                 $(this).replaceWith(newtag)     // remove text of the optional parameters
@@ -217,8 +216,9 @@ var maketoc = function(){
             newhtml += '<div class="section" id="'+i+'">\n<h1'+ list_split_h1[i] + '</div>\n'
             }
         } // end for
-
     $('#content').html(newhtml)
+
+//=====================================================================   line symbolic removal.
 
     var regcbarree = /[A-Za-z0-9\.\'\s\u0080-\u00FF]*\%\%\%/g  // replace %%% by deleted text. 
     var htm = $('#content').html()  
