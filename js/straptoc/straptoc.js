@@ -28,6 +28,7 @@ var maketoc = function(){
      * $carr and list of ![]()  after for making a carrousel with pictures. 
      * $portf and list of ![]()  after for making a portfolio with pictures. 
      * +++ roothpath for registering root path for $carr or $portf when muliple path with same root. 
+     * ``` before code for show code.. no need to bracket the code.
      */}.toString().slice(14,-3)
      //alert(help)
 
@@ -88,6 +89,21 @@ var maketoc = function(){
              'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
              'help':{'reg':reg_help, 'cut':'§help', 'var': false}
          }
+
+ //===================================================================== Show code
+
+  $("p, li").each(function(){
+    htm = $(this).html().split('\n')[0]
+    if (htm.match(/\`\`\`/)) { 
+        ht = $(this).html()
+        var newtxt = ht.replace('```',' ').replace('<br>','\n').trim()
+        var pre = $('<pre/>').append(
+            $('<code/>').addClass("prettyprint lang- prettyprinted").attr('style', "")
+                .append($('<span/>').addClass("pln").text(newtxt))
+                ) // end append
+           $(this).text('').append(pre) 
+        } // end if txt.mtch
+    }) // end each p, li
 
  //===================================================================== register root path for $portf or $carr
 
