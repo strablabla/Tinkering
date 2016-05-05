@@ -127,6 +127,7 @@ var maketoc = function(){
      } // end if regexp
  }) // end each p
 
+
 //===================================================================== Carrousel
 
   $("p, li").each(function(){
@@ -408,18 +409,14 @@ var maketoc = function(){
 //===================================================================== 
 
     var sel = ['§§'] // ';;',
-    var debend = {';;' : {'deb' : '<iframe width='+'"' + param['vid_width']['var'] + '"' + 'height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
+    var debend = { ',,' : {'color':'#ff0066'},
+                   ';;' : {'deb' : '<iframe width='+'"' + param['vid_width']['var'] + '"' + 'height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
                    '§§': {'deb' : '<object width='+'"' + param['pdf_width']['var'] + '"' + ' height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
+
+//=====================================================================   No video
+
     $("p, li").each(function(){
-         var textp = $(this).text()
-         if (textp.match(reg_hyper)){    // search for format [blabla](addr blabla)
-             var text1 = textp.match(reg_brack)[0].slice(1,-1)    // takes [blabla]
-             var text2 = textp.match(reg_parent)[0].slice(1,-1)    // takes (addr blabla)
-             var newtag = $('<a/>').text(text1).attr('href',text2)
-             if ($(this).prop('tagName')== 'LI'){var newtag = $('<li/>').append(newtag)}    // correction of link to local file.
-             if ($(this).prop('tagName')== 'P'){var newtag = $('<p/>').append(newtag)}   // correction to avoid gluing lines.. 
-             $(this).replaceWith(newtag) // Replace the original tag
-            }// end if
+        var textp = $(this).text()
          if (textp.match('§novideo')){ 
              $(this).hide() 
              if (textp.trim() == '§novideo'){  // hides novideo
@@ -433,6 +430,40 @@ var maketoc = function(){
                     }) // end a.each
             } // end if match
          }// end if novideo
+    })  // end each 
+
+//===================================================================== No iframe
+
+    $("p, li").each(function(){
+        var textp = $(this).text()
+         var regnoifr = '§noiframe'
+         if (textp.match(regnoifr)){ 
+             $(this).hide() 
+             if (textp.trim() == regnoifr){  // hides novideo
+                $("a").each(function(){ // removing ;;
+                    var texta = $(this).text()
+                    if (texta.search(',,') != -1){
+                        $(this).text(texta.replace(',,',''))
+                           .css({'color': debend[',,']['color']})
+                        } // end if == 
+                    }) // end a.each
+            } // end if match
+         }// end if noiframe
+    })  // end each 
+
+//===================================================================== 
+
+    $("p, li").each(function(){
+         var textp = $(this).text()
+         if (textp.match(reg_hyper)){    // search for format [blabla](addr blabla)
+             var text1 = textp.match(reg_brack)[0].slice(1,-1)    // takes [blabla]
+             var text2 = textp.match(reg_parent)[0].slice(1,-1)    // takes (addr blabla)
+             var newtag = $('<a/>').text(text1).attr('href',text2)
+             if ($(this).prop('tagName')== 'LI'){var newtag = $('<li/>').append(newtag)}    // correction of link to local file.
+             if ($(this).prop('tagName')== 'P'){var newtag = $('<p/>').append(newtag)}   // correction to avoid gluing lines.. 
+             $(this).replaceWith(newtag) // Replace the original tag
+            }// end if
+
        })  // end each 
     var maketag = function(self, deb, end, select){ // makes the tags for pdfs and videos
         patt = {';;' : ["watch?v=", "embed/"], '§§' : ["none", "none"]}

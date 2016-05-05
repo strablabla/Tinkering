@@ -8,6 +8,7 @@ div.onside {
    font-size:85%;
    overflow: scroll;
  }
+
  
  div.under {
    position: fixed;
@@ -33,6 +34,7 @@ div.onside {
 .alertify-message {
     text-align:left;
 }
+
 
 
 
@@ -164,5 +166,10 @@ iframe {
       margin: auto;
   }
 
+/*div.thumbnail:hover {
+    width:600px;
+
+}
+*/
 
 
