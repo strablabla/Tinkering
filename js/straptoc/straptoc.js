@@ -32,7 +32,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/2ab0f57/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/786a91b/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/4561e51/js/straptoc/straptoc.css
 
     basename = function(path) {
@@ -343,34 +343,45 @@ var maketoc = function(){
              } // end if
         })
 
-//===================================================================== Folding iframe
+//===================================================================== Folding iframes and root mechanism with multiple iframes
 
-    $('a').each(function(){            // modifying iframe for permitting folded list mechanism.
-            if ($(this).text().match(',,')){  
-                var txt = $(this).text().split(',,')[0]
-                var par = $(this).parent()
-                //====================================== register root path for iframe
-                if (par.html().match(/\+\+\+\.*/)) { 
-                    root = par.html().match(/\+\+\+.*/)[0].split(/\s/)[1] 
-                    var tit = par.html().split(/\n/)[0]
-                    oldhref = $(this).attr('href') 
-                    $(this).attr('href', root + '/' + oldhref)
-                    }
-                var ifhref =  '<a href="'+ $(this).attr('href') + '">' + txt + '</a>' 
-                var tlist = ifhref+ ' ::'
-                var underthis = $('<ul/>').append($('<li/>').append($(this).clone())) // put inside a list
-                var ulframe = $('<li/>').append(tlist).append(underthis).addClass('iframe')  // insert class iframe
-                //======================================  root path 
-                if (par.html().match(/\+\+\+\.*/)) { 
-                    var titleli = $('<li/>').append(tit ).append($('<ul/>').append(ulframe))                   
-                    par.replaceWith(titleli)
-                    }
-                //====================================== no root path 
-                else{ par.replaceWith(ulframe)  // replace <a> parent with a <ul><li> containing <a>
-                    }
-             } // end if
-        })
-
+$("p, li").each(function(){
+        var childframe = []
+        $(this).find('a').each(function(){            // modifying iframe for permitting folded list mechanism.
+               if ($(this).text().match(',,')){      // control that we are dealing with iframe
+                    var txt = $(this).text().split(',,')[0]
+                    var par = $(this).parent()
+                    //================================== register root path for iframe
+                    if (par.html().match(/\+\+\+\.*/)) {  
+                        root = par.html().match(/\+\+\+.*/)[0].split(/\s/)[1] 
+                        oldhref = $(this).attr('href') 
+                        $(this).attr('href', root + '/' + oldhref) // setting the new path with root
+                        }
+                    var ifhref =  '<a href="'+ $(this).attr('href') + '">' + txt + '</a>' 
+                    var tlist = ifhref+ ' ::'
+                    var underthis = $('<ul/>').append($('<li/>').append($(this).clone())) // put inside a list
+                    var ulframe = $('<li/>').append(tlist).append(underthis).addClass('iframe')  // insert class iframe
+                    //==================================  root path 
+                    if (par.html().match(/\+\+\+\.*/)) { 
+                        var titleli = $('<li/>').append(tit ).append($('<ul/>').append(ulframe))                   
+                        childframe.push(ulframe) // keep in a list
+                        }
+                    //====================================== no root path 
+                    else{ par.replaceWith(ulframe)  // replace <a> parent with a <ul><li> containing <a>
+                        }
+               } // end if match ,,
+            }) // end each a
+            if (childframe.length> 0){
+                var ul = $('<ul/>')
+                for (i in childframe){
+                    ul.append(childframe[i]) // adding each iframe inside a list 
+                  }// end for
+                var tit = $(this).html().split(/\n/)[0] // Title of the parent
+                var newlistframe = $('<li/>').append(tit).append(ul)
+                $(this).replaceWith(newlistframe) // replace  parent with a list containing the iframes
+            } // end if childframe.length> 0
+     }) // end each p, li
+    
 //===================================================================== Deal with lists
 
     $("li").each(function(i){    // need to be placed before  $("a").click    
