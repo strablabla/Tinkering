@@ -28,6 +28,13 @@ var maketoc = function(){
      * $carr and list of ![]()  after for making a carrousel with pictures. 
      * $portf and list of ![]()  after for making a portfolio with pictures. 
      * +++ roothpath for registering root path for $carr or $portf when muliple path with same root. 
+        *  eg for frames :
+                * blabla
+                   +++ root
+                   [title iframe ,,](whatever.html)
+         Becarefull 
+            * no space after blabla 
+            * +++ and [title .. on same column
      * ``` before code for show code.. no need to bracket the code.
      */}.toString().slice(14,-3)
      //alert(help)
