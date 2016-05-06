@@ -110,11 +110,9 @@ var maketoc = function(){
   $("p, li").each(function(){
     txt = $(this).html().split('\n')[1] || ' '
     if (txt.match(/\+\+\+\.*/)) { 
-        // alert(txt.split('+++')[1].trim())
         var addroot = txt.split('+++')[1].trim()+'/'
         $(this).find('img').each(function(){
             $(this).attr('src', addroot+$(this).attr('src'))
-            //alert($(this).attr('src'))
             }) // end each
         } // end if txt.mtch
     }) // end each p, li
@@ -350,11 +348,26 @@ var maketoc = function(){
     $('a').each(function(){            // modifying iframe for permitting folded list mechanism.
             if ($(this).text().match(',,')){  
                 var txt = $(this).text().split(',,')[0]
+                var par = $(this).parent()
+                //====================================== register root path for iframe
+                if (par.html().match(/\+\+\+\.*/)) { 
+                    root = par.html().match(/\+\+\+.*/)[0].split(/\s/)[1] 
+                    var tit = par.html().split(/\n/)[0]
+                    oldhref = $(this).attr('href') 
+                    $(this).attr('href', root + '/' + oldhref)
+                    }
                 var ifhref =  '<a href="'+ $(this).attr('href') + '">' + txt + '</a>' 
                 var tlist = ifhref+ ' ::'
                 var underthis = $('<ul/>').append($('<li/>').append($(this).clone())) // put inside a list
                 var ulframe = $('<li/>').append(tlist).append(underthis).addClass('iframe')  // insert class iframe
-                $(this).parent().replaceWith(ulframe) // replace <a> with a <ul> containing <a>
+                //======================================  root path 
+                if (par.html().match(/\+\+\+\.*/)) { 
+                    var titleli = $('<li/>').append(tit ).append($('<ul/>').append(ulframe))                   
+                    par.replaceWith(titleli)
+                    }
+                //====================================== no root path 
+                else{ par.replaceWith(ulframe)  // replace <a> parent with a <ul><li> containing <a>
+                    }
              } // end if
         })
 
