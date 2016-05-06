@@ -32,7 +32,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/786a91b/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/34dfd5c/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/4561e51/js/straptoc/straptoc.css
 
     basename = function(path) {
@@ -343,11 +343,11 @@ var maketoc = function(){
              } // end if
         })
 
-//===================================================================== Folding iframes and root mechanism with multiple iframes
+//===================================================================== Folding iframes and root mechanism (+++) with multiple iframes
 
 $("p, li").each(function(){
         var childframe = []
-        $(this).find('a').each(function(){            // modifying iframe for permitting folded list mechanism.
+        $(this).children('a').each(function(){            // modifying iframe for permitting folded list mechanism.
                if ($(this).text().match(',,')){      // control that we are dealing with iframe
                     var txt = $(this).text().split(',,')[0]
                     var par = $(this).parent()
