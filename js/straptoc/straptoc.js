@@ -27,6 +27,7 @@ var maketoc = function(){
      * %%% for deleting symbolically a line, replacing  the tilde. 
      * $carr and list of ![]()  after for making a carrousel with pictures. 
      * $portf and list of ![]()  after for making a portfolio with pictures. 
+     * noiframes, at the beginning of the document to avoid loading of iframes.
      * +++ roothpath for registering root path for $carr or $portf when muliple path with same root. 
         *  eg for frames :
                 * blabla
@@ -96,6 +97,12 @@ var maketoc = function(){
              'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
              'help':{'reg':reg_help, 'cut':'§help', 'var': false}
          }
+ //===================================================================== Zoom thumbnail and image
+
+
+  $('body').prepend($('<div/>').attr('id',"id_view_image_body"))
+           .prepend($('<div/>').attr('id',"id_view_image"))
+
 
  //===================================================================== Show code
 
@@ -1302,12 +1309,36 @@ function fixTitle() {
     });
 }
 
+//=====================================================================  click on tumbnail-> above zoom center
+
+function zoomabove() {
+        $("img").click(function(){
+        $("#id_view_image").html("<img src='"+$(this).attr('src')+"' class='view_image_img'/>");
+        $("#id_view_image_body").addClass("view_image_body");
+        $("#id_view_image").addClass("view_image");
+        $(".thumbnail").parent().css({'z-index':'-1'})
+        $("#id_view_image").css({'z-index':'4'})
+    });
+
+    $("#id_view_image").click(function(){
+
+        $("#id_view_image").css({'z-index':'-1'})
+        $(".thumbnail").parent().css({'z-index':'4'})
+        $("#id_view_image").html("");
+        $("#id_view_image_body").removeClass("view_image_body");
+        $("#id_view_image").removeClass("view_image");
+    }); 
+
+}
+
 //===================================================================== 
 
 $(document).ready(function () {
     $(window).scroll(fixTitle);
     $('[data-toggle="tooltip"]').tooltip(); // activates the tooltips
     $('.carousel').carousel({ interval: false }) // removing automatic carousel
+    zoomabove()
+
 });
 
 

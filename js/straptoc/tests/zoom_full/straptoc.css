@@ -8,7 +8,6 @@ div.onside {
    font-size:85%;
    overflow: scroll;
  }
-
  
  div.under {
    position: fixed;
@@ -35,44 +34,6 @@ div.onside {
     text-align:left;
 }
 
-
-img .thumbnail
-{
-cursor: zoom-in;
-}
-
-.view_image_body
-{
-position: fixed;
-background-color: black;
-width: 100%;
-height: 100%;
-top: 0%;
-opacity: 0.8;
-}
-
-.view_image
-{
-height: 100%;
-width: 100%;
-top: 0;
-position: fixed;
-cursor: zoom-out;
-}
-
-.view_image_img
-{
-position: absolute;
-margin: auto;
-top: 0;
-bottom: 0;
-left: 0;
-right: 0;
-max-height: 95%;
-max-width: 95%;
-cursor: zoom-out;
-
-}
 
 
 
@@ -196,17 +157,13 @@ iframe {
          border:1px solid black;
      }
 
-     
+ 
   .carousel-inner > .item > img,
   .carousel-inner > .item > a > img {
       width: 70%;
       margin: auto;
   }
 
-/*div.thumbnail:hover {
-    width:600px;
 
-}
-*/
 
 
