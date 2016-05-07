@@ -40,8 +40,9 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
      //alert(help)
 
-    //https://github.com/strablabla/Tinkering/34dfd5c/js/straptoc/straptoc.js 
-    //https://github.com/strablabla/Tinkering/4561e51/js/straptoc/straptoc.css
+    //https://github.com/strablabla/Tinkering/7018d2c/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/7018d2c/js/straptoc/straptoc.css
+    
 
     basename = function(path) {
     return path.replace( /.*\//, "" );
@@ -97,12 +98,17 @@ var maketoc = function(){
              'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
              'help':{'reg':reg_help, 'cut':'§help', 'var': false}
          }
+
+ //===================================================================== Go to top
+
+    $('body').prepend($('<div/>').attr('id','top'))
+    $('body').append($('<a/>').attr('href','#top').addClass("scrollToTop").attr('title','go to top')
+            .append($('<span/>').addClass("glyphicon glyphicon-chevron-up").attr('id','gotop')))
+
  //===================================================================== Zoom thumbnail and image
 
-
-  $('body').prepend($('<div/>').attr('id',"id_view_image_body"))
+    $('body').prepend($('<div/>').attr('id',"id_view_image_body"))
            .prepend($('<div/>').attr('id',"id_view_image"))
-
 
  //===================================================================== Show code
 
@@ -1331,6 +1337,26 @@ function zoomabove() {
 
 }
 
+//===================================================================== Go to top
+
+function gototop(){
+
+   //Check to see if the window is top if not then display button
+    $(window).scroll(function(){
+        if ($(this).scrollTop() > 100) {
+            $('.scrollToTop').fadeIn();
+        } else {
+            $('.scrollToTop').fadeOut();
+        }
+    });
+    //Click event to scroll to top
+    $('.scrollToTop').click(function(){
+        $('html, body').animate({scrollTop : 0},800);
+        return false;
+    });
+
+}
+
 //===================================================================== 
 
 $(document).ready(function () {
@@ -1338,6 +1364,7 @@ $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip(); // activates the tooltips
     $('.carousel').carousel({ interval: false }) // removing automatic carousel
     zoomabove()
+    gototop()
 
 });
 
