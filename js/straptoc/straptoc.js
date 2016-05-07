@@ -37,6 +37,7 @@ var maketoc = function(){
             * no space after blabla 
             * +++ and [title .. on same column
      * ``` before code for show code.. no need to bracket the code.
+     * §menu toto:hash bobo:trash, add items bobo and toto to navbar with links hash and trash
      */}.toString().slice(14,-3)
      //alert(help)
 
@@ -79,6 +80,7 @@ var maketoc = function(){
     var reg_width_pdf = reg_func('width_pdf') 
     var reg_width_iframe = reg_func('width_iframe') 
     var reg_toggle_hide = reg_func('toggle_hide') 
+    var reg_menu = reg_func('menu')
     var reg_help = reg_func('help')
     var reg_sign = /[^§]§[^§]\w*/
     var reg_folder = /\<\</
@@ -96,8 +98,11 @@ var maketoc = function(){
              'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'},
              'iframe_width':{'reg':reg_width_iframe, 'cut':'§width_iframe', 'var': '900'},
              'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
+             'menu_list':{'reg':reg_menu, 'cut':'§menu', 'var': ''},
              'help':{'reg':reg_help, 'cut':'§help', 'var': false}
          }
+
+
 
  //===================================================================== Go to top
 
@@ -214,22 +219,41 @@ var maketoc = function(){
         if ($(this).text().match(/^§/)) {              
             var txtsplit = $(this).text().split(/§/).slice(1)
             for (i in txtsplit){
+                //alert('§'+txtsplit[i])
                 $('body').prepend($('<p/>').text('§'+txtsplit[i])) 
                 $(this).hide()
             } // end for
+            $(this).remove() // remove the <p> block containign the parameters, only separated <p>
         } // end if
+        
     }); // end each
     //============================ Load the parameters
     $("p").each(function() {          // Need to be placed before position in TOC.                       
         for (elem in param){
+            //alert($(this).text())
             if ($(this).text().match(param[elem]['reg']) ){     // finds loading parameters
                 var interm = $(this).text().split(param[elem]['cut'])[1]
                 var newtag = $('<p/>').text('')
                 $(this).replaceWith(newtag)     // remove text of the optional parameters
                 param[elem]['var'] = interm.trim()    // retrieve the value of parameters in the dic param
+                // alert(param[elem]['reg'])
+                // alert(param[elem]['var'])
                }// end if
         } // end for
     }); // end each
+
+ //===================================================================== Navbar menu
+
+    var lmenu = param['menu_list']['var'].split(/\s+/)
+    var ul = $('<ul/>').addClass("nav navbar-nav")
+    for (i in lmenu){
+        alert(lmenu[i])
+        var name = lmenu[i].split(':')[0]
+        var href = lmenu[i].split(':')[1]
+        ul.append($('<li/>').append($('<a/>').text(name).attr('href',href)))
+    }
+    $('.navbar-inner').children().append(ul)
+              
 
 //=====================================================================  Dates
 
