@@ -39,8 +39,7 @@ var maketoc = function(){
      * ``` before code for show code.. no need to bracket the code.
      * §menu toto:hash bobo:trash, add items bobo and toto to navbar with links hash and trash
      */}.toString().slice(14,-3)
-     //alert(help)
-
+    
     //https://github.com/strablabla/Tinkering/7018d2c/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/7018d2c/js/straptoc/straptoc.css
     
@@ -210,8 +209,8 @@ var maketoc = function(){
         divcarr.append(ol)
                .append(divcarrinner.append(aprev).append(anext))
         $(this).replaceWith(divcarr)
-    } // end if regexp
-}) // end each p
+      } // end if regexp
+    }) // end each p
 
 //===================================================================== retrieving config param
 
@@ -226,8 +225,10 @@ var maketoc = function(){
             $(this).remove() // remove the <p> block containign the parameters, only separated <p>
         } // end if
         
-    }); // end each
+      }); // end each
+
     //============================ Load the parameters
+
     $("p").each(function() {          // Need to be placed before position in TOC.                       
         for (elem in param){
             //alert($(this).text())
@@ -236,8 +237,6 @@ var maketoc = function(){
                 var newtag = $('<p/>').text('')
                 $(this).replaceWith(newtag)     // remove text of the optional parameters
                 param[elem]['var'] = interm.trim()    // retrieve the value of parameters in the dic param
-                // alert(param[elem]['reg'])
-                // alert(param[elem]['var'])
                }// end if
         } // end for
     }); // end each
@@ -247,14 +246,12 @@ var maketoc = function(){
     var lmenu = param['menu_list']['var'].split(/\s+/)
     var ul = $('<ul/>').addClass("nav navbar-nav")
     for (i in lmenu){
-        alert(lmenu[i])
         var name = lmenu[i].split(':')[0]
         var href = lmenu[i].split(':')[1]
         ul.append($('<li/>').append($('<a/>').text(name).attr('href',href)))
-    }
+       } // end for
     $('.navbar-inner').children().append(ul)
               
-
 //=====================================================================  Dates
 
     $("p").each(function() { 
