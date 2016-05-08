@@ -41,7 +41,7 @@ var maketoc = function(){
      */}.toString().slice(14,-3)
     
     //https://github.com/strablabla/Tinkering/3f0c21b/js/straptoc/straptoc.js 
-    //https://github.com/strablabla/Tinkering/3f0c21b/js/straptoc/straptoc.css
+    //https://github.com/strablabla/Tinkering/709a7d7/js/straptoc/straptoc.css
     
 
     basename = function(path) {
