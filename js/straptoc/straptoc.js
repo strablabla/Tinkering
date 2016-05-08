@@ -608,7 +608,7 @@ $("p, li").each(function(){
                  var xlabel = txt[8].trim()
                  var ylabel = txt[9].trim()
                  var col = txt[10].trim()
-                 var newtag = $('<div/>').attr('id',id).attr('class','chart')
+                 var newtag = $('<div/>').attr('id',id).attr('class','chart').draggable()
                  $(this).replaceWith(newtag)
                 params = { "xlim": [xmin, xmax], "ylim": [ymin, ymax], "title": title,
                     "xlabel": xlabel, "ylabel": ylabel, "color": col, "fill":"#ffffff"}
