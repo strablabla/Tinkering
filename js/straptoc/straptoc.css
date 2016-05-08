@@ -242,6 +242,10 @@ div.chart {
 
 h1 {
     text-shadow: 2px 2px #ccc;
-    padding-left: 50px;
     text-align: center;
+}
+
+.date {
+  font-family: 'Londrina Solid', cursive;
+  font-size: 20px;
 }

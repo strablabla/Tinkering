@@ -40,8 +40,8 @@ var maketoc = function(){
      * §menu toto:hash bobo:trash, add items bobo and toto to navbar with links hash and trash
      */}.toString().slice(14,-3)
     
-    //https://github.com/strablabla/Tinkering/d7d985e/js/straptoc/straptoc.js 
-    //https://github.com/strablabla/Tinkering/d7d985e/js/straptoc/straptoc.css
+    //https://github.com/strablabla/Tinkering/3f0c21b/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/3f0c21b/js/straptoc/straptoc.css
     
 
     basename = function(path) {
@@ -256,9 +256,9 @@ var maketoc = function(){
 
     $("p").each(function() { 
       if ($(this).html().match(reg_date)){
-                $(this).replaceWith(function(){                 // Replacing dates with p in date with h2 and 
+                $(this).replaceWith(function(){     // Replacing dates with p in date with h2 and 
                     var h1prev = $(this).prev("h1").text()
-                    var dateh2 = $('<h2/>').text($(this).text())
+                    var dateh2 = $('<h2/>').text($(this).text()).addClass('date')
                     return dateh2; 
                    }) // end replaceWith
                } // end if
