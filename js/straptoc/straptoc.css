@@ -90,7 +90,7 @@ cursor: zoom-out;
 
 .box {
   width:70%;
-  height:200px;
+  height:auto;
   background:#FFF;
   margin:40px auto;
 }
@@ -100,7 +100,8 @@ cursor: zoom-out;
  * Effect 1
  * ===============================================*/
 .effect1{
-     box-shadow: 0 10px 6px -6px #777;
+     box-shadow: 10px 10px 20px 20px #777;
+     background-color: #ebebe0;
 }
 
 .effect8
@@ -232,4 +233,5 @@ iframe {
 
 h1 {
     text-shadow: 2px 2px #ccc;
+    padding-left: 50px;
 }
