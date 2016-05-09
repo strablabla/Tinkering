@@ -1,3 +1,5 @@
+
+
 div.onside {
    position: fixed;
    padding-left: 20px;
@@ -102,10 +104,25 @@ cursor: zoom-out;
 /*==================================================
  * Effect 1
  * ===============================================*/
-.effect1{
+.effect1{ /*grey soft*/
      box-shadow: 10px 10px 20px 20px #777;
      background-color: #ebebe0;
 }
+.effect2{  /*white*/
+     box-shadow: 10px 10px 20px 20px #777;
+     background-color: #fff;
+}
+.bodybgcol1{  /*grey dark*/
+
+     background-color: #d6d6c2; 
+}
+
+.bodybgcol1{ /*grey soft*/
+
+     background-color: #ebebe0;
+}
+
+
 
 .effect8
 {
@@ -146,8 +163,10 @@ iframe {
 
 div.chart {
   position :absolute;
-  background-color: #d6d6c2;
+  background-color: #ebebe0;
 }
+
+
 
     rect { fill: #fff; }
     .axis { font-size: 1 em; }

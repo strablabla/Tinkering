@@ -40,8 +40,8 @@ var maketoc = function(){
      * §menu toto:hash bobo:trash, add items bobo and toto to navbar with links hash and trash
      */}.toString().slice(14,-3)
     
-    //https://github.com/strablabla/Tinkering/3f0c21b/js/straptoc/straptoc.js 
-    //https://github.com/strablabla/Tinkering/709a7d7/js/straptoc/straptoc.css
+    //https://github.com/strablabla/Tinkering/862a6cb/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/862a6cb/js/straptoc/straptoc.css
     
 
     basename = function(path) {
@@ -754,7 +754,10 @@ $("p, li").each(function(){
          }// end if 
      }) // end each
 
-    $('#content').addClass('effect1')
+    $('#content').addClass('effect2')
+    $('body').addClass('bodybgcol1')
+
+
 
 }// end maketoc  
 
