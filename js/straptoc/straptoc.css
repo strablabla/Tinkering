@@ -92,7 +92,6 @@ cursor: zoom-out;
 }
 
 
-
 .box {
   width:70%;
   height:auto;
@@ -246,7 +245,7 @@ div.chart {
 
 
 h1 {
-    text-shadow: 2px 2px #ccc;
+    text-shadow: 1px 1px #ccc;
     text-align: center;
 }
 
@@ -254,4 +253,11 @@ h1 {
   /*font-family: 'Londrina Solid', cursive;*/
   font-family: 'Enriqueta', serif;
   font-size: 20px;
+}
+
+#content {
+    margin-left: 100px;
+    margin-right: 100px;
+    padding-left: 100px;
+    padding-right: 100px;
 }

@@ -101,8 +101,6 @@ var maketoc = function(){
              'help':{'reg':reg_help, 'cut':'§help', 'var': false}
          }
 
-
-
  //===================================================================== Go to top
 
     $('body').prepend($('<div/>').attr('id','top'))
@@ -114,7 +112,7 @@ var maketoc = function(){
     $('body').prepend($('<div/>').attr('id',"id_view_image_body"))
            .prepend($('<div/>').attr('id',"id_view_image"))
 
- //===================================================================== Show code
+ //===================================================================== Simple bash code
 
   $("p, li").each(function(){
     htm = $(this).html().split('\n')[0]
@@ -126,8 +124,8 @@ var maketoc = function(){
                 .append($('<span/>').addClass("pln").text(newtxt))
                 ) // end append
            $(this).text('').append(pre) 
-        } // end if txt.mtch
-    }) // end each p, li
+        }   // end if txt.mtch
+    })   // end each p, li
 
  //===================================================================== register root path for $portf or $carr
 
@@ -149,24 +147,23 @@ var maketoc = function(){
         var capt = $(this).text().match(reg_caption) || '' // caption for thumbnail
         var divportf = $('<div/>').addClass("row")
         var nbcol = $(this).text().split(/^\$portf/)[1].split('\n')[0].trim() || 3 // number of columns
-        // salert(nbcol)
         var nbsuffix = 12/parseInt(nbcol) // suffix for bootstrap
         var classportf = "col-md-" +  nbsuffix
         $(this).children('img').each(function(i){
              var divportfinner = $('<div/>').addClass(classportf)
                                      .append(
-                                           $('<div/>').addClass("thumbnail")
+                                           $('<div/>').addClass("thumbnail")   // class thumbnail
                                              .append($(this))
                                              .append($('<p/>').addClass("caption").text(capt))
                                         ) // end append thumbnail
                 divportf.append(divportfinner)
         }) // end each img
         $(this).replaceWith(divportf) // replace whole p or li with portfolio. 
-     } // end if regexp
- }) // end each p
+     }   // end if regexp
+ })   // end each p
 
 
-//===================================================================== Carrousel
+//===================================================================== Carousel
 
   $("p, li").each(function(){
     //alert($(this).text())
@@ -218,13 +215,11 @@ var maketoc = function(){
         if ($(this).text().match(/^§/)) {              
             var txtsplit = $(this).text().split(/§/).slice(1)
             for (i in txtsplit){
-                //alert('§'+txtsplit[i])
                 $('body').prepend($('<p/>').text('§'+txtsplit[i])) 
                 $(this).hide()
-            } // end for
+            }   // end for
             $(this).remove() // remove the <p> block containign the parameters, only separated <p>
         } // end if
-        
       }); // end each
 
     //============================ Load the parameters
@@ -242,6 +237,12 @@ var maketoc = function(){
     }); // end each
 
  //===================================================================== Navbar menu
+   
+   /*
+   usage : $menu toto:hash 
+            toto is the name in the menu    
+            hash is the hyperlink.
+   */   
 
     var lmenu = param['menu_list']['var'].split(/\s+/)
     var ul = $('<ul/>').addClass("nav navbar-nav")
@@ -254,6 +255,11 @@ var maketoc = function(){
               
 //=====================================================================  Dates
 
+    /*
+    eg : 12/7/1974 
+    the date is recognized and integrated in the TOC.
+    */
+    
     $("p").each(function() { 
       if ($(this).html().match(reg_date)){
                 $(this).replaceWith(function(){     // Replacing dates with p in date with h2 and 
@@ -266,6 +272,10 @@ var maketoc = function(){
 
 //=====================================================================   Position in TOC.
 
+    /*
+    The current selected part of the document is indicated my a bigger police in the TOC. 
+    */
+
     var newhtml = ''
     var list_split_h1 = $('#content').html().split('<h1')  // insert div for following position in toc
     for (i in list_split_h1){
@@ -277,6 +287,10 @@ var maketoc = function(){
 
 //=====================================================================   line symbolic removal.
 
+    /*
+    Instead of writing tildes, just write %%% at the end of the line. 
+    */
+
     var regcbarree = /[A-Za-z0-9\.\'\s\u0080-\u00FF]*\%\%\%/g  // replace %%% by deleted text. 
     var htm = $('#content').html()  
     var m = htm.replace(regcbarree,function(content){
@@ -287,6 +301,11 @@ var maketoc = function(){
     $('#content').html(m) 
 
 //=====================================================================  Tooltips
+
+    /*
+    Tooltips are added by using curly brackets at the end of the line. 
+    eg: # Title{This is a title}
+    */
     
     for (i=0; i<4; i++){     // Tooltips, iteration for nested list
         $("li, h1, h2, h3, h4").each(function(){     // Tooltips for h1, h2, h3, h4 and li
@@ -301,6 +320,11 @@ var maketoc = function(){
     	}
 
 //===================================================================== TOC
+
+    /*
+    Table of Contents
+    It sums up the h1, h2 and h3 tags in a movable window with hyperlinks. 
+    */
 
     //alert(param['notoc']['var'])
     if(param['notoc']['var'] == false){
@@ -375,6 +399,10 @@ var maketoc = function(){
 
 //===================================================================== Folding videos
 
+    /*
+    Implements the possibility to fold videos in a list. Behaviour by default. 
+    */
+
     $('a').each(function(){            // modifying videos for permitting folded list mechanism.
             if ($(this).text().match(';;')){    
                 var tlist = $(this).text().split(';;')[0] +' ::'
@@ -386,7 +414,12 @@ var maketoc = function(){
 
 //===================================================================== Folding iframes and root mechanism (+++) with multiple iframes
 
-$("p, li").each(function(){
+    /*
+    Implements the possibility to fold iframes in a list
+    It also registers root for multiple files with +++ mechanism. 
+    */
+
+    $("p, li").each(function(){
         var childframe = []
         $(this).children('a').each(function(){            // modifying iframe for permitting folded list mechanism.
                if ($(this).text().match(',,')){      // control that we are dealing with iframe
@@ -423,7 +456,13 @@ $("p, li").each(function(){
             } // end if childframe.length> 0
      }) // end each p, li
     
-//===================================================================== Deal with lists
+//===================================================================== Folding lists, first step
+
+    /*
+    Implements the possibility to fold lists. 
+    Go to sublevels.  
+    It is the first processing step. Insert :: etc.. 
+    */
 
     $("li").each(function(i){    // need to be placed before  $("a").click    
         var htm = $(this).html(); var childr = $(this).children('ul') // closing list when it finds :: in the code
@@ -435,7 +474,13 @@ $("p, li").each(function(){
             } // end if 
         }); // end each
 
-//=====================================================================  Deal with folding lists
+//=====================================================================  Folding lists, second step
+
+    /*
+    Implements the possibility to fold lists. 
+    Go to sublevels.  
+    It is the second processing step. 
+    */
 
     $("H1, H2, p, a, li").each(function(){       // insertion of <p> with id in tag <a>
         if($(this).html().split('\n')[0].search(reg_id)!=-1){
@@ -463,6 +508,13 @@ $("p, li").each(function(){
     $('ul.lev2').toggle();                          //  close level 2 in TOC
 
 //===================================================================== key actions
+    
+    /*
+    Implements action from keys
+    h : show the help
+    a : make sliders appearing
+    
+    */
 
     $(document).keydown(function(event){
         if(event.keyCode == "h".charCodeAt(0)-32){    // "h", key for help documentation
@@ -495,7 +547,11 @@ $("p, li").each(function(){
                    '§§': {'deb' : '<object width='+'"' + param['pdf_width']['var'] + '"' + ' height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
 
 //=====================================================================   No video
-
+    
+    /*
+    Prevents the insertion of videos from the document parameters
+    */
+    
     $("p, li").each(function(){
         var textp = $(this).text()
          if (textp.match('§novideo')){ 
@@ -514,6 +570,9 @@ $("p, li").each(function(){
     })  // end each 
 
 //===================================================================== No iframe
+    /*
+    Prevents the insertion of iframes from the document parameters
+    */
 
     $("p, li").each(function(){
         var textp = $(this).text()
@@ -577,6 +636,10 @@ $("p, li").each(function(){
 
 //=====================================================================  Toggle ;; and §§
 
+    /*
+    Toggle pdf and videos for closing the associated lists.
+    */
+
     $("a").click(function (evt) {  
         var evtc = evt.target.className;              
         if(evtc == ';;' | evtc == '§§') {      // toggle 
@@ -585,6 +648,10 @@ $("p, li").each(function(){
         });// end click
 
 //=====================================================================  Post it
+
+    /*
+    Insert draggable postits.
+    */
 
     $("p").each(function(){ // POST'IT
              var html = $(this).html()
@@ -595,6 +662,10 @@ $("p, li").each(function(){
         })
 
 //=====================================================================  Plot
+    
+    /*
+    Insert a plot made with d3.js from given parameters. 
+    */
 
     $("p").each(function(){ // detect plot and apply plot function..
          var text = $(this).text()
