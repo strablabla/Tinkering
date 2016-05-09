@@ -319,6 +319,29 @@ var maketoc = function(){
             })
     	}
 
+//===================================================================== Input
+    
+    /*
+    Add input
+        * button with $input b value 
+        * input form with $input i value 
+    */
+
+    $('p').each( function(){
+        var reginp = /^\$input\s*.*/
+        var txt = $(this).text()
+        var txtm = txt.match(reginp)
+        var kind = {'b':'button', 'i':'input'}
+        if (txtm){
+            var arg = txtm[0].split('$input')[1].trim()
+            var tinp = arg.split(/\s+/)[0]
+            var val = arg.split(/\s+/)[1]
+            var inpbutt = '<input type="'+ kind[tinp] +'" value="'+ val +'" />'
+            var sub = $('<form/>').append(inpbutt)
+            $(this).replaceWith(sub)
+           }
+        })
+
 //===================================================================== TOC
 
     /*
@@ -591,9 +614,9 @@ var maketoc = function(){
          }// end if noiframe
     })  // end each 
 
-//===================================================================== 
+//===================================================================== // taking href with blanks
 
-    $("p, li").each(function(){
+    $("p, li").each(function(){ 
          var textp = $(this).text()
          if (textp.match(reg_hyper)){    // search for format [blabla](addr blabla)
              var text1 = textp.match(reg_brack)[0].slice(1,-1)    // takes [blabla]
@@ -690,6 +713,10 @@ var maketoc = function(){
 
 //=====================================================================  Hide list
 
+    /*
+    Making a hidden lisst with ^^
+    */
+
     $("li").each(function(){                // hide lists
         var reg_hide = /\s*\^\^\s*/
          var htm = $(this).html()
@@ -699,7 +726,6 @@ var maketoc = function(){
             $(this).html(newhtm)
             }// end if
     })// end each
-
 
 //=====================================================================  Toggle titles and list
 
@@ -711,6 +737,10 @@ var maketoc = function(){
         });// end click
         
 //=====================================================================  Change size img 
+
+    /*
+    Give the possibility to change size of images, [img widthxheight](href)
+    */
     
     $("img").each(function(){               // retrieve and change size images
             var reg_im = /\s*\d*x\d*\s*/
@@ -722,6 +752,10 @@ var maketoc = function(){
         })
 
 //=====================================================================  Catption img 
+    
+    /*
+    Adding caption to image with %caption%
+    */
 
     $("img").each(function(){               // retrieve the caption and insert it under the image.
             var reg_caption = /\%.*\%/
@@ -737,7 +771,9 @@ var maketoc = function(){
 //=====================================================================  
 
  $('a').each(function(){
+
         //=====================================================================   Youtube
+
         if ($(this).text().match(';;')){      // replace the address with a div with 'youtube' class. 
             var id = $(this).attr('href').split('v=')[1].trim()
             var newtag = $('<div/>').addClass('youtube')
@@ -745,7 +781,9 @@ var maketoc = function(){
                    .attr('id', id)
             $(this).replaceWith(newtag) // replace the <a> with a <div> with class 'youtube'
          } // end if
+
         //=====================================================================   Insert iframe
+
         if  ($(this).text().match(',,')){       // insertion of iframes with regexp ',,' for inserting web pages
             var iframe_url = $(this).attr('href')
             var wid = (param['iframe_width']['var']).toString()  // width from configuration parameters
@@ -753,10 +791,13 @@ var maketoc = function(){
             var div = $('<div/>').css({'text-align':'center'})
             $(this).replaceWith(div.append(iframe)); // replace the <a> with a <div> with iframe.
         } // end if
+
         //=====================================================================   Local video
+
         if  ($(this).text().match('%%')){       // insert local video, works with Chrome
             var vid_url = $(this).attr('href')
             var vid = $('<video/>', {'frameborder': '0', 'src': vid_url, 'width': '600', 'height': '400' })
+            vid .prop("controls",true);
             var div = $('<div/>').css({'text-align':'center'})
             var keeplink = $('<a/>').text($(this).text().split('%%')[0])
                                     .attr('href',$(this).attr('href'))
@@ -782,18 +823,13 @@ var maketoc = function(){
      });
  });
 
-//===================================================================== 
-
-// $("p").each(function(){ // plot
-//          var html = $(this).html()
-//          if (html.match(/^\$plot\s*/)){
-//              alert(html.split('$plot')[1]) //.split(/\s*/)
-
-//             }// end if
-//     })
 //===================================================================== Open all the lists
 
      $(document).keydown(function(event){   
+
+    /*
+    Toggle all the lists using Alt+l
+    */
           
          if(event.keyCode == "l".charCodeAt(0)-32 && event.altKey){    
                 $('ul').toggle() // alt + l open all the lists. 
@@ -831,6 +867,10 @@ var maketoc = function(){
 
 
 }// end maketoc  
+
+/*=====================================================================
+ ===================================================================== End of maketoc
+===================================================================== */
 
 
 registerKeyboardHandler = function(callback) { // begin plot
