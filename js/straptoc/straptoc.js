@@ -107,6 +107,54 @@ var maketoc = function(){
     $('body').append($('<a/>').attr('href','#top').addClass("scrollToTop").attr('title','go to top')
             .append($('<span/>').addClass("glyphicon glyphicon-chevron-up").attr('id','gotop')))
 
+ //===================================================================== Context menu
+ 
+   $('body').attr('contextmenu',"share")
+   $("p").each(function(){
+       var txt = $(this).text().match(/^\$menu.*/)
+       if (txt) {
+           var args = txt[0].trim().split(/\s+/)
+           var select = args[0].split('_')[1]
+           var dic_args = {}
+           for (i in args){ 
+               if (i>0){
+               var comm = args[i]
+                  var sepcomm = comm.split(/\:/)
+                  var item = sepcomm[0]
+                  var item_name = sepcomm[1].split('_')[1]
+                  var item_icon = sepcomm[2].split('_')[1]
+                  var item_href = sepcomm[3].split('_')[1]
+                  dic_args[item] = JSON.stringify({ name: item_name, icon : item_icon, href : item_href })
+               }
+           }
+           var menu  = $('<span/>').addClass("context-menu-one btn btn-neutral "+select).text('right click me')
+           $(this).replaceWith(menu)
+       }
+       $(function() {
+           $.contextMenu({
+             selector: '.'+select,
+             build: function() {
+               var options = {
+                 callback: function(key, options) {
+                   var m = "clicked: " + key;
+                   var id  = JSON.parse(dic_args[key])['href']
+                   document.getElementById(id).scrollIntoView()
+                 },
+                 items: {}
+               };
+                for (key in dic_args){
+                    options.items[key] = JSON.parse(dic_args[key])
+                }
+               return options;
+             }
+           });
+           $('.context-menu-one').on('click', function(e){
+               console.log('clicked', this);
+           })    
+       });
+    }) // end each
+
+
  //===================================================================== Zoom thumbnail and image
 
     $('body').prepend($('<div/>').attr('id',"id_view_image_body"))

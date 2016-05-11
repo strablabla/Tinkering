@@ -91,18 +91,11 @@ var maketoc = function(){
                 .append($('<span/>').addClass("glyphicon glyphicon-chevron-up").attr('id','gotop')))
                 
     $('body').attr('contextmenu',"share")
-    
     $("p").each(function(){
-        if ($(this).text().match(/^\$menu/)) {
-            var menu  = $('<span/>').addClass("context-menu-one btn btn-neutral").text('right click me')
-            $(this).replaceWith(menu)
-        }
-    }) // end each
-
-    $("p").each(function(){
-        var txt = $(this).text().match(/^\$minou\s.*/)
+        var txt = $(this).text().match(/^\$menu.*/)
         if (txt) {
             var args = txt[0].trim().split(/\s+/)
+            var select = args[0].split('_')[1]
             var dic_args = {}
             for (i in args){ 
                 if (i>0){
@@ -115,13 +108,13 @@ var maketoc = function(){
                    dic_args[item] = JSON.stringify({ name: item_name, icon : item_icon, href : item_href })
                 }
             }
-            var menu  = $('<span/>').addClass("context-menu-one btn btn-neutral minou").text('right click me')
+            var menu  = $('<span/>').addClass("context-menu-one btn btn-neutral "+select).text('right click me')
             $(this).replaceWith(menu)
         }
 
         $(function() {
             $.contextMenu({
-              selector: '.minou',
+              selector: '.'+select,
               build: function() {
                 var options = {
                   callback: function(key, options) {
