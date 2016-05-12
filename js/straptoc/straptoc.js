@@ -181,11 +181,37 @@ var maketoc = function(){
     txt = $(this).html().split('\n')[1] || ' '
     if (txt.match(/\+\+\+\.*/)) { 
         var addroot = txt.split('+++')[1].trim()+'/'
-        $(this).find('img').each(function(){
-            $(this).attr('src', addroot+$(this).attr('src'))
+        $(this).find('*').each(function(){
+             //==============================   case of img
+             
+            if ($(this).parent().find('img')){    
+                  $(this).attr('src', addroot+$(this).attr('src'))
+                }
+                
+             //==============================   case of pdfs
+             
+            if ($(this).text().match(/§§/)){   
+                alert($(this).parent().html())
+                $(this).attr('href', addroot+$(this).attr('href'))
+                alert($(this).parent().html())
+               }
+               
             }) // end each
         } // end if txt.mtch
     }) // end each p, li
+
+//===================================================================== list of pdfs
+
+      $("p, li").each(function(){
+        if ($(this).text().match(/^\$pdf/)) {  // detect list pdfs
+           var ulpdf = $('<ul/>')
+           $(this).children('a').each(function(){
+               alert($(this).html())
+                ulpdf.append($('<li/>').append($(this)))
+             }) // end each 
+           $(this).replaceWith(ulpdf) // replace whole p or li with portfolio. 
+        }   // end if regexp
+    })   // end each p, li
     
  //===================================================================== Portfolio
 
