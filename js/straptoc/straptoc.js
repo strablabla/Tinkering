@@ -40,8 +40,8 @@ var maketoc = function(){
      * §menu toto:hash bobo:trash, add items bobo and toto to navbar with links hash and trash
      */}.toString().slice(14,-3)
     
-    //https://github.com/strablabla/Tinkering/862a6cb/js/straptoc/straptoc.js 
-    //https://github.com/strablabla/Tinkering/862a6cb/js/straptoc/straptoc.css
+    //https://github.com/strablabla/Tinkering/6ce7965/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/6ce7965/js/straptoc/straptoc.css
     
 
     basename = function(path) {
@@ -191,9 +191,7 @@ var maketoc = function(){
              //==============================   case of pdfs
              
             if ($(this).text().match(/§§/)){   
-                alert($(this).parent().html())
                 $(this).attr('href', addroot+$(this).attr('href'))
-                alert($(this).parent().html())
                }
                
             }) // end each
@@ -206,7 +204,6 @@ var maketoc = function(){
         if ($(this).text().match(/^\$pdf/)) {  // detect list pdfs
            var ulpdf = $('<ul/>')
            $(this).children('a').each(function(){
-               alert($(this).html())
                 ulpdf.append($('<li/>').append($(this)))
              }) // end each 
            $(this).replaceWith(ulpdf) // replace whole p or li with portfolio. 

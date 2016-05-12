@@ -20,7 +20,9 @@ def list_corr(corr):
                 newpath = oldpath
             root,ext = os.path.splitext(newpath)
             if ext == '.pdf':
-                strpdf = '['+ newpath[2:-4] + ' §§]('+newpath[2:]+')'
+                filename = os.path.basename(newpath[2:])[:-4]
+                category = newpath[2:].split('/')[0]
+                strpdf = '['+ category + ': ' + filename + ' §§]('+newpath[2:]+')'
                 print strpdf
         
 if __name__=='__main__':
