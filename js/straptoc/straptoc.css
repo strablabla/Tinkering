@@ -256,9 +256,12 @@ h1 {
 }
 
 #content {
+    /*margin*/
     margin-left: 100px;
     margin-right: 100px;
+    /*padding*/
     padding-left: 100px;
     padding-right: 100px;
     padding-bottom: 100px;
+    padding-top: 100px;
 }
