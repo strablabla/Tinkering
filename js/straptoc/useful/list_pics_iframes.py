@@ -13,6 +13,7 @@ def list_pic_frames(corr):
 
     limages = ['.jpg', '.png']
     liframes = ['.html']
+    lvideo = ['.mp4']
     dic_corr = {"'":"_", "é":"e","û":"u","û":"u",
                 "â":"a","ô":"o","à":"a","\(":"_","\)":"_",
                 "è":"e" }
@@ -23,17 +24,19 @@ def list_pic_frames(corr):
         for k in dic_corr: 
             # print k
             name = re.sub(k, dic_corr[k], name)
-            print name
+            #print name
         if len(l) >1: 
             name = '_'.join(l)
         if corr:
             os.rename(nameold, name)
         root, ext = os.path.splitext(name)
-        print ext
+        #print ext
         if ext in limages:
             print '![%{0}%]({1})'.format(name[:-4], name)
         elif ext in liframes:
-            print '[{0},,]({1})'.format(name[:-4], name)
+            print '[{0},,]({1})'.format(name[:-5], name)
+        elif ext in lvideo:
+            print '[{0}%%]({1})'.format(name[:-4], name)
     print i
 
 if __name__=='__main__':
