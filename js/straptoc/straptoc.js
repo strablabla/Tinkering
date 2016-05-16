@@ -178,9 +178,12 @@ var maketoc = function(){
  //===================================================================== register root path for $portf or $carr
 
   $("p, li").each(function(){
-    txt = $(this).html().split('\n')[1] || ' '
+    var htm = $(this).html()
+    var txt = htm.split('\n')[1] || ' '
     if (txt.match(/\+\+\+\.*/)) { 
         var addroot = txt.split('+++')[1].trim()+'/'
+        alert(addroot);
+        alert(htm)
         $(this).find('*').each(function(){
              //==============================   case of img
              
@@ -193,6 +196,13 @@ var maketoc = function(){
             if ($(this).text().match(/§§/)){   
                 $(this).attr('href', addroot+$(this).attr('href'))
                }
+            //==============================   case of videos
+            
+            if (htm.match(/%%/)){   
+                alert($(this).attr('href'))
+                $(this).attr('href', addroot+$(this).attr('href'))
+                alert($(this).attr('href'))
+               }
                
             }) // end each
         } // end if txt.mtch
@@ -200,13 +210,25 @@ var maketoc = function(){
 
 //===================================================================== list of pdfs
 
-      $("p, li").each(function(){
+  $("p, li").each(function(){
         if ($(this).text().match(/^\$pdf/)) {  // detect list pdfs
            var ulpdf = $('<ul/>')
            $(this).children('a').each(function(){
                 ulpdf.append($('<li/>').append($(this)))
              }) // end each 
-           $(this).replaceWith(ulpdf) // replace whole p or li with portfolio. 
+           $(this).replaceWith(ulpdf) // replace whole p or li 
+        }   // end if regexp
+    })   // end each p, li
+
+//===================================================================== list of local videos
+
+  $("p, li").each(function(){
+        if ($(this).text().match(/^\$vid/)) {  // detect list of local videos
+           var ulvid = $('<ul/>')
+           $(this).children('a').each(function(){
+                ulvid.append($('<li/>').append($(this)))
+             }) // end each 
+           $(this).replaceWith(ulvid) // replace whole p or li 
         }   // end if regexp
     })   // end each p, li
     
