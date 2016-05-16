@@ -40,8 +40,8 @@ var maketoc = function(){
      * §menu toto:hash bobo:trash, add items bobo and toto to navbar with links hash and trash
      */}.toString().slice(14,-3)
     
-    //https://github.com/strablabla/Tinkering/6ce7965/js/straptoc/straptoc.js 
-    //https://github.com/strablabla/Tinkering/6ce7965/js/straptoc/straptoc.css
+    //https://github.com/strablabla/Tinkering/437d3f3/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/437d3f3/js/straptoc/straptoc.css
     
 
     basename = function(path) {
@@ -185,23 +185,22 @@ var maketoc = function(){
         alert(addroot);
         alert(htm)
         $(this).find('*').each(function(){
+          
              //==============================   case of img
              
             if ($(this).parent().find('img')){    
-                  $(this).attr('src', addroot+$(this).attr('src'))
+                  $(this).attr('src', addroot+$(this).attr('src')) // changing path
                 }
                 
              //==============================   case of pdfs
              
             if ($(this).text().match(/§§/)){   
-                $(this).attr('href', addroot+$(this).attr('href'))
+                $(this).attr('href', addroot+$(this).attr('href')) // changing path
                }
             //==============================   case of videos
             
             if (htm.match(/%%/)){   
-                alert($(this).attr('href'))
-                $(this).attr('href', addroot+$(this).attr('href'))
-                alert($(this).attr('href'))
+                $(this).attr('href', addroot+$(this).attr('href')) // changing path
                }
                
             }) // end each
