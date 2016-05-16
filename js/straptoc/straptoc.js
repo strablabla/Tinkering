@@ -182,8 +182,6 @@ var maketoc = function(){
     var txt = htm.split('\n')[1] || ' '
     if (txt.match(/\+\+\+\.*/)) { 
         var addroot = txt.split('+++')[1].trim()+'/'
-        alert(addroot);
-        alert(htm)
         $(this).find('*').each(function(){
           
              //==============================   case of img
