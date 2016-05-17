@@ -42,8 +42,10 @@ var maketoc = function(){
      * $input i ohoh : makes a input for entering text with placeholder ohoh. 
      */}.toString().slice(14,-3)
     
-    //https://github.com/strablabla/Tinkering/21a6e41/js/straptoc/straptoc.js 
-    //https://github.com/strablabla/Tinkering/21a6e41/js/straptoc/straptoc.css
+
+    //https://github.com/strablabla/Tinkering/437d3f3/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/437d3f3/js/straptoc/straptoc.css
+
     
 
     basename = function(path) {  return path.replace( /.*\//, "" ); }
@@ -178,20 +180,27 @@ var maketoc = function(){
  //===================================================================== register root path for $portf or $carr
 
   $("p, li").each(function(){
-    txt = $(this).html().split('\n')[1] || ' '
+    var htm = $(this).html()
+    var txt = htm.split('\n')[1] || ' '
     if (txt.match(/\+\+\+\.*/)) { 
         var addroot = txt.split('+++')[1].trim()+'/'
         $(this).find('*').each(function(){
+          
              //==============================   case of img
              
             if ($(this).parent().find('img')){    
-                  $(this).attr('src', addroot+$(this).attr('src'))
+                  $(this).attr('src', addroot+$(this).attr('src')) // changing path
                 }
                 
              //==============================   case of pdfs
              
             if ($(this).text().match(/§§/)){   
-                $(this).attr('href', addroot+$(this).attr('href'))
+                $(this).attr('href', addroot+$(this).attr('href')) // changing path
+               }
+            //==============================   case of videos
+            
+            if (htm.match(/%%/)){   
+                $(this).attr('href', addroot+$(this).attr('href')) // changing path
                }
                
             }) // end each
@@ -200,13 +209,25 @@ var maketoc = function(){
 
 //===================================================================== list of pdfs
 
-      $("p, li").each(function(){
+  $("p, li").each(function(){
         if ($(this).text().match(/^\$pdf/)) {  // detect list pdfs
            var ulpdf = $('<ul/>')
            $(this).children('a').each(function(){
                 ulpdf.append($('<li/>').append($(this)))
              }) // end each 
-           $(this).replaceWith(ulpdf) // replace whole p or li with portfolio. 
+           $(this).replaceWith(ulpdf) // replace whole p or li 
+        }   // end if regexp
+    })   // end each p, li
+
+//===================================================================== list of local videos
+
+  $("p, li").each(function(){
+        if ($(this).text().match(/^\$vid/)) {  // detect list of local videos
+           var ulvid = $('<ul/>')
+           $(this).children('a').each(function(){
+                ulvid.append($('<li/>').append($(this)))
+             }) // end each 
+           $(this).replaceWith(ulvid) // replace whole p or li 
         }   // end if regexp
     })   // end each p, li
     
