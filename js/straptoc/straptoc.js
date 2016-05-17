@@ -38,19 +38,17 @@ var maketoc = function(){
             * +++ and [title .. on same column
      * ``` before code for show code.. no need to bracket the code.
      * §menu toto:hash bobo:trash, add items bobo and toto to navbar with links hash and trash
+     * $input b blabla : makes a button blabla
+     * $input i ohoh : makes a input for entering text with placeholder ohoh. 
      */}.toString().slice(14,-3)
     
-    //https://github.com/strablabla/Tinkering/6ce7965/js/straptoc/straptoc.js 
-    //https://github.com/strablabla/Tinkering/6ce7965/js/straptoc/straptoc.css
+    //https://github.com/strablabla/Tinkering/21a6e41/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/21a6e41/js/straptoc/straptoc.css
     
 
-    basename = function(path) {
-    return path.replace( /.*\//, "" );
-    }
+    basename = function(path) {  return path.replace( /.*\//, "" ); }
 
-    dirname = function(path) {
-         return path.match( /.*\// );
-    }
+    dirname = function(path) { return path.match( /.*\// ); }
     
     simple_md = function(text){ // mini markdown for the help
         var all_text = text.split('\n')
@@ -89,6 +87,8 @@ var maketoc = function(){
     //
     var num_slider = 0
     
+//===================================================================== Dictionary for parameters
+
     param = {
              'color_sublist':{'reg':reg_col_sublist, 'cut':'§col_sublist', 'var': 'green'},
              'color_toc':{'reg':reg_col_toc, 'cut':'§col_toc', 'var': '#FFCC99'},
