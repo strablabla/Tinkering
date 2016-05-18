@@ -41,12 +41,15 @@ var maketoc = function(){
      * $input b blabla : makes a button blabla
      * $input i ohoh : makes a input for entering text with placeholder ohoh. 
      */}.toString().slice(14,-3)
-    
+     
+     var keyinteract = function(){/*
 
-    //https://github.com/strablabla/Tinkering/437d3f3/js/straptoc/straptoc.js 
-    //https://github.com/strablabla/Tinkering/437d3f3/js/straptoc/straptoc.css
-
+      # Commands: 
+      * Alt d : remove draggability to the charts. This permits to interact with it. 
+      */}.toString().slice(14,-3)
     
+    //https://github.com/strablabla/Tinkering/e22c5b4/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/e22c5b4/js/straptoc/straptoc.css
 
     basename = function(path) {  return path.replace( /.*\//, "" ); }
 
@@ -652,6 +655,13 @@ var maketoc = function(){
                 } // end if
               }); // each
           }// end if key code
+      if(event.keyCode == 'd'.charCodeAt(0)-32){  // stop draggable plot
+          $("div").each(function(i){ 
+              if ($(this).hasClass('chart')){
+                  $(this).draggable('destroy')
+              } // end if
+            }); // each
+        }// end if key code
         })
 
 //===================================================================== 
