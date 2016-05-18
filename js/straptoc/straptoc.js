@@ -48,8 +48,8 @@ var maketoc = function(){
       * Alt d : remove draggability to the charts. This permits to interact with it. 
       */}.toString().slice(14,-3)
     
-    //https://github.com/strablabla/Tinkering/e22c5b4/js/straptoc/straptoc.js 
-    //https://github.com/strablabla/Tinkering/e22c5b4/js/straptoc/straptoc.css
+    //https://github.com/strablabla/Tinkering/d287588/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/d287588/js/straptoc/straptoc.css
 
     basename = function(path) {  return path.replace( /.*\//, "" ); }
 
@@ -164,6 +164,15 @@ var maketoc = function(){
 
     $('body').prepend($('<div/>').attr('id',"id_view_image_body"))
            .prepend($('<div/>').attr('id',"id_view_image"))
+
+    //===================================================================== mathjax
+
+    $("p, li").each(function(){
+      txt = $(this).text()
+      if (txt.match(/^\$math/)) { 
+            $(this).replaceWith('$$'+txt.split('$math')[1]+'$$')
+          }   // end if txt.mtch
+      })   // end each p, li
 
  //===================================================================== Simple bash code
 
