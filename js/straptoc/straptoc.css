@@ -252,9 +252,8 @@ div.chart {
    
 .carousel-inner > .item > img,
 .carousel-inner > .item > a > img {
-    width: 70%;
     margin: auto;
-    max-height: 150px
+    max-height: 250px
 }
 
 

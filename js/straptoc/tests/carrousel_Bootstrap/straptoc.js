@@ -87,43 +87,39 @@ var maketoc = function(){
          }
 
     $("p").each(function(){
-        //alert($(this).text())
+       
         if ($(this).text().match(/^\$carr/)) { 
 
             var divcarr = $('<div/>').addClass("carousel slide")
                                      .attr('id','mycarr')
             var ol = $('<ol/>').addClass("carousel-indicators")
-            var divcarrinner = $('<div/>').addClass("carousel-inner").attr('role','listbox')
-            var aprev = $('<a/>').addClass("left carousel-control")
-                                 .attr('role','button')
+            var divcarrinner = $('<div/>').addClass("carousel-inner") //.attr('role','listbox')
+            var aprev = $('<a/>').addClass("left carousel-control") //.css({"font-size": "10px"})
+                                 //.attr('role','button')
                                  .attr('data-slide','prev')
                                  .attr('href','#mycarr')
-                                 .append($('<span/>').addClass("glyphicon glyphicon-chevron-left")
-                                                     .attr("aria-hidden","true")
-                                    )
+                                 aprev.text('<' ).css({"font-size": "20px"})
+                        
+                                    
+                                
             var anext = $('<a/>').addClass("right carousel-control")
-                     .attr('role','button')
                      .attr('data-slide','next')
                      .attr('href','#mycarr')
-                     .append($('<span/>').addClass("glyphicon glyphicon-chevron-right")
-                                         .attr("aria-hidden","true")
-                        )
+                     anext.text('>' ).css({"font-size": "20px"})
+            
+
 
             $(this).children('img').each(function(i){
-                var litarget = $('<li/>').attr("data-target","#mycarr")
-                                    .attr("data-slide-to", i)
-                if (i == 0){litarget.addClass("active")}
-                ol.append( litarget ) // end append
+    
                 var divitem = $('<div/>').addClass("item")
                                .append($(this)
                                     .attr('width','460')
                                     .attr('height','365')
                                ) // end append
                 if (i == 0){divitem.addClass("active")}
-                divcarrinner.append( divitem) // end append
+                divcarrinner.append(divitem) // end append
                 }) // end each
-            divcarr.append(ol)
-                   .append(divcarrinner.append(aprev).append(anext))
+            divcarr.append(divcarrinner.append(aprev).append(anext))
             $(this).replaceWith(divcarr)
         } // end if regexp
     }) // end each p
@@ -147,7 +143,7 @@ var maketoc = function(){
                }) // end replaceWith
            } // end if
         for (elem in param){
-            //alert(param[elem]['reg'])
+      
             if ($(this).text().match(param[elem]['reg']) ){     // finds loading parameters
           
                 var interm = $(this).text().split(param[elem]['cut'])[1]
@@ -255,16 +251,7 @@ var maketoc = function(){
         }// end if
      })// end each
 
- $('a').each(function(){            // modifying videos for permitting folded list mechanism.
-        if ($(this).text().match(';;')){    
-            alert("dealing with video")
-            var tlist = $(this).text().split(';;')[0] +' ::'
-            var underthis = $('<ul/>').append($('<li/>').append($(this).clone()))
-            var ulvid = $('<li/>').append(tlist).append(underthis)
-            alert($(this).parent().prop('tagName'))
-            $(this).parent().replaceWith(ulvid)
-         } // end if
-    })
+
     // bit of code for closing list when it finds :: in the code.
     $("li").each(function(i){    // need to be placed before  $("a").click    
         var htm = $(this).html(); var childr = $(this).children('ul')

@@ -49,7 +49,7 @@ var maketoc = function(){
       */}.toString().slice(14,-3)
     
     //https://github.com/strablabla/Tinkering/04031f7/js/straptoc/straptoc.js 
-    //https://github.com/strablabla/Tinkering/ee3a8c2/js/straptoc/straptoc.css
+    //https://github.com/strablabla/Tinkering/626933a/js/straptoc/straptoc.css
 
     basename = function(path) {  return path.replace( /.*\//, "" ); }
 
@@ -274,41 +274,35 @@ var maketoc = function(){
     if ($(this).text().match(/^\$carr/)) { 
         var divcarr = $('<div/>').addClass("carousel slide")
                                  .attr('id','mycarr')
-        var ol = $('<ol/>').addClass("carousel-indicators")
+        // var ol = $('<ol/>').addClass("carousel-indicators")
         var divcarrinner = $('<div/>').addClass("carousel-inner").attr('role','listbox')
         //======================== go to previous
         var aprev = $('<a/>').addClass("left carousel-control")
                              .attr('role','button')
                              .attr('data-slide','prev')
                              .attr('href','#mycarr')
-                             .append($('<span/>').addClass("glyphicon glyphicon-chevron-left")
-                                                 .attr("aria-hidden","true")
-                                )
+            aprev.text('<').css({"font-size": "20px"})
+                         
         //======================= go to next
         var anext = $('<a/>').addClass("right carousel-control")
                  .attr('role','button')
                  .attr('data-slide','next')
                  .attr('href','#mycarr')
-                 .append($('<span/>').addClass("glyphicon glyphicon-chevron-right")
-                                     .attr("aria-hidden","true")
-                    )
+            anext.text('>').css({"font-size": "20px"})
+
         //======================= partial elements
         $(this).children('img').each(function(i){
-            var litarget = $('<li/>').attr("data-target","#mycarr")
-                                .attr("data-slide-to", i)
-            if (i == 0){litarget.addClass("active")}
-            ol.append( litarget ) // end append
+    
             var divitem = $('<div/>').addClass("item")
                            .append($(this)
                                 .attr('width','460')
                                 .attr('height','365')
                            ) // end append
             if (i == 0){divitem.addClass("active")}
-            divcarrinner.append( divitem) // end append
+            divcarrinner.append(divitem) // end append
             }) // end each
         //=========================  make the whole div.
-        divcarr.append(ol)
-               .append(divcarrinner.append(aprev).append(anext))
+        divcarr.append(divcarrinner.append(aprev).append(anext)) 
         $(this).replaceWith(divcarr)
       } // end if regexp
     }) // end each p
