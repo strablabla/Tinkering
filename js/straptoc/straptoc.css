@@ -56,7 +56,20 @@ div.onside {
 img .thumbnail
 {
 cursor: zoom-in;
+
 }
+
+.row 
+{
+  background-color: black;
+  padding-top: 20px
+}
+
+.thumbnail > figure > img
+{
+max-height: 150px;
+}
+
 
 .view_image_body
 {
