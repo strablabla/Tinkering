@@ -14,8 +14,9 @@ def list_pic_frames(corr):
     limages = ['.jpg', '.png']
     liframes = ['.html']
     lvideo = ['.mp4']
-    dic_corr = {"'":"_", "é":"e","û":"u","û":"u",
-                "â":"a","ô":"o","à":"a","\(":"_","\)":"_",
+    dic_corr = {"'":"_", ",":"_","\(":"_","\)":"_",
+                 "é":"e","û":"u","û":"u",
+                "â":"a","ô":"o","à":"a",
                 "è":"e" }
 
     for i, name in enumerate(glob.glob('*.*')):
