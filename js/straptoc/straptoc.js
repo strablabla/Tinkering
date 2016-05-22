@@ -7,41 +7,41 @@ var maketoc = function(){
 
     var help = function(){/*
     
-     # Commands: 
-     * :: , makes folding list. Begin close.
-     * --link-- , creates a tag with id "link" 
-     * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
-     * [pdf §§](hyperlink) insert a pdf with object tag.
-     * [blabla ,,](hyperlink) insert whatever iframe
-     * [blabla %%](hyperlink) insert a local video with no autoplay by default (works with Chrome but not with Firefox)
-     * novideo, at the beginning of the document to avoid loading of videos.
-     * @@blabla, copy the li, blabla@@ paste the li
-     * key "k", to make appear disappear the sliders.
-     * insertion of tooltip : after h1 or h2, write the tooltip betweeen {}
-     * double ^, is used to hide some text
-     * Alt L for folding/unfolding lists.
-     * Set notoc to true for removing the TOC.
-     * Size image, enter the size after the name eg: [blabla 500x500](address)
-     * @color to change color, for the moment works onl for lists.
-     * [blabla %caption%](address) insert the caption under the image
-     * %%% for deleting symbolically a line, replacing  the tilde. 
-     * $carr and list of ![]()  after for making a carrousel with pictures. 
-     * $portf and list of ![]()  after for making a portfolio with pictures. 
-     * noiframes, at the beginning of the document to avoid loading of iframes.
-     * +++ roothpath for registering root path for $carr or $portf when muliple path with same root. 
+    # Extended markdown: 
+    * :: , makes folding list (close by default)
+    * link between -- , creates a tag with id "link" 
+    * video ;;(hyperlink) insert a video with the hyperlink through iframe element.
+    * pdf §§(hyperlink) insert a pdf with object tag.
+    * blabla ,,(hyperlink) insert whatever iframe
+    * blabla %%(hyperlink) insert a local video with no autoplay by default (works with Chrome but not with Firefox)
+    * novideo, at the beginning of the document to avoid loading of videos.
+    * @@ blabla, copy the li, blabla @@ paste the li (@@ must be glued)
+    * key "k", to make appear disappear the sliders.
+    * insertion of tooltip : after h1 or h2, write the tooltip betweeen {}
+    * double ^, is used to hide some text
+    * Alt L for folding/unfolding lists.
+    * Set notoc to true for removing the TOC.
+    * Size image, enter the size after the name eg: blabla 500x500(address)
+    * @color to change color, for the moment works onl for lists.
+    * blabla %caption%(address) insert the caption under the image
+    * %%% for deleting symbolically a line, replacing  the tilde. 
+    * $carr and list of images in markdown language  after for making a carrousel with pictures. 
+    * $portf and list of images in markdown language  after for making a portfolio with pictures. 
+    * noiframes, at the beginning of the document to avoid loading of iframes.
+    * +++ rootpath for registering root path for \$carr or \$portf when muliple path with same root. 
         *  eg for frames :
-                * blabla
-                   +++ root
-                   [title iframe ,,](whatever.html)
-         Becarefull 
+            * blabla
+                +++ root
+                [title iframe ,,](whatever.html)
+        * Becareful
             * no space after blabla 
             * +++ and [title .. on same column
-     * ``` before code for show code.. no need to bracket the code.
-     * §menu toto:hash bobo:trash, add items bobo and toto to navbar with links hash and trash
-     * $input b blabla : makes a button blabla
-     * $input i ohoh : makes a input for entering text with placeholder ohoh. 
-     * $* : line separation
-     */}.toString().slice(14,-3)
+    * ``` before code for show code.. no need to bracket the code.
+    * §menu toto:hash bobo:trash, add items bobo and toto to navbar with links hash and trash
+    * $input b blabla : makes a button blabla
+    * $input i ohoh : makes a input for entering text with placeholder ohoh. 
+    * $* : line separation
+    */}.toString().slice(14,-3)
      
      var keyinteract = function(){/*
 
@@ -61,8 +61,8 @@ var maketoc = function(){
         var htm = $('<div/>')
         var ul = $('<ul/>').css({'text-align':'left'})
         for (i in all_text){
-        	var text_insert = all_text[i].trim().slice(1)
-            if (all_text[i].match(/\s*\*/)){
+            var text_insert = all_text[i].trim().slice(1)
+            if (all_text[i].match(/^\s{4}\*/)){
             ul.append($('<li/>').text(text_insert))
             } // end if
             if (all_text[i].match(/\s*\#/)){
@@ -161,13 +161,12 @@ var maketoc = function(){
        });
     }) // end each
 
-
  //===================================================================== Zoom thumbnail and image
 
     $('body').prepend($('<div/>').attr('id',"id_view_image_body"))
            .prepend($('<div/>').attr('id',"id_view_image"))
 
-  //===================================================================== separating line
+ //===================================================================== separating line
 
     $("p").each(function(){
       txt = $(this).text()
@@ -437,7 +436,7 @@ var maketoc = function(){
                 $(this).html(newhtm)
                 } // end match
             })
-    	}
+        }
 
 //===================================================================== Input
     
@@ -665,14 +664,10 @@ $('#shortcuts').html(simple_md(help)).toggle()
     
     */
 
-
-
     $(document).keydown(function(event){
 
-    	if(event.keyCode == "s".charCodeAt(0)-32){   
-           
-    		$('#shortcuts').toggle()
-
+        if(event.keyCode == "s".charCodeAt(0)-32){   
+            $('#shortcuts').toggle()
           } // end if key code
 
         if(event.keyCode == "h".charCodeAt(0)-32){    // "h", key for help documentation
