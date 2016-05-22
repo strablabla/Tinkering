@@ -37,10 +37,34 @@ div.onside {
     z-index: 3;
 
   }
+
+/*==================================================
+ * Alerts
+ * ===============================================*/
+
+  div.helpmsg {
+   position: fixed;
+   padding-bottom: 20px;
+   box-shadow: 0.5em 0.5em 0.7em;
+   left: 50px;
+   max-height: 500px;
+   background-color:#FFCC99; /*#FFF;*/
+   font-size:85%;
+   overflow: scroll;
+ }
   
-.alertify-message {
+.alertify {
     text-align:left;
 }
+
+.dialog > div > ul > li {
+    text-align:left;
+}
+.dialog > div  {
+    overflow: scroll;
+}
+
+
 
 .scrollToTop{
     width:40px;

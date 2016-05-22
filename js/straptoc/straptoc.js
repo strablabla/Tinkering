@@ -49,8 +49,8 @@ var maketoc = function(){
       * Alt d : remove draggability to the charts. This permits to interact with it. 
       */}.toString().slice(14,-3)
     
-    //https://github.com/strablabla/Tinkering/fbf7a6b/js/straptoc/straptoc.js 
-    //https://github.com/strablabla/Tinkering/fbf7a6b/js/straptoc/straptoc.css
+    //https://github.com/strablabla/Tinkering/a4758e0/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/a4758e0/js/straptoc/straptoc.css
 
     basename = function(path) {  return path.replace( /.*\//, "" ); }
 
@@ -462,6 +462,11 @@ var maketoc = function(){
            }
         })
 
+//===================================================================== shortcuts
+
+$('body').prepend($('<div/>').addClass('helpmsg').attr('id',"shortcuts")) 
+$('#shortcuts').html(simple_md(help)).toggle()
+
 //===================================================================== TOC
 
     /*
@@ -484,6 +489,7 @@ var maketoc = function(){
     for(var i = 0,  elems = $(":header"); i < elems.length; i++) {
         var nameh = elems[i].innerHTML.trim().split(reg_id)[0];
         elems[i].id = nameh; 
+
         //===================================================================== H1
         if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H1'){    // if H1                    
             var nameh1 = nameh
@@ -659,13 +665,24 @@ var maketoc = function(){
     
     */
 
+
+
     $(document).keydown(function(event){
+
+    	if(event.keyCode == "s".charCodeAt(0)-32){   
+           
+    		$('#shortcuts').toggle()
+
+          } // end if key code
+
         if(event.keyCode == "h".charCodeAt(0)-32){    // "h", key for help documentation
             if (param['help']['var'] != false){
                 $('.alertify .alert > *').css({'text-align':'left'});
                 alertify.alert(simple_md(help))
                 }
           } // end if key code
+
+
         if(event.keyCode == "q".charCodeAt(0)-32){  // "q" key for showing sliders
             $("a").each(function(i){ 
                   if ($(this).prop('id').match(/slider_\d*/)){
