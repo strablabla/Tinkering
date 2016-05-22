@@ -48,7 +48,7 @@ var maketoc = function(){
       * Alt d : remove draggability to the charts. This permits to interact with it. 
       */}.toString().slice(14,-3)
     
-    //https://github.com/strablabla/Tinkering/04031f7/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/7872b86/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/626933a/js/straptoc/straptoc.css
 
     basename = function(path) {  return path.replace( /.*\//, "" ); }
