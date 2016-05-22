@@ -950,17 +950,19 @@ var maketoc = function(){
      });
  });
 
-//===================================================================== Close all the lists
+//===================================================================== Open all the lists
 
-  statekey = -1;
+     statekey = -1;
 
-  $(document).keydown(function(event){   
+     $(document).keydown(function(event){   
+
     /*
-    Close all the lists 
+    Toggle all the lists 
     */
      if(event.keyCode == 27){ 
           statekey *= -1
         }
+
         if((event.keyCode == "l".charCodeAt(0)-32) && statekey == 1){  
                 $('a > span').each(function(){
                   if ($(this).parent().next().css('display')=='block'){
