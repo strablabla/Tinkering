@@ -40,6 +40,7 @@ var maketoc = function(){
      * §menu toto:hash bobo:trash, add items bobo and toto to navbar with links hash and trash
      * $input b blabla : makes a button blabla
      * $input i ohoh : makes a input for entering text with placeholder ohoh. 
+     * $* : line separation
      */}.toString().slice(14,-3)
      
      var keyinteract = function(){/*
@@ -91,6 +92,7 @@ var maketoc = function(){
     var reg_parent = /\(.*\w*.*\)/
     //
     var num_slider = 0
+    var prefcarr = 'carousel0'
     
 //===================================================================== Dictionary for parameters
 
@@ -165,7 +167,16 @@ var maketoc = function(){
     $('body').prepend($('<div/>').attr('id',"id_view_image_body"))
            .prepend($('<div/>').attr('id',"id_view_image"))
 
-    //===================================================================== mathjax
+  //===================================================================== separating line
+
+    $("p").each(function(){
+      txt = $(this).text()
+      if (txt.match(/^\$\*/)) { 
+            $(this).replaceWith($('<hr/>'))
+          }   // end if txt.mtch
+      })   // end each p
+
+  //===================================================================== mathjax
 
     $("p, li").each(function(){
       txt = $(this).text()
@@ -272,22 +283,33 @@ var maketoc = function(){
   $("p, li").each(function(){
     //alert($(this).text())
     if ($(this).text().match(/^\$carr/)) { 
+        
+        var newcarr = function(){
+            var num = parseInt(prefcarr.split('carousel')[1])+1
+            var incremcarr = 'carousel'+num ;
+            prefcarr = incremcarr ;
+            return incremcarr
+          }
+        
+        var namecarr = $(this).text().split(/^\$carr/)[1].split('\n')[0].trim() || 'default'
+        if (namecarr=='default'){
+              namecarr=newcarr()
+          }
         var divcarr = $('<div/>').addClass("carousel slide")
-                                 .attr('id','mycarr')
-        // var ol = $('<ol/>').addClass("carousel-indicators")
+                                 .attr('id',namecarr)
         var divcarrinner = $('<div/>').addClass("carousel-inner").attr('role','listbox')
         //======================== go to previous
         var aprev = $('<a/>').addClass("left carousel-control")
                              .attr('role','button')
                              .attr('data-slide','prev')
-                             .attr('href','#mycarr')
+                             .attr('href','#'+namecarr)
             aprev.text('<').css({"font-size": "20px"})
                          
         //======================= go to next
         var anext = $('<a/>').addClass("right carousel-control")
                  .attr('role','button')
                  .attr('data-slide','next')
-                 .attr('href','#mycarr')
+                 .attr('href','#'+namecarr)
             anext.text('>').css({"font-size": "20px"})
 
         //======================= partial elements
