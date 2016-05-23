@@ -9,11 +9,11 @@ var maketoc = function(){
     
     # Extended markdown: 
     * :: , makes folding list (close by default)
-    * link between -- , creates a tag with id "link" 
-    * video ;;(hyperlink) insert a video with the hyperlink through iframe element.
-    * pdf §§(hyperlink) insert a pdf with object tag.
-    * blabla ,,(hyperlink) insert whatever iframe
-    * blabla %%(hyperlink) insert a local video with no autoplay by default (works with Chrome but not with Firefox)
+    * --link-- , creates a tag with id "link" 
+    * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
+    * [pdf §§](hyperlink) insert a pdf with object tag.
+    * [blabla ,,](hyperlink) insert whatever iframe
+    * [blabla %%](hyperlink) insert a local video with no autoplay by default (works with Chrome but not with Firefox)
     * novideo, at the beginning of the document to avoid loading of videos.
     * @@ blabla, copy the li, blabla @@ paste the li (@@ must be glued)
     * key "k", to make appear disappear the sliders.
@@ -23,7 +23,7 @@ var maketoc = function(){
     * Set notoc to true for removing the TOC.
     * Size image, enter the size after the name eg: blabla 500x500(address)
     * @color to change color, for the moment works onl for lists.
-    * blabla %caption%(address) insert the caption under the image
+    * [blabla %caption%](address) insert the caption under the image
     * %%% for deleting symbolically a line, replacing  the tilde. 
     * $carr and list of images in markdown language  after for making a carrousel with pictures. 
     * $portf and list of images in markdown language  after for making a portfolio with pictures. 
@@ -279,7 +279,6 @@ var maketoc = function(){
      }   // end if regexp
  })   // end each p
 
-
 //===================================================================== Carousel
 
   $("p, li").each(function(){
@@ -464,21 +463,7 @@ var maketoc = function(){
            }
         })
 
-//===================================================================== syntax
 
-$('body').prepend($('<div/>').addClass('helpmsg').attr('id',"syntax")) 
-$('#syntax').html(simple_md(help)).toggle()
-$('#syntax').draggable()
-
-//===================================================================== keys
-
-$('body').prepend($('<div/>').addClass('helpmsg').attr('id',"keys")) 
-$('#keys').html(simple_md(keys)).toggle()
-
-//===================================================================== esc
-
-$('body').prepend($('<div/>').addClass('esc').attr('id',"esc")) 
-$('#esc').toggle()
 
 //===================================================================== TOC
 
@@ -680,7 +665,7 @@ $('#esc').toggle()
 
     $(document).keydown(function(event){
 
-        if(event.keyCode == "s".charCodeAt(0)-32){   
+        if(event.keyCode == "s".charCodeAt(0)-32 && statekey == 1){   
             $('#syntax').toggle()
           } // end if key code
         
@@ -710,7 +695,7 @@ $('#esc').toggle()
                 } // end if
               }); // each
           }// end if key code
-      if(event.keyCode == 'd'.charCodeAt(0)-32){  // stop draggable plot
+      if(event.keyCode == 'd'.charCodeAt(0)-32 && statekey == 1){  // stop draggable plot
           $("div").each(function(i){ 
               if ($(this).hasClass('chart')){
                   $(this).draggable('destroy')
@@ -963,6 +948,7 @@ $('#esc').toggle()
         } // end if
  }) // end each
 
+   //=====================================================================   Youtube
 
  $(".youtube").each(function() { // take the youtube class element and replace.. 
      $(this).css('background-image', 'url(http://img.youtube.com/vi/' + this.id + '/hqdefault.jpg)');
@@ -1031,10 +1017,26 @@ $('#esc').toggle()
     $('#content').addClass('effect2')
     $('body').addClass('bodybgcol1')
 
+    //===================================================================== syntax
+
+$('body').prepend($('<div/>').addClass('syntax').attr('id',"syntax")) 
+$('#syntax').html(simple_md(help)).toggle()
+$('#syntax').draggable()
+
+//===================================================================== keys
+
+$('body').prepend($('<div/>').addClass('helpmsg').attr('id',"keys")) 
+$('#keys').html(simple_md(keys)).toggle()
+
+//===================================================================== esc
+
+$('body').prepend($('<div/>').addClass('esc').attr('id',"esc")) 
+$('#esc').toggle()
+
 }// end maketoc  
 
 /*=====================================================================
- ===================================================================== End of maketoc
+ ========================== End of maketoc =============================
 ===================================================================== */
 
 registerKeyboardHandler = function(callback) { // begin plot
