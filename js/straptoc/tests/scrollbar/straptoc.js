@@ -464,11 +464,10 @@ var maketoc = function(){
            }
         })
 
-//===================================================================== syntax
+//===================================================================== shortcuts
 
-$('body').prepend($('<div/>').addClass('helpmsg').attr('id',"syntax")) 
-$('#syntax').html(simple_md(help)).toggle()
-$('#syntax').draggable()
+$('body').prepend($('<div/>').addClass('helpmsg').attr('id',"shortcuts")) 
+$('#shortcuts').html(simple_md(help)).toggle()
 
 //===================================================================== keys
 
@@ -681,7 +680,7 @@ $('#esc').toggle()
     $(document).keydown(function(event){
 
         if(event.keyCode == "s".charCodeAt(0)-32){   
-            $('#syntax').toggle()
+            $('#shortcuts').toggle()
           } // end if key code
         
           if(event.keyCode == "k".charCodeAt(0)-32 && statekey == 1){   // keys
@@ -1666,10 +1665,11 @@ $(document).ready(function () {
     $('.carousel').carousel({ interval: false }) // removing automatic carousel
     zoomabove()
     gototop()
-    var syntaxscroll = document.querySelector('#syntax');
-    Ps.initialize(syntaxscroll);
-    var tocscroll = document.querySelector('#toc');
-    Ps.initialize(tocscroll);
+   //$('#shortcuts').perfectScrollbar()
+   var shortc = document.querySelector('#shortcuts');
+   Ps.initialize(shortc);
+   var tocc = document.querySelector('#toc');
+   Ps.initialize(tocc);
 
 });
 

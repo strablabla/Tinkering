@@ -28,8 +28,6 @@ div.onside {
  
  div.postit {
     margin-left: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
     box-shadow: 0.5em 0.5em 0.7em;
     right: 50px;
     max-width: 200px;
@@ -47,7 +45,6 @@ div.onside {
 
   div.helpmsg {
    position: fixed;
-   padding-top: 40px;
    padding-bottom: 20px;
    padding-left: 40px;
    padding-right: 40px;
@@ -57,7 +54,6 @@ div.onside {
    background-color:#FFCC99; /*#FFF;*/
    font-size:85%;
    overflow: scroll;
-   width: 50%;
  }
  
  
@@ -83,6 +79,8 @@ div.onside {
 .dialog > div  {
     overflow: scroll;
 }
+
+
 
 .scrollToTop{
     width:40px;
