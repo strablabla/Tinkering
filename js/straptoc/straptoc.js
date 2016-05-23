@@ -475,7 +475,7 @@ $('#syntax').draggable()
 $('body').prepend($('<div/>').addClass('helpmsg').attr('id',"keys")) 
 $('#keys').html(simple_md(keys)).toggle()
 
-//===================================================================== keys
+//===================================================================== esc
 
 $('body').prepend($('<div/>').addClass('esc').attr('id',"esc")) 
 $('#esc').toggle()
