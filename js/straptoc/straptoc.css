@@ -12,9 +12,9 @@ div.onside {
    background-color:#FFCC99; /*#FFF;*/
    font-size:85%;
    overflow: scroll;
+   /*resize: both;*/
  }
 
- 
  div.under {
    position: fixed;
    padding-bottom: 20px;
@@ -75,6 +75,20 @@ div.onside {
    width: 50%;
  }
  
+ div.keys {
+   position: fixed;
+   padding-top: 40px;
+   padding-bottom: 20px;
+   padding-left: 40px;
+   padding-right: 40px;
+   box-shadow: 0.5em 0.5em 0.7em;
+   left: 50px;
+   max-height: 500px;
+   background-color:#ccffcc; /*#FFF;*/
+   font-size:85%;
+   overflow: scroll;
+   width: 50%;
+ }
  
  div.esc {
     position: fixed;
