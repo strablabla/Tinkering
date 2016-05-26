@@ -39,7 +39,7 @@
       .axis { font-size: 1 em; }
       .chart {
         width: 600px;
-        height: 400px;
+        height: 600px;
         box-shadow: 0.5em 0.5em 0.7em;
          }
       circle {
@@ -69,10 +69,11 @@
     
       div.infos {
          position: fixed;
+         padding-top: 20px;
          padding-left: 20px;
          padding-right: 20px;
          box-shadow: 0.5em 0.5em 0.7em;
-         height: 100px;
+         height: 120px;
          background-color:#FFCC99; /*#FFF;*/
          font-size:85%;
          opacity:0.8;
@@ -129,8 +130,8 @@
     
     params = { "xlim": [0,60], "ylim": [-5,5], "title": "Visualization",
                 "xlabel": "time", "ylabel": "nb of counts", "color":"g", "fill":"#ffffff"}
-    plot("chart1", 'data/data_curve.json', 'data/nodes_links.json', params)
-    
+    plot("chart1", 'data/data_curve.json','nolink', params)
+    // nolink' 'data/nodes_links.json'
   
     </script>
     

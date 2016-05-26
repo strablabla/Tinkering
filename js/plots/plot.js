@@ -3,24 +3,32 @@ registerKeyboardHandler = function(callback) {
   d3.select(window).on("keydown", callback);  
 };
 
-
 var plot = function(elemid, add_data, add_nodes_links, params){
-    queue() // important !!! need of d3.js v3 at least for using queue correctly
-        .defer(d3.json, add_data)
-        .defer(d3.json, add_nodes_links)
-        .await(function(error, dataset, nodes_links){
-            new make_plot(elemid, dataset, nodes_links, params); 
-        }); // end await
+    if (add_nodes_links != 'nolink'){
+            queue() // important !!! need of d3.js v3 at least for using queue correctly
+                .defer(d3.json, add_data)
+                .defer(d3.json, add_nodes_links)
+                .await(function(error, dataset, nodes_links){
+                    new make_plot(elemid, dataset, nodes_links, params); 
+                }); // end await
+        } // if links
+     else{
+          queue() // important !!! need of d3.js v3 at least for using queue correctly
+              .defer(d3.json, add_data)
+              .await(function(error, dataset){
+                  new make_plot(elemid, dataset, 'nolink', params); 
+              }); // end await
+      } // end else
     }
 
-make_plot = function(elemid, dataset, nodes_links,   params) {
+make_plot = function(elemid, dataset, nodes_links, params) {
   var self = this;
   
   this.id = elemid        // identity for the plot
   this.dataset = dataset
   this.nodes_links = nodes_links
   this.chart = document.getElementById(elemid);
-  $('#'+elemid).draggable()
+  $('#' + elemid).draggable()
   this.params = params || {};
   this.xlim = this.params['xlim']  // xlim 
   this.ylim = this.params['ylim']  // ylim 
@@ -167,8 +175,8 @@ function elementMousedown(evt) {
   this.padding = {                                  // padding for the plot
      // "top":    this.title  ? 40 : 20,
      "top":    this.title  ? 80 : 20,
-     "right":                 30,
-     "bottom": this.xlabel ? 80 : 10,
+     "right":                 70,
+     "bottom": this.xlabel ? 200 : 10,
      "left":   this.ylabel ? 70 : 45
   };
 
@@ -233,7 +241,7 @@ function elementMousedown(evt) {
         }
   // add the x-axis label
   if (this.xlabel) {
-      var xlab = add_txt_axis(this.xlabel, this.size.width/2+50, 1.5*this.size.height)
+      var xlab = add_txt_axis(this.xlabel, this.size.width/2+50, 1.35*this.size.height)
           xlab.css({"font-family": "Times New Roman","font-size": "20px"}) //"dy":"2.4em", 
         }
   // add y-axis label
@@ -346,7 +354,7 @@ function elementMousedown(evt) {
   }
   
   $(document).keydown(function(event){   
-      if(keyev('t', event)){    // "h", key for help documentation
+      if(keyev('t', event)){    // "h", key for tools documentation
               $('.alertify .alert > *').css({'text-align':'left'});
               alertify.alert(simple_md(tools))
         } // end if key code          
@@ -366,8 +374,19 @@ function elementMousedown(evt) {
            self.redraw_all()();
           } // end if keyev
           
-      if(keyev('n', event)){         // select the brush tool
+      if(keyev('n', event)){         // remove the navig board. 
           self.show_navig_plot = ! self.show_navig_plot
+          if (self.show_navig_plot){
+              $('#' + elemid).css({'height':'600'})
+              $('#vis' + elemid).attr('height',600)
+          }
+          else{
+              $('#' + elemid).css({'height':'500'})
+              $('#vis' + elemid).attr('height',500)
+          }
+          
+          //alert($('#vis' + elemid).attr('height', 500))
+          //alert(elemid)
            self.redraw_all()();
           } // end if keyev
 
@@ -377,7 +396,7 @@ function elementMousedown(evt) {
           self.redraw_all()();
           }     // end if keyev
 
-      if(keyev('q', event)){      //  activate deactivate the grid
+      if(keyev('q', event)){      //  activate deactivate the direct zoom
           alert($('#direct_zoom').prop('checked'))
           }     // end if keyev
 
@@ -506,6 +525,8 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
 
 function make_labels(svg, nodes_links, w, h) {
     var color = d3.scale.category20();
+    
+
     var nodes = nodes_links.nodes
     var links = nodes_links.links
     var factx = 15
@@ -540,6 +561,8 @@ function make_labels(svg, nodes_links, w, h) {
                     .charge([-200])
                     .gravity(0.1)
                     .start();
+                    
+                    
     /* Draw the edges/links between the nodes */
     //alert('before line')
     var edges = svg.selectAll("line")
@@ -550,7 +573,8 @@ function make_labels(svg, nodes_links, w, h) {
                     .style("stroke-width", 1)
                     .attr("marker-end", "url(#end)")
                     .attr("class","lll")
-    //alert('before circle')               
+    //alert('before circle')     
+             
     var nodes = svg.selectAll("circle")
                     .data(nodes)
                     .enter()
@@ -575,9 +599,9 @@ function make_labels(svg, nodes_links, w, h) {
 
 make_plot.prototype.navig_button = function(func, glyph, arg, tooltip){
       self = this;
-      navmenu = $('#navig_plot'+self.id) 
+      navmenu = $('#navig_plot' + self.id) 
       if (glyph != null){
-            navmenu.append($('<button/>').attr('title',tooltip)
+            navmenu.append($('<button/>').attr('title', tooltip)
                 .append($('<span/>').attr('class', glyph))
               .click(function(){
                   if (arg != null){func(arg)} // code with glyphicon and arg
@@ -591,7 +615,8 @@ make_plot.prototype.navig_button = function(func, glyph, arg, tooltip){
 make_plot.prototype.menuplot = function(fig, add_html){
     self = this;
 
-    add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 320,-0, 0, 600, 300) // x, y, ang, w, h
+    // add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 320,-0, 0, 600, 300) // x, y, ang, w, h
+    add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 150, 390, 0, 600, 300) // x, y, ang, w, h
     
     show_poszoom = function(){  // show current zoom position in the list of saved zoomed
         var numtot = Math.max(1, self.list_domains.length)
@@ -682,7 +707,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
     self.navig_button(drag_plot, "glyphicon glyphicon-move", null, 'drag the plot')   // drag the plot
     self.navig_button(zoom_nav, "glyphicon glyphicon-chevron-left", "back", 'got to previous zoom')    // go to previous zoom
     self.navig_button(zoom_nav, "glyphicon glyphicon-chevron-right", "forward", 'got to next zoom')   // go to next zoom
-    self.navig_button(show_poszoom)					 // indicate where is the view in all the views
+    self.navig_button(show_poszoom)                  // indicate where is the view in all the views
     //alert("menu_plot "+self.x1)
     $('#navig_plot'+self.id).append($('<div/>')
                                 .append($('<span/>').text('x coord : '))
@@ -701,11 +726,11 @@ make_plot.prototype.menuplot = function(fig, add_html){
                                                 .append($('<input/>').attr('type','checkbox').attr('id','direct_zoom')
                                         )// end append input
                             ) // end append div
-     $('#navig_plot'+self.id).draggable()
+     $('#navig_plot'+self.id) //.draggable()
     if (self.direct_zoom == true){$('#direct_zoom').prop('checked', true)} // checkbox true for direct zoom
     $(document).ready(function(){ // activates the tooltips
-    			$('[data-toggle="tooltip"]').tooltip(); 
-			})
+                $('[data-toggle="tooltip"]').tooltip(); 
+            })
 
     
 } // end menu_plot

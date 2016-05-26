@@ -258,14 +258,14 @@ iframe {
 
 div.chart {
   position :absolute;
-  background-color: #ebebe0;
+  background-color: #fff;  /* #ebebe0*/
 }
 
     rect { fill: #fff; }
     .axis { font-size: 1 em; }
     .chart {
       width: 600px;
-      height: 400px;
+      height: 620px;
       box-shadow: 0.5em 0.5em 0.7em;
 
        }
@@ -297,11 +297,14 @@ div.chart {
     div.infos {
        position: fixed;
        padding-left: 20px;
+       padding-right: 20px;
+       padding-top: 20px;
+       padding-bottom: 20px;
        box-shadow: 0.5em 0.5em 0.7em;
        max-height: 500px;
        background-color:#FFCC99; /*#FFF;*/
        font-size:85%;
-       overflow: scroll;
+       
      }
      
      .node {
