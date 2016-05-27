@@ -122,7 +122,7 @@ window.getlocalmousecoord = function (svg, evt) {
     return localpoint;
 };
 
-window.createtext = function (localpoint, svg, txt, cl, ang, W, H) { // Create editable text in the svg
+window.createtext = function (localpoint, svg, txt, cl, ang) { // Create editable text in the svg
     var myforeign = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
     var textdiv = document.createElement("div");
     var svgtxt = txt ||  "Click to edit";
@@ -134,8 +134,8 @@ window.createtext = function (localpoint, svg, txt, cl, ang, W, H) { // Create e
     textdiv.setAttribute("width", "auto");
     textdiv.setAttribute("class", cl);
     textdiv.setAttribute("id", txt + self.id);   //+self.id
-    myforeign.setAttribute("width", W+"px"); // "100%"
-    myforeign.setAttribute("height", H+"px"); // "60px"
+    myforeign.setAttribute("width", "100%");
+    myforeign.setAttribute("height", "60px");
     myforeign.classList.add("foreign");                      //to make div fit text
     textdiv.classList.add("insideforeign");                   //to make div fit text
     textdiv.addEventListener("mousedown", elementMousedown, false);
@@ -161,16 +161,16 @@ function elementMousedown(evt) {
       return htmnode
       }
   
-  var add_txt = function(label, w, h, ang, cl, W, H){    // adding text in the plot, position : (w, h), angle : ang
+  var add_txt = function(label, w, h, ang, cl){    // adding text in the plot, position : (w, h), angle : ang
       var vv = document.getElementById('vis' + self.id);
-      createtext({"x":w,"y":h}, vv, label, cl, ang, W, H)  
+      createtext({"x":w,"y":h}, vv, label, cl, ang)  
       }
-
-  var add_txt_axis = function(label, w, h, ang, W, H){    // adding axis, (for Title and axis)
-      add_txt(label, w, h, ang, 'axis_txt', W, H)  
+  
+  var add_txt_axis = function(label, w, h, ang){    // adding axis, (for Title and axis)
+      add_txt(label, w, h, ang, 'axis_txt')  
       $('.axis_txt').addClass('axis')  
       return $('#' + label + self.id)  
-      } 
+      }  
           
   this.padding = {                                  // padding for the plot
      // "top":    this.title  ? 40 : 20,

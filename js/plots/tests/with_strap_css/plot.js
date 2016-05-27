@@ -165,12 +165,12 @@ function elementMousedown(evt) {
       var vv = document.getElementById('vis' + self.id);
       createtext({"x":w,"y":h}, vv, label, cl, ang, W, H)  
       }
-
+  
   var add_txt_axis = function(label, w, h, ang, W, H){    // adding axis, (for Title and axis)
       add_txt(label, w, h, ang, 'axis_txt', W, H)  
       $('.axis_txt').addClass('axis')  
       return $('#' + label + self.id)  
-      } 
+      }  
           
   this.padding = {                                  // padding for the plot
      // "top":    this.title  ? 40 : 20,
@@ -241,7 +241,7 @@ function elementMousedown(evt) {
         }
   // add the x-axis label
   if (this.xlabel) {
-      var xlab = add_txt_axis(this.xlabel, this.size.width/2+50, 1.35*this.size.height)
+      var xlab = add_txt_axis(this.xlabel, this.size.width/2+50, 1.35*this.size.height, 0, 40, 20) // this.size.width/2+50
           xlab.css({"font-family": "Times New Roman","font-size": "20px"}) //"dy":"2.4em", 
         }
   // add y-axis label
