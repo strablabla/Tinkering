@@ -259,14 +259,16 @@ div.chart {
   background-color: #fff;  /* #ebebe0*/
 }
 
-    rect { fill: #fff; }
-    .axis { font-size: 1 em; }
-    .chart {
+  rect { fill: #fff; }
+  .axis { font-size: 1 em; }
+
+  .chart {
       width: 600px;
       height: 620px;
       box-shadow: 0.5em 0.5em 0.7em;
+      /*resize: both;*/
+    }
 
-       }
     circle {
       fill: none;
       stroke: steelblue;
@@ -292,16 +294,33 @@ div.chart {
       shape-rendering: crispEdges;
     }
   
-    div.infos {
-       position: fixed;
+/*  div.navig_plot {
+     position: absolute;
+     padding-top: 20px;
+     padding-left: 20px;
+     padding-right: 20px;
+     box-shadow: 0.5em 0.5em 0.7em;
+     height: 150px;
+     width: 350px;
+     background-color:#FFCC99; 
+     font-size:85%;
+     opacity:0.8;
+     bottom: 0;
+     left: 20%;
+   }*/
+
+   div.navig_plot {
+       position: absolute;
        padding-left: 20px;
        padding-right: 20px;
        padding-top: 20px;
        padding-bottom: 20px;
        box-shadow: 0.5em 0.5em 0.7em;
-       max-height: 500px;
+       height: 150px;
        background-color:#FFCC99; /*#FFF;*/
        font-size:85%;
+       top: 0px;
+       opacity: 0.8;
      }
      
      .node {

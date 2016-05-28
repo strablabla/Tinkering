@@ -29,6 +29,8 @@ make_plot = function(elemid, dataset, nodes_links, params) {
   this.nodes_links = nodes_links
   this.chart = document.getElementById(elemid);
   $('#' + elemid).draggable()
+  $('#' + elemid).append($('<div/>').addClass('navig_plot').attr('id', 'navig_plot' + this.id))
+  //$('#' + elemid).append($('<div/>').addClass('bidule'))
   this.params = params || {};
   this.xlim = this.params['xlim']  // xlim 
   this.ylim = this.params['ylim']  // ylim 
@@ -122,14 +124,12 @@ window.getlocalmousecoord = function (svg, evt) {
     return localpoint;
 };
 
-window.createtext = function (localpoint, svg, txt, cl, ang, WW, HH) { // Create editable text in the svg
+window.createtext = function (localpoint, svg, txt, cl, ang, W, H) { // Create editable text in the svg
     var myforeign = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
     var textdiv = document.createElement("div");
     var svgtxt = txt ||  "Click to edit";
     var angle = ang || 0;
     var clss = cl || 'noclass'
-    var W = WW || '150';
-    var H = HH || '60';
     var textnode = document.createTextNode(svgtxt);
     textdiv.appendChild(textnode);
     textdiv.setAttribute("contentEditable", "true");   // Editable
@@ -238,17 +238,17 @@ function elementMousedown(evt) {
 
   // add Chart Title
   if (this.title) {
-        tit = add_txt_axis(this.title, this.size.width/2, 20)
+        tit = add_txt_axis(this.title, this.size.width/2, 20) // label, w, h, ang, W, H
         tit.css({"font-family": "Times New Roman","font-size": "25px"}) //"dy":"-1em",
         }
   // add the x-axis label
   if (this.xlabel) {
-      var xlab = add_txt_axis(this.xlabel, this.size.width/2+50, 1.35*this.size.height)
+      var xlab = add_txt_axis(this.xlabel, this.size.width/2+50, 1.35*this.size.height) // label, w, h, ang, W, H
           xlab.css({"font-family": "Times New Roman","font-size": "20px"}) //"dy":"2.4em", 
         }
   // add y-axis label
   if (this.ylabel) {
-      var ylab = add_txt_axis(this.ylabel, 20, this.size.height, -90)
+      var ylab = add_txt_axis(this.ylabel, 20, this.size.height, -90) // label, w, h, ang, W, H
           ylab.css({"font-family": "Times New Roman","font-size": "20px"})
         }
         
@@ -275,16 +275,7 @@ function elementMousedown(evt) {
           .attr("class", "line") // line above grid
           .attr("d", this.line(this.dataset))
           .style({stroke : colrs[this.col], fill : 'none','stroke-width' : '1.5px'})
-
-    if (self.show_navig_plot){
-              $('#' + elemid).css({'height':'650'})
-              $('#vis' + elemid).attr('height',650)
-          }
-          else{
-              $('#' + elemid).css({'height':'500'})
-              $('#vis' + elemid).attr('height',500)
-          }
-
+    
     self.refresh_navig_plot() // navig plot above the line
 
   this.make_brush = function(){                // zoom box with brush tool
@@ -388,14 +379,16 @@ function elementMousedown(evt) {
       if(keyev('n', event)){         // remove the navig board. 
           self.show_navig_plot = ! self.show_navig_plot
           if (self.show_navig_plot){
-              $('#' + elemid).css({'height':'650'})
-              $('#vis' + elemid).attr('height',650)
+              $('#' + elemid).css({'height':'600'})
+              $('#vis' + elemid).attr('height',600)
           }
           else{
-              $('#' + elemid).css({'height':'500'})
-              $('#vis' + elemid).attr('height',500)
+              $('#' + elemid).css({'height': '500'})
+              $('#vis' + elemid).attr('height', 500)
           }
           
+          //alert($('#vis' + elemid).attr('height', 500))
+          //alert(elemid)
            self.redraw_all()();
           } // end if keyev
 
@@ -426,7 +419,7 @@ make_plot.prototype.plot_drag = function() {
 
 make_plot.prototype.refresh_navig_plot = function() {
     var self = this;
-    $('#navig_plot' + self.id).remove() // removing the menu
+    $('#navig_plot'+self.id).remove() // removing the menu
     self.menuplot(this.vis, this.add_html) // make the menu
     if (self.show_navig_plot == false){
         $('#navig_plot'+self.id).hide(); 
@@ -609,6 +602,7 @@ function make_labels(svg, nodes_links, w, h) {
 make_plot.prototype.navig_button = function(func, glyph, arg, tooltip){
       self = this;
       navmenu = $('#navig_plot' + self.id) 
+      //alert(self.id)
       if (glyph != null){
             navmenu.append($('<button/>').attr('title', tooltip)
                 .append($('<span/>').attr('class', glyph))
@@ -623,13 +617,11 @@ make_plot.prototype.navig_button = function(func, glyph, arg, tooltip){
 
 make_plot.prototype.menuplot = function(fig, add_html){
     self = this;
-
-    // add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 320,-0, 0, 600, 300) // x, y, ang, w, h
-    add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="navig_plot"></div>', 160, 400, 0, 375, 300) // x, y, ang, w, h
+    $('#' + self.id).append($('<div/>').addClass('navig_plot').attr('id', 'navig_plot'+ self.id))
     
-    show_poszoom = function(){  // show current zoom position in the list of saved zoomed
+    show_poszoom = function(){      // show current zoom position in the list of saved zoomed
         var numtot = Math.max(1, self.list_domains.length)
-        var pos = self.poszoom+1 // increment zoom position
+        var pos = self.poszoom+1               // increment zoom position
         return $('<span/>').attr('id','poszoom').text(pos+'/'+numtot)  // return position with number total of zooms saved.
     }
 

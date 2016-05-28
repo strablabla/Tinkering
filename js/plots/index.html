@@ -4,38 +4,25 @@
     <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> -->
     <title>plot</title>
     
-    <script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-    <script  src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
-  
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://cdn.rawgit.com/alertifyjs/alertify.js/v1.0.6/dist/js/alertify.js"></script>
-    <script  type="text/javascript" src="http://d3js.org/d3.v3.min.js"> </script>
-    <script  type="text/javascript" src="http://d3js.org/queue.v1.min.js">  </script>
-    <script type="text/javascript" src="plot.js"></script>
 
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-    </script>
-    <script type="text/javascript" async
-      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
-    </script>
+    <script  src="plot.js"></script>
+
+<!--     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"> -->
+
     
 
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script  src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
     <script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.1.1/jquery.contextMenu.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" ></script>
     <script src="https://cdn.rawgit.com/alertifyjs/alertify.js/v1.0.6/dist/js/alertify.js"></script>
     <script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.11/js/min/perfect-scrollbar.min.js"></script>
     <script  src="http://d3js.org/queue.v1.min.js"></script>
-    <script  src="straptoc.js"></script>
-    <link rel="stylesheet" href="straptoc.css">
 
-    <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.11/css/perfect-scrollbar.css'>
+
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.1.1/jquery.contextMenu.css">
 
     <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Enriqueta'>
@@ -48,8 +35,7 @@
 
     <script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.11/js/min/perfect-scrollbar.min.js"></script> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.11/css/perfect-scrollbar.css">
-    <link rel="stylesheet" href="straptoc.css">
-    <script  src="straptoc.js"></script>
+
 
 
     <script type="text/x-mathjax-config">
@@ -57,86 +43,86 @@
     </script>
     <script type="text/javascript" async
       src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
-    </script> -->
+    </script>
     
     <style type="text/css">
 /*      body { font: 13px sans-serif}*/
-      rect { fill: #fff; }
-      ul {
-        list-style-type: none;
-        margin: 0.5em 0em 0.5em 0em;
-        width: 100%; }
-        ul li {
-          display: table-cell;
-          vertical-align: middle;
-          margin: 0em;
-          padding: 0em 1em; }
-      .axis { font-size: 1 em; }
-      .chart {
-        width: 600px;
-        height: 600px;
-        box-shadow: 0.5em 0.5em 0.7em;
-         }
-      circle {
-        fill: none;
-        stroke: steelblue;
-        stroke-width: 2px; }
-      circle {
-        fill: white;
-        fill-opacity: 0.2;
-        cursor: move; }
-        circle.selected {
-          fill: #ff7f0e;
-          stroke: #ff7f0e; }
-        circle:hover {
-          fill: #ff7f0e;
-          stroke: #707f0e; }
-        circle.selected:hover {
-          fill: #ff7f0e;
-          stroke: #ff7f0e; }
-    .brush .extent {
-        fill-opacity: .2;
-        fill: #ff9999;
-        stroke: steelblue;
-        shape-rendering: crispEdges;
-      }
-      div.infos {
-         position: fixed;
-         padding-top: 20px;
-         padding-left: 20px;
-         padding-right: 20px;
-         box-shadow: 0.5em 0.5em 0.7em;
-         height: 120px;
-         background-color:#FFCC99; /*#FFF;*/
-         font-size:85%;
-         opacity:0.8;
-       /*  overflow: scroll;*/
-       }
+div.chart {
+  position :absolute;
+  background-color: #fff;  /* #ebebe0*/
+ }
+    rect { fill: #fff; }
+    .axis { font-size: 1 em; }
+    .chart {
+      width: 600px;
+      height: 600px;
+      box-shadow: 0.5em 0.5em 0.7em;
+  }
+    circle {
+      fill: none;
+      stroke: steelblue;
+      stroke-width: 2px; }
+    circle {
+      fill: white;
+      fill-opacity: 0.2;
+      cursor: move; }
+      circle.selected {
+        fill: #ff7f0e;
+        stroke: #ff7f0e; }
+      circle:hover {
+        fill: #ff7f0e;
+        stroke: #707f0e; }
+      circle.selected:hover {
+        fill: #ff7f0e;
+        stroke: #ff7f0e; }
 
-       .node {
-         stroke: #fff;
-         stroke-width: 1.5px;
-       }
-       .link {
-         stroke: #999;
-         stroke-opacity: .6;
-       }
+  .brush .extent {
+      fill-opacity: .2;
+      fill: #ff9999;
+      stroke: steelblue;
+      shape-rendering: crispEdges;
+    }
+  
+    div.navig_plot {
+       position: absolute;
+       padding-left: 20px;
+       padding-right: 20px;
+       padding-top: 20px;
+       padding-bottom: 20px;
+       box-shadow: 0.5em 0.5em 0.7em;
+       height: 150px;
+       background-color:#FFCC99; /*#FFF;*/
+       font-size:85%;
+       top: 0px;
+       opacity: 0.8;
+     }
+
+     
+     .node {
+       stroke: #fff;
+       stroke-width: 1.5px;
+     }
+
+     .link {
+       stroke: #999;
+       stroke-opacity: .6;
+     }
+     
+   rect  {
+       fill: none;
+       stroke: steelblue;
+       stroke-width: 2px; }
        
-     rect  {
-         fill: none;
-         stroke: steelblue;
-         stroke-width: 2px; }
-         
-     .foreign {
-         text-align: left;
-         //magically made the div fit the text
-     }
-     .insideforeign {
-         display: inline-block;
-     }
-     svg {
-         border:1px solid black;
-     }
+   .foreign {
+       text-align: left;
+       //magically made the div fit the text
+   }
+   .insideforeign {
+       display: inline-block;
+   }
+   svg {
+       border:1px solid black;
+   }
 
     </style>
 
