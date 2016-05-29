@@ -116,8 +116,8 @@ var maketoc = function(){
     */}.toString().slice(14,-3)
      
     
-    //https://github.com/strablabla/Tinkering/19ea7a8/js/straptoc/straptoc.js 
-    //https://github.com/strablabla/Tinkering/19ea7a8/js/straptoc/straptoc.css
+    //https://github.com/strablabla/Tinkering/9a148b3/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/9a148b3/js/straptoc/straptoc.css
 
     basename = function(path) {  return path.replace( /.*\//, "" ); }
 

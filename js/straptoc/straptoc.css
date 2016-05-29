@@ -255,7 +255,7 @@ img .thumbnail
  * ===============================================*/
 
 div.chart {
-  position :absolute;
+  position : absolute;
   background-color: #fff;  /* #ebebe0*/
 }
 
@@ -266,7 +266,8 @@ div.chart {
       width: 600px;
       height: 620px;
       box-shadow: 0.5em 0.5em 0.7em;
-      /*resize: both;*/
+/*      resize: both;
+      overflow: scroll;*/
     }
 
     circle {
@@ -345,9 +346,9 @@ div.chart {
    .insideforeign {
        display: inline-block;
    }
-   svg {
+/*   svg {
        border:1px solid black;
-   }
+   }*/
 
 /*==================================================
  * Carousel
