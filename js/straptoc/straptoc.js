@@ -763,9 +763,13 @@ var maketoc = function(){
           }// end if key code
        if(event.keyCode == 'd'.charCodeAt(0)-32 && statekey == 1){  // stop draggable plot
             $("div").each(function(){ 
-                if ($(this).hasClass('chart') || $(this).hasClass('keys')|| $(this).hasClass('toc')){
+                //if ($(this).hasClass('chart') || $(this).hasClass('keys')|| $(this).hasClass('toc')){
+                if ($(this).hasClass('ui-draggable')){
                   $(this).draggable('destroy')
-              } // end if
+                  } // end if
+                else if ($(this).hasClass('chart') || $(this).attr('id') =='keys' || $(this).attr('id') =='toc'){
+                  $(this).draggable()
+                } // end else
             }); // each
           }// end if key code
     
