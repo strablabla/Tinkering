@@ -143,7 +143,9 @@ var maketoc = function(){
     reg_func = function(name){return RegExp('^\\§'+name+'\\s*','g') } // function for regexp for configuration
     var reg_date = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /--\w*--/; //regexp for identity
-    var reg_col_sublist = reg_func('col_sublist') 
+    var reg_col_sublist0 = reg_func('col_sublist0') 
+    var reg_col_sublist1 = reg_func('col_sublist1')
+    var reg_col_sublist2 = reg_func('col_sublist2')
     var reg_col_toc = reg_func('col_toc')
     var reg_notoc = reg_func('notoc')
     var reg_width_video = reg_func('width_video') 
@@ -165,7 +167,9 @@ var maketoc = function(){
 //===================================================================== Dictionary for parameters
 
     param = {
-             'color_sublist':{'reg':reg_col_sublist, 'cut':'§col_sublist', 'var': 'green'},
+             'color_sublist0':{'reg':reg_col_sublist0, 'cut':'§col_sublist0', 'var': 'green'},
+             'color_sublist1':{'reg':reg_col_sublist1, 'cut':'§col_sublist1', 'var': 'green'},
+             'color_sublist2':{'reg':reg_col_sublist2, 'cut':'§col_sublist2', 'var': 'green'},
              'color_toc':{'reg':reg_col_toc, 'cut':'§col_toc', 'var': '#FFCC99'},
              'notoc':{'reg':reg_notoc, 'cut':'§notoc', 'var': false},
              'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': '80%' },
@@ -524,9 +528,9 @@ var maketoc = function(){
             var arg = txtm[0].split('$input')[1].trim()
             var tinp = arg.split(/\s+/)[0]
             var val = arg.split(/\s+/)[1]
-            var inpbutt = '<input type="'+ kind[tinp] +'" value="'+ val +'"' 
+            var inpbutt = '<input type="'+ kind[tinp] +'" value="'+ val +'"'  // pure input or button.
             if (kind[tinp] == 'button'){
-                inpbutt += '" class="btn btn-default"'
+                inpbutt += '" class="btn btn-default"' // Bootstrap button
             }
             inpbutt += '/>'
             var sub = $('<form/>').append(inpbutt)
@@ -580,7 +584,8 @@ var maketoc = function(){
             var ul3 = $("<ul/>").addClass('lev2'); 
             li2.append($('<a/>').attr('href', namehhref).html(nameh)
                                 .append($('<span/>').text(" [-]").addClass('li_h3'))) // end of li
-                .css({'list-style': 'square inside','line-height': '20px'}) // end append li2
+                .css({'list-style': 'square inside', 'line-height': '20px', 'color': param['color_sublist0']['var']}) // end append li2
+                //childr.css({'color': param['color_sublist']['var']}) 
             li2.append(ul3)
             } // end else if H2
             
@@ -594,7 +599,7 @@ var maketoc = function(){
             ul3.append(li3);
             //var ul4 = $("<ul/>").addClass('lev3'); 
             li3.append($('<a/>').attr('href', namehhref).html(nameh).addClass(nameh)) // end of li
-                .css({'list-style': 'circle inside','line-height': '20px'}) // end append li3
+                .css({'list-style': 'circle inside','line-height': '20px', 'color': param['color_sublist1']['var']}) // end append li3
             } // end else if H3
        }                                                                   // end for elems
 
@@ -685,15 +690,19 @@ var maketoc = function(){
     It is the first processing step. Insert :: etc.. 
     */
 
-    $("li").each(function(i){    // need to be placed before  $("a").click    
-        var htm = $(this).html(); var childr = $(this).children('ul') // closing list when it finds :: in the code
+    $("li").each(function(){    // need to be placed before  $("a").click    
+        var htm = $(this).html();
+        var childr = $(this).children('ul') // closing list when it finds :: in the code
         if(htm.split('\n')[0].search('::')!=-1){ 
                 childr.toggle();                // close the sub lists 
-                childr.css({'color': param['color_sublist']['var']})   // change color children
                 $('<a/>').append($('<span/>').text(" [-]").addClass('::'))
                          .insertBefore(childr)
             } // end if 
         }); // end each
+    
+    $("li ul li").css({'color': param['color_sublist0']['var']}) 
+    $("li ul li ul li").css({'color': param['color_sublist1']['var']}) 
+    $("li ul li ul li ul li").css({'color': param['color_sublist2']['var']}) 
 
 //=====================================================================  Folding lists, second step
 
