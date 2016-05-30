@@ -363,7 +363,9 @@ var maketoc = function(){
         var divcarr = $('<div/>').addClass("carousel slide")
                                  .attr('id',namecarr)
         var divcarrinner = $('<div/>').addClass("carousel-inner").attr('role','listbox')
+
         //======================== go to previous
+
         var aprev = $('<a/>').addClass("left carousel-control")
                              .attr('role','button')
                              .attr('data-slide','prev')
@@ -371,15 +373,16 @@ var maketoc = function(){
             aprev.text('<').css({"font-size": "20px"})
                          
         //======================= go to next
+
         var anext = $('<a/>').addClass("right carousel-control")
                  .attr('role','button')
                  .attr('data-slide','next')
                  .attr('href','#'+namecarr)
             anext.text('>').css({"font-size": "20px"})
 
-        //======================= partial elements
+        //======================= image items
+
         $(this).children('img').each(function(i){
-    
             var divitem = $('<div/>').addClass("item")
                            .append($(this)
                                 .attr('width','460')
@@ -388,7 +391,9 @@ var maketoc = function(){
             if (i == 0){divitem.addClass("active")}
             divcarrinner.append(divitem) // end append
             }) // end each
+
         //=========================  make the whole div.
+
         divcarr.append(divcarrinner.append(aprev).append(anext)) 
         $(this).replaceWith(divcarr)
       } // end if regexp
