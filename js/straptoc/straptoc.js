@@ -524,7 +524,11 @@ var maketoc = function(){
             var arg = txtm[0].split('$input')[1].trim()
             var tinp = arg.split(/\s+/)[0]
             var val = arg.split(/\s+/)[1]
-            var inpbutt = '<input type="'+ kind[tinp] +'" value="'+ val +'" />'
+            var inpbutt = '<input type="'+ kind[tinp] +'" value="'+ val +'"' 
+            if (kind[tinp] == 'button'){
+                inpbutt += '" class="btn btn-default"'
+            }
+            inpbutt += '/>'
             var sub = $('<form/>').append(inpbutt)
             $(this).replaceWith(sub)
            }
