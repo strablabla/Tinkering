@@ -105,6 +105,7 @@ var maketoc = function(){
     * $input b blabla : makes a button blabla
     * $input i ohoh : makes a input for entering text with placeholder ohoh. 
     * $* : line separation
+    * §mathsize : set the size of the equations. Possible values : tiny, small, normalsize, large, Large, LARGE, huge, Huge
     */}.toString().slice(14,-3)
     
     var keys = function(){/*
@@ -146,6 +147,7 @@ var maketoc = function(){
     var reg_col_sublist0 = reg_func('col_sublist0') 
     var reg_col_sublist1 = reg_func('col_sublist1')
     var reg_col_sublist2 = reg_func('col_sublist2')
+    var reg_mathsize = reg_func('mathsize')
     var reg_col_toc = reg_func('col_toc')
     var reg_notoc = reg_func('notoc')
     var reg_width_video = reg_func('width_video') 
@@ -170,6 +172,7 @@ var maketoc = function(){
              'color_sublist0':{'reg':reg_col_sublist0, 'cut':'§col_sublist0', 'var': 'green'},
              'color_sublist1':{'reg':reg_col_sublist1, 'cut':'§col_sublist1', 'var': 'green'},
              'color_sublist2':{'reg':reg_col_sublist2, 'cut':'§col_sublist2', 'var': 'green'},
+             'mathsize':{'reg':reg_mathsize, 'cut':'§mathsize', 'var': ''},
              'color_toc':{'reg':reg_col_toc, 'cut':'§col_toc', 'var': '#FFCC99'},
              'notoc':{'reg':reg_notoc, 'cut':'§notoc', 'var': false},
              'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': '80%' },
@@ -246,15 +249,6 @@ var maketoc = function(){
             $(this).replaceWith($('<hr/>'))
           }   // end if txt.mtch
       })   // end each p
-
-  //===================================================================== mathjax
-
-    $("p, li").each(function(){
-      txt = $(this).text()
-      if (txt.match(/^\$math/)) { 
-            $(this).replaceWith('$$'+txt.split('$math')[1]+'$$')
-          }   // end if txt.mtch
-      })   // end each p, li
 
  //===================================================================== Simple bash code
 
@@ -337,7 +331,6 @@ var maketoc = function(){
         var nbsuffix = 12/parseInt(nbcol) // suffix for bootstrap
         var classportf = "col-md-" +  nbsuffix
         $(this).children('img').each(function(i){
-
              var divportfinner = $('<div/>').addClass(classportf)
                  .append(
                        $('<div/>').addClass("thumbnail")   // class thumbnail
@@ -491,6 +484,17 @@ var maketoc = function(){
         return barrcorr
         }) // end replace
     $('#content').html(m) 
+
+//===================================================================== mathjax
+
+  $("p, li").each(function(){
+    txt = $(this).text()
+    if (txt.match(/^\$math/)) { 
+          if (param['mathsize']['var'].length>0){ mathsize = '\\'+param['mathsize']['var']+' ' }
+          //alert(param['mathsize']['var'])
+          $(this).replaceWith('$$'+ mathsize + txt.split('$math')[1]+'$$')
+        }   // end if txt.mtch
+    })   // end each p, li
 
 //=====================================================================  Tooltips
 

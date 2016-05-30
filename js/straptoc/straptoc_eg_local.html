@@ -14,6 +14,14 @@
 
 <script  src="http://d3js.org/queue.v1.min.js"></script>
 
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+
 <script  src="straptoc.js"></script>
 <link rel="stylesheet" href="straptoc.css">
 
@@ -28,22 +36,6 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-
-
-<!-- <script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.11/js/min/perfect-scrollbar.min.js"></script> 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.11/css/perfect-scrollbar.css">
-<link rel="stylesheet" href="straptoc.css">
-<script  src="straptoc.js"></script> -->
-
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-</script>
-<script type="text/javascript" async
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
-</script>
-
-
 <xmp theme="simplex" style="display:none;">
 
 §menu toto:#janv%202016_oo    bobo:trash 
@@ -56,6 +48,7 @@
 §col_toc #ccccff  
 §toggle_hide a  
 §help true  
+§mathsize huge
 
 # Introduction
 ## example
@@ -246,7 +239,13 @@ $*
 
 ## Example of equation
 * first example
-    * sum
+    * sum tiny
+        * $math \tiny\sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}
+    * sum small
+        * $math \small\sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}
+    * sum normal
+        * $math \normalsize\sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}
+    * sum with size set to huge
         * $math \sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}
    
     
