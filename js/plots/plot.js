@@ -129,7 +129,7 @@ window.createtext = function (localpoint, svg, txt, cl, ang, WW, HH) { // Create
     var angle = ang || 0;
     var clss = cl || 'noclass'
     var W = WW || '150';
-    var H = HH || '60';
+    var H = HH || '40';
     var textnode = document.createTextNode(svgtxt);
     textdiv.appendChild(textnode);
     textdiv.setAttribute("contentEditable", "true");   // Editable
@@ -151,13 +151,15 @@ function elementMousedown(evt) {
     self.mousedownonelement = true;
 }
 
-  this.add_html = function(node, htm, w, h, ang, width, height){ // adding html in the plot
+  this.add_html = function(node, htm, w, h, ang, width, height, fclass){ // adding html in the plot
       ww = width || 200;
       hh = height || 100;
+      cl = fclass || 'nofcl';
       var htmnode = node.append('foreignObject')
           .attr("transform", tr(w-100, h, ang))
           .attr('width', ww)
           .attr('height', hh)
+          .attr('class', cl)
           .append("xhtml:body")
           .html(htm)
       return htmnode
@@ -625,7 +627,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
     self = this;
 
     // add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 320,-0, 0, 600, 300) // x, y, ang, w, h
-    add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="navig_plot"></div>', 160, 400, 0, 375, 300) // x, y, ang, w, h
+    add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="navig_plot"></div>', 160, 400, 0, 375, 300, 'navplt') // x, y, ang, w, h
     
     show_poszoom = function(){  // show current zoom position in the list of saved zoomed
         var numtot = Math.max(1, self.list_domains.length)

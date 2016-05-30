@@ -324,20 +324,23 @@ var maketoc = function(){
 
    $("p, li").each(function(){
      if ($(this).text().match(/^\$portf/)) {  // detect portfolio
-        var reg_caption = /\%.*\%/
-        var capt = $(this).text().match(reg_caption) || '' // caption for thumbnail
+        //var reg_caption = /\%.*\%/
+        // var capt = $(this).text().match(reg_caption) || '' // caption for thumbnail
+        // alert($(this).text())
+
         var divportf = $('<div/>').addClass("row")
         var nbcol = $(this).text().split(/^\$portf/)[1].split('\n')[0].trim() || 3 // number of columns
         var nbsuffix = 12/parseInt(nbcol) // suffix for bootstrap
         var classportf = "col-md-" +  nbsuffix
         $(this).children('img').each(function(i){
+
              var divportfinner = $('<div/>').addClass(classportf)
-                                     .append(
-                                           $('<div/>').addClass("thumbnail")   // class thumbnail
-                                             .append($(this))
-                                             .append($('<p/>').addClass("caption").text(capt))
-                                        ) // end append thumbnail
-                divportf.append(divportfinner)
+                 .append(
+                       $('<div/>').addClass("thumbnail")   // class thumbnail
+                         .append($(this)) // add image
+                         //.append($('<p/>').addClass("caption").text(capt))
+                        ) // end append thumbnail
+        divportf.append(divportfinner)
         }) // end each img
         $(this).replaceWith(divportf) // replace whole p or li with portfolio. 
      }   // end if regexp
@@ -970,17 +973,20 @@ var maketoc = function(){
     /*
     Adding caption to image with %caption%
     */
-
-    $("img").each(function(){               // retrieve the caption and insert it under the image.
-            var reg_caption = /\%.*\%/
-            if ($(this).attr('alt').match(reg_caption)){ 
-              var capt = $(this).attr('alt').match(reg_caption)[0].slice(1,-1);
-              var captcl = capt.replace(/\s+/g, '')
-              var caption = $('<figcaption/>').text(capt)
-              $(this).wrap($('<figure/>').attr('class', captcl).css({'text-align': 'center'})) // center image with caption
-              $('.'+captcl).append(caption)
-            } // end if
-        }) // end each
+    
+    
+     $("img").each(function(){               // retrieve the caption and insert it under the image.
+             var reg_caption = /\%.*\%/
+             if ($(this).attr('alt').match(reg_caption)){ 
+               
+               var capt = $(this).attr('alt').match(reg_caption)[0].slice(1,-1);
+               var captid = capt.replace(/\s+/g, '') + Math.floor((Math.random() * 1000) + 1);
+               //alert(captid)
+               var caption = $('<figcaption/>').text(capt)
+               $(this).wrap($('<figure/>').attr('id', captid).css({'text-align': 'center'})) // center image with caption
+               $('#'+captid).append(caption)
+             } // end if
+         }) // end each
         
 //=====================================================================  
 
@@ -1245,7 +1251,7 @@ window.createtext = function (localpoint, svg, txt, cl, ang, WW, HH) { // Create
     var angle = ang || 0;
     var clss = cl || 'noclass'
     var W = WW || '150';
-    var H = HH || '60';
+    var H = HH || '40';
     var textnode = document.createTextNode(svgtxt);
     textdiv.appendChild(textnode);
     textdiv.setAttribute("contentEditable", "true");   // Editable
@@ -1267,13 +1273,15 @@ function elementMousedown(evt) {
     self.mousedownonelement = true;
 }
 
-  this.add_html = function(node, htm, w, h, ang, width, height){ // adding html in the plot
+  this.add_html = function(node, htm, w, h, ang, width, height, fclass){ // adding html in the plot
       ww = width || 200;
       hh = height || 100;
+      cl = fclass || 'nofcl';
       var htmnode = node.append('foreignObject')
           .attr("transform", tr(w-100, h, ang))
           .attr('width', ww)
           .attr('height', hh)
+          .attr('class', cl)
           .append("xhtml:body")
           .html(htm)
       return htmnode
@@ -1741,7 +1749,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
     self = this;
 
     // add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 320,-0, 0, 600, 300) // x, y, ang, w, h
-    add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="navig_plot"></div>', 160, 400, 0, 375, 300) // x, y, ang, w, h
+    add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="navig_plot"></div>', 160, 400, 0, 375, 300, 'navplt') // x, y, ang, w, h
     
     show_poszoom = function(){  // show current zoom position in the list of saved zoomed
         var numtot = Math.max(1, self.list_domains.length)

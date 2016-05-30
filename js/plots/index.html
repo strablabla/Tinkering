@@ -46,84 +46,89 @@
     </script>
     
     <style type="text/css">
-/*      body { font: 13px sans-serif}*/
-div.chart {
-  position :absolute;
-  background-color: #fff;  /* #ebebe0*/
- }
-    rect { fill: #fff; }
-    .axis { font-size: 1 em; }
-    .chart {
-      width: 600px;
-      height: 600px;
-      box-shadow: 0.5em 0.5em 0.7em;
-  }
-    circle {
-      fill: none;
-      stroke: steelblue;
-      stroke-width: 2px; }
-    circle {
-      fill: white;
-      fill-opacity: 0.2;
-      cursor: move; }
-      circle.selected {
-        fill: #ff7f0e;
-        stroke: #ff7f0e; }
-      circle:hover {
-        fill: #ff7f0e;
-        stroke: #707f0e; }
-      circle.selected:hover {
-        fill: #ff7f0e;
-        stroke: #ff7f0e; }
-
-  .brush .extent {
-      fill-opacity: .2;
-      fill: #ff9999;
-      stroke: steelblue;
-      shape-rendering: crispEdges;
+    div.chart {
+      position : absolute;
+      background-color: #fff;  /* #ebebe0*/
     }
-  
-    div.navig_plot {
-       position: absolute;
-       padding-left: 20px;
-       padding-right: 20px;
-       padding-top: 20px;
-       padding-bottom: 20px;
-       box-shadow: 0.5em 0.5em 0.7em;
-       height: 150px;
-       background-color:#FFCC99; /*#FFF;*/
-       font-size:85%;
-       top: 0px;
-       opacity: 0.8;
-     }
 
-     
-     .node {
-       stroke: #fff;
-       stroke-width: 1.5px;
-     }
+      rect { fill: #fff; }
+      .axis { font-size: 1 em; }
 
-     .link {
-       stroke: #999;
-       stroke-opacity: .6;
-     }
-     
-   rect  {
-       fill: none;
-       stroke: steelblue;
-       stroke-width: 2px; }
-       
-   .foreign {
-       text-align: left;
-       //magically made the div fit the text
-   }
-   .insideforeign {
-       display: inline-block;
-   }
-   svg {
-       border:1px solid black;
-   }
+      .chart {
+          width: 600px;
+          height: 620px;
+          box-shadow: 0.5em 0.5em 0.7em;
+    /*      resize: both;
+          overflow: scroll;*/
+        }
 
+        circle {
+          fill: none;
+          stroke: steelblue;
+          stroke-width: 2px; }
+        circle {
+          fill: white;
+          fill-opacity: 0.2;
+          cursor: move; }
+          circle.selected {
+            fill: #ff7f0e;
+            stroke: #ff7f0e; }
+          circle:hover {
+            fill: #ff7f0e;
+            stroke: #707f0e; }
+          circle.selected:hover {
+            fill: #ff7f0e;
+            stroke: #ff7f0e; }
+
+      .brush .extent {
+          fill-opacity: .2;
+          fill: #ff9999;
+          stroke: steelblue;
+          shape-rendering: crispEdges;
+        }
+
+
+       .navplt body{
+           background-color:transparent;
+       }
+
+       div.navig_plot {
+           position: absolute;
+           padding-left: 20px;
+           padding-right: 20px;
+           padding-top: 20px;
+           padding-bottom: 20px;
+           box-shadow: 0.5em 0.5em 0.7em;
+           height: 150px;
+           width: 360px;
+           background-color:#FFCC99; /*#FFF;*/
+           font-size:85%;
+           top: 0px;
+           opacity: 0.8;
+         }
+
+         .node {
+           stroke: #fff;
+           stroke-width: 1.5px;
+         }
+
+         .link {
+           stroke: #999;
+           stroke-opacity: .6;
+         }
+
+       rect  {
+           fill: none;
+           stroke: steelblue;
+           stroke-width: 2px; }
+
+       .foreign {
+           text-align: left;
+           //magically made the div fit the text
+       }
+       .insideforeign {
+           display: inline-block;
+       }
     </style>
 
   <body>
