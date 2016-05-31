@@ -112,8 +112,9 @@ var maketoc = function(){
     # Keys: 
     * Esc + k : show keys
     * Esc + s : show syntax
-    * Esc + d : stopping draggable
-    * 
+    * Esc + d : toggle draggable
+    * Plot :
+        * shift + n : toggle plot tools
     */}.toString().slice(14,-3)
      
     
@@ -129,13 +130,21 @@ var maketoc = function(){
         var htm = $('<div/>')
         var ul = $('<ul/>').css({'text-align':'left'})
         for (i in all_text){
-            var text_insert = all_text[i].trim().slice(1)
-            if (all_text[i].match(/^\s{4}\*/)){
-            ul.append($('<li/>').text(text_insert))
-            } // end if
-            if (all_text[i].match(/\s*\#/)){
+            var text_insert = all_text[i].trim().slice(1) // prepare text
+            if (all_text[i].match(/^\s{4}\*/)){    // detect list first level
+                ul.append($('<li/>').text(text_insert))
+                } // end if
+            if (all_text[i].match(/^\s{8}\*/)){  // detect list second level
+                    var interm1 = $('<ul/>').append($('<li/>').text(text_insert))
+                    ul.append(interm1)
+                    } // end if
+            if (all_text[i].match(/^\s{12}\*/)){  // detect list third level
+                    var interm2 = $('<ul/>').append($('<li/>').text(text_insert))
+                    interm1.append(interm2)
+                    } // end if
+            if (all_text[i].match(/\s*\#/)){ // detect #
                 htm.append($('<h1/>').text(text_insert))
-            } // end if
+                } // end if
         } // end for
         htm.append(ul);
         return htm.html()
@@ -786,19 +795,22 @@ var maketoc = function(){
                 } // end if
               }); // each
           }// end if key code
-       if(event.keyCode == 'd'.charCodeAt(0)-32 && statekey == 1){  // stop draggable plot
+       if(event.keyCode == 'd'.charCodeAt(0)-32 && statekey == 1){  // toggle draggable
             $("div").each(function(){ 
                 //if ($(this).hasClass('chart') || $(this).hasClass('keys')|| $(this).hasClass('toc')){
                 if ($(this).hasClass('ui-draggable')){
                   $(this).draggable('destroy')
                   } // end if
-                else if ($(this).hasClass('chart') || $(this).attr('id') =='keys' || $(this).attr('id') =='toc'){
+                else if ($(this).hasClass('chart')
+                        || $(this).attr('id') =='keys'
+                        || $(this).attr('id') =='syntax'
+                        || $(this).attr('id') =='toc'){
                   $(this).draggable()
                 } // end else
             }); // each
           }// end if key code
     
-      if(event.keyCode == 'r'.charCodeAt(0)-32 && statekey == 1){  // stop draggable plot
+      if(event.keyCode == 'r'.charCodeAt(0)-32 && statekey == 1){  // resize
            $("div").each(function(){ 
                if ($(this).hasClass('chart') || $(this).hasClass('keys')|| $(this).hasClass('toc')){
                  $(this).resize()
@@ -1231,28 +1243,38 @@ make_plot = function(elemid, dataset, nodes_links, params) {
    * v : move forward in the zoom
    */}.toString().slice(14,-3)
 
-  simple_md = function(text){          // mini markdown for the help
-      var all_text = text.split('\n')
-      var htm = $('<div/>')           // main html 
-      var ul = $('<ul/>')             // preparing lists
-      for (i in all_text){
-          var text_insert = all_text[i].trim()    // cleaning
-          if (all_text[i].match(/\s*\*/)){
-              ul.append($('<li/>').text(text_insert.slice(1)))    // Make li
-              }     // end if
-          else if (all_text[i].match(/\s*\#/)){
-              htm.append($('<h1/>').text(text_insert.slice(1)))    // Make h1
-              }   // end if
-          else{htm.append($('<p/>').text(text_insert)).css({'text-align':'left'})}
-      }    // end for
-      htm.append(ul); // Append the list at the end
-      return htm.html()
-  }     // end function
+ //===================================================================== Simple markdown
+
+   // simple_md = function(text){ // mini markdown for the help
+   //     var all_text = text.split('\n')
+   //     var htm = $('<div/>')
+   //     var ul = $('<ul/>').css({'text-align':'left'})
+   //     for (i in all_text){
+   //         var text_insert = all_text[i].trim().slice(1) // prepare text
+   //         if (all_text[i].match(/^\s{4}\*/)){    // detect list first level
+   //             ul.append($('<li/>').text(text_insert))
+   //             } // end if
+   //         if (all_text[i].match(/^\s{8}\*/)){  // detect list second level
+   //                 var ulli = $('<ul/>').append($('<li/>').text(text_insert))
+   //                 ul.last('li').append(ulli)
+   //                 } // end if
+   //         if (all_text[i].match(/\s*\#/)){ // detect #
+   //             htm.append($('<h1/>').text(text_insert))
+   //             } // end if
+   //     } // end for
+   //     htm.append(ul);
+   //     return htm.html()
+   // } // end function
+   
+
+ //===================================================================== Rotation translation in svg
 
   var tr = function(w, h, ang){      // General translations and rotations in the svg
      ang = ang || 0
      return "translate(" + w + ","+ h + ") rotate(" + ang + ")"
       }
+
+ //===================================================================== Mouse svg
 
 this.mousedownonelement = false;
 
@@ -1265,6 +1287,8 @@ window.getlocalmousecoord = function (svg, evt) {
     localpoint.y = Math.round(localpoint.y);
     return localpoint;
 };
+
+ //===================================================================== Editable text
 
 window.createtext = function (localpoint, svg, txt, cl, ang, WW, HH) { // Create editable text in the svg
     var myforeign = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')

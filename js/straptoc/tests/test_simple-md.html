@@ -6,44 +6,80 @@
 
 <script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 
+<style>
+
+div.keys {
+  position: fixed;
+  padding-top: 40px;
+  padding-bottom: 20px;
+  padding-left: 40px;
+  padding-right: 40px;
+  box-shadow: 0.5em 0.5em 0.7em;
+  left: 50px;
+  max-height: 500px;
+  max-width: 300px;
+  background-color:#ccffcc; /*#FFF;*/
+  font-size:85%;
+  overflow: scroll;
+  width: 50%;
+}
+
+</style>
+
+<body>
+    
+    Hello
 
 <script>
 
-var help = `
+var keys = function(){/*
+    # Keys: 
+    * Esc + k : show keys
+    * Esc + s : show syntax
+    * Esc + d : toggle draggable
+    * Plot :
+        * shift + n : toggle plot tools
+            * third level
+            * another third level
+        * again second level
+            * third third time
+    * Esc z : aeaeaeae
+    */}.toString().slice(14,-3)
 
- # Commands: 
- * :: , close the list and make a toggle tool in the main page. 
- * --link-- , creates a tag with id "link" 
- * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
- * [pdf §§](hyperlink) insert a pdf with object tag.
- * write novideo at the beginning of the document to avoid loading of videos.
- * @@blabla, cut the li, blabla@@ paste the li
- * key "k" to make appear disappear the sliders.
- * insertion of tooltip : after h1 or h2, write the tooltip betweeen {}
- * double ^ is used to hide some text
-
-`
 //https://github.com/strablabla/Tinkering/211ec23/js/straptoc/straptoc.js 
 
-simple_md = function(text){
+simple_md = function(text){ // mini markdown for the help
     var all_text = text.split('\n')
     var htm = $('<div/>')
-    var ul = $('<ul/>')
+    var ul = $('<ul/>').css({'text-align':'left'})
     for (i in all_text){
-        if (all_text[i].match(/\s*\*/)){
-        ul.append($('<li/>').text(all_text[i]))
-        } // end if
-        if (all_text[i].match(/\s*\#/)){
-            htm.append($('<h1/>').text(all_text[i]))
-        } // end if
+        var text_insert = all_text[i].trim().slice(1) // prepare text
+        if (all_text[i].match(/^\s{4}\*/)){    // detect list first level
+            ul.append($('<li/>').text(text_insert))
+            } // end if
+        if (all_text[i].match(/^\s{8}\*/)){  // detect list second level
+                var interm1 = $('<ul/>').append($('<li/>').text(text_insert))
+                ul.append(interm1)
+                } // end if
+        if (all_text[i].match(/^\s{12}\*/)){  // detect list second level
+                var interm2 = $('<ul/>').append($('<li/>').text(text_insert))
+                interm1.append(interm2)
+                } // end if
+        if (all_text[i].match(/\s*\#/)){ // detect #
+            htm.append($('<h1/>').text(text_insert))
+            } // end if
     } // end for
     htm.append(ul);
-    return htm
+    return htm.html()
 } // end function
-var hh = simple_md(help)
-alert(hh.html())
+
+
+$('body').append($('<div/>').addClass('keys').attr('id',"keys")) 
+$('#keys').html(simple_md(keys))
 
 
  </script>
+ 
+ </body>
 
 </html>
