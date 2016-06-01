@@ -108,6 +108,7 @@ var maketoc = function(){
     * §mathsize : set the size of the equations. Possible values : tiny, small, normalsize, large, Large, LARGE, huge, Huge
     * $menu : 
         * eg : before H1 place $menu_zax link:nm_Edit:ic_edit:href_Introduction
+    * $------- : put comment lines in the edition window
     */}.toString().slice(14,-3)
     
     var keys = function(){/*
@@ -207,6 +208,15 @@ var maketoc = function(){
     $('body').prepend($('<div/>').addClass('carr').attr('id',"carr")) 
     $('#carr').append($('<h1/>').text('Carousels')).toggle()
     $('#carr').draggable()
+    
+ //===================================================================== Remove separating marks from edition
+
+    $("p").each(function(){
+        if ($(this).text().match(/^\$----.*/)){
+            $(this).remove()
+        }
+        
+    })
 
  //===================================================================== Context menu
  
