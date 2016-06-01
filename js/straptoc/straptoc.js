@@ -66,9 +66,6 @@ var maketoc = function(){
     //         clearInterval(timer);
 
 
-   
-    
-
     var help = function(){/*
     
     # Extended markdown: 
@@ -120,13 +117,14 @@ var maketoc = function(){
         * shift + n : toggle plot tools
     */}.toString().slice(14,-3)
      
-    
     //https://github.com/strablabla/Tinkering/9a148b3/js/straptoc/straptoc.js 
     //https://github.com/strablabla/Tinkering/9a148b3/js/straptoc/straptoc.css
 
     basename = function(path) {  return path.replace( /.*\//, "" ); }
 
     dirname = function(path) { return path.match( /.*\// ); }
+
+//===================================================================== Simple markdown for help
     
     simple_md = function(text){ // mini markdown for the help
         var all_text = text.split('\n')
@@ -152,6 +150,9 @@ var maketoc = function(){
         htm.append(ul);
         return htm.html()
     } // end function
+
+//===================================================================== Regexp for parameters
+
     // Definitions of regexp 
     reg_func = function(name){return RegExp('^\\§'+name+'\\s*','g') } // function for regexp for configuration
     var reg_date = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
@@ -215,7 +216,6 @@ var maketoc = function(){
         if ($(this).text().match(/^\$----.*/)){
             $(this).remove()
         }
-        
     })
 
  //===================================================================== Context menu
@@ -353,10 +353,6 @@ var maketoc = function(){
 
    $("p, li").each(function(){
      if ($(this).text().match(/^\$portf/)) {  // detect portfolio
-        //var reg_caption = /\%.*\%/
-        // var capt = $(this).text().match(reg_caption) || '' // caption for thumbnail
-        // alert($(this).text())
-
         var divportf = $('<div/>').addClass("row")
         var nbcol = $(this).text().split(/^\$portf/)[1].split('\n')[0].trim() || 3 // number of columns
         var nbsuffix = 12/parseInt(nbcol) // suffix for bootstrap
@@ -366,7 +362,6 @@ var maketoc = function(){
                  .append(
                        $('<div/>').addClass("thumbnail")   // class thumbnail
                          .append($(this)) // add image
-                         //.append($('<p/>').addClass("caption").text(capt))
                         ) // end append thumbnail
         divportf.append(divportfinner)
         }) // end each img
@@ -586,7 +581,6 @@ var maketoc = function(){
     It sums up the h1, h2 and h3 tags in a movable window with hyperlinks. 
     */
 
-    //alert(param['notoc']['var'])
     if(param['notoc']['var'] == false){
         $('body').prepend($('<div/>').addClass('onside').attr('id',"toc"))     // adds the Table of Contents at the beginning
     }
@@ -740,7 +734,9 @@ var maketoc = function(){
                          .insertBefore(childr)
             } // end if 
         }); // end each
-    
+
+//===================================================================== Colors for sublists
+
     $("li ul li").css({'color': param['color_sublist0']['var']}) 
     $("li ul li ul li").css({'color': param['color_sublist1']['var']}) 
     $("li ul li ul li ul li").css({'color': param['color_sublist2']['var']}) 
@@ -784,7 +780,6 @@ var maketoc = function(){
     Implements action from keys
     h : show the help
     a : make sliders appearing
-    
     */
 
     $(document).keydown(function(event){
@@ -1588,14 +1583,13 @@ function elementMousedown(evt) {
       if(keyev('n', event)){         // remove the navig board. 
           self.show_navig_plot = ! self.show_navig_plot
           if (self.show_navig_plot){
-              $('#' + elemid).css({'height':'650'})
+              $('#' + elemid).css({'height':'650'}) // long
               $('#vis' + elemid).attr('height',650)
           }
           else{
-              $('#' + elemid).css({'height':'500'})
+              $('#' + elemid).css({'height':'500'})  // short
               $('#vis' + elemid).attr('height',500)
           }
-          
            self.redraw_all()();
           } // end if keyev
 
@@ -1734,8 +1728,6 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
 
 function make_labels(svg, nodes_links, w, h) {
     var color = d3.scale.category20();
-    
-
     var nodes = nodes_links.nodes
     var links = nodes_links.links
     var factx = 15
@@ -1770,8 +1762,7 @@ function make_labels(svg, nodes_links, w, h) {
                     .charge([-200])
                     .gravity(0.1)
                     .start();
-                    
-                    
+                                
     /* Draw the edges/links between the nodes */
     //alert('before line')
     var edges = svg.selectAll("line")
@@ -2003,79 +1994,94 @@ function dragended(d){ d3.select(this).classed("dragging", false) }
 
 //=====================================================================  position in TOC
 
-function fixTitle() {
-    $('div.section').each(function () {  // change fontsize with position in toc
-        var $this = $(this);
-        var offset = $this.offset().top;
-        var scrollTop = $(window).scrollTop();
-        if (scrollTop > offset) {
-           var ind = $this.attr('id') 
-           var origftsize = $('#toc').css("font-size")
-           $('#toc li a').css("font-size", origftsize)
-           $('#toc  li:nth-child(' + ind + ') > a').css("font-size", "150%")
-        }
-    });
-}
+    /*
+    Indicate position on the page by changing size of character in the TOC. 
+    */
+
+    function fixTitle() {
+        $('div.section').each(function () {  // change fontsize with position in toc
+            var $this = $(this);
+            var offset = $this.offset().top;
+            var scrollTop = $(window).scrollTop();
+            if (scrollTop > offset) {
+               var ind = $this.attr('id') 
+               var origftsize = $('#toc').css("font-size")
+               $('#toc li a').css("font-size", origftsize)
+               $('#toc  li:nth-child(' + ind + ') > a').css("font-size", "150%")
+            }
+        });
+    }
 
 //=====================================================================  click on tumbnail-> above zoom center
 
-function zoomabove() {
-        $("img").click(function(){
-        $("#id_view_image").html("<img src='"+$(this).attr('src')+"' class='view_image_img'/>");
-        $("#id_view_image_body").addClass("view_image_body");
-        $("#id_view_image").addClass("view_image");
-        $(".thumbnail").parent().css({'z-index':'-1'})
-        $("#id_view_image").css({'z-index':'4'})
-    });
+    /*
+    Zoom for Portfolio
+    */
 
-    $("#id_view_image").click(function(){
+    function zoomabove() {
+            $("img").click(function(){
+            $("#id_view_image").html("<img src='"+$(this).attr('src')+"' class='view_image_img'/>");
+            $("#id_view_image_body").addClass("view_image_body");
+            $("#id_view_image").addClass("view_image");
+            $(".thumbnail").parent().css({'z-index':'-1'})
+            $("#id_view_image").css({'z-index':'4'})
+        });
 
-        $("#id_view_image").css({'z-index':'-1'})
-        $(".thumbnail").parent().css({'z-index':'4'})
-        $("#id_view_image").html("");
-        $("#id_view_image_body").removeClass("view_image_body");
-        $("#id_view_image").removeClass("view_image");
-    }); 
+        $("#id_view_image").click(function(){
 
-}
+            $("#id_view_image").css({'z-index':'-1'})
+            $(".thumbnail").parent().css({'z-index':'4'})
+            $("#id_view_image").html("");
+            $("#id_view_image_body").removeClass("view_image_body");
+            $("#id_view_image").removeClass("view_image");
+        }); 
+
+    }
 
 //===================================================================== Go to top
 
-function gototop(){
+    /*
+    Go to the top of the whole page. 
+    */
 
-   //Check to see if the window is top if not then display button
-    $(window).scroll(function(){
-        if ($(this).scrollTop() > 100) {
-            $('.scrollToTop').fadeIn();
-        } else {
-            $('.scrollToTop').fadeOut();
-        }
+    function gototop(){
+
+       //Check to see if the window is top if not then display button
+        $(window).scroll(function(){
+            if ($(this).scrollTop() > 100) {
+                $('.scrollToTop').fadeIn();
+            } else {
+                $('.scrollToTop').fadeOut();
+            }
+        });
+        //Click event to scroll to top
+        $('.scrollToTop').click(function(){
+            $('html, body').animate({scrollTop : 0},800);
+            return false;
+        });
+    }
+
+//===================================================================== Nice scroller
+
+    /*
+    Fine and elegant scroller
+    */
+
+    $(document).ready(function () {
+        $(window).scroll(fixTitle);
+        $('[data-toggle="tooltip"]').tooltip(); // activates the tooltips
+        $('.carousel').carousel({ interval: false }) // removing automatic carousel
+        zoomabove()
+        gototop()
+        var syntaxscroll = document.querySelector('#syntax');
+        Ps.initialize(syntaxscroll);
+        var tocscroll = document.querySelector('#toc');
+        Ps.initialize(tocscroll);
+        var keyscroll = document.querySelector('#keys');
+        Ps.initialize(keyscroll);
+        var carouscroll = document.querySelector('#carr');
+        Ps.initialize(carouscroll);
+
     });
-    //Click event to scroll to top
-    $('.scrollToTop').click(function(){
-        $('html, body').animate({scrollTop : 0},800);
-        return false;
-    });
-
-}
-
-//===================================================================== 
-
-$(document).ready(function () {
-    $(window).scroll(fixTitle);
-    $('[data-toggle="tooltip"]').tooltip(); // activates the tooltips
-    $('.carousel').carousel({ interval: false }) // removing automatic carousel
-    zoomabove()
-    gototop()
-    var syntaxscroll = document.querySelector('#syntax');
-    Ps.initialize(syntaxscroll);
-    var tocscroll = document.querySelector('#toc');
-    Ps.initialize(tocscroll);
-    var keyscroll = document.querySelector('#keys');
-    Ps.initialize(keyscroll);
-    var carouscroll = document.querySelector('#carr');
-    Ps.initialize(carouscroll);
-
-});
 
 
