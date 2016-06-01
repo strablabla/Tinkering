@@ -106,6 +106,8 @@ var maketoc = function(){
     * $input i ohoh : makes a input for entering text with placeholder ohoh. 
     * $* : line separation
     * §mathsize : set the size of the equations. Possible values : tiny, small, normalsize, large, Large, LARGE, huge, Huge
+    * $menu : 
+        * eg : before H1 place $menu_zax link:nm_Edit:ic_edit:href_Introduction
     */}.toString().slice(14,-3)
     
     var keys = function(){/*
@@ -218,15 +220,15 @@ var maketoc = function(){
                   dic_args[item] = JSON.stringify({ name: item_name, icon : item_icon, href : item_href })
                }
            }
-           var menu  = $('<span/>').addClass("context-menu-one btn btn-neutral "+select).text('right click me')
-           $(this).replaceWith(menu)
+            var menu  = $(this).next().addClass("context-menu-one  " + select)
+            $(this).remove()
        }
        $(function() {
            $.contextMenu({
              selector: '.'+select,
              build: function() {
                var options = {
-                 callback: function(key, options) {
+                 callback: function(key, options) {    // callback
                    var m = "clicked: " + key;
                    var id  = JSON.parse(dic_args[key])['href']
                    document.getElementById(id).scrollIntoView()
