@@ -105,11 +105,11 @@ div.onside {
    box-shadow: 0.5em 0.5em 0.7em;
    left: 50px;
    max-height: 500px;
-   max-width: 600px;
-   background-color:#ffcccc; 
+   max-width: 300px;
+   background-color:#ccffcc; 
    font-size:85%;
    overflow: scroll;
-   width: 100%;
+   width: 50%;
  }
  
  div.esc {

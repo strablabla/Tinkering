@@ -200,6 +200,14 @@ var maketoc = function(){
     $('body').append($('<a/>').attr('href','#top').addClass("scrollToTop").attr('title','go to top')
             .append($('<span/>').addClass("glyphicon glyphicon-chevron-up").attr('id','gotop')))
 
+//===================================================================== Carousels
+
+    // All Carousels
+
+    $('body').prepend($('<div/>').addClass('carr').attr('id',"carr")) 
+    $('#carr').append($('<h1/>').text('Carousels')).toggle()
+    $('#carr').draggable()
+
  //===================================================================== Context menu
  
    $('body').attr('contextmenu',"share")
@@ -277,6 +285,8 @@ var maketoc = function(){
     })   // end each p, li
 
  //===================================================================== register root path for $portf or $carr
+ 
+  // Register path for img, pdfs, href
 
   $("p, li").each(function(){
     var htm = $(this).html()
@@ -407,6 +417,7 @@ var maketoc = function(){
 
         divcarr.append(divcarrinner.append(aprev).append(anext)) 
         $(this).replaceWith(divcarr)
+        $('#carr').append(divcarr)
       } // end if regexp
     }) // end each p
 
@@ -775,6 +786,10 @@ var maketoc = function(){
           if(event.keyCode == "k".charCodeAt(0)-32 && statekey == 1){   // Toggle keys informations
             $('#keys').toggle()
             } // end if key code
+        
+        if(event.keyCode == "c".charCodeAt(0)-32 && statekey == 1){   // Toggle carousels informations
+          $('#carr').toggle()
+          } // end if key code
 
         if(event.keyCode == "h".charCodeAt(0)-32){    // "h", key for help documentation
             if (param['help']['var'] != false){
@@ -1130,17 +1145,20 @@ var maketoc = function(){
     $('body').addClass('bodybgcol1')
 
     //===================================================================== syntax
+    
+    // Syntax for producing a document
 
     $('body').prepend($('<div/>').addClass('syntax').attr('id',"syntax")) 
     $('#syntax').html(simple_md(help)).toggle()
     $('#syntax').draggable()
 
     //===================================================================== keys
-
+    
+    // Keys shortcuts
+  
     $('body').prepend($('<div/>').addClass('keys').attr('id',"keys")) 
     $('#keys').html(simple_md(keys)).toggle()
     $('#keys').draggable()
-
 
     //===================================================================== esc
 
@@ -2045,12 +2063,9 @@ $(document).ready(function () {
     Ps.initialize(tocscroll);
     var keyscroll = document.querySelector('#keys');
     Ps.initialize(keyscroll);
+    var carouscroll = document.querySelector('#carr');
+    Ps.initialize(carouscroll);
 
 });
-
-
-
-
-
 
 
