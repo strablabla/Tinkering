@@ -112,6 +112,22 @@ div.onside {
    width: 100%;
  }
  
+ div.todotheme {   /*Theme in todo list*/
+   position: fixed;
+   padding-top: 40px;
+   padding-bottom: 20px;
+   padding-left: 40px;
+   padding-right: 40px;
+   box-shadow: 0.5em 0.5em 0.7em;
+   left: 50px;
+   max-height: 500px;
+   max-width: 600px;
+   background-color:#ffcccc; 
+   font-size:85%;
+   overflow: scroll;
+   width: 100%;
+ }
+ 
  div.esc {
     position: fixed;
     padding-right: 0px;

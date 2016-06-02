@@ -551,7 +551,7 @@ var maketoc = function(){
     /*
     Add input
         * button with $input b value 
-        * input form with $input i value 
+        * input form with $input i value id
     */
 
     $('p').each( function(){
@@ -563,7 +563,8 @@ var maketoc = function(){
             var arg = txtm[0].split('$input')[1].trim()
             var tinp = arg.split(/\s+/)[0]
             var val = arg.split(/\s+/)[1]
-            var inpbutt = '<input type="'+ kind[tinp] +'" value="'+ val +'"'  // pure input or button.
+            var id = arg.split(/\s+/)[2]
+            var inpbutt = '<input type="'+ kind[tinp] +'" value="'+ val +'" id="' + id +'"'  // pure input or button.
             if (kind[tinp] == 'button'){
                 inpbutt += '" class="btn btn-default"' // Bootstrap button
             }
@@ -787,26 +788,39 @@ var maketoc = function(){
 
     $(document).keydown(function(event){
 
-        if(event.keyCode == "s".charCodeAt(0)-32 && statekey == 1){   // Toggle syntax informations
+        if (event.keyCode == "s".charCodeAt(0)-32 && statekey == 1){   // Toggle syntax informations
             $('#syntax').toggle()
           } // end if key code
         
-          if(event.keyCode == "k".charCodeAt(0)-32 && statekey == 1){   // Toggle keys informations
+        if (event.keyCode == "k".charCodeAt(0)-32 && statekey == 1){   // Toggle keys informations
             $('#keys').toggle()
             } // end if key code
         
-        if(event.keyCode == "c".charCodeAt(0)-32 && statekey == 1){   // Toggle carousels informations
+        if (event.keyCode == "c".charCodeAt(0)-32 && statekey == 1){   // Toggle carousels informations
           $('#carr').toggle()
           } // end if key code
         
-          if(event.keyCode == "r".charCodeAt(0)-32 && statekey == 1){   // Toggle resize
+        if (event.keyCode == "r".charCodeAt(0)-32 && statekey == 1){   // Toggle resize
               list_wind = ['syntax', 'keys', 'carr']
               for (i in list_wind ){
                   $('#'+list_wind[i]).css({ 'resize':'both', 'overflow' : 'scroll'})
-              }
+              } // end for
+            } // end if key code
+        
+        if (event.keyCode == "t".charCodeAt(0)-32 && statekey == 1){   // Toggle todotheme
+              $('li').each(function(){
+                  if ($(this).text().match($('#todo_input').val())){
+                      $('#todotheme').append($(this))
+                    } // end if
+                 }) // end each
+              $('#todotheme').toggle()
+            } // end if key code
+        
+        if (event.keyCode == "y".charCodeAt(0)-32 && statekey == 1){   // Toggle todotheme
+              alert($('#todo_input').val())
             } // end if key code
 
-        if(event.keyCode == "h".charCodeAt(0)-32){    // "h", key for help documentation
+        if (event.keyCode == "h".charCodeAt(0)-32){    // "h", key for help documentation
             if (param['help']['var'] != false){
                 $('.alertify .alert > *').css({'text-align':'left'});
                 alertify.alert(simple_md(help))
@@ -1174,6 +1188,15 @@ var maketoc = function(){
     $('body').prepend($('<div/>').addClass('keys').attr('id',"keys")) 
     $('#keys').html(simple_md(keys)).toggle()
     $('#keys').draggable()
+    
+    
+    //===================================================================== todotheme
+    
+    // Themes in todo list
+  
+    $('body').prepend($('<div/>').addClass('todotheme').attr('id',"todotheme")) 
+    $('#todotheme').toggle()
+    $('#todotheme').draggable()
 
     //===================================================================== esc
 
