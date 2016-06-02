@@ -121,8 +121,8 @@ var maketoc = function(){
     */}.toString().slice(14,-3)
      
     
-    //https://github.com/strablabla/Tinkering/9a148b3/js/straptoc/straptoc.js 
-    //https://github.com/strablabla/Tinkering/9a148b3/js/straptoc/straptoc.css
+    //https://github.com/strablabla/Tinkering/f7f3712/js/straptoc/straptoc.js 
+    //https://github.com/strablabla/Tinkering/f7f3712/js/straptoc/straptoc.css
 
     basename = function(path) {  return path.replace( /.*\//, "" ); }
 
@@ -782,8 +782,10 @@ var maketoc = function(){
     
     /*
     Implements action from keys
-    h : show the help
-    a : make sliders appearing
+    Esc + s : show the syntax
+    Esc + k : show the shortcut keys
+    Esc + d : toggle windows movement
+    Esc + r : toggle windows resize
     
     */
 
@@ -800,6 +802,13 @@ var maketoc = function(){
         if(event.keyCode == "c".charCodeAt(0)-32 && statekey == 1){   // Toggle carousels informations
           $('#carr').toggle()
           } // end if key code
+        
+          if(event.keyCode == "r".charCodeAt(0)-32 && statekey == 1){   // Toggle resize
+              list_wind = ['syntax', 'keys', 'carr']
+              for (i in list_wind ){
+                  $('#'+list_wind[i]).css({ 'resize':'both', 'overflow' : 'scroll'})
+              }
+            } // end if key code
 
         if(event.keyCode == "h".charCodeAt(0)-32){    // "h", key for help documentation
             if (param['help']['var'] != false){
