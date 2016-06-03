@@ -10,6 +10,10 @@ var plot = function(elemid, add_data, add_nodes_links, params){
                 .defer(d3.json, add_nodes_links)
                 .await(function(error, dataset, nodes_links){
                     new make_plot(elemid, dataset, nodes_links, params); 
+                        $('.chart').resize(function(){
+                        $('#chart1').empty()
+                        new make_plot(elemid, dataset, nodes_links, params)
+                    })
                 }); // end await
         } // if links
      else{
@@ -17,6 +21,10 @@ var plot = function(elemid, add_data, add_nodes_links, params){
               .defer(d3.json, add_data)
               .await(function(error, dataset){
                   new make_plot(elemid, dataset, 'nolink', params); 
+                    $('.chart').resize(function(){
+                        $('#chart1').empty()
+                        new make_plot(elemid, dataset, 'nolink', params)
+                    })
               }); // end await
       } // end else
     }
@@ -28,15 +36,6 @@ make_plot = function(elemid, dataset, nodes_links, params) {
   this.dataset = dataset
   this.nodes_links = nodes_links
   this.chart = document.getElementById(elemid);
-  //$('#' + elemid).draggable()
-  // $('#' + elemid).resize(function(){
-  //     alert('resizing !!!!!')
-  // })
-
-  $('.chart').resize(function(){
-      alert('resizing !!!!!')
-      //$('.chart').resize();
-    })
 
 
   this.params = params || {};

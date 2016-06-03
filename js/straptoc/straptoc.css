@@ -318,8 +318,8 @@ div.chart {
       width: 600px;
       height: 620px;
       box-shadow: 0.5em 0.5em 0.7em;
-/*      resize: both;
-      overflow: scroll;*/
+      resize: both;
+      overflow: scroll;
     }
 
     circle {

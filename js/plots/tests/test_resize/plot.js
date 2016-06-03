@@ -16,7 +16,19 @@ var plot = function(elemid, add_data, add_nodes_links, params){
           queue() // important !!! need of d3.js v3 at least for using queue correctly
               .defer(d3.json, add_data)
               .await(function(error, dataset){
-                  new make_plot(elemid, dataset, 'nolink', params); 
+                  new make_plot(elemid, dataset, 'nolink', params);
+
+
+      $('.chart').resize(function(){
+      var w = $('.chart').width()
+      //if (w<200){
+          //alert('hello')
+          $('#chart1').empty()
+          new make_plot(elemid, dataset, 'nolink', params)
+          //}
+      })
+  
+
               }); // end await
       } // end else
     }
@@ -28,19 +40,6 @@ make_plot = function(elemid, dataset, nodes_links, params) {
   this.dataset = dataset
   this.nodes_links = nodes_links
   this.chart = document.getElementById(elemid);
-  //$('#' + elemid).draggable()
-  // $('#' + elemid).resize(function(){
-  //     alert('resizing !!!!!')
-  // })
-  // pp = function(){alert('pp')}
-  // alert('binggg')
-  // $('#chart1').resize(pp)
-  
-
-  
-  //$('#resizeElement').removeResize(myFunc);
-
-
   this.params = params || {};
   this.xlim = this.params['xlim']  // xlim 
   this.ylim = this.params['ylim']  // ylim 
@@ -76,17 +75,7 @@ make_plot = function(elemid, dataset, nodes_links, params) {
   // * d : toggle for drag and zoom.
   
   
-  $('.chart').resize(function(){
-      var w = $('.chart').width()
-      if (w<400){
-          //alert('hello')
-          $('#vischart1').width(200)
-          this.cx = 200
-          this.redraw_all()()
-          }
 
-  })
-  
   var help_plot = function(){/*
   
    # Commands
