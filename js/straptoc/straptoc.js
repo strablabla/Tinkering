@@ -114,6 +114,8 @@ var maketoc = function(){
     * Esc + s : show syntax
     * Esc + d : toggle draggable
     * Esc + r : resize
+    * Esc + c : toggle window with carousels
+    * Esc + t : toggle window with all list refering to the todo theme
     * Plot :
         * shift + n : toggle plot tools
     */}.toString().slice(14,-3)
@@ -785,12 +787,16 @@ var maketoc = function(){
 //===================================================================== key actions
     
     /*
-    Implements action from keys
+    Implemented keys actions
     
     Esc + s : show the syntax
     Esc + k : show the shortcut keys
     Esc + d : toggle windows movement
     Esc + r : toggle windows resize
+    Esc + c : toggle window with carousels
+    Esc + t : toggle window with all list refering to the todo theme
+    Plot : 
+        * shift + n : toggle tools
     
     */
 
@@ -832,8 +838,8 @@ var maketoc = function(){
               state_todotheme = 1;
             } // end if key code
         
-        if (event.keyCode == "y".charCodeAt(0)-32 && statekey == 1){   // Toggle todotheme
-              alert($('#todo_input').val())
+        if (event.keyCode == "p".charCodeAt(0)-32 && statekey == 1){   // Toggle charts
+              $('.chart').toggle()
             } // end if key code
 
         if (event.keyCode == "h".charCodeAt(0)-32){    // "h", key for help documentation
@@ -2138,24 +2144,19 @@ function dragended(d){ d3.select(this).classed("dragging", false) }
     /*
     Fine and elegant scroller
     */
-
+    
     $(document).ready(function () {
         $(window).scroll(fixTitle);
         $('[data-toggle="tooltip"]').tooltip(); // activates the tooltips
         $('.carousel').carousel({ interval: false }) // removing automatic carousel
         zoomabove()
-        gototop()
-        gotobottom()
-        var syntaxscroll = document.querySelector('#syntax');
-        Ps.initialize(syntaxscroll);
-        var tocscroll = document.querySelector('#toc');
-        Ps.initialize(tocscroll);
-        var keyscroll = document.querySelector('#keys');
-        Ps.initialize(keyscroll);
-        var carouscroll = document.querySelector('#carr');
-        Ps.initialize(carouscroll);
-        var todothemescroll = document.querySelector('#todotheme');
-        Ps.initialize(todothemescroll);
+        gototop() // go to the top of the page
+        gotobottom() // go to the bottom of the page
+        // Scroll
+        lscrolls = ['syntax', 'toc', 'keys', 'carr', 'todotheme']
+        for (i in lscrolls){
+            Ps.initialize(document.querySelector('#'+lscrolls[i]))
+        }
 
     });
 
