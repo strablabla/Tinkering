@@ -125,7 +125,7 @@ div.onside {
    background-color:#ffcccc; 
    font-size:85%;
    overflow: scroll;
-   width: 100%;
+   width: 300px;
  }
  
  div.esc {
@@ -158,8 +158,20 @@ div.onside {
     bottom:30px;
     display:none;
   }
+ 
+.scrollToBottom {
+  width:40px;
+  height: 40px;
+  position:fixed;
+  right:30px;
+  top:50px;
+  display:none;
+}
 
 #gotop.glyphicon.glyphicon-chevron-up {
+    font-size: 25px;
+}
+#gobottom.glyphicon.glyphicon-chevron-down {
     font-size: 25px;
 }
 

@@ -113,6 +113,7 @@ var maketoc = function(){
     * Esc + k : show keys
     * Esc + s : show syntax
     * Esc + d : toggle draggable
+    * Esc + r : resize
     * Plot :
         * shift + n : toggle plot tools
     */}.toString().slice(14,-3)
@@ -177,6 +178,7 @@ var maketoc = function(){
     var num_slider = 0
     var prefcarr = 'carousel0' // default first name for carousel
     var statekey = -1; // state for keyboard interactions
+    var state_todotheme = 1
     
 //===================================================================== Dictionary for parameters
 
@@ -200,6 +202,12 @@ var maketoc = function(){
     $('body').prepend($('<div/>').attr('id','top'))
     $('body').append($('<a/>').attr('href','#top').addClass("scrollToTop").attr('title','go to top')
              .append($('<span/>').addClass("glyphicon glyphicon-chevron-up").attr('id','gotop')))
+
+ //===================================================================== Go to bottom
+
+    $('body').prepend($('<div/>').attr('id','bottom'))
+    $('body').append($('<a/>').attr('href','#bottom').addClass("scrollToBottom").attr('title','go to bottom')
+             .append($('<span/>').addClass("glyphicon glyphicon-chevron-down").attr('id','gobottom')))
 
 //===================================================================== Carousels
 
@@ -808,12 +816,20 @@ var maketoc = function(){
             } // end if key code
         
         if (event.keyCode == "t".charCodeAt(0)-32 && statekey == 1){   // Toggle todotheme
+              
               $('li').each(function(){
-                  if ($(this).text().match($('#todo_input').val())){
-                      $('#todotheme').append($(this))
+                  var txt_list = $(this).text()
+                  var targ = $('#todo_input').val()
+                  if (txt_list.match(targ)){ // match between list text and input
+                      if (state_todotheme == 1){
+                           $(this).prepend($('<h1/>').text('Theme :'+targ))
+                       }
+                        state_todotheme = 0;
+                      $('#todotheme').append($(this))  // adding lists referencing to the theme
                     } // end if
                  }) // end each
               $('#todotheme').toggle()
+              state_todotheme = 1;
             } // end if key code
         
         if (event.keyCode == "y".charCodeAt(0)-32 && statekey == 1){   // Toggle todotheme
@@ -1004,7 +1020,6 @@ var maketoc = function(){
                     "xlabel": xlabel, "ylabel": ylabel, "color": col, "fill":"#ffffff"}
                 //alert(params.xlim + ' ' + params.ylim + ' ' + params.title)
                 plot(id, addr, 'nolink',  params)
-
             }// end if
         })// end each
 
@@ -2081,7 +2096,8 @@ function dragended(d){ d3.select(this).classed("dragging", false) }
 
        //Check to see if the window is top if not then display button
         $(window).scroll(function(){
-            if ($(this).scrollTop() > 100) {
+            if ($(this).scrollTop() > $(document).height()/2) {
+                // alert('$(this).scrollTop() > 10')
                 $('.scrollToTop').fadeIn();
             } else {
                 $('.scrollToTop').fadeOut();
@@ -2090,6 +2106,29 @@ function dragended(d){ d3.select(this).classed("dragging", false) }
         //Click event to scroll to top
         $('.scrollToTop').click(function(){
             $('html, body').animate({scrollTop : 0},800);
+            return false;
+        });
+    }
+    
+//===================================================================== Go to bottom
+
+    /*
+    Go to the bottom of the whole page. 
+    */
+
+    function gotobottom(){
+        
+        $(window).scroll(function(){
+            if ($(this).scrollTop() < $(document).height()/2) {
+                // alert('$(this).scrollTop() < 10')
+                $('.scrollToBottom').fadeIn();
+            } else {
+                $('.scrollToBottom').fadeOut();
+            }
+        });
+        //Click event to scroll to bottom
+        $('.scrollToBottom').click(function(){
+            $('html, body').animate({scrollTop : $(document).height()},800);
             return false;
         });
     }
@@ -2106,6 +2145,7 @@ function dragended(d){ d3.select(this).classed("dragging", false) }
         $('.carousel').carousel({ interval: false }) // removing automatic carousel
         zoomabove()
         gototop()
+        gotobottom()
         var syntaxscroll = document.querySelector('#syntax');
         Ps.initialize(syntaxscroll);
         var tocscroll = document.querySelector('#toc');
@@ -2114,6 +2154,8 @@ function dragended(d){ d3.select(this).classed("dragging", false) }
         Ps.initialize(keyscroll);
         var carouscroll = document.querySelector('#carr');
         Ps.initialize(carouscroll);
+        var todothemescroll = document.querySelector('#todotheme');
+        Ps.initialize(todothemescroll);
 
     });
 
