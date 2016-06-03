@@ -180,7 +180,7 @@ var maketoc = function(){
     var num_slider = 0
     var prefcarr = 'carousel0' // default first name for carousel
     var statekey = -1; // state for keyboard interactions
-    var state_todotheme = 1
+    var state_todotheme = -1
     
 //===================================================================== Dictionary for parameters
 
@@ -827,15 +827,18 @@ var maketoc = function(){
                   var txt_list = $(this).text()
                   var targ = $('#todo_input').val()
                   if (txt_list.match(targ)){ // match between list text and input
-                      if (state_todotheme == 1){
-                           $(this).prepend($('<h1/>').text('Theme :'+targ))
+                      if (state_todotheme == -1){
+                           $('#todotheme').empty()
+                           $('#todotheme').append($('<h1/>').text('Theme :'+targ))
+                           state_todotheme = 1
                        }
-                        state_todotheme = 0;
                       $('#todotheme').append($(this))  // adding lists referencing to the theme
                     } // end if
                  }) // end each
               $('#todotheme').toggle()
-              state_todotheme = 1;
+            if ($('#todotheme').is(':hidden')){
+                state_todotheme = -1
+                }
             } // end if key code
         
         if (event.keyCode == "p".charCodeAt(0)-32 && statekey == 1){   // Toggle charts

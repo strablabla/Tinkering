@@ -32,11 +32,13 @@ make_plot = function(elemid, dataset, nodes_links, params) {
   // $('#' + elemid).resize(function(){
   //     alert('resizing !!!!!')
   // })
+  // pp = function(){alert('pp')}
+  // alert('binggg')
+  // $('#chart1').resize(pp)
+  
 
-  $('.chart').resize(function(){
-      alert('resizing !!!!!')
-      //$('.chart').resize();
-    })
+  
+  //$('#resizeElement').removeResize(myFunc);
 
 
   this.params = params || {};
@@ -72,6 +74,18 @@ make_plot = function(elemid, dataset, nodes_links, params) {
   // * b : mode brush
   // * q : makes a zoom in x.. 
   // * d : toggle for drag and zoom.
+  
+  
+  $('.chart').resize(function(){
+      var w = $('.chart').width()
+      if (w<400){
+          //alert('hello')
+          $('#vischart1').width(200)
+          this.cx = 200
+          this.redraw_all()()
+          }
+
+  })
   
   var help_plot = function(){/*
   
@@ -406,7 +420,6 @@ function elementMousedown(evt) {
               $('#' + elemid).css({'height':'500'})
               $('#vis' + elemid).attr('height',500)
           }
-          
            self.redraw_all()();
           } // end if keyev
 
@@ -418,6 +431,12 @@ function elementMousedown(evt) {
 
       if(keyev('q', event)){      //  activate deactivate the direct zoom
           alert($('#direct_zoom').prop('checked'))
+          }     // end if keyev
+    
+      if(keyev('a', event)){      //  activate deactivate the grid
+          alert('aaaa')
+          self.cx = 200
+          self.redraw_all()();
           }     // end if keyev
 
   }) // end keydown
