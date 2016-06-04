@@ -828,7 +828,8 @@ var maketoc = function(){
                   $('#'+list_wind[i]).css({ 'resize':'both', 'overflow' : 'scroll'})
               } // end for
              $("div").each(function(){ 
-                if ($(this).hasClass('chart') || $(this).hasClass('keys')|| $(this).hasClass('toc')){
+                if ($(this).hasClass('chart')
+                    || $(this).attr('id') =='toc'){
                     $(this).resize()
                     } // end if
                 }); // each
@@ -852,7 +853,7 @@ var maketoc = function(){
              var targ = $('#todo_input').val()
              if (state_todotheme == -1){
                    $('#todotheme').empty()
-                   $('#todotheme').append($('<h1/>').text('Theme: '+targ))
+                   $('#todotheme').append($('<h1/>').text('Theme: '+targ)) // title
                    state_todotheme = 1
                 }
               $('li').each(function(){
@@ -861,7 +862,7 @@ var maketoc = function(){
                       $('#todotheme').append($(this))  // adding lists referencing to the theme
                     } // end if
                  }) // end each
-              $('#todotheme').toggle()
+              $('#todotheme').toggle()  
             if ($('#todotheme').is(':hidden')){
                 state_todotheme = -1
                 }
@@ -909,13 +910,13 @@ var maketoc = function(){
             }); // each
           }// end if key code
     
-      if(event.keyCode == 'r'.charCodeAt(0)-32 && statekey == 1){  // resize
-           $("div").each(function(){ 
-               if ($(this).hasClass('chart') || $(this).hasClass('keys')|| $(this).hasClass('toc')){
-                 $(this).resize()
-             } // end if
-           }); // each
-         }// end if key code
+      // if(event.keyCode == 'r'.charCodeAt(0)-32 && statekey == 1){  // resize
+      //      $("div").each(function(){ 
+      //          if ($(this).hasClass('chart') || $(this).hasClass('keys')|| $(this).hasClass('toc')){
+      //            $(this).resize()
+      //        } // end if
+      //      }); // each
+      //    }// end if key code
     
         })
 
