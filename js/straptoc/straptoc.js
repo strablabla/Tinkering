@@ -4,6 +4,9 @@
 //     document.head.appendChild(sc);
 // }
 
+//https://github.com/strablabla/Tinkering/3e47686/js/straptoc/straptoc.js 
+//https://github.com/strablabla/Tinkering/3e47686/js/straptoc/straptoc.css
+
 
 var maketoc = function(){
     
@@ -114,14 +117,14 @@ var maketoc = function(){
     * Esc + s : show syntax
     * Esc + d : toggle draggable
     * Esc + r : resize
-    * Esc + c : toggle window with carousels
-    * Esc + t : toggle window with all list refering to the todo theme
+    * Esc + c : toggle carousels
+    * Esc + t : toggle todo theme
+    * Esc + w : toggle all the windows (except TOC)
     * Plot :
         * shift + n : toggle plot tools
     */}.toString().slice(14,-3)
      
-    //https://github.com/strablabla/Tinkering/f7f3712/js/straptoc/straptoc.js 
-    //https://github.com/strablabla/Tinkering/f7f3712/js/straptoc/straptoc.css
+
 
     basename = function(path) {  return path.replace( /.*\//, "" ); }
     dirname = function(path) { return path.match( /.*\// ); }
@@ -181,6 +184,7 @@ var maketoc = function(){
     var prefcarr = 'carousel0' // default first name for carousel
     var statekey = -1; // state for keyboard interactions
     var state_todotheme = -1
+    var list_wind_open = []
     
 //===================================================================== Dictionary for parameters
 
@@ -805,6 +809,8 @@ var maketoc = function(){
 
     $(document).keydown(function(event){
 
+        var list_wind = ['syntax', 'keys', 'carr', 'todotheme']
+
         if (event.keyCode == "s".charCodeAt(0)-32 && statekey == 1){   // Toggle syntax informations
             $('#syntax').toggle()
           } // end if key code
@@ -818,10 +824,28 @@ var maketoc = function(){
           } // end if key code
         
         if (event.keyCode == "r".charCodeAt(0)-32 && statekey == 1){   // Toggle resize
-              list_wind = ['syntax', 'keys', 'carr']
-              for (i in list_wind ){
+            for (i in list_wind ){
                   $('#'+list_wind[i]).css({ 'resize':'both', 'overflow' : 'scroll'})
               } // end for
+             $("div").each(function(){ 
+                if ($(this).hasClass('chart') || $(this).hasClass('keys')|| $(this).hasClass('toc')){
+                    $(this).resize()
+                    } // end if
+                }); // each
+            } // end if key code
+
+        if (event.keyCode == "w".charCodeAt(0)-32 && statekey == 1){   // Toggle all the windows
+              for (i in list_wind ){
+                  if ($('#'+list_wind[i]).css('display') != 'none'){
+                     list_wind_open.push(list_wind[i])
+                     $('#'+list_wind[i]).toggle()
+                  }   // end if
+                  else{
+                     if (list_wind_open.indexOf(list_wind[i]) > -1){
+                         $('#'+list_wind[i]).toggle()
+                     }// end if
+                  } //end else
+                } // end for
             } // end if key code
         
         if (event.keyCode == "t".charCodeAt(0)-32 && statekey == 1){   // Toggle todotheme
@@ -878,7 +902,9 @@ var maketoc = function(){
                 else if ($(this).hasClass('chart')
                         || $(this).attr('id') =='keys'
                         || $(this).attr('id') =='syntax'
-                        || $(this).attr('id') =='toc'){
+                        || $(this).attr('id') =='toc'
+                        || $(this).attr('id') =='todotheme'
+                        || $(this).attr('id') =='carr'){
                   $(this).draggable()
                 } // end else
             }); // each

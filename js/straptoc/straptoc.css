@@ -115,7 +115,7 @@ div.onside {
  div.todotheme {   /*Theme in todo list*/
    position: fixed;
    padding-top: 40px;
-   padding-bottom: 20px;
+   padding-bottom: 40px;
    padding-left: 40px;
    padding-right: 40px;
    box-shadow: 0.5em 0.5em 0.7em;
