@@ -4,6 +4,9 @@ registerKeyboardHandler = function(callback) {
 };
 
 var plot = function(elemid, add_data, add_nodes_links, params){
+    ''' 
+    Main method. 
+    '''
     if (add_nodes_links != 'nolink'){
             queue() // important !!! need of d3.js v3 at least for using queue correctly
                 .defer(d3.json, add_data)

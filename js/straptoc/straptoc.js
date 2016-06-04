@@ -602,25 +602,28 @@ var maketoc = function(){
     $('#toc').append(ul1);
     $('#toc').draggable() // make the toc draggable with jquery-ui widget draggable. 
     // read all the headers and make the TOC (with ref) and the id names
+    var lnotoc = ['Carousels'] // list of excluded H1 (defined with inner HTML)
     for(var i = 0,  elems = $(":header"); i < elems.length; i++) {
         var nameh = elems[i].innerHTML.trim().split(reg_id)[0];
-        elems[i].id = nameh; 
-
+        elems[i].id = nameh; // set the identity with inner html of the tag. 
+        
         //===================================================================== H1
         
-        if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H1'){    // if H1                    
-            var nameh1 = nameh
-            var li1 = $("<li/>");
-            ul1.append(li1);
-            var ul2 = $("<ul/>").addClass('lev1');                     // second levels with class
-            li1.append($('<a/>').attr('href', namehhref).css({'color': 'black'}).html(nameh)
-                         .append($('<span/>').text(" [-]").addClass('li_h2'))) // en append ul
-            li1.append(ul2);
+        if($('[id="'+nameh+'"]').prop("tagName") == 'H1'){    // if H1    
+            if (lnotoc.indexOf(nameh) == -1){
+                var nameh1 = nameh
+                var li1 = $("<li/>");
+                ul1.append(li1);
+                var ul2 = $("<ul/>").addClass('lev1');                     // second levels with class
+                li1.append($('<a/>').attr('href', namehhref).css({'color': 'black'}).html(nameh)
+                             .append($('<span/>').text(" [-]").addClass('li_h2'))) // en append ul
+                li1.append(ul2);
+             }
         } // end if H1
         
         //===================================================================== H2
         
-        else if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H2'){ // if H2
+        else if($('[id="'+nameh+'"]').prop("tagName") == 'H2'){ // if H2
             elems[i].id = nameh1 +'_'+ nameh;                               // makes an id for H2
             var nameh2 = elems[i].id
             var namehhref = '#' + nameh2;
@@ -636,7 +639,7 @@ var maketoc = function(){
             
         //===================================================================== H3
         
-        else if($('[id=' + '"' + nameh + '"'+']').prop("tagName") == 'H3'){
+        else if($('[id="'+nameh+'"]').prop("tagName") == 'H3'){
             elems[i].id = nameh2 +'_'+ nameh;                               // makes an id for H3
             var nameh3 = elems[i].id
             var namehhref = '#'+nameh3;

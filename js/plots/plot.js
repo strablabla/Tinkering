@@ -4,14 +4,20 @@ registerKeyboardHandler = function(callback) {
 };
 
 var resizeplot = function(elemid, dataset, nodes_links, params){
-        new make_plot(elemid, dataset, nodes_links, params); 
-          $('.chart').resize(function(){
-             $('#'+elemid).empty()
-             new make_plot(elemid, dataset, nodes_links, params)
-          })
+    /*
+    Resize plots with jquery plugin. 
+    */
+    new make_plot(elemid, dataset, nodes_links, params); 
+      $('.chart').resize(function(){
+         $('#' + elemid).empty()
+         new make_plot(elemid, dataset, nodes_links, params)
+      })
 }
 
 var plot = function(elemid, add_data, add_nodes_links, params){
+    /*
+    Main Method
+    */
     if (add_nodes_links != 'nolink'){
             queue() // important !!! need of d3.js v3 at least for using queue correctly
                 .defer(d3.json, add_data)
