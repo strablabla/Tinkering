@@ -3,28 +3,28 @@ registerKeyboardHandler = function(callback) {
   d3.select(window).on("keydown", callback);  
 };
 
+var resizeplot = function(elemid, dataset, nodes_links, params){
+        new make_plot(elemid, dataset, nodes_links, params); 
+          $('.chart').resize(function(){
+             $('#'+elemid).empty()
+             new make_plot(elemid, dataset, nodes_links, params)
+          })
+}
+
 var plot = function(elemid, add_data, add_nodes_links, params){
     if (add_nodes_links != 'nolink'){
             queue() // important !!! need of d3.js v3 at least for using queue correctly
                 .defer(d3.json, add_data)
                 .defer(d3.json, add_nodes_links)
                 .await(function(error, dataset, nodes_links){
-                    new make_plot(elemid, dataset, nodes_links, params); 
-                        $('.chart').resize(function(){
-                        $('#chart1').empty()
-                        new make_plot(elemid, dataset, nodes_links, params)
-                    })
+                    resizeplot(elemid, dataset, nodes_links, params)
                 }); // end await
         } // if links
      else{
           queue() // important !!! need of d3.js v3 at least for using queue correctly
               .defer(d3.json, add_data)
               .await(function(error, dataset){
-                  new make_plot(elemid, dataset, 'nolink', params); 
-                    $('.chart').resize(function(){
-                        $('#chart1').empty()
-                        new make_plot(elemid, dataset, 'nolink', params)
-                    })
+                  resizeplot(elemid, dataset, 'nolink', params)
               }); // end await
       } // end else
     }
