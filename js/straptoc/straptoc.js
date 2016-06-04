@@ -123,8 +123,6 @@ var maketoc = function(){
     * Plot :
         * shift + n : toggle plot tools
     */}.toString().slice(14,-3)
-     
-
 
     basename = function(path) {  return path.replace( /.*\//, "" ); }
     dirname = function(path) { return path.match( /.*\// ); }
@@ -183,8 +181,8 @@ var maketoc = function(){
     var num_slider = 0
     var prefcarr = 'carousel0' // default first name for carousel
     var statekey = -1; // state for keyboard interactions
-    var state_todotheme = -1
-    var list_wind_open = []
+    var state_todotheme = -1   
+    var list_wind_open = [] // list of open windows
     
 //===================================================================== Dictionary for parameters
 
@@ -224,6 +222,8 @@ var maketoc = function(){
     $('#carr').draggable()
     
  //===================================================================== Remove separating marks from edition
+    
+    // Separations for comments. 
 
     $("p").each(function(){
         if ($(this).text().match(/^\$----.*/)){
@@ -849,16 +849,15 @@ var maketoc = function(){
             } // end if key code
         
         if (event.keyCode == "t".charCodeAt(0)-32 && statekey == 1){   // Toggle todotheme
-              
+             var targ = $('#todo_input').val()
+             if (state_todotheme == -1){
+                   $('#todotheme').empty()
+                   $('#todotheme').append($('<h1/>').text('Theme: '+targ))
+                   state_todotheme = 1
+                }
               $('li').each(function(){
-                  var txt_list = $(this).text()
-                  var targ = $('#todo_input').val()
+                  var txt_list = $(this).text().split('\n')[0]
                   if (txt_list.match(targ)){ // match between list text and input
-                      if (state_todotheme == -1){
-                           $('#todotheme').empty()
-                           $('#todotheme').append($('<h1/>').text('Theme :'+targ))
-                           state_todotheme = 1
-                       }
                       $('#todotheme').append($(this))  // adding lists referencing to the theme
                     } // end if
                  }) // end each
