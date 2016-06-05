@@ -181,7 +181,6 @@ var maketoc = function(){
     var num_slider = 0
     var prefcarr = 'carousel0' // default first name for carousel
     var statekey = -1; // state for keyboard interactions
-    var state_todotheme = -1   
     var list_wind_open = [] // list of open windows
     
 //===================================================================== Dictionary for parameters
@@ -809,7 +808,7 @@ var maketoc = function(){
 
     $(document).keydown(function(event){
 
-        var list_wind = ['syntax', 'keys', 'carr', 'todotheme']
+        var list_wind = ['syntax', 'keys', 'carr', 'todotheme'] // list of windows
 
         if (event.keyCode == "s".charCodeAt(0)-32 && statekey == 1){   // Toggle syntax informations
             $('#syntax').toggle()
@@ -844,27 +843,33 @@ var maketoc = function(){
                   else{
                      if (list_wind_open.indexOf(list_wind[i]) > -1){
                          $('#'+list_wind[i]).toggle()
-                     }// end if
+                     }// end if css('display') != 'none'
                   } //end else
-                } // end for
+                } // end for (i in list_wind )
             } // end if key code
         
         if (event.keyCode == "t".charCodeAt(0)-32 && statekey == 1){   // Toggle todotheme
              var targ = $('#todo_input').val()
-             if (state_todotheme == -1){
-                   $('#todotheme').empty()
-                   $('#todotheme').append($('<h1/>').text('Theme: '+targ)) // title
-                   state_todotheme = 1
-                }
+             if ($('#todotheme').is(':hidden')){
+                   $('#todotheme').append($('<h1/>').text('Theme: '+targ).addClass('theme')) // set title
               $('li').each(function(){
                   var txt_list = $(this).text().split('\n')[0]
-                  if (txt_list.match(targ)){ // match between list text and input
-                      $('#todotheme').append($(this))  // adding lists referencing to the theme
+                  var par = $(this).parents('li').last()
+                  if (txt_list.match(targ) && !par.hasClass('^^')){ // match between list text and input
+                    var newline =  $('<li/>').html($(this).html()) //jQuery.extend(true, {}, $(this));
+                      $('#todotheme').append(newline.addClass('theme'))  // adding lists referencing to the theme
                     } // end if
                  }) // end each
+                    $("a").click(function (evt) {                
+                    var evtc = evt.target.className;
+                    if(evtc == '::')  // open close list on click
+                        $(this).next().toggle();
+                    });// end click
+                  $('#todotheme li ul').toggle()
+               } // end if hidden
               $('#todotheme').toggle()  
             if ($('#todotheme').is(':hidden')){
-                state_todotheme = -1
+                $('.theme').remove()
                 }
             } // end if key code
         
@@ -895,7 +900,6 @@ var maketoc = function(){
           }// end if key code
        if(event.keyCode == 'd'.charCodeAt(0)-32 && statekey == 1){  // toggle draggable
             $("div").each(function(){ 
-                //if ($(this).hasClass('chart') || $(this).hasClass('keys')|| $(this).hasClass('toc')){
                 if ($(this).hasClass('ui-draggable')){
                   $(this).draggable('destroy')
                   } // end if
@@ -909,15 +913,6 @@ var maketoc = function(){
                 } // end else
             }); // each
           }// end if key code
-    
-      // if(event.keyCode == 'r'.charCodeAt(0)-32 && statekey == 1){  // resize
-      //      $("div").each(function(){ 
-      //          if ($(this).hasClass('chart') || $(this).hasClass('keys')|| $(this).hasClass('toc')){
-      //            $(this).resize()
-      //        } // end if
-      //      }); // each
-      //    }// end if key code
-    
         })
 
 //===================================================================== 
