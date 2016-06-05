@@ -4,8 +4,6 @@
 
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script  src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
-    <script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.11/js/min/perfect-scrollbar.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/js/bootstrap-select.min.js"></script>
     <script src="http://eligrey.com/demos/FileSaver.js/Blob.js"></script>
@@ -15,7 +13,6 @@
 
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.css">
      <link rel="stylesheet" href="https:////cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/css/bootstrap-select.min.css">
-     <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.11/css/perfect-scrollbar.css'>
      
 
 <style>
@@ -75,24 +72,7 @@ div.onside {
    font-size:85%;
  }
 
- div.keys {  /* All keys*/
-   position: fixed;
-   padding-top: 40px;
-   padding-bottom: 20px;
-   padding-left: 40px;
-   padding-right: 40px;
-   box-shadow: 0.5em 0.5em 0.7em;
-   left: 50px;
-   max-height: 300px;
-   width: 300px;
-   background-color:#ccffcc; 
-   font-size:85%;
-   overflow: scroll;
-   /*width: 50%;*/
- }
-
 </style>
-
 <body>
 
 <script>
@@ -103,64 +83,14 @@ col_0 = 'yellow'
 col_1 = '#00ff99'
 col_2 = '#afa2dc'
 show_coord = true
-
-var keys = function(){/*
-    # Keys: 
-    * c : show coordinates
-    * b : biotine, yellow
-    * p : peptide, green
-    * d : normal color
-*/}.toString().slice(14,-3)
-
-//===================================================================== Simple markdown for help
-    
-    simple_md = function(text){ // mini markdown for the help
-        var all_text = text.split('\n')
-        var htm = $('<div/>')
-        var ul = $('<ul/>').css({'text-align':'left'})
-        for (i in all_text){
-            var text_insert = all_text[i].trim().slice(1) // prepare text
-            if (all_text[i].match(/^\s{4}\*/)){    // detect list first level
-                ul.append($('<li/>').text(text_insert))
-                } // end if
-            if (all_text[i].match(/^\s{8}\*/)){  // detect list second level
-                    var interm1 = $('<ul/>').append($('<li/>').text(text_insert))
-                    ul.append(interm1)
-                    } // end if
-            if (all_text[i].match(/^\s{12}\*/)){  // detect list third level
-                    var interm2 = $('<ul/>').append($('<li/>').text(text_insert))
-                    interm1.append(interm2)
-                    } // end if
-            if (all_text[i].match(/\s*\#/)){ // detect #
-                htm.append($('<h1/>').text(text_insert))
-                } // end if
-        } // end for
-        htm.append(ul);
-        return htm.html()
-    } // end function
-
-
-
-//===================================================================== keys
-
-// Keys shortcuts
-
-$('body').prepend($('<div/>').addClass('keys').attr('id',"keys")) 
-$('#keys').html(simple_md(keys)).toggle()
-$('#keys').draggable()
-
-//=====================================================================
-
-var keyev = function(key, event){
-    return (event.keyCode == key.charCodeAt(0)-32 )
-  }
+  
 
 var opt = function(val){
     return $('<option/>').text(val).attr('value',val)
     }
 var col1 = $('<div/>').attr('class',"col-sm-8")
 var col2 = $('<div/>').attr('class',"col-sm-4")
-var divonside = $('<div/>').attr('class','onside').draggable()
+var divonside = $('<div/>').attr('class','onside')
 
 var val = $('<h3/>').css({'text-align':'left'})
                            .text('values')
@@ -170,16 +100,12 @@ var sel_val = $('<select/>').attr('id','select_plate')
               .append(opt('1'))
               .append(opt('2'))
 
-var inp = $('<input/>').attr('size',5).attr('id','dom')
-
-$(document).keydown(function(event){ 
-        if (keyev('j', event)) { // space bar
-                alert('Domain is '+ $('#dom').val());
-            }
-        if (event.keyCode == "k".charCodeAt(0)-32 ){   // Toggle keys informations
-            $('#keys').toggle()
-            } // end if key code
-     });
+var inp = $('<input/>').attr('size',5) //.attr('type','submit')
+                       .keypress(function(event) {
+                            if (event.keyCode == 13) {
+                            alert('Domain is '+ $(this).val());
+                            }
+                        });
 
 var nameinput = $('<p/>').text('domain name : ')
                          .append(inp)
@@ -247,6 +173,7 @@ d3.well_select.tooltip = function(){
             });
         })
         .on('mouseout.tooltip', function(pD, pI){
+            // Remove tooltip
             tooltipDiv.remove();
         });
     }
@@ -262,6 +189,7 @@ d3.well_select.tooltip = function(){
         styles = _x;
         return this;
     };
+
     return tooltip;
 };
 
@@ -272,8 +200,6 @@ var make_plate = function(m,n, spacing){
     well_col = '#afa2dc';
     offsety = 0.75   // offset for last blocks not touching the bottom edge in y
     offsetx = 0.25 // offset for the blocks on the left not touching the edges in x
-    var corrx = 0.25
-    var corry = 0.1
     var data = []; // list contianing the coordinates of the cells. 
     for (var i = 0; i <= m*n-1 ; i++) { // make the position of the cells
         data.push({xcoord: i%n+offsetx, ycoord: Math.floor(i/n)+offsety});
@@ -307,13 +233,15 @@ var make_plate = function(m,n, spacing){
     
     for(i=0;i<m;i++){                // lines numbering
       var line= i+1
-      add_html(svg,'<p>'+line+'</p>', margin.left-20, (i+1-offsety+corry)*height/m)
+      add_html(svg,'<p>'+line+'</p>', margin.left-20, (i+1-offsety)*height/m)
     }
     for(i=0;i<n;i++){               // columns numbering
       
       var letter = String.fromCharCode(65+i)
-      add_html(svg,'<p>'+letter+'</p>',(i+offsetx+corrx)*width/n+margin.left, margin.top-35)
+      add_html(svg,'<p>'+letter+'</p>',(i+offsetx)*width/n+margin.left, margin.top-35)
     }
+    
+  
 
     svg.append("g")
         .attr("class", "brush")
@@ -344,11 +272,9 @@ var make_plate = function(m,n, spacing){
         .call(d3.well_select.tooltip())
 
     $('.well').click(function(){
-        if (show_coord){
-            alert($(this).attr('id'))
-            }
+        if(show_coord){ alert($(this).attr('id'))}
         })
-        
+
     $('.well').click(function(){
       if($(this).attr("class") == "well selected"){
         //alert('has class selected');
@@ -381,48 +307,41 @@ var make_plate = function(m,n, spacing){
        .call(xAxis);
     }
 
-$(document).keydown(function(event){   
-      if(keyev('c', event)){    //
-            show_coord = ! show_coord
-          //alert(show_coord)
-          } // end if key code   
-      if(keyev('b', event)){    // color biotine : yellow
-            well_col = col_0
-            //alert(well_col)
-        } // end if key code 
-      if(keyev('p', event)){    // color for peptide : green 
-            well_col = col_1
-           //alert(well_col)
-        } // end if key code   
-      if(keyev('d', event)){    // deactivate biotine and peptide.
-            well_col = col_2
-            //alert(well_col)
-        } // end if key code  
-      if(keyev('a', event)){    // show selected cells
-          $('.selected').each(function(){
-              var id = $(this).attr("id");
-              if (typeof(id)=='string'){
-                  alert(id)
-                } // end if
-            })// end each            
-        } // end if key code       
-  }) // end keydown
+    var keyev = function(key, event){
+        return (event.keyCode == key.charCodeAt(0)-32 )
+      }
+      
+      $(document).keydown(function(event){   
+          if(keyev('t', event)){    //
+                show_coord = ! show_coord
+              alert(show_coord)
+            } // end if key code   
+          if(keyev('b', event)){    // 
+                well_col = col_0
+            } // end if key code 
+          if(keyev('p', event)){    // color for peptide
+                well_col = col_1
+            } // end if key code   
+          if(keyev('d', event)){    // deactivate biotine and peptide.
+                well_col = col_2
+            } // end if key code  
+          if(keyev('a', event)){    // show selected cells
+              $('.selected').each(function(){
+                  var id = $(this).attr("id");
+                  if (typeof(id)=='string'){
+                      alert(id)
+                    } // end if
+                })// end each            
+            } // end if key code       
+      }) // end keydown
 } // end make_plate
 
-make_plate(100, 8, [100, 30]) // initialization of the plate nblines, nbcol ,spacings
+make_plate(120, 8, [100, 30]) // initialization of the plate
 
 $('#select_plate').change(function() { // select a plate 96 or 384
-        pl = $('#select_plate').val()
-    })// end change
+  pl = $('#select_plate').val()
 
-$(document).ready(function () {
-    //$(window).scroll(fixTitle);
-    lscrolls = ['keys']
-    for (i in lscrolls){
-        //alert('keys are OK')
-        Ps.initialize(document.querySelector('#'+lscrolls[i]))
-    }
 
-});
+})// end change
 
 </script>

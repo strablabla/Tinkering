@@ -144,6 +144,10 @@ div.onside {
    width: 300px;
  }
  
+/*==================================================
+ * 
+ * ===============================================*/
+
  div.esc {
     position: fixed;
     padding-right: 0px;
@@ -154,7 +158,11 @@ div.onside {
     height:30px;
     width:30px;
   }
-  
+
+/*==================================================
+ * 
+ * ===============================================*/
+
 .alertify {
     text-align:left;
 }
@@ -166,6 +174,10 @@ div.onside {
     overflow: scroll;
 }
 
+/*==================================================
+ *  Scroll top
+ * ===============================================*/
+
 .scrollToTop {
     width:40px;
     height: 40px;
@@ -174,6 +186,14 @@ div.onside {
     bottom:30px;
     display:none;
   }
+
+  #gotop.glyphicon.glyphicon-chevron-up {
+    font-size: 25px;
+}
+
+/*==================================================
+*  Scroll bottom
+* ===============================================*/
  
 .scrollToBottom {
   width:40px;
@@ -184,9 +204,6 @@ div.onside {
   display:none;
 }
 
-#gotop.glyphicon.glyphicon-chevron-up {
-    font-size: 25px;
-}
 #gobottom.glyphicon.glyphicon-chevron-down {
     font-size: 25px;
 }
@@ -363,7 +380,6 @@ div.chart {
       shape-rendering: crispEdges;
     }
   
-   
    .navplt body{
        background-color:transparent;
    }
@@ -406,7 +422,6 @@ div.chart {
        display: inline-block;
    }
 
-
 /*==================================================
  * Carousel
  * ===============================================*/
@@ -418,16 +433,28 @@ div.chart {
     width : auto;
 }
 
+/*==================================================
+ * Titles
+ * ===============================================*/
+
 h1 {
     text-shadow: 2px 2px #ccc;
     text-align: center;
 }
+
+/*==================================================
+ * Dates
+ * ===============================================*/
 
 .date {
   /*font-family: 'Londrina Solid', cursive;*/
   font-family: 'Enriqueta', serif;
   font-size: 20px;
 }
+
+/*==================================================
+ * Whole content
+ * ===============================================*/
 
 #content {
     /*margin*/
@@ -440,6 +467,9 @@ h1 {
     padding-top: 100px;
 }
 
+/*==================================================
+ * Separations
+ * ===============================================*/
 
 hr {
     display: block;
