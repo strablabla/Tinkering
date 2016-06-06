@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/3e47686/js/straptoc/straptoc.js 
-//https://github.com/strablabla/Tinkering/3e47686/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/d1c7260/js/straptoc/straptoc.js 
+//https://github.com/strablabla/Tinkering/d1c7260/js/straptoc/straptoc.css
 
 
 var maketoc = function(){
@@ -878,24 +878,7 @@ var maketoc = function(){
             } // end if key code
         
         if (event.keyCode == "t".charCodeAt(0)-32 && statekey == 1){   // Toggle todotheme
-             var targ = $('#todo_input').val()
-             if ($('#todotheme').is(':hidden')){
-                   $('#todotheme').append($('<h1/>').text('Theme: '+targ).addClass('theme')) // set title
-              $('li').each(function(){
-                  var txt_list = $(this).text().split('\n')[0]
-                  var par = $(this).parents('li').last()
-                  if (txt_list.match(targ) && !par.hasClass('^^')){ // match between list text and input
-                    var newline =  $('<li/>').html($(this).html()) //jQuery.extend(true, {}, $(this));
-                      $('#todotheme').append(newline.addClass('theme'))  // adding lists referencing to the theme
-                    } // end if
-                 }) // end each
-                    $("a").click(function (evt) {                
-                    var evtc = evt.target.className;
-                    if(evtc == '::')  // open close list on click
-                        $(this).next().toggle();
-                    });// end click
-                  $('#todotheme li ul').toggle()
-               } // end if hidden
+
               $('#todotheme').toggle()  
             if ($('#todotheme').is(':hidden')){
                 $('.theme').remove()
@@ -1274,6 +1257,39 @@ var maketoc = function(){
     $('body').prepend($('<div/>').addClass('todotheme').attr('id',"todotheme")) 
     $('#todotheme').toggle()
     $('#todotheme').draggable()
+    var inptheme = $('<input/>').attr('type', 'input')
+                                .attr('value','theme')
+                                .attr('id', 'todo_input')
+    var buttheme = $('<input/>').attr('type', 'button')
+                                .addClass('btn btn-default')
+                                .attr('value','submit').click(function(){
+                                        $('.theme').remove()
+                                        showtheme()
+                                        })
+    $('#todotheme').append(inptheme) // btn btn-default
+    $('#todotheme').append(buttheme)
+    
+    var showtheme = function(){
+        var targ = $('#todo_input').val()
+        // if ($('#todotheme').is(':hidden')){
+              $('#todotheme').append($('<h1/>').text('Theme: '+targ).addClass('theme')) // set title
+         $('li').each(function(){
+             var txt_list = $(this).text().split('\n')[0]
+             var par = $(this).parents('li').last()
+             if (txt_list.match(targ) && !par.hasClass('^^')){ // match between list text and input
+               var newline =  $('<li/>').html($(this).html()) //jQuery.extend(true, {}, $(this));
+                 $('#todotheme').append(newline.addClass('theme'))  // adding lists referencing to the theme
+               } // end if
+            }) // end each
+               $("a").click(function (evt) {                
+               var evtc = evt.target.className;
+               if(evtc == '::')  // open close list on click
+                   $(this).next().toggle();
+               });// end click
+             $('#todotheme li ul').toggle()
+          //} // end if hidden
+      }// end shotheme function
+
 
     //===================================================================== esc
 
