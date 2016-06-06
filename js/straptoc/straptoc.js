@@ -127,7 +127,12 @@ var maketoc = function(){
     basename = function(path) {  return path.replace( /.*\//, "" ); }
     dirname = function(path) { return path.match( /.*\// ); }
 
-//===================================================================== Simple markdown for help
+//===================================================================== Simple markdown 
+
+    /*
+    Simple markdown used for providing informations to the user. 
+    Recognizes lists. 
+    */
     
     simple_md = function(text){ // mini markdown for the help
         var all_text = text.split('\n')
@@ -339,7 +344,11 @@ var maketoc = function(){
 
 //===================================================================== list of pdfs
 
-  $("p, li").each(function(){
+    /*
+    Takes all the pdf addresses after $pdf and insert in list. 
+    */
+
+    $("p, li").each(function(){
         if ($(this).text().match(/^\$pdf/)) {  // detect list pdfs
            var ulpdf = $('<ul/>')
            $(this).children('a').each(function(){
@@ -350,8 +359,12 @@ var maketoc = function(){
     })   // end each p, li
 
 //===================================================================== list of local videos
+    
+    /*
+    Takes all the addresses after $vid and insert in list. 
+    */
 
-  $("p, li").each(function(){
+    $("p, li").each(function(){
         if ($(this).text().match(/^\$vid/)) {  // detect list of local videos
            var ulvid = $('<ul/>')
            $(this).children('a').each(function(){
@@ -362,6 +375,10 @@ var maketoc = function(){
     })   // end each p, li
     
  //===================================================================== Portfolio
+ 
+    /*
+    Takes all the addresses after $portf and insert in list. 
+    */
 
    $("p, li").each(function(){
      if ($(this).text().match(/^\$portf/)) {  // detect portfolio
@@ -383,62 +400,70 @@ var maketoc = function(){
 
 //===================================================================== Carousel
 
-  $("p, li").each(function(){
-    //alert($(this).text())
-    if ($(this).text().match(/^\$carr/)) { 
-        
-        var newcarr = function(){
-            var num = parseInt(prefcarr.split('carousel')[1])+1
-            var incremcarr = 'carousel'+num ;
-            prefcarr = incremcarr ;
-            return incremcarr
-          }
-        
-        var namecarr = $(this).text().split(/^\$carr/)[1].split('\n')[0].trim() || 'default'
-        if (namecarr=='default'){
-              namecarr=newcarr()
-          }
-        var divcarr = $('<div/>').addClass("carousel slide")
-                                 .attr('id',namecarr)
-        var divcarrinner = $('<div/>').addClass("carousel-inner").attr('role','listbox')
+    /*
+    Takes all the addresses after $carr and insert in list. 
+    */
 
-        //======================== go to previous
+    $("p, li").each(function(){
+        //alert($(this).text())
+        if ($(this).text().match(/^\$carr/)) { 
+    
+            var newcarr = function(){
+                var num = parseInt(prefcarr.split('carousel')[1])+1
+                var incremcarr = 'carousel'+num ;
+                prefcarr = incremcarr ;
+                return incremcarr
+              }
+    
+            var namecarr = $(this).text().split(/^\$carr/)[1].split('\n')[0].trim() || 'default'
+            if (namecarr=='default'){
+                  namecarr=newcarr()
+              }
+            var divcarr = $('<div/>').addClass("carousel slide")
+                                     .attr('id',namecarr)
+            var divcarrinner = $('<div/>').addClass("carousel-inner").attr('role','listbox')
 
-        var aprev = $('<a/>').addClass("left carousel-control")
-                             .attr('role','button')
-                             .attr('data-slide','prev')
-                             .attr('href','#'+namecarr)
-            aprev.text('<').css({"font-size": "20px"})
-                         
-        //======================= go to next
+            //======================== go to previous
 
-        var anext = $('<a/>').addClass("right carousel-control")
-                 .attr('role','button')
-                 .attr('data-slide','next')
-                 .attr('href','#'+namecarr)
-            anext.text('>').css({"font-size": "20px"})
+            var aprev = $('<a/>').addClass("left carousel-control")
+                                 .attr('role','button')
+                                 .attr('data-slide','prev')
+                                 .attr('href','#'+namecarr)
+                aprev.text('<').css({"font-size": "20px"})
+                     
+            //======================= go to next
 
-        //======================= image items
+            var anext = $('<a/>').addClass("right carousel-control")
+                     .attr('role','button')
+                     .attr('data-slide','next')
+                     .attr('href','#'+namecarr)
+                anext.text('>').css({"font-size": "20px"})
 
-        $(this).children('img').each(function(i){
-            var divitem = $('<div/>').addClass("item")
-                           .append($(this)
-                                .attr('width','460')
-                                .attr('height','365')
-                           ) // end append
-            if (i == 0){divitem.addClass("active")}
-            divcarrinner.append(divitem) // end append
-            }) // end each
+            //======================= image items
 
-        //=========================  make the whole div.
+            $(this).children('img').each(function(i){
+                var divitem = $('<div/>').addClass("item")
+                               .append($(this)
+                                    .attr('width','460')
+                                    .attr('height','365')
+                               ) // end append
+                if (i == 0){divitem.addClass("active")}
+                divcarrinner.append(divitem) // end append
+                }) // end each
 
-        divcarr.append(divcarrinner.append(aprev).append(anext)) 
-        $(this).replaceWith(divcarr)
-        $('#carr').append(divcarr)
-      } // end if regexp
+            //=========================  make the whole div.
+
+            divcarr.append(divcarrinner.append(aprev).append(anext)) 
+            $(this).replaceWith(divcarr)
+            $('#carr').append(divcarr)
+        } // end if regexp
     }) // end each p
 
 //===================================================================== retrieving config param
+
+    /*
+    Corrects when there is no line feeding so as to split correctly the arguments.
+    */
 
     $("p").each(function(){   // correction if there is no line feeding after each parameter. 
         if ($(this).text().match(/^§/)) {              
@@ -468,6 +493,7 @@ var maketoc = function(){
  //===================================================================== Navbar menu
    
    /*
+   Insert element in the Navbar with hyperlinks
    usage : $menu toto:hash 
             toto is the name in the menu    
             hash is the hyperlink.
@@ -531,11 +557,14 @@ var maketoc = function(){
 
 //===================================================================== mathjax
 
-  $("p, li").each(function(){
+    /*
+    Mathjax made simply by adding $math at the beginning of the line. 
+    */
+
+    $("p, li").each(function(){
     txt = $(this).text()
     if (txt.match(/^\$math/)) { 
           if (param['mathsize']['var'].length>0){ mathsize = '\\'+param['mathsize']['var']+' ' }
-          //alert(param['mathsize']['var'])
           $(this).replaceWith('$$'+ mathsize + txt.split('$math')[1]+'$$')
         }   // end if txt.mtch
     })   // end each p, li
@@ -2024,62 +2053,67 @@ make_plot.prototype.menuplot = function(fig, add_html){
     
 } // end menu_plot
 
+//=====================================================================  Sliders
 
+    /*
+    Sliders made with d3.js
+    Possible to enter the size and direction (vertical, horizontal)
+    */
 
-var drag_slider = d3.behavior.drag()
-    .origin(function(d) {  return d }) 
-    .on("dragstart", dragstarted)
-    .on("drag", function(d) {
-        if (d.dir == "x"){
-            d.action(); // 
-            return d3.select(this).attr("cx", d.x  = d3.event.x);
+    var drag_slider = d3.behavior.drag()
+        .origin(function(d) {  return d }) 
+        .on("dragstart", dragstarted)
+        .on("drag", function(d) {
+            if (d.dir == "x"){
+                d.action(); // 
+                return d3.select(this).attr("cx", d.x  = d3.event.x);
+                }
+            else if (d.dir == "y"){
+                $("#slider_value").html(d3.event.y);
+                d.action();
+                return d3.select(this).attr("cy", d.y  = d3.event.y);
+                }
+        })
+        .on("dragend", dragended);
+
+    var slide = function(data, name_svg){ // Vertical or horizontal slider
+        slider_line = function(data){
+              var svg_slider_line = name_svg
+                .selectAll("svg_slider_line")
+                .data(data)
+                .enter()
+                .append("line")
+                .attr('x1', function(d){return d.xbar}) // 
+                .attr('y1', function(d){return d.ybar})
+                .attr('x2', function(d){if ( d.dir=="x" ){ return d.slength + d.xbar } else { return d.xbar }}) // 
+                .attr('y2', function(d){if ( d.dir=="y" ){ return d.slength + d.ybar } else { return d.ybar }})
+                .attr('stroke', function(d){return d.col})
+                .attr('stroke-width', '4px')
             }
-        else if (d.dir == "y"){
-            $("#slider_value").html(d3.event.y);
-            d.action();
-            return d3.select(this).attr("cy", d.y  = d3.event.y);
-            }
-    })
-    .on("dragend", dragended);
+        slider_button = function(data){ 
+            var slider_butt = name_svg
+              .selectAll("svg_slider_button")
+              .data(data)
+              .enter()
+              .append("ellipse")       // attach an ellipse
+              .attr("cx", function(d){return d.x})           // position the x-centre
+              .attr("cy", function(d){return d.y})           // position the y-centre
+              .attr("rx", 7)           // set the x radius
+              .attr("ry", 7)           // set the y radius
+              .attr("fill", function(d){return d.col})
+              .attr("class", "slide")
+              .call(drag_slider);
+            }  
+        slider_line(data);
+        slider_button(data);
+    }
 
-var slide = function(data, name_svg){ // Vertical or horizontal slider
-    slider_line = function(data){
-          var svg_slider_line = name_svg
-            .selectAll("svg_slider_line")
-            .data(data)
-            .enter()
-            .append("line")
-            .attr('x1', function(d){return d.xbar}) // 
-            .attr('y1', function(d){return d.ybar})
-            .attr('x2', function(d){if ( d.dir=="x" ){ return d.slength + d.xbar } else { return d.xbar }}) // 
-            .attr('y2', function(d){if ( d.dir=="y" ){ return d.slength + d.ybar } else { return d.ybar }})
-            .attr('stroke', function(d){return d.col})
-            .attr('stroke-width', '4px')
-        }
-    slider_button = function(data){ 
-        var slider_butt = name_svg
-          .selectAll("svg_slider_button")
-          .data(data)
-          .enter()
-          .append("ellipse")       // attach an ellipse
-          .attr("cx", function(d){return d.x})           // position the x-centre
-          .attr("cy", function(d){return d.y})           // position the y-centre
-          .attr("rx", 7)           // set the x radius
-          .attr("ry", 7)           // set the y radius
-          .attr("fill", function(d){return d.col})
-          .attr("class", "slide")
-          .call(drag_slider);
-        }  
-    slider_line(data);
-    slider_button(data);
-}
+    function dragstarted(d) {
+      d3.event.sourceEvent.stopPropagation();
+      d3.select(this).classed("dragging", true);
+    }
 
-function dragstarted(d) {
-  d3.event.sourceEvent.stopPropagation();
-  d3.select(this).classed("dragging", true);
-}
-
-function dragended(d){ d3.select(this).classed("dragging", false) }
+    function dragended(d){ d3.select(this).classed("dragging", false) }
 
 //=====================================================================  position in TOC
 
