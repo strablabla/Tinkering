@@ -227,7 +227,10 @@ var maketoc = function(){
     
  //===================================================================== Remove separating marks from edition
     
-    // Separations for comments. 
+  /*
+   Separation for comments
+   syntax : $------------- comments here. 
+  */
 
     $("p").each(function(){
         if ($(this).text().match(/^\$----.*/)){
@@ -236,6 +239,10 @@ var maketoc = function(){
     })
 
  //===================================================================== Context menu
+
+   /*
+   Associating a context menu to whatever component on the page. 
+  */
  
    $('body').attr('contextmenu',"share")
    $("p").each(function(){
@@ -289,6 +296,11 @@ var maketoc = function(){
 
  //===================================================================== separating line
 
+  /*
+   Simple line separation on the page. 
+   syntax : $*
+  */
+
     $("p").each(function(){
       txt = $(this).text()
       if (txt.match(/^\$\*/)) { 
@@ -297,6 +309,12 @@ var maketoc = function(){
       })   // end each p
 
  //===================================================================== Simple bash code
+
+   /*
+   Simplifying the syntax by replacing the use of the triple back quotes 2 times by using them only one time. 
+   syntax : * ```
+                text to be quoted.. 
+  */
 
   $("p, li").each(function(){
     htm = $(this).html().split('\n')[0]
@@ -313,7 +331,10 @@ var maketoc = function(){
 
  //===================================================================== register root path for $portf or $carr
  
-  // Register path for img, pdfs, href
+  /*
+   Register a shared path (root path) for group of images, pdfs, href etc.. 
+   syntax : +++ rootpath
+  */
 
   $("p, li").each(function(){
     var htm = $(this).html()
@@ -325,18 +346,18 @@ var maketoc = function(){
              //==============================   case of img
              
             if ($(this).parent().find('img')){    
-                  $(this).attr('src', addroot+$(this).attr('src')) // changing path
+                  $(this).attr('src', addroot+$(this).attr('src')) // add root path
                 }
                 
              //==============================   case of pdfs
              
             if ($(this).text().match(/§§/)){   
-                $(this).attr('href', addroot+$(this).attr('href')) // changing path
+                $(this).attr('href', addroot+$(this).attr('href')) // add root path
                }
-            //==============================   case of videos
+            //==============================   case of local videos
             
             if (htm.match(/%%/)){   
-                $(this).attr('href', addroot+$(this).attr('href')) // changing path
+                $(this).attr('href', addroot+$(this).attr('href')) // add root path
                }
             }) // end each
         } // end if txt.mtch
