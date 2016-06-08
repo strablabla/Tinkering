@@ -10,13 +10,13 @@
 
 var maketoc = function(){
     
-    // Javascript code for enhancing markdown capabilities.
-    // format and transformed with strapdown in html code. 
-    // Maketoc supposes the code is yet in html format.
-    // The whole code uses extensively jQuery library.
-    // 
     
+    /*
+    Straptoc.js is a code for enhancing markdown capabilities. Straptoc.js modify the code produced by Strapdown.js. It adds many features such as possibility to insert videos (local, youtube), make Carousels, Portfolios.
+    It simplifies also the markdown syntax in some cases. The whole code uses extensively jQuery library.
+    */
     
+
     // var scriptsToLoad = 0;
     
     
@@ -108,7 +108,7 @@ var maketoc = function(){
     * §mathsize : set the size of the equations. Possible values : tiny, small, normalsize, large, Large, LARGE, huge, Huge
     * $menu : 
         * eg : before H1 place $menu_zax link:nm_Edit:ic_edit:href_Introduction
-    * $------- : put comment lines in the edition window
+    * $------- : permit to insert comment lines in the edition window
     */}.toString().slice(14,-3)
     
     var keys = function(){/*
@@ -131,14 +131,14 @@ var maketoc = function(){
 
     /*
     Simple markdown used for providing informations to the user. 
-    Recognizes lists. 
+    It handles calssical markdown list syntax.
     */
     
     simple_md = function(text){ // mini markdown for the help
         var all_text = text.split('\n')
         var htm = $('<div/>')
         var ul = $('<ul/>').css({'text-align':'left'})
-        for (i in all_text){
+        for (i in all_text){  
             var text_insert = all_text[i].trim().slice(1) // prepare text
             if (all_text[i].match(/^\s{4}\*/)){    // detect list first level
                 ul.append($('<li/>').text(text_insert))
@@ -161,7 +161,10 @@ var maketoc = function(){
 
 //===================================================================== Regexp for parameters
 
-    // Definitions of regexp 
+    /*
+    Regexp
+    Used for Straptoc document parametrization and other stuffs.
+    */
     reg_func = function(name){return RegExp('^\\§'+name+'\\s*','g') } // function for regexp for configuration
     var reg_date = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /--\w*--/; //regexp for identity
@@ -206,12 +209,20 @@ var maketoc = function(){
          }
 
  //===================================================================== Go to top
+    
+    /*
+    When near the bottom of the page, permits to go upward. 
+    */
 
     $('body').prepend($('<div/>').attr('id','top'))
     $('body').append($('<a/>').attr('href','#top').addClass("scrollToTop").attr('title','go to top')
              .append($('<span/>').addClass("glyphicon glyphicon-chevron-up").attr('id','gotop')))
 
  //===================================================================== Go to bottom
+ 
+    /*
+    When near the top of the page, permits to go downward. 
+    */
 
     $('body').prepend($('<div/>').attr('id','bottom'))
     $('body').append($('<a/>').attr('href','#bottom').addClass("scrollToBottom").attr('title','go to bottom')
@@ -219,8 +230,10 @@ var maketoc = function(){
 
 //===================================================================== Carousels
 
-    // All Carousels
-
+    /*
+    Show all the Carousels implemented in the page. 
+    */
+    
     $('body').prepend($('<div/>').addClass('carr').attr('id',"carr")) 
     $('#carr').append($('<h1/>').text('Carousels')).toggle()
     $('#carr').draggable()
@@ -290,16 +303,20 @@ var maketoc = function(){
     }) // end each
 
  //===================================================================== Zoom thumbnail and image
-
+ 
+    /*
+    Zooming in image in Portfolio
+    */
+    
     $('body').prepend($('<div/>').attr('id',"id_view_image_body"))
            .prepend($('<div/>').attr('id',"id_view_image"))
 
  //===================================================================== separating line
 
-  /*
-   Simple line separation on the page. 
-   syntax : $*
-  */
+    /*
+    Simple line separation on the page. 
+    syntax : $*
+    */
 
     $("p").each(function(){
       txt = $(this).text()
@@ -310,13 +327,13 @@ var maketoc = function(){
 
  //===================================================================== Simple bash code
 
-   /*
-   Simplifying the syntax by replacing the use of the triple back quotes 2 times by using them only one time. 
-   syntax : * ```
+    /*
+    Simplifying the syntax by replacing the use of the triple back quotes 2 times by using them only one time. 
+    syntax : * ```
                 text to be quoted.. 
-  */
+    */
 
-  $("p, li").each(function(){
+    $("p, li").each(function(){
     htm = $(this).html().split('\n')[0]
     if (htm.match(/\`\`\`/)) { 
         ht = $(this).html()
