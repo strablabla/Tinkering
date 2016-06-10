@@ -18,11 +18,12 @@
             }
         </style>
 
-    <style type="text/css">.dg {
+  
 
 
 </style></head>
     <body >
+
         <script src="http://cdn.mechasdf.com/lib/three.min.js"></script>
         <script src="http://cdn.mechasdf.com/lib/js/controls/TrackballControls.js"></script>
         <script src="http://cdn.mechasdf.com/lib/js/controls/dat.gui.min.js"></script>
@@ -30,6 +31,7 @@
         <script >
             var camera, scene, renderer, controls;
             var FTICR2Dmap_mesh = 0.25; 
+            var ctrl = true;
             // var FTICR2Dmap_detail = 8, FTICR2Dmap_roughness = 0.7;
             var FTICR2Dmap_detail = 8, FTICR2Dmap_roughness = 0.7;
             var dist0 = 1e3;
@@ -106,30 +108,44 @@
                 camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, dist4);
                 camera.position.y = 100;
                 camera.position.z = 600;
-                
+                sign = 1
+                trackball = true
                 $(document).keydown(function(event){
-                    if (event.keyCode == "s".charCodeAt(0)-32){   
-                        //alert(camera.position.x + '_' + camera.position.y + '_' + camera.position.z)
-                        camera.position.x += 200;
-                        //camera.position.z += 20;
-                        //camera.lookAt(100,0,0);
-                        
+                	if (event.keyCode == "c".charCodeAt(0)-32){   
+                        ctrl = !ctrl
                       } // end if key code
+                	if (event.keyCode == "s".charCodeAt(0)-32){   
+                        sign=-sign 
+                      } // end if key code
+                    if (event.keyCode == "x".charCodeAt(0)-32){   
+                        camera.position.x+=sign*100  
+                      } // end if key code
+                    if (event.keyCode == "y".charCodeAt(0)-32){   
+                        camera.position.y+=sign*100  
+                      } // end if key code
+                    if (event.keyCode == "z".charCodeAt(0)-32){   
+                        camera.position.z+=sign*100  
+                      } // end if key code
+                    if (event.keyCode == "p".charCodeAt(0)-32){   
+                    	pos = camera.position.x + '_'+ camera.position.y +'_'+ camera.position.z
+                        alert(pos)
+                      } // end if key code
+
                     }) // end keydown
-                      
                       
                 var ambient_light = new THREE.AmbientLight(0xcccccc);
                 scene.add(ambient_light);
+                
+	                window.addEventListener('resize', onWindowResize, false);
+	                controls = new THREE.TrackballControls(camera, renderer.domElement);
+	                controls.rotateSpeed = 0.4;
+	                controls.noZoom = false;
+	                controls.noPan = false;
+	                controls.staticMoving = false;
+	                controls.dynamicDampingFactor = 0.4;
 
-                window.addEventListener('resize', onWindowResize, false);
-                controls = new THREE.TrackballControls(camera, renderer.domElement);
-                controls.rotateSpeed = 0.4;
-                controls.noZoom = false;
-                controls.noPan = true;
-                controls.staticMoving = false;
-                controls.dynamicDampingFactor = 0.4;
-                controls.minDistance = 300;
-                controls.maxDistance = 600;
+                //controls.minDistance = 300;
+                //controls.maxDistance = 600;
                 // controls.minDistance = dist3;
                 // controls.maxDistance = dist5;
             }
@@ -142,7 +158,9 @@
 
             function animate() {
                 requestAnimationFrame(animate);
-                controls.update();
+                if(ctrl){
+                	controls.update();
+                }
                 FTICR2Dmap_detail = parseInt(FTICR2Dmap_detail);
                 renderer.render(scene, camera);
             }
