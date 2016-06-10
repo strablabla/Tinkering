@@ -3,6 +3,7 @@
     <title>numpy to 3D with WebGL</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
         <script src='3d.json'></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
         <style type="text/css">
             body {
                 background-color: #000;
@@ -20,27 +21,14 @@
     <style type="text/css">.dg {
 
 
-</style>
-
+</style></head>
+    <body >
         <script src="http://cdn.mechasdf.com/lib/three.min.js"></script>
         <script src="http://cdn.mechasdf.com/lib/js/controls/TrackballControls.js"></script>
         <script src="http://cdn.mechasdf.com/lib/js/controls/dat.gui.min.js"></script>
-        <script src="http://cdn.mechasdf.com/lib/js/controls/FirstPersonControls.js"></script>
-        <script src="http://cdn.mechasdf.com/lib/js/controls/DeviceOrientationControls.js"></script>
-        <script src="http://cdn.mechasdf.com/lib/js/controls/OrbitControls.js"></script>
-
-</head>
-    <body >
-
-     <div id="container"></div>
-
-
         
         <script >
-            var camera, scene, renderer
-            var controls, container, element
-            var clock = new THREE.Clock();
-
+            var camera, scene, renderer, controls;
             var FTICR2Dmap_mesh = 0.25; 
             // var FTICR2Dmap_detail = 8, FTICR2Dmap_roughness = 0.7;
             var FTICR2Dmap_detail = 8, FTICR2Dmap_roughness = 0.7;
@@ -103,8 +91,9 @@
                 FTICR2Dmap_mesh.rotation.x = -Math.PI / 2.0;
                 scene.add(FTICR2Dmap_mesh);
             }
-            function init() {
 
+            
+            function init() {
 
                 renderer = new THREE.WebGLRenderer({
                     antialias: true
@@ -113,79 +102,56 @@
                 renderer.setSize(window.innerWidth, window.innerHeight);
                 document.body.appendChild(renderer.domElement);
 
-
-                element = renderer.domElement;
-                container = document.getElementById('container');
-                container.appendChild(element);
-
-
                 scene = new THREE.Scene();
-
                 camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, dist4);
                 camera.position.y = 100;
-                camera.position.z = 1200;
-              
-
+                camera.position.z = 600;
+                
+                $(document).keydown(function(event){
+                    if (event.keyCode == "s".charCodeAt(0)-32){   
+                        //alert(camera.position.x + '_' + camera.position.y + '_' + camera.position.z)
+                        camera.position.x += 200;
+                        //camera.position.z += 20;
+                        //camera.lookAt(100,0,0);
+                        
+                      } // end if key code
+                    }) // end keydown
+                      
+                      
                 var ambient_light = new THREE.AmbientLight(0xcccccc);
                 scene.add(ambient_light);
 
-
-                controls  = new THREE.FirstPersonControls( camera );
-                controls.movementSpeed  = 20;
-                controls.lookSpeed  = 0.05;
-                controls.lookVertical   = true;
-
-          function setOrientationControls(e) {
-            if (!e.alpha) {
-              return;
+                window.addEventListener('resize', onWindowResize, false);
+                controls = new THREE.TrackballControls(camera, renderer.domElement);
+                controls.rotateSpeed = 0.4;
+                controls.noZoom = false;
+                controls.noPan = true;
+                controls.staticMoving = false;
+                controls.dynamicDampingFactor = 0.4;
+                controls.minDistance = 300;
+                controls.maxDistance = 600;
+                // controls.minDistance = dist3;
+                // controls.maxDistance = dist5;
             }
 
-            controls = new THREE.DeviceOrientationControls(camera, true);
-            controls.connect();
-            controls.update();
+            function onWindowResize() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
 
-            element.addEventListener('click', fullscreen, false);
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                FTICR2Dmap_detail = parseInt(FTICR2Dmap_detail);
+                renderer.render(scene, camera);
+            }
 
-            window.removeEventListener('deviceorientation', setOrientationControls, true);
-          } // end setOrientationControls
-
-          window.addEventListener('deviceorientation', setOrientationControls, true);
-
-          window.addEventListener('resize', resize, false);
-          setTimeout(resize, 1);
-       } // end init
-
-
-        function resize() {
-          var width = container.offsetWidth;
-          var height = container.offsetHeight;
-          camera.aspect = width / height;
-          camera.updateProjectionMatrix();
-          renderer.setSize(width, height);
-        }
-
-        function update(dt) {
-          resize();
-          camera.updateProjectionMatrix();
-          controls.update(dt);
-        }
-
-        function render(dt) {
-          renderer.render(scene, camera);
-        }
-
-        function animate(t) {
-          requestAnimationFrame(animate);
-          FTICR2Dmap_detail = parseInt(FTICR2Dmap_detail);
-          update(clock.getDelta());
-          render(clock.getDelta());
-        }
-
-        function generate() {
-            var FTICR2Dmap = new Visu3d(parseInt(FTICR2Dmap_detail));
-            FTICR2Dmap.generate(FTICR2Dmap_roughness);
-            FTICR2Dmap.addMesh();
-        };
+            function generate() {
+                var FTICR2Dmap = new Visu3d(parseInt(FTICR2Dmap_detail));
+                FTICR2Dmap.generate(FTICR2Dmap_roughness);
+                FTICR2Dmap.addMesh();
+            };
 
             init();
             generate();
