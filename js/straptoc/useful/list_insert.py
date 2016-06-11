@@ -25,7 +25,10 @@ class LIST_INSERT(object):
                      "é":"e","û":"u","û":"u",
                     "â":"a","ô":"o","à":"a",
                     "è":"e" }
-        self.prefix = raw_input("prefix? ")  # Prefix : folder containing all the files and folders.. 
+        #self.prefix = raw_input("prefix? ")  # Prefix : folder containing all the files and folders.. 
+        root = raw_input("root? ")  # root
+        self.prefix = os.getcwd()
+        self.prefix  = '../../'+root+self.prefix.split(root)[1]
         dic_categ = {} # list categories
         
         for path, dirs, files in os.walk('.'):
@@ -41,7 +44,6 @@ class LIST_INSERT(object):
                 else:
                     newpath = oldpath # no empty spaces detected
                 root,ext = os.path.splitext(newpath)
-                #print '############  ', newpath
                 self.folder_subfolder(newpath, dic_categ, kind)
 
     def folder_subfolder(self, newpath, dic_categ, kind):
@@ -49,7 +51,7 @@ class LIST_INSERT(object):
         '''
         filename = os.path.basename(newpath[2:])#[:-4]
         strap = {'pdf':'$pdf', 'vid':'$vid', 'img':'$portf', 'html':'$htm'}
-        strapline = {'pdf':'    [{0} §§]({0}.pdf)'.format(filename), # pdf
+        strapline = {'pdf':'    [{0} §§]({1})'.format(filename[:-4], filename), # pdf
                      'vid':'    [{0}%%]({1})'.format(filename[:-4], filename), # vid
                      'img':'    ![%{0}%]({1})'.format(filename[:-4], filename),  # img
                      'html':'    [{0},,]({1})'.format(filename[:-5], filename) # html
@@ -65,9 +67,10 @@ class LIST_INSERT(object):
             else:
                 dic_categ[nwps[0]] += 1 # increment
                 category = '    '
-        else:
+        else:  # first level
             if self.first:
-                category = '* '+ strap[kind]+' \n'
+                cat0 = ' \n     +++ {0} \n'.format(self.prefix)
+                category = '* '+ strap[kind] + cat0
                 self.first = False
             else:
                 category = ''
