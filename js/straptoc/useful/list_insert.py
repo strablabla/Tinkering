@@ -1,0 +1,89 @@
+# coding: utf8
+import sys, os
+
+'''
+All the addresses in the local folder with correction for inserting in infos_utiles.
+'''
+
+class LIST_INSERT(object):
+    '''
+    '''
+    def __init__(self, kind = None, corr = False):
+        '''
+        '''
+        self.kind = kind
+        self.corr = corr
+        self.first = True
+    
+    def build_list(self):
+        '''
+        '''
+        limages = ['.jpg', '.png']
+        liframes = ['.html']
+        lvideo = ['.mp4']
+        dic_corr = {"'":"_", ",":"_","\(":"_","\)":"_",
+                     "é":"e","û":"u","û":"u",
+                    "â":"a","ô":"o","à":"a",
+                    "è":"e" }
+        self.prefix = raw_input("prefix? ")  # Prefix : folder containing all the files and folders.. 
+        dic_categ = {} # list categories
+        
+        for path, dirs, files in os.walk('.'):
+            for f in files:
+                fold = f
+                l = f.split()
+                oldpath = os.path.join(path, fold)
+                if len(l) > 1: # empty spaces detected , need of correction
+                    f = '_'.join(l) # remove empty spaces
+                    newpath = os.path.join(path, f) # newpath
+                    if corr: 
+                        os.rename(oldpath , newpath) # if correction asked (argument 'corr'), make correction
+                else:
+                    newpath = oldpath # no empty spaces detected
+                root,ext = os.path.splitext(newpath)
+                #print '############  ', newpath
+                self.folder_subfolder(newpath, dic_categ, kind)
+
+    def folder_subfolder(self, newpath, dic_categ, kind):
+        '''
+        '''
+        filename = os.path.basename(newpath[2:])#[:-4]
+        strap = {'pdf':'$pdf', 'vid':'$vid', 'img':'$portf', 'html':'$htm'}
+        strapline = {'pdf':'    [{0} §§]({0}.pdf)'.format(filename), # pdf
+                     'vid':'    [{0}%%]({1})'.format(filename[:-4], filename), # vid
+                     'img':'    ![%{0}%]({1})'.format(filename[:-4], filename),  # img
+                     'html':'    [{0},,]({1})'.format(filename[:-5], filename) # html
+                     }
+        nwps = newpath[2:].split('/')
+        if len(nwps) > 1: # subfolders
+            if nwps[0] not in dic_categ : 
+                dic_categ[nwps[0]] = 1 # initialize
+                cat0 = '* {0} :: \n    * '.format(nwps[0])
+                cat1 = strap[kind]
+                cat2 = ' \n     +++ {1}/{0} \n'.format(nwps[0], self.prefix)
+                category = cat0 + cat1 + cat2 
+            else:
+                dic_categ[nwps[0]] += 1 # increment
+                category = '    '
+        else:
+            if self.first:
+                category = '* '+ strap[kind]+' \n'
+                self.first = False
+            else:
+                category = ''
+        strline = category + strapline[kind]
+        print strline
+        
+if __name__=='__main__':
+    largkind = ['pdf', 'img', 'vid', 'html']
+    kind = sys.argv[1]
+    if kind in largkind:
+        try:
+            corr = sys.argv[2]  
+        except: 
+            corr = False
+    li = LIST_INSERT(kind, corr)
+    li.build_list()
+
+    
+        

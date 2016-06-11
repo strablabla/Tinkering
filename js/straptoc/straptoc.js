@@ -363,19 +363,26 @@ var maketoc = function(){
              //==============================   case of img
              
             if ($(this).parent().find('img')){    
-                  $(this).attr('src', addroot+$(this).attr('src')) // add root path
+                  $(this).attr('src', addroot+$(this).attr('src')) // add root path to img
                 }
                 
              //==============================   case of pdfs
              
             if ($(this).text().match(/§§/)){   
-                $(this).attr('href', addroot+$(this).attr('href')) // add root path
+                $(this).attr('href', addroot+$(this).attr('href')) // add root path to pdf
                }
             //==============================   case of local videos
             
             if (htm.match(/%%/)){   
-                $(this).attr('href', addroot+$(this).attr('href')) // add root path
+                $(this).attr('href', addroot+$(this).attr('href')) // add root path to vid
+              }
+            //==============================   case of local html
+
+            if (htm.match(/,,/)){   
+                alert($(this).html())
+                $(this).attr('href', addroot+$(this).attr('href')) // add root path to html
                }
+            //==============================   
             }) // end each
         } // end if txt.mtch
     }) // end each p, li
@@ -393,6 +400,23 @@ var maketoc = function(){
                 ulpdf.append($('<li/>').append($(this)))
              }) // end each 
            $(this).replaceWith(ulpdf) // replace whole p or li 
+        }   // end if regexp
+    })   // end each p, li
+
+//===================================================================== list of iframes
+
+    /*
+    Takes all the iframes addresses after $htm and insert in list. 
+    */
+
+    $("p, li").each(function(){
+        if ($(this).text().match(/^\$htm/)) {  // detect list html
+           var ulhtm = $('<ul/>')
+           $(this).children('a').each(function(){
+                alert($(this).html())
+                ulhtm.append($('<li/>').append($(this)))
+             }) // end each 
+           $(this).replaceWith(ulhtm) // replace whole p or li 
         }   // end if regexp
     })   // end each p, li
 
