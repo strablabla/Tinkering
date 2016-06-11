@@ -379,7 +379,7 @@ var maketoc = function(){
             //==============================   case of local html
 
             if (htm.match(/,,/)){   
-                alert($(this).html())
+                //alert($(this).html())
                 $(this).attr('href', addroot+$(this).attr('href')) // add root path to html
                }
             //==============================   
@@ -413,7 +413,7 @@ var maketoc = function(){
         if ($(this).text().match(/^\$htm/)) {  // detect list html
            var ulhtm = $('<ul/>')
            $(this).children('a').each(function(){
-                alert($(this).html())
+                //alert($(this).html())
                 ulhtm.append($('<li/>').append($(this)))
              }) // end each 
            $(this).replaceWith(ulhtm) // replace whole p or li 
@@ -888,10 +888,12 @@ var maketoc = function(){
     
     Esc + s : show the syntax
     Esc + k : show the shortcut keys
-    Esc + d : toggle windows movement
+    Esc + d : toggle draggable attribute.
     Esc + r : toggle windows resize
-    Esc + c : toggle window with carousels
+    Esc + c : toggle window with all carousels
     Esc + t : toggle window with all list refering to the todo theme
+    Esc + w : toggle all the windows
+    Esc + p : toggle charts
     Plot : 
         * shift + n : toggle tools
     
@@ -939,12 +941,15 @@ var maketoc = function(){
                 } // end for (i in list_wind )
             } // end if key code
         
-        if (event.keyCode == "t".charCodeAt(0)-32 && statekey == 1){   // Toggle todotheme
-
-              $('#todotheme').toggle()  
-            if ($('#todotheme').is(':hidden')){
+        if (event.keyCode == "t".charCodeAt(0)-32 && (statekey == 1 || statekey == 'blocked')){   // Toggle todotheme
+            $('#todotheme').toggle()  
+            if ($('#todotheme').is(':hidden')){ // todotheme is closed.
                 $('.theme').remove()
+                statekey = 1;
                 }
+            else{
+              statekey = 'blocked' // prevent from opening windows when writing a theme. 
+              } // end else
             } // end if key code
         
         if (event.keyCode == "p".charCodeAt(0)-32 && statekey == 1){   // Toggle charts
@@ -965,6 +970,7 @@ var maketoc = function(){
                   } // end if
                 }); // each
             } // end if key code
+
         if(event.keyCode == param['toggle_hide']['var'].charCodeAt(0)-32){  // hiding text key defined in the parameters
             $("li").each(function(){ 
                 if ($(this).hasClass('^^')){
@@ -972,6 +978,7 @@ var maketoc = function(){
                 } // end if
               }); // each
           }// end if key code
+
        if(event.keyCode == 'd'.charCodeAt(0)-32 && statekey == 1){  // toggle draggable
             $("div").each(function(){ 
                 if ($(this).hasClass('ui-draggable')){
@@ -1176,7 +1183,6 @@ var maketoc = function(){
     Adding caption to image with %caption%
     */
     
-    
      $("img").each(function(){               // retrieve the caption and insert it under the image.
              var reg_caption = /\%.*\%/
              if ($(this).attr('alt').match(reg_caption)){ 
@@ -1246,21 +1252,29 @@ var maketoc = function(){
      });
  });
 
-//===================================================================== Close all the lists
+//===================================================================== Esc for permitting some keys.
 
   $(document).keydown(function(event){   
     /*
     Close all the lists 
     */
-     if(event.keyCode == 27){ // Trigger statekeys with Escape
-          statekey *= -1
+    if(event.keyCode == 27){ // Trigger statekeys with Escape
+          if (statekey != 'blcoked'){
+            statekey *= -1
+          }
+          else{
+            statekey = -1
+          }
          $('#esc').toggle()
-        }
-        if((event.keyCode == "l".charCodeAt(0)-32) && statekey == 1){  
+        } // end if
+
+//===================================================================== Close all the lists
+
+    if((event.keyCode == "l".charCodeAt(0)-32) && statekey == 1){  
                 $('a > span').each(function(){
                   if ($(this).parent().next().css('display')=='block'){
                     if ($(this).parents('div').last().attr('id') != 'toc'){
-                      $(this).trigger('click')
+                      $(this).trigger('click') // close lists. 
                     }
                   }
                 } // end function
@@ -1327,6 +1341,7 @@ var maketoc = function(){
                                 .attr('value','submit').click(function(){
                                         $('.theme').remove()
                                         showtheme()
+                                        statekey = 1;
                                         })
     $('#todotheme').append(inptheme) // btn btn-default
     $('#todotheme').append(buttheme)
