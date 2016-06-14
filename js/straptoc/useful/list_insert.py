@@ -10,11 +10,12 @@ syntax:
 class LIST_INSERT(object):
     '''
     '''
-    def __init__(self, kind = None, corr = False):
+    def __init__(self, kind, param1=None):
         '''
         '''
         self.kind = kind
-        self.corr = corr
+        if param1 == "corr":
+            self.corr = True
         self.first = True
     
     def build_list(self):
@@ -78,18 +79,17 @@ class LIST_INSERT(object):
         print strline
         
 if __name__=='__main__':
+    help = '''
+Build the straptoc code for inserting images, pdf etc in a straptoc document. 
+syntax: 
+    python list_insert.py kind_of_object_to_insert corr
+'''
     largkind = ['pdf', 'img', 'vid', 'html']
-    kind = sys.argv[1]
-    if kind in largkind:
-        try:
-            if sys.argv[2] == 'corr' :
-                corr = True
-            else:
-                corr = False
-        except: 
-            corr = False
-    li = LIST_INSERT(kind, corr)
-    li.build_list()
+    li = LIST_INSERT(*sys.argv)
+    if sys.argv[1] in largkind:
+        li.build_list()
+    elif sys.argv[1]=='help':
+        print help
 
     
         
