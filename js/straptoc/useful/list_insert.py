@@ -16,6 +16,8 @@ class LIST_INSERT(object):
         self.kind = kind
         if param1 == "corr":
             self.corr = True
+        else:
+            self.corr = False
         self.first = True
     
     def build_list(self):
@@ -40,14 +42,14 @@ class LIST_INSERT(object):
                 if len(l) > 1:    # empty spaces detected , need of correction
                     f = '_'.join(l)    # remove empty spaces
                     newpath = os.path.join(path, f)    # newpath
-                    if corr: 
+                    if self.corr: 
                         os.rename(oldpath , newpath)    # if correction asked (argument 'corr'), make correction
                 else:
                     newpath = oldpath    # no empty spaces detected
                 root,ext = os.path.splitext(newpath)
-                self.folder_subfolder(newpath, dic_categ, kind)
+                self.folder_subfolder(newpath, dic_categ)
 
-    def folder_subfolder(self, newpath, dic_categ, kind):
+    def folder_subfolder(self, newpath, dic_categ):
         '''
         '''
         filename = os.path.basename(newpath[2:])#[:-4]
@@ -62,7 +64,7 @@ class LIST_INSERT(object):
             if nwps[0] not in dic_categ : 
                 dic_categ[nwps[0]] = 1 # initialize
                 cat0 = '* {0} :: \n    * '.format(nwps[0])
-                cat1 = strap[kind]
+                cat1 = strap[self.kind]
                 cat2 = ' \n     +++ {1}/{0} \n'.format(nwps[0], self.prefix)
                 category = cat0 + cat1 + cat2 
             else:
@@ -71,11 +73,11 @@ class LIST_INSERT(object):
         else:  # first level
             if self.first:
                 cat0 = ' \n     +++ {0} \n'.format(self.prefix)
-                category = '* '+ strap[kind] + cat0
+                category = '* '+ strap[self.kind] + cat0
                 self.first = False
             else:
                 category = ''
-        strline = category + strapline[kind]
+        strline = category + strapline[self.kind]
         print strline
         
 if __name__=='__main__':
@@ -85,7 +87,8 @@ syntax:
     python list_insert.py kind_of_object_to_insert corr
 '''
     largkind = ['pdf', 'img', 'vid', 'html']
-    li = LIST_INSERT(*sys.argv)
+    li = LIST_INSERT(*sys.argv[1:])
+    print '#############',sys.argv
     if sys.argv[1] in largkind:
         li.build_list()
     elif sys.argv[1]=='help':
