@@ -131,7 +131,7 @@ var maketoc = function(){
 
     /*
     Simple markdown used for providing informations to the user. 
-    It handles calssical markdown list syntax.
+    It handles classical markdown list syntax.
     */
     
     simple_md = function(text){ // mini markdown for the help
@@ -185,7 +185,9 @@ var maketoc = function(){
     var reg_hyper = /\[\w*.*\]\(\w*.*\)/
     var reg_brack = /\[\w*.*\]/
     var reg_parent = /\(.*\w*.*\)/
-    //
+
+// ============================================== global parameters
+
     var num_slider = 0
     var prefcarr = 'carousel0' // default first name for carousel
     var statekey = -1; // state for keyboard interactions
@@ -941,7 +943,7 @@ var maketoc = function(){
                 } // end for (i in list_wind )
             } // end if key code
         
-        if (event.keyCode == "t".charCodeAt(0)-32 && (statekey == 1 || statekey == 'blocked')){   // Toggle todotheme
+        if (event.keyCode == "t".charCodeAt(0)-32 && (statekey == 1 )){   // Toggle todotheme
             $('#todotheme').toggle()  
             if ($('#todotheme').is(':hidden')){ // todotheme is closed.
                 $('.theme').remove()
@@ -956,20 +958,14 @@ var maketoc = function(){
               $('.chart').toggle()
             } // end if key code
 
-        if (event.keyCode == "h".charCodeAt(0)-32){    // "h", key for help documentation
-            if (param['help']['var'] != false){
-                $('.alertify .alert > *').css({'text-align':'left'});
-                alertify.alert(simple_md(help))
-                }
-          } // end if key code
 
-        if(event.keyCode == "q".charCodeAt(0)-32){  // "q" key for showing sliders
-            $("a").each(function(){ 
-                  if ($(this).prop('id').match(/slider_\d*/)){
-                      $(this).toggle()
-                  } // end if
-                }); // each
-            } // end if key code
+        // if(event.keyCode == "q".charCodeAt(0)-32){  // "q" key for showing sliders
+        //     $("a").each(function(){ 
+        //           if ($(this).prop('id').match(/slider_\d*/)){
+        //               $(this).toggle()
+        //           } // end if
+        //         }); // each
+        //     } // end if key code
 
         if(event.keyCode == param['toggle_hide']['var'].charCodeAt(0)-32){  // hiding text key defined in the parameters
             $("li").each(function(){ 
@@ -1325,7 +1321,6 @@ var maketoc = function(){
     $('#keys').html(simple_md(keys)).toggle()
     $('#keys').draggable()
     
-    
     //===================================================================== todotheme
     
     // Themes in todo list
@@ -1341,10 +1336,15 @@ var maketoc = function(){
                                 .attr('value','submit').click(function(){
                                         $('.theme').remove()
                                         showtheme()
-                                        //statekey = 1;
                                         })
+    var buttblock = $('<input/>').attr('type', 'button')
+                            .addClass('btn btn-default')
+                            .attr('value','unblock').click(function(){
+                                    statekey = 1;
+                                    })
     $('#todotheme').append(inptheme) // btn btn-default
-    $('#todotheme').append(buttheme)
+    $('#todotheme').append(buttheme)  // submit theme
+    $('#todotheme').append(buttblock) // unblock theme
     
     var showtheme = function(){
         var targ = $('#todo_input').val()
@@ -1353,9 +1353,9 @@ var maketoc = function(){
          $('li').each(function(){
              var txt_list = $(this).text().split('\n')[0]
              var par = $(this).parents('li').last()
-             if (txt_list.match(targ) && !par.hasClass('^^')){ // match between list text and input
-               var newline =  $('<li/>').html($(this).html()) //jQuery.extend(true, {}, $(this));
-                 $('#todotheme').append(newline.addClass('theme'))  // adding lists referencing to the theme
+             if (txt_list.match(targ) && !par.hasClass('^^')){   // match between list text and input
+               var newline =  $('<li/>').html($(this).html())   //jQuery.extend(true, {}, $(this));
+                 $('#todotheme').append(newline.addClass('theme'))   // adding lists referencing to the theme
                } // end if
             }) // end each
                $("a").click(function (evt) {                
@@ -1366,7 +1366,6 @@ var maketoc = function(){
              $('#todotheme li ul').toggle()
           //} // end if hidden
       }// end shotheme function
-
 
     //===================================================================== esc
 
