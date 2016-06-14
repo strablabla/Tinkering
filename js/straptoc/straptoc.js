@@ -1341,7 +1341,7 @@ var maketoc = function(){
                                 .attr('value','submit').click(function(){
                                         $('.theme').remove()
                                         showtheme()
-                                        statekey = 1;
+                                        //statekey = 1;
                                         })
     $('#todotheme').append(inptheme) // btn btn-default
     $('#todotheme').append(buttheme)

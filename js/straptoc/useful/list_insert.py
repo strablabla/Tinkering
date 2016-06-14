@@ -2,7 +2,9 @@
 import sys, os
 
 '''
-All the addresses in the local folder with correction for inserting in infos_utiles.
+Build the straptoc code for inserting images, pdf etc in a straptoc document. 
+syntax: 
+    python list_insert.py kind_of_object_to_insert corr
 '''
 
 class LIST_INSERT(object):
@@ -25,24 +27,22 @@ class LIST_INSERT(object):
                      "é":"e","û":"u","û":"u",
                     "â":"a","ô":"o","à":"a",
                     "è":"e" }
-        #self.prefix = raw_input("prefix? ")  # Prefix : folder containing all the files and folders.. 
-        root = raw_input("root? ")  # root
+        root = raw_input("root in CloudStation? eg encours/blabla finishing before current folder ")  # root
         self.prefix = os.getcwd()
-        self.prefix  = '../../'+root+self.prefix.split(root)[1]
+        self.prefix  = '../../' + root + self.prefix.split(root)[1]
         dic_categ = {} # list categories
-        
-        for path, dirs, files in os.walk('.'):
+        for path, dirs, files in os.walk('.'): # Go through the folders
             for f in files:
                 fold = f
                 l = f.split()
                 oldpath = os.path.join(path, fold)
-                if len(l) > 1: # empty spaces detected , need of correction
-                    f = '_'.join(l) # remove empty spaces
-                    newpath = os.path.join(path, f) # newpath
+                if len(l) > 1:    # empty spaces detected , need of correction
+                    f = '_'.join(l)    # remove empty spaces
+                    newpath = os.path.join(path, f)    # newpath
                     if corr: 
-                        os.rename(oldpath , newpath) # if correction asked (argument 'corr'), make correction
+                        os.rename(oldpath , newpath)    # if correction asked (argument 'corr'), make correction
                 else:
-                    newpath = oldpath # no empty spaces detected
+                    newpath = oldpath    # no empty spaces detected
                 root,ext = os.path.splitext(newpath)
                 self.folder_subfolder(newpath, dic_categ, kind)
 
@@ -82,7 +82,10 @@ if __name__=='__main__':
     kind = sys.argv[1]
     if kind in largkind:
         try:
-            corr = sys.argv[2]  
+            if sys.argv[2] == 'corr' :
+                corr = True
+            else:
+                corr = False
         except: 
             corr = False
     li = LIST_INSERT(kind, corr)
