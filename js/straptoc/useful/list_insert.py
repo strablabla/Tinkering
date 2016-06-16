@@ -85,10 +85,11 @@ if __name__=='__main__':
 Build the straptoc code for inserting images, pdf etc in a straptoc document. 
 syntax: 
     python list_insert.py kind_of_object_to_insert corr
+
+kind_of_object_to_insert : pdf, img, vid, html
 '''
     largkind = ['pdf', 'img', 'vid', 'html']
     li = LIST_INSERT(*sys.argv[1:])
-    print '#############',sys.argv
     if sys.argv[1] in largkind:
         li.build_list()
     elif sys.argv[1]=='help':
