@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/55d54c2/js/straptoc/straptoc.js 
-//https://github.com/strablabla/Tinkering/55d54c2/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/5124529/js/straptoc/straptoc.js 
+//https://github.com/strablabla/Tinkering/5124529/js/straptoc/straptoc.css
 
 
 var maketoc = function(){
@@ -110,6 +110,7 @@ var maketoc = function(){
     * $menu : 
         * eg : before H1 place $menu_zax link:nm_Edit:ic_edit:href_Introduction
     * $------- : permit to insert comment lines in the edition window
+    * $u: utf8 string :, This replace the string between : by the utf8 translation.
     */}.toString().slice(14,-3)
     
     var keys = function(){/*
@@ -439,24 +440,7 @@ var maketoc = function(){
         }   // end if regexp
     })   // end each p, li
 
- //===================================================================== utf8
 
- function decode_utf8(s) {
-  return decodeURIComponent(s.replace(/\s+/g, '').replace(/[0-9a-f]{2}/g, '%$&'));
-}
-
-    $("p").each(function(){
-      var txt = $(this).text()
-      utf = txt.match(/\$u8.*\$u8/)
-      if (utf) { 
-        alert(utf)
-        var ts = txt.split('$u8')
-        txt_decoded = ts[0]+decode_utf8(ts[1])
-        $(this).replaceWith($('<p/>').text(txt_decoded)) // 
-      }   // end if regexp
-    })   // end each p
-    
-    
  //===================================================================== Portfolio
  
     /*
@@ -1285,6 +1269,10 @@ var maketoc = function(){
 
 //===================================================================== Close all the lists
 
+    /*
+    keydown l close all the list in the whole document.
+    */
+
     if((event.keyCode == "l".charCodeAt(0)-32) && statekey == 1){  
                 $('a > span').each(function(){
                   if ($(this).parent().next().css('display')=='block'){
@@ -1323,6 +1311,30 @@ var maketoc = function(){
 
     $('#content').addClass('effect2')
     $('body').addClass('bodybgcol1')
+
+     //===================================================================== utf8
+
+    /*
+    keydown l close all the list in the whole document.
+    */
+
+    function decode_utf8(s) {
+        return decodeURIComponent(s.replace(/\s+/g, '').replace(/[0-9a-f]{2}/g, '%$&'));
+      }
+
+    $("p, li").each(function(){
+      var txt = $(this).text()
+      var regu = /\$u:.*:/
+      utf = txt.split('\n')[0].match(regu)
+
+      if (utf) { 
+        //alert(utf)
+        var u = utf[0].slice(3,-1) 
+        alert(u)
+        var txt_decoded = txt.replace(regu, decode_utf8(u)) 
+        $(this).text(txt_decoded) // 
+      }   // end if regexp
+    })   // end each p
 
     //===================================================================== syntax
     
