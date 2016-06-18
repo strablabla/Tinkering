@@ -69,6 +69,7 @@ var maketoc = function(){
     //         clearInterval(timer);
 
 
+
     var help = function(){/*
     
     # Extended markdown: 
@@ -437,6 +438,24 @@ var maketoc = function(){
            $(this).replaceWith(ulvid) // replace whole p or li 
         }   // end if regexp
     })   // end each p, li
+
+ //===================================================================== utf8
+
+ function decode_utf8(s) {
+  return decodeURIComponent(s.replace(/\s+/g, '').replace(/[0-9a-f]{2}/g, '%$&'));
+}
+
+    $("p").each(function(){
+      var txt = $(this).text()
+      utf = txt.match(/\$u8.*\$u8/)
+      if (utf) { 
+        alert(utf)
+        var ts = txt.split('$u8')
+        txt_decoded = ts[0]+decode_utf8(ts[1])
+        $(this).replaceWith($('<p/>').text(txt_decoded)) // 
+      }   // end if regexp
+    })   // end each p
+    
     
  //===================================================================== Portfolio
  
