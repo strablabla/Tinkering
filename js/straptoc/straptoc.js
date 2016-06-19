@@ -1315,7 +1315,7 @@ var maketoc = function(){
      //===================================================================== utf8
 
     /*
-    keydown l close all the list in the whole document.
+    insert utf8 hex codage in straptoc document.
     */
 
     function decode_utf8(s) {
@@ -1326,11 +1326,7 @@ var maketoc = function(){
       var txt = $(this).text()
       var regu = /\$u:.*:/
       utf = txt.split('\n')[0].match(regu)
-
-      if (utf) { 
-        //alert(utf)
         var u = utf[0].slice(3,-1) 
-        alert(u)
         var txt_decoded = txt.replace(regu, decode_utf8(u)) 
         $(this).text(txt_decoded) // 
       }   // end if regexp

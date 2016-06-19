@@ -6,7 +6,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
         <style type="text/css">
             body {
-                background-color: #000;
+                background-color: #fff;
                 color: #ff0;
                 margin: 0;
                 overflow: hidden;
@@ -16,19 +16,31 @@
                 color: orange;
                 text-decoration: none;
             }
+/*
+            #container {
+                background-color: #000;
+                width: 400px;
+                height: 200px;
+                border: 1px solid black;
+                margin: 10px auto;
+                padding: 0px;
+            }
+*/
+
         </style>
 
   
-
-
-</style></head>
-    <body >
+</style>
 
         <script src="http://cdn.mechasdf.com/lib/three.min.js"></script>
         <script src="http://cdn.mechasdf.com/lib/js/controls/TrackballControls.js"></script>
         <script src="http://cdn.mechasdf.com/lib/js/controls/dat.gui.min.js"></script>
+
+
         
         <script >
+            var WIDTH = 320,
+                HEIGHT = 200;
             var camera, scene, renderer, controls;
             var FTICR2Dmap_mesh = 0.25; 
             var ctrl = true;
@@ -66,12 +78,12 @@
                   self.get(data[i].x, data[i].y);
                   self.set(data[i].x, data[i].y, data[i].z);
                 }
-                 }
+             }
 
             Visu3d.prototype.addMesh = function () {
                 var self = this;
                 // alert(this.size);
-                var FTICR2Dmap_geometry = new THREE.PlaneGeometry(512, 512, this.size - 1, this.size - 1);
+                var FTICR2Dmap_geometry = new THREE.PlaneGeometry(200, 200, this.size - 1, this.size - 1);
                 var min_height = Infinity;
                 var max_height = -Infinity;
                 for (var y = 0; y < this.size; y++) {
@@ -94,15 +106,13 @@
                 scene.add(FTICR2Dmap_mesh);
             }
 
-            
             function init() {
 
-                renderer = new THREE.WebGLRenderer({
-                    antialias: true
-                });
+                var container = document.getElementById("container");
+                renderer = new THREE.WebGLRenderer();
                 renderer.setClearColor(0x333366, 1.0);
-                renderer.setSize(window.innerWidth, window.innerHeight);
-                document.body.appendChild(renderer.domElement);
+                renderer.setSize(WIDTH, HEIGHT);
+                container.appendChild(renderer.domElement);
 
                 scene = new THREE.Scene();
                 camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, dist4);
@@ -130,7 +140,6 @@
                     	pos = camera.position.x + '_'+ camera.position.y +'_'+ camera.position.z
                         alert(pos)
                       } // end if key code
-
                     }) // end keydown
                       
                 var ambient_light = new THREE.AmbientLight(0xcccccc);
@@ -171,9 +180,19 @@
                 FTICR2Dmap.addMesh();
             };
 
-            init();
+
+        function launch_all(){
+
+             init();
             generate();
             animate();
+        }
+
+           
         </script>
 
-</a></body></html>
+</head>
+<body onload="launch_all();">
+<div id="container" style="border:1px solid black;width:320px;height:200px;"></div>
+
+</body></html>
