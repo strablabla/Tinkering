@@ -29,19 +29,14 @@
 
         </style>
 
-  
-</style>
-
         <script src="http://cdn.mechasdf.com/lib/three.min.js"></script>
         <script src="http://cdn.mechasdf.com/lib/js/controls/TrackballControls.js"></script>
         <script src="http://cdn.mechasdf.com/lib/js/controls/dat.gui.min.js"></script>
 
-
-        
         <script >
-            var WIDTH = 320,
-                HEIGHT = 200;
-            var camera, scene, renderer, controls;
+            var WIDTH = 600,
+                HEIGHT = 400;
+            var camera, scene, renderer, controls, cube;
             var FTICR2Dmap_mesh = 0.25; 
             var ctrl = true;
             // var FTICR2Dmap_detail = 8, FTICR2Dmap_roughness = 0.7;
@@ -118,14 +113,39 @@
                 camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, dist4);
                 camera.position.y = 100;
                 camera.position.z = 600;
+                var vector_init = new THREE.Vector3( 0, 0, 1 );
+                // vector.applyQuaternion( camera.quaternion );
+
+                // cube = new THREE.Mesh( new THREE.CubeGeometry( 20, 20, 20 ), new THREE.MeshNormalMaterial() );
+                // cube.position.y = 150;
+
+                // scene.addObject( cube );
+
                 sign = 1
                 trackball = true
                 $(document).keydown(function(event){
-                	if (event.keyCode == "c".charCodeAt(0)-32){   
+                	if (event.keyCode == "c".charCodeAt(0)-32){   // control with mouse
                         ctrl = !ctrl
                       } // end if key code
                 	if (event.keyCode == "s".charCodeAt(0)-32){   
                         sign=-sign 
+                      } // end if key code
+                    if (event.keyCode == "w".charCodeAt(0)-32){   
+                        vector = camera.getWorldDirection();
+                        theta = Math.atan2(vector.x, vector.z);
+                        alert(theta) 
+                        alert(vector.x +'_'+ vector.y +'_'+ vector.z)
+                      } // end if key code
+                    if (event.keyCode == "a".charCodeAt(0)-32){   
+                        vector = camera.getWorldDirection();
+                        theta = Math.atan2(vector.x, vector.z)*2 -1.57;
+                        //alert(theta)
+                        camera.position.x += 10*Math.cos(theta)
+                        camera.position.z += 10*Math.sin(theta) 
+                      } // end if key code
+                    if (event.keyCode == "q".charCodeAt(0)-32){   
+                        camera.position.x += -10*Math.cos(theta)
+                        camera.position.z += -10*Math.sin(theta) 
                       } // end if key code
                     if (event.keyCode == "x".charCodeAt(0)-32){   
                         camera.position.x+=sign*100  
@@ -133,11 +153,15 @@
                     if (event.keyCode == "y".charCodeAt(0)-32){   
                         camera.position.y+=sign*100  
                       } // end if key code
-                    if (event.keyCode == "z".charCodeAt(0)-32){   
+                    if (event.keyCode == "z".charCodeAt(0)-32){   // go up
                         camera.position.z+=sign*100  
                       } // end if key code
                     if (event.keyCode == "p".charCodeAt(0)-32){   
                     	pos = camera.position.x + '_'+ camera.position.y +'_'+ camera.position.z
+                        alert(pos)
+                      } // end if key code
+                    if (event.keyCode == "v".charCodeAt(0)-32){   
+                        pos = camera.position.x + '_'+ camera.position.y +'_'+ camera.position.z
                         alert(pos)
                       } // end if key code
                     }) // end keydown
@@ -183,7 +207,7 @@
 
         function launch_all(){
 
-             init();
+            init();
             generate();
             animate();
         }
