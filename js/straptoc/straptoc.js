@@ -178,7 +178,8 @@ var maketoc = function(){
     var reg_notoc = reg_func('notoc')
     var reg_width_video = reg_func('width_video') 
     var reg_width_pdf = reg_func('width_pdf') 
-    var reg_width_iframe = reg_func('width_iframe') 
+    var reg_width_iframe = reg_func('width_iframe')
+    var reg_height_iframe = reg_func('height_iframe') 
     var reg_toggle_hide = reg_func('toggle_hide') 
     var reg_menu = reg_func('menu')
     var reg_help = reg_func('help')
@@ -207,6 +208,7 @@ var maketoc = function(){
              'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': '80%' },
              'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'},
              'iframe_width':{'reg':reg_width_iframe, 'cut':'§width_iframe', 'var': '900'},
+             'iframe_height':{'reg':reg_height_iframe, 'cut':'§height_iframe', 'var': '400'},
              'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
              'menu_list':{'reg':reg_menu, 'cut':'§menu', 'var': ''},
              'help':{'reg':reg_help, 'cut':'§help', 'var': false}
@@ -1214,7 +1216,8 @@ var maketoc = function(){
         if  ($(this).text().match(',,')){       // insertion of iframes with regexp ',,' for inserting web pages
             var iframe_url = $(this).attr('href')
             var wid = (param['iframe_width']['var']).toString()  // width from configuration parameters
-            var iframe = $('<iframe/>', {'frameborder': '0', 'src': iframe_url, 'width': wid, 'height': '400' })
+            var hei = (param['iframe_height']['var']).toString()  // height from configuration parameters
+            var iframe = $('<iframe/>', {'frameborder': '0', 'src': iframe_url, 'width': wid, 'height': hei })
             var div = $('<div/>').css({'text-align':'center'})
             $(this).replaceWith(div.append(iframe)); // replace the <a> with a <div> with iframe.
         } // end if
@@ -1313,22 +1316,24 @@ var maketoc = function(){
     $('body').addClass('bodybgcol1')
 
      //===================================================================== utf8
-
+    
     /*
     insert utf8 hex codage in straptoc document.
     */
-
+    
     function decode_utf8(s) {
         return decodeURIComponent(s.replace(/\s+/g, '').replace(/[0-9a-f]{2}/g, '%$&'));
       }
-
+    
     $("p, li").each(function(){
       var txt = $(this).text()
       var regu = /\$u:.*:/
       utf = txt.split('\n')[0].match(regu)
+      if (utf){
         var u = utf[0].slice(3,-1) 
         var txt_decoded = txt.replace(regu, decode_utf8(u)) 
         $(this).text(txt_decoded) // 
+        //alert(txt_decoded)
       }   // end if regexp
     })   // end each p
 
