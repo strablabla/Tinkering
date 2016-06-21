@@ -140,12 +140,12 @@
                         vector = camera.getWorldDirection();
                         theta = Math.atan2(vector.x, vector.z)*2 -1.57;
                         //alert(theta)
-                        camera.position.x += 10*Math.cos(theta)
-                        camera.position.z += 10*Math.sin(theta) 
+                        camera.position.x += 10*vector.x
+                        camera.position.z += 10*vector.z 
                       } // end if key code
                     if (event.keyCode == "q".charCodeAt(0)-32){   
-                        camera.position.x += -10*Math.cos(theta)
-                        camera.position.z += -10*Math.sin(theta) 
+                        camera.position.x += -10*vector.x
+                        camera.position.z += -10*vector.z 
                       } // end if key code
                     if (event.keyCode == "x".charCodeAt(0)-32){   
                         camera.position.x+=sign*100  
