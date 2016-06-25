@@ -124,43 +124,57 @@
                 sign = 1
                 trackball = true
                 $(document).keydown(function(event){
-                	if (event.keyCode == "c".charCodeAt(0)-32){   // control with mouse
+                	if (event.which == "c".charCodeAt(0)-32){   // control with mouse
                         ctrl = !ctrl
                       } // end if key code
-                	if (event.keyCode == "s".charCodeAt(0)-32){   
-                        sign=-sign 
-                      } // end if key code
-                    if (event.keyCode == "w".charCodeAt(0)-32){   
+
+                    if (event.which == "w".charCodeAt(0)-32){   
                         vector = camera.getWorldDirection();
-                        theta = Math.atan2(vector.x, vector.z);
-                        alert(theta) 
-                        alert(vector.x +'_'+ vector.y +'_'+ vector.z)
+                        alert(vector.x+'_'+vector.y+'_'+vector.z)
                       } // end if key code
-                    if (event.keyCode == "a".charCodeAt(0)-32){   
+   
+                    if (event.which == "a".charCodeAt(0)-32){   
                         vector = camera.getWorldDirection();
-                        theta = Math.atan2(vector.x, vector.z)*2 -1.57;
-                        //alert(theta)
                         camera.position.x += 10*vector.x
                         camera.position.z += 10*vector.z 
                       } // end if key code
-                    if (event.keyCode == "q".charCodeAt(0)-32){   
+                    if (event.which == "q".charCodeAt(0)-32){   
                         camera.position.x += -10*vector.x
                         camera.position.z += -10*vector.z 
                       } // end if key code
-                    if (event.keyCode == "x".charCodeAt(0)-32){   
-                        camera.position.x+=sign*100  
+                    // https://css-tricks.com/snippets/javascript/javascript-keycodes/
+                    if (event.which == 37){   // left
+                        camera.rotation.y += 0.1;
                       } // end if key code
-                    if (event.keyCode == "y".charCodeAt(0)-32){   
-                        camera.position.y+=sign*100  
+                    if (event.which == 39){   // right
+                        camera.rotation.y += -0.1;
                       } // end if key code
-                    if (event.keyCode == "z".charCodeAt(0)-32){   // go up
-                        camera.position.z+=sign*100  
+
+                    if (event.which == 38){   // right
+                        camera.position.y += 10;
                       } // end if key code
-                    if (event.keyCode == "p".charCodeAt(0)-32){   
+
+                     if (event.which == "s".charCodeAt(0)-32){   // right
+                        vector = camera.getWorldDirection();
+                        camera.rotation.x += 0.1*vector.z
+                        camera.rotation.z += 0.1*vector.x 
+                      } // end if key code
+
+                    if (event.which == "z".charCodeAt(0)-32){   // right
+                        vector = camera.getWorldDirection();
+                        camera.rotation.x += -0.1*vector.z
+                        camera.rotation.z += -0.1*vector.x 
+                      } // end if key code
+
+                      
+
+                    //===================================
+
+                    if (event.which == "p".charCodeAt(0)-32){   
                     	pos = camera.position.x + '_'+ camera.position.y +'_'+ camera.position.z
                         alert(pos)
                       } // end if key code
-                    if (event.keyCode == "v".charCodeAt(0)-32){   
+                    if (event.which == "v".charCodeAt(0)-32){   
                         pos = camera.position.x + '_'+ camera.position.y +'_'+ camera.position.z
                         alert(pos)
                       } // end if key code
