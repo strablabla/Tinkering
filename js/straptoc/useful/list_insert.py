@@ -30,7 +30,10 @@ class LIST_INSERT(object):
                      "é":"e","û":"u","û":"u",
                     "â":"a","ô":"o","à":"a",
                     "è":"e" }
-        root = raw_input("root in CloudStation? eg encours/blabla finishing before current folder ")  # root
+        try:
+            root = raw_input("root in CloudStation? eg encours/blabla finishing before current folder ")  # root
+        except:
+            root = input("root in CloudStation? eg encours/blabla finishing before current folder ")  # root
         self.prefix = os.getcwd()
         self.prefix  = '../../' + root + self.prefix.split(root)[1]
         dic_categ = {} # list categories
@@ -78,7 +81,7 @@ class LIST_INSERT(object):
             else:
                 category = ''
         strline = category + strapline[self.kind]
-        print strline
+        print(strline)
         
 if __name__=='__main__':
     help = '''
@@ -93,7 +96,7 @@ kind_of_object_to_insert : pdf, img, vid, html
     if sys.argv[1] in largkind:
         li.build_list()
     elif sys.argv[1]=='help':
-        print help
+        print(help)
 
     
         
