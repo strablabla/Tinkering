@@ -257,6 +257,39 @@ var maketoc = function(){
         }
     })
 
+ //===================================================================== column bootstrap
+
+//     var regg = /\$\d[\s\S]+?\$\$/ig
+// var m = $('#content').html().match(regg)
+// alert($('#content').html())
+// for (i=0; i< m.length; i++){
+//     // alert(m[i])
+//     var nb = m[i].substr(1,1)
+
+
+//     spl = m[i].split('\n')
+//     // alert(spl[0])
+//     // alert(spl[spl.length-1])
+//     if (m[i].substr(1,1) == '1'){
+//       alert(m[i])
+//       strmi = m[i].replace(spl[0], '<div class="row"> \n <div class="col-sm-4">')
+//       alert(strmi)
+//       strmimi = strmi.replace(spl[spl.length-1], '<div/>')
+//       alert(strmimi)
+//     }
+//     else if (m[i].substr(1,1) == '2'){
+//       strmi = m[i].replace(spl[0], '<div class="col-sm-6">')
+//       alert(strmi)
+//       strmimi = strmi.replace(spl[spl.length-1], '<div/> \n <div/>')
+//       alert(strmimi)
+//     }
+
+//     var newcont = $('#content').html().replace(m[i], strmimi)
+
+//     $('#content').html(newcont)
+//     //alert($('#content').html())
+// } // end for
+
  //===================================================================== Context menu
 
    /*
@@ -469,12 +502,7 @@ var maketoc = function(){
  
  //===================================================================== Carousel
 
-var regg = /\$\d[\s\S]+?\$\$/ig
-var m = $('#content').html().match(regg)
-for (i=0; i< m.length; i++){
-    alert(m[i])
-    alert(m[i].substr(1,1))
-}
+
 
  // 
  // $("p, li").each(function(){
@@ -1434,6 +1462,8 @@ for (i=0; i< m.length; i++){
 
      //    }  // end if all loads done
      // },25); // end  setInterval(function() {}, time )
+
+
 
 
 
