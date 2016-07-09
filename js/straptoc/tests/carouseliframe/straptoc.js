@@ -412,79 +412,164 @@ var maketoc = function(){
     var div = $('<div/>').attr('id',"oo").text('ohhhhhh')
     $('#content').append(div)
 
-    $("p, li").each(function(){
-        //alert($(this).text())
-        if ($(this).text().match(/^\$carr/)) { 
-            
-            alert($(this).html())
+        $("p, li").each(function(){
     
+        if ($(this).text().match(/^\$carr/)) { 
+        
             var newcarr = function(){
                 var num = parseInt(prefcarr.split('carousel')[1])+1
                 var incremcarr = 'carousel' + num ;
                 prefcarr = incremcarr ;
                 return incremcarr
               }
-    
+
             var namecarr = $(this).text().split(/^\$carr/)[1].split('\n')[0].trim() || 'default'
             if (namecarr=='default'){
                   namecarr=newcarr()
               }
-            var divcarr = $('<div/>').addClass("carousel slide")
-                                     .attr('id', namecarr)
-            var divcarrinner = $('<div/>').addClass("carousel-inner").attr('role','listbox')
+            
+                var makecarr = function(s, namecarr){
+                    var divcarr = $('<div/>').addClass("carousel slide")
+                                              .attr('id',namecarr)
+                     var divcarrinner = $('<div/>').addClass("carousel-inner") //.attr('role','listbox')
+                     var aprev = $('<a/>').addClass("left carousel-control") //.css({"font-size": "10px"})
+                                          //.attr('role','button')
+                                          .attr('data-slide','prev')
+                                          .attr('href','#'+namecarr)
+                                          aprev.text('<' ).css({"font-size": "20px"})
+                     var anext = $('<a/>').addClass("right carousel-control")
+                              .attr('data-slide','next')
+                              .attr('href','#'+namecarr)
+                              anext.text('>' ).css({"font-size": "20px"})
 
-            //======================== go to previous
 
-            var aprev = $('<a/>').addClass("left carousel-control")
-                                 .attr('role','button')
-                                 .attr('data-slide','prev')
-                                 .attr('href','#'+namecarr)
-                aprev.text('<').css({"font-size": "20px"})
-                     
-            //======================= go to next
+                      //======================= image items
 
-            var anext = $('<a/>').addClass("right carousel-control")
-                     .attr('role','button')
-                     .attr('data-slide','next')
-                     .attr('href','#' + namecarr)
-                anext.text('>').css({"font-size": "20px"})
-
-            //======================= image items
-
-            $(this).children('img').each(function(i){
-                var divitem = $('<div/>').addClass("item")
-                               .append($(this)
-                                    .attr('width','460')
-                                    .attr('height','365')
-                               ) // end append
-                if (i == 0){divitem.addClass("active")}
-                divcarrinner.append(divitem) // end append
-                }) // end each
+                        s.children('img').each(function(i){
+                            var divitem = $('<div/>').addClass("item")
+                                           .append($(this)
+                                                .attr('width','460')
+                                                .attr('height','365')
+                                           ) // end append
+                            if (i == 0){divitem.addClass("active")}
+                            divcarrinner.append(divitem) // end append
+                            }) // end each
+                                  
+                      //======================= iframe items
                       
-              //======================= iframe items
-              
-              $(this).children('a').each(function(i){
-                  //alert($(this).attr('href'))
-                  var divitem = $('<div/>').addClass("item")
-                                 .append($(this)
-                                 ) // end append
-                  if (i == 0){divitem.addClass("active")}
-                  divcarrinner.append(divitem) // end append
-                  }) // end each
+                      s.children('a').each(function(i){
+                          //alert($(this).attr('href'))
+                          var divitem = $('<div/>').addClass("item")
+                                         .append($(this)
+                                         ) // end append
+                          if (i == 0){divitem.addClass("active")}
+                          divcarrinner.append(divitem) // end append
+                          }) // end each
 
-            //=========================  make the whole div.
 
-            divcarr.append(divcarrinner.append(aprev).append(anext)) 
+    //                  s.children('img').each(function(i){
+    //                      var divitem = $('<div/>').addClass("item")
+    //                                     .append($(this).clone()
+    //                                          .attr('width','460')
+    //                                          .attr('height','365')
+    //                                     ) // end append
+    //                      if (i == 0){divitem.addClass("active")}
+    //                      divcarrinner.append(divitem) // end append
+    //                      }) // end each
+                     divcarr.append(divcarrinner.append(aprev).append(anext))
+                    return divcarr
+
+                } // end makecarr
+
+            var divcarr =  makecarr($(this).clone(), namecarr)
+            // var divcarrbis =  makecarr($(this).clone(), namecarr+'bis')
+
+            // $(this).replaceWith(divcarr)
+            // $('#carr').append(divcarrbis) // gathering all the carousels
+
             $(this).replaceWith(divcarr)
             //$('#carr').append(divcarr) // gathering all the carousels
             $('#oo').append(divcarr) // gathering all the carousels
-           
+       
         } // end if regexp
     }) // end each p
+
     
-    $('.carousel').each(function(){
-        alert($(this).html())
-    })
+
+
+    // $("p, li").each(function(){
+    //     //alert($(this).text())
+    //     if ($(this).text().match(/^\$carr/)) { 
+            
+    //         alert($(this).html())
+    
+    //         var newcarr = function(){
+    //             var num = parseInt(prefcarr.split('carousel')[1])+1
+    //             var incremcarr = 'carousel' + num ;
+    //             prefcarr = incremcarr ;
+    //             return incremcarr
+    //           }
+    
+    //         var namecarr = $(this).text().split(/^\$carr/)[1].split('\n')[0].trim() || 'default'
+    //         if (namecarr=='default'){
+    //               namecarr=newcarr()
+    //           }
+    //         var divcarr = $('<div/>').addClass("carousel slide")
+    //                                  .attr('id', namecarr)
+    //         var divcarrinner = $('<div/>').addClass("carousel-inner").attr('role','listbox')
+
+    //         //======================== go to previous
+
+    //         var aprev = $('<a/>').addClass("left carousel-control")
+    //                              .attr('role','button')
+    //                              .attr('data-slide','prev')
+    //                              .attr('href','#'+namecarr)
+    //             aprev.text('<').css({"font-size": "20px"})
+                     
+    //         //======================= go to next
+
+    //         var anext = $('<a/>').addClass("right carousel-control")
+    //                  .attr('role','button')
+    //                  .attr('data-slide','next')
+    //                  .attr('href','#' + namecarr)
+    //             anext.text('>').css({"font-size": "20px"})
+
+    //         //======================= image items
+
+    //         $(this).children('img').each(function(i){
+    //             var divitem = $('<div/>').addClass("item")
+    //                            .append($(this)
+    //                                 .attr('width','460')
+    //                                 .attr('height','365')
+    //                            ) // end append
+    //             if (i == 0){divitem.addClass("active")}
+    //             divcarrinner.append(divitem) // end append
+    //             }) // end each
+                      
+    //           //======================= iframe items
+              
+    //           $(this).children('a').each(function(i){
+    //               //alert($(this).attr('href'))
+    //               var divitem = $('<div/>').addClass("item")
+    //                              .append($(this)
+    //                              ) // end append
+    //               if (i == 0){divitem.addClass("active")}
+    //               divcarrinner.append(divitem) // end append
+    //               }) // end each
+
+    //         //=========================  make the whole div.
+
+    //         divcarr.append(divcarrinner.append(aprev).append(anext)) 
+    //         $(this).replaceWith(divcarr)
+    //         //$('#carr').append(divcarr) // gathering all the carousels
+    //         $('#oo').append(divcarr) // gathering all the carousels
+           
+    //     } // end if regexp
+    // }) // end each p
+    
+    // $('.carousel').each(function(){
+    //     alert($(this).html())
+    // })
 
 //===================================================================== retrieving config param
 

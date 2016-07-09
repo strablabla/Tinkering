@@ -502,15 +502,40 @@ var maketoc = function(){
                               .attr('data-slide','next')
                               .attr('href','#'+namecarr)
                               anext.text('>' ).css({"font-size": "20px"})
-                     s.children('img').each(function(i){
-                         var divitem = $('<div/>').addClass("item")
-                                        .append($(this).clone()
-                                             .attr('width','460')
-                                             .attr('height','365')
-                                        ) // end append
-                         if (i == 0){divitem.addClass("active")}
-                         divcarrinner.append(divitem) // end append
-                         }) // end each
+
+                     // s.children('img').each(function(i){
+                     //     var divitem = $('<div/>').addClass("item")
+                     //                    .append($(this).clone()
+                     //                         .attr('width','460')
+                     //                         .attr('height','365')
+                     //                    ) // end append
+                     //     if (i == 0){divitem.addClass("active")}
+                     //     divcarrinner.append(divitem) // end append
+                     //     }) // end each
+
+                      //======================= image items
+
+                        s.children('img').each(function(i){
+                            var divitem = $('<div/>').addClass("item")
+                                           .append($(this).clone()
+                                                .attr('width','460')
+                                                .attr('height','365')
+                                           ) // end append
+                            if (i == 0){divitem.addClass("active")}
+                            divcarrinner.append(divitem) // end append
+                            }) // end each
+                                  
+                      //======================= iframe items
+                      
+                      s.children('a').each(function(i){
+                          //alert($(this).attr('href'))
+                          var divitem = $('<div/>').addClass("item")
+                                         .append($(this).clone()
+                                         ) // end append
+                          if (i == 0){divitem.addClass("active")}
+                          divcarrinner.append(divitem) // end append
+                          }) // end each
+
                      divcarr.append(divcarrinner.append(aprev).append(anext))
                     return divcarr
 
