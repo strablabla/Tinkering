@@ -122,8 +122,27 @@ var maketoc = function(){
     * Esc + c : toggle carousels
     * Esc + t : toggle todo theme
     * Esc + w : toggle all the windows (except TOC)
+    * Esc + m : toggle TOC
     * Plot :
         * shift + n : toggle plot tools
+    */}.toString().slice(14,-3)
+    
+    var toc_params = function(){/*
+    # Doc parameters:
+    * §menu toto:  inserting links in the navbar
+    * §noiframe : no iframes
+    * §notoc : no TOC
+    * §width_video 10%  : video width
+    * §width_pdf 10%  : pdf width
+    * §width_iframe 1000 : iframe width
+    * §height_iframe 500 : iframe height
+    * §col_sublist0 col : color sub list 0
+    * §col_sublist1 col  : color sub list 1
+    * §col_sublist2 col : color sub list 2
+    * §col_toc col  : color of TOC
+    * §toggle_hide k : give to the key  k the ability to hide the toggable parts of the doc.
+    * §help true  : possibility of having a help menu
+    * §mathsize size : change the size of the equations written with Mathjax
     */}.toString().slice(14,-3)
 
     basename = function(path) {  return path.replace( /.*\//, "" ); }
@@ -183,6 +202,7 @@ var maketoc = function(){
     var reg_toggle_hide = reg_func('toggle_hide') 
     var reg_menu = reg_func('menu')
     var reg_help = reg_func('help')
+    var reg_params = reg_func('params')
     var reg_sign = /[^§]§[^§]\w*/
     var reg_folder = /\<\</
     var reg_hyper = /\[\w*.*\]\(\w*.*\)/
@@ -211,7 +231,8 @@ var maketoc = function(){
              'iframe_height':{'reg':reg_height_iframe, 'cut':'§height_iframe', 'var': '400'},
              'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
              'menu_list':{'reg':reg_menu, 'cut':'§menu', 'var': ''},
-             'help':{'reg':reg_help, 'cut':'§help', 'var': false}
+             'help':{'reg':reg_help, 'cut':'§help', 'var': false},
+             'params':{'reg':reg_params, 'cut':'§params', 'var': false}
          }
 
  //===================================================================== Go to top
@@ -931,6 +952,14 @@ var maketoc = function(){
     $(document).keydown(function(event){
 
         var list_wind = ['syntax', 'keys', 'carr', 'todotheme'] // list of windows
+        
+        if (event.keyCode == "m".charCodeAt(0)-32 && statekey == 1){   // Toggle TOC
+            $('#toc').toggle()
+          } // end if key code
+        
+          if (event.keyCode == "o".charCodeAt(0)-32 && statekey == 1){   // Toggle parameters information
+              $('#params').toggle()
+            } // end if key code
 
         if (event.keyCode == "s".charCodeAt(0)-32 && statekey == 1){   // Toggle syntax informations
             $('#syntax').toggle()
@@ -1358,6 +1387,14 @@ var maketoc = function(){
         //alert(txt_decoded)
       }   // end if regexp
     })   // end each p
+    
+    //===================================================================== parameters
+    
+    // Parameters for the document
+
+    $('body').prepend($('<div/>').addClass('params').attr('id',"params")) 
+    $('#params').html(simple_md(toc_params)).toggle()
+    $('#params').draggable()
 
     //===================================================================== syntax
     
@@ -2370,7 +2407,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
         gototop() // go to the top of the page
         gotobottom() // go to the bottom of the page
         // Scroll
-        lscrolls = ['syntax', 'toc', 'keys', 'carr', 'todotheme']
+        lscrolls = ['syntax', 'toc', 'keys', 'carr', 'todotheme', 'params']
         for (i in lscrolls){
             Ps.initialize(document.querySelector('#'+lscrolls[i]))
         }
