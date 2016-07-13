@@ -68,8 +68,6 @@ var maketoc = function(){
     //     if(scriptsToLoad == 0 & cssToLoad ==0) {
     //         clearInterval(timer);
 
-
-
     var help = function(){/*
     
     # Extended markdown: 
@@ -197,6 +195,7 @@ var maketoc = function(){
     var reg_notoc = reg_func('notoc')
     var reg_width_video = reg_func('width_video') 
     var reg_width_pdf = reg_func('width_pdf') 
+    var reg_width_content = reg_func('width_content')
     var reg_width_iframe = reg_func('width_iframe')
     var reg_height_iframe = reg_func('height_iframe') 
     var reg_toggle_hide = reg_func('toggle_hide') 
@@ -217,6 +216,10 @@ var maketoc = function(){
     var list_wind_open = [] // list of open windows
     
 //===================================================================== Dictionary for parameters
+    
+    /*
+    Parameters for configuring the document
+    */
 
     param = {
              'color_sublist0':{'reg':reg_col_sublist0, 'cut':'§col_sublist0', 'var': 'green'},
@@ -227,6 +230,7 @@ var maketoc = function(){
              'notoc':{'reg':reg_notoc, 'cut':'§notoc', 'var': false},
              'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': '80%' },
              'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'},
+             'content_width':{'reg':reg_width_content, 'cut':'§width_content', 'var': false},
              'iframe_width':{'reg':reg_width_iframe, 'cut':'§width_iframe', 'var': '900'},
              'iframe_height':{'reg':reg_height_iframe, 'cut':'§height_iframe', 'var': '400'},
              'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
@@ -524,16 +528,6 @@ var maketoc = function(){
                               .attr('href','#'+namecarr)
                               anext.text('>' ).css({"font-size": "20px"})
 
-                     // s.children('img').each(function(i){
-                     //     var divitem = $('<div/>').addClass("item")
-                     //                    .append($(this).clone()
-                     //                         .attr('width','460')
-                     //                         .attr('height','365')
-                     //                    ) // end append
-                     //     if (i == 0){divitem.addClass("active")}
-                     //     divcarrinner.append(divitem) // end append
-                     //     }) // end each
-
                       //======================= image items
 
                         s.children('img').each(function(i){
@@ -589,6 +583,9 @@ var maketoc = function(){
       }); // end each
 
     //============================ Load the parameters
+    /*
+       Load all the parameters defined ant the beginning of the straptoc document 
+    */  
 
     $("p").each(function() {          // Need to be placed before position in TOC.                       
         for (elem in param){
@@ -601,6 +598,17 @@ var maketoc = function(){
                }// end if
         } // end for
     }); // end each
+
+ //===================================================================== Change content width
+
+   /*
+     Change the width of the page 
+     Parameter : $width_content
+   */  
+
+   if (param['content_width']['var'] != false){  
+      $('#content').attr('width', param['content_width']['var'])
+      }
 
  //===================================================================== Navbar menu
    
