@@ -115,6 +115,7 @@ var maketoc = function(){
     # Keys: 
     * Esc + k : show keys
     * Esc + s : show syntax
+    * Esc + l : toggle all lists
     * Esc + d : toggle draggable
     * Esc + r : resize
     * Esc + c : toggle carousels
@@ -132,6 +133,7 @@ var maketoc = function(){
     * §notoc : no TOC
     * §width_video 10%  : video width
     * §width_pdf 10%  : pdf width
+    * §width_content 300  : page width
     * §width_iframe 1000 : iframe width
     * §height_iframe 500 : iframe height
     * §col_sublist0 col : color sub list 0
