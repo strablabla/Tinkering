@@ -609,7 +609,7 @@ var maketoc = function(){
    */  
 
    if (param['content_width']['var'] != false){  
-      $('#content').attr('width', param['content_width']['var'])
+      $('#content').css({'width': param['content_width']['var']})
       }
 
  //===================================================================== Navbar menu
