@@ -113,15 +113,15 @@ var maketoc = function(){
     
     var keys = function(){/*
     # Keys: 
-    * Esc + k : show keys
-    * Esc + s : show syntax
-    * Esc + l : toggle all lists
-    * Esc + d : toggle draggable
-    * Esc + r : resize
     * Esc + c : toggle carousels
+    * Esc + d : toggle draggable
+    * Esc + k : show keys
+    * Esc + l : toggle all lists
+    * Esc + m : toggle TOC
+    * Esc + r : resize
+    * Esc + s : show syntax
     * Esc + t : toggle todo theme
     * Esc + w : toggle all the windows (except TOC)
-    * Esc + m : toggle TOC
     * Plot :
         * shift + n : toggle plot tools
     */}.toString().slice(14,-3)

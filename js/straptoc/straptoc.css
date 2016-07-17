@@ -368,8 +368,8 @@ div.chart {
   .axis { font-size: 1 em; }
 
   .chart {
-      width: 600px;
-      height: 620px;
+      width: 400px;
+      height: 300px;
       box-shadow: 0.5em 0.5em 0.7em;
       resize: both;
       overflow: scroll;
