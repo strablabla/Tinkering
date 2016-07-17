@@ -37,7 +37,7 @@ class LIST_INSERT(object):
         for k in self.dic_corr:
             if k in f:
                 f = f.replace(k,self.dic_corr[k])
-                print(f)
+                #print(f)
         return f
 
     
