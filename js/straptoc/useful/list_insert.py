@@ -33,14 +33,11 @@ class LIST_INSERT(object):
         ''' 
         Correction the characters
         '''
-        # print('Characters correction')
         for k in self.dic_corr:
             if k in f:
                 f = f.replace(k,self.dic_corr[k])
-                #print(f)
         return f
 
-    
     def build_list(self):
         '''
         '''
@@ -54,18 +51,22 @@ class LIST_INSERT(object):
         dic_categ = {} # list categories
         for path, dirs, files in os.walk('.'): # Go through the folders
             for f in files: # considering files
+                oldpath = os.path.join(path, f)
                 if self.corr: 
                     f = self.corr_carac(f) # Correction on characters
-                fold = f
-                l = f.split()
-                oldpath = os.path.join(path, fold)
+                    intermpath = os.path.join(path, f)
+                    if intermpath != oldpath:
+                        os.rename(oldpath , intermpath)    # if correction  make correction  
+                else:
+                    intermpath = oldpath    
+                l = f.split()   
                 if len(l) > 1:    # empty spaces detected , need of correction
                     f = '_'.join(l)    # remove empty spaces
                     newpath = os.path.join(path, f)    # newpath
                     if self.corr: 
-                        os.rename(oldpath , newpath)    # if correction asked (argument 'corr'), make correction
+                        os.rename(intermpath , newpath)    # if correction asked (argument 'corr'), make correction
                 else:
-                    newpath = oldpath    # no empty spaces detected
+                    newpath = intermpath    # no empty spaces detected
                 root,ext = os.path.splitext(newpath)
                 self.folder_subfolder(newpath, dic_categ)
 
