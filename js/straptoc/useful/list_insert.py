@@ -15,21 +15,36 @@ class LIST_INSERT(object):
         '''
         self.kind = kind
         if param1 == "corr":
+
             self.corr = True
         else:
             self.corr = False
+        #print('self.corr is ', self.corr)
         self.first = True
+        self.limages = ['.jpg', '.png']
+        self.liframes = ['.html']
+        self.lvideo = ['.mp4']
+        self.dic_corr = {"'":"_", ",":"_","\(":"_","\)":"_","-":"_",
+                     "é":"e","û":"u","û":"u",
+                    "â":"a","ô":"o","à":"a",
+                    "è":"e" }
+
+    def corr_carac(self, f):
+        ''' 
+        Correction the characters
+        '''
+        # print('Characters correction')
+        for k in self.dic_corr:
+            if k in f:
+                f = f.replace(k,self.dic_corr[k])
+                print(f)
+        return f
+
     
     def build_list(self):
         '''
         '''
-        limages = ['.jpg', '.png']
-        liframes = ['.html']
-        lvideo = ['.mp4']
-        dic_corr = {"'":"_", ",":"_","\(":"_","\)":"_",
-                     "é":"e","û":"u","û":"u",
-                    "â":"a","ô":"o","à":"a",
-                    "è":"e" }
+
         try:
             root = raw_input("root in CloudStation? eg encours/blabla finishing before current folder ")  # root
         except:
@@ -38,7 +53,9 @@ class LIST_INSERT(object):
         self.prefix  = '../../' + root + self.prefix.split(root)[1]
         dic_categ = {} # list categories
         for path, dirs, files in os.walk('.'): # Go through the folders
-            for f in files:
+            for f in files: # considering files
+                if self.corr: 
+                    f = self.corr_carac(f) # Correction on characters
                 fold = f
                 l = f.split()
                 oldpath = os.path.join(path, fold)
