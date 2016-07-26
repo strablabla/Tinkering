@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/6800895/js/straptoc/straptoc.js 
-//https://github.com/strablabla/Tinkering/6800895s/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/8f7aa67/js/straptoc/straptoc.js 
+//https://github.com/strablabla/Tinkering/8f7aa67/js/straptoc/straptoc.css
 
 
 var maketoc = function(){
@@ -618,10 +618,10 @@ var maketoc = function(){
             $('h1').css({'color': param['color_h1']['var']})
             }
         if (param['color_h2']['var'] != false){  
-            $('h1').css({'color': param['color_h2']['var']})
+            $('h2').css({'color': param['color_h2']['var']})
             }
         if (param['color_h3']['var'] != false){  
-            $('h1').css({'color': param['color_h3']['var']})
+            $('h3').css({'color': param['color_h3']['var']})
             }
 
  //===================================================================== Change content width
