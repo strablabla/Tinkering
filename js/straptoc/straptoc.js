@@ -189,6 +189,9 @@ var maketoc = function(){
     reg_func = function(name){return RegExp('^\\§'+name+'\\s*','g') } // function for regexp for configuration
     var reg_date = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /--\w*--/; //regexp for identity
+    var reg_col_h1 = reg_func('col_h1') 
+    var reg_col_h2 = reg_func('col_h2')
+    var reg_col_h3 = reg_func('col_h3')
     var reg_col_sublist0 = reg_func('col_sublist0') 
     var reg_col_sublist1 = reg_func('col_sublist1')
     var reg_col_sublist2 = reg_func('col_sublist2')
@@ -224,21 +227,24 @@ var maketoc = function(){
     */
 
     param = {
-             'color_sublist0':{'reg':reg_col_sublist0, 'cut':'§col_sublist0', 'var': 'green'},
-             'color_sublist1':{'reg':reg_col_sublist1, 'cut':'§col_sublist1', 'var': 'green'},
-             'color_sublist2':{'reg':reg_col_sublist2, 'cut':'§col_sublist2', 'var': 'green'},
-             'mathsize':{'reg':reg_mathsize, 'cut':'§mathsize', 'var': ''},
-             'color_toc':{'reg':reg_col_toc, 'cut':'§col_toc', 'var': '#FFCC99'},
-             'notoc':{'reg':reg_notoc, 'cut':'§notoc', 'var': false},
-             'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': '80%' },
-             'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'},
-             'content_width':{'reg':reg_width_content, 'cut':'§width_content', 'var': false},
-             'iframe_width':{'reg':reg_width_iframe, 'cut':'§width_iframe', 'var': '900'},
-             'iframe_height':{'reg':reg_height_iframe, 'cut':'§height_iframe', 'var': '400'},
-             'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
-             'menu_list':{'reg':reg_menu, 'cut':'§menu', 'var': ''},
-             'help':{'reg':reg_help, 'cut':'§help', 'var': false},
-             'params':{'reg':reg_params, 'cut':'§params', 'var': false}
+            'color_h1':{'reg':reg_col_h1, 'cut':'§col_h1', 'var': 'black'},
+            'color_h2':{'reg':reg_col_h2, 'cut':'§col_h2', 'var': 'black'},
+            'color_h3':{'reg':reg_col_h3, 'cut':'§col_h3', 'var': 'black'},
+            'color_sublist0':{'reg':reg_col_sublist0, 'cut':'§col_sublist0', 'var': 'green'},
+            'color_sublist1':{'reg':reg_col_sublist1, 'cut':'§col_sublist1', 'var': 'green'},
+            'color_sublist2':{'reg':reg_col_sublist2, 'cut':'§col_sublist2', 'var': 'green'},
+            'mathsize':{'reg':reg_mathsize, 'cut':'§mathsize', 'var': ''},
+            'color_toc':{'reg':reg_col_toc, 'cut':'§col_toc', 'var': '#FFCC99'},
+            'notoc':{'reg':reg_notoc, 'cut':'§notoc', 'var': false},
+            'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': '80%' },
+            'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'},
+            'content_width':{'reg':reg_width_content, 'cut':'§width_content', 'var': false},
+            'iframe_width':{'reg':reg_width_iframe, 'cut':'§width_iframe', 'var': '900'},
+            'iframe_height':{'reg':reg_height_iframe, 'cut':'§height_iframe', 'var': '400'},
+            'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
+            'menu_list':{'reg':reg_menu, 'cut':'§menu', 'var': ''},
+            'help':{'reg':reg_help, 'cut':'§help', 'var': false},
+            'params':{'reg':reg_params, 'cut':'§params', 'var': false}
          }
 
  //===================================================================== Go to top
@@ -600,6 +606,23 @@ var maketoc = function(){
                }// end if
         } // end for
     }); // end each
+    
+
+    //===================================================================== Change color of titles
+
+      /*
+        Changing color of H1, H2, H3.. 
+      */  
+
+        if (param['color_h1']['var'] != false){  
+            $('h1').css({'color': param['color_h1']['var']})
+            }
+        if (param['color_h2']['var'] != false){  
+            $('h1').css({'color': param['color_h2']['var']})
+            }
+        if (param['color_h3']['var'] != false){  
+            $('h1').css({'color': param['color_h3']['var']})
+            }
 
  //===================================================================== Change content width
 
