@@ -738,7 +738,7 @@ var maketoc = function(){
     /*
     Add input
         * button with $input b value 
-        * input form with $input i value id
+        * input form with $input i value id name action
     */
 
     $('p').each( function(){
@@ -748,15 +748,24 @@ var maketoc = function(){
         var kind = {'b':'button', 'i':'input'}
         if (txtm){
             var arg = txtm[0].split('$input')[1].trim()
-            var tinp = arg.split(/\s+/)[0]
-            var val = arg.split(/\s+/)[1]
-            var id = arg.split(/\s+/)[2]
-            var inpbutt = '<input type="'+ kind[tinp] +'" value="'+ val +'" id="' + id +'"'  // pure input or button.
+            var as = arg.split(/\s+/)
+            var tinp = as[0]
+            var val = as[1]
+            var id = as[2]
+            var name = as[3]
+            var width = as[4]
+            var action = as[5]
+            var inpbutt = $('<input/>')
+            inpbutt.attr('kind', kind[tinp])
+            inpbutt.attr('value', val)
+            inpbutt.attr('id', id)
+            inpbutt.attr('name', name)
+            inpbutt.css({'width': width+'px'})
             if (kind[tinp] == 'button'){
-                inpbutt += '" class="btn btn-default"' // Bootstrap button
+                inpbutt.addClass("btn btn-default") // Bootstrap button
             }
-            inpbutt += '/>'
-            var sub = $('<form/>').append(inpbutt)
+
+            var sub = $('<form/>').attr('action', action).attr('method', 'post').append(inpbutt)
             $(this).replaceWith(sub)
            }
         })
