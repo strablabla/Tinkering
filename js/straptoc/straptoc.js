@@ -774,10 +774,11 @@ var maketoc = function(){
                 //     });
 
                 inpbutt.click(function(){
-                        $('.' + action).submit()   // each(function(){
-                            // alert('clicked')
-                               //$(this).submit() // submit each class action
-                            //}) // end each
+                    var time_delay = 1;
+                    $('.' + action).each(function(){
+                        setTimeout(function(){$(this).submit()}, time_delay);
+                        time_delay += 1;
+                        }) // end each
                     }) // end click
                   //}); // end  $(function())
                 $(this).replaceWith(inpbutt)
