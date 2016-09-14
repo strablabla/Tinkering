@@ -767,17 +767,29 @@ var maketoc = function(){
             inpbutt.css({'width': width+'px'})
             if (type[tinp] == 'button'){
                 inpbutt.addClass("btn btn-default") // Bootstrap button
-                inpbutt.click(function(){
-                        $('.' + action).submit()
-                    }) // end click
-                }
+                //$(function(){
 
-            var sub = $('<form/>').addClass(action)
-                                  .attr('action', action)
-                                  .attr('method', 'post')
-                                  .append(inpbutt)
-            $(this).replaceWith(sub)
-           }                           // end if regexp
+                // $(window).on("click", "#filter", function() {
+                //         alert('clicked!');
+                //     });
+
+                inpbutt.click(function(){
+                        $('.' + action).submit()   // each(function(){
+                            // alert('clicked')
+                               //$(this).submit() // submit each class action
+                            //}) // end each
+                    }) // end click
+                  //}); // end  $(function())
+                $(this).replaceWith(inpbutt)
+                } // end if button 
+            if (type[tinp] == 'input'){
+                    var sub = $('<form/>').addClass(action)
+                                          .attr('action', '/'+ action)
+                                          .attr('method', 'post')
+                                          .append(inpbutt)
+                    $(this).replaceWith(sub)
+                } // end if input
+           }   // end if regexp
         })                    // end each p
 
 //===================================================================== TOC
