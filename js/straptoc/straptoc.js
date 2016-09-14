@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/ebc79aa/js/straptoc/straptoc.js 
-//https://github.com/strablabla/Tinkering/ebc79aa/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/a74eb2b/js/straptoc/straptoc.js 
+//https://github.com/strablabla/Tinkering/a74eb2b/js/straptoc/straptoc.css
 
 
 var maketoc = function(){
@@ -749,8 +749,8 @@ var maketoc = function(){
         var reginp = /^\$input\s*.*/
         var txt = $(this).text()
         var txtm = txt.match(reginp)
-        var type = {'b':'submit', 'i':'input'}
-        if (txtm){
+        var type = {'b':'nope', 'i':'input'}
+        if (txtm){                                           // if regexp recognized
             var arg = txtm[0].split('$input')[1].trim()
             var as = arg.split(/\s+/)           // split arguments
             var tinp = as[0]
@@ -767,12 +767,18 @@ var maketoc = function(){
             inpbutt.css({'width': width+'px'})
             if (type[tinp] == 'button'){
                 inpbutt.addClass("btn btn-default") // Bootstrap button
-            }
+                inpbutt.click(function(){
+                        $('.' + action).submit()
+                    }) // end click
+                }
 
-            var sub = $('<form/>').attr('action', action).attr('method', 'post').append(inpbutt)
+            var sub = $('<form/>').addClass(action)
+                                  .attr('action', action)
+                                  .attr('method', 'post')
+                                  .append(inpbutt)
             $(this).replaceWith(sub)
-           }
-        })
+           }                           // end if regexp
+        })                    // end each p
 
 //===================================================================== TOC
 
