@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/8f7aa67/js/straptoc/straptoc.js 
-//https://github.com/strablabla/Tinkering/8f7aa67/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/ebc79aa/js/straptoc/straptoc.js 
+//https://github.com/strablabla/Tinkering/ebc79aa/js/straptoc/straptoc.css
 
 
 var maketoc = function(){
@@ -742,14 +742,14 @@ var maketoc = function(){
     Add input
         * button with $input b value 
         * input form with $input i value id name action
-        
+
     */
 
     $('p').each( function(){
         var reginp = /^\$input\s*.*/
         var txt = $(this).text()
         var txtm = txt.match(reginp)
-        var kind = {'b':'submit', 'i':'input'}
+        var type = {'b':'submit', 'i':'input'}
         if (txtm){
             var arg = txtm[0].split('$input')[1].trim()
             var as = arg.split(/\s+/)           // split arguments
@@ -760,12 +760,12 @@ var maketoc = function(){
             var width = as[4]                    // object width
             var action = as[5]                   // address for action
             var inpbutt = $('<input/>')
-            inpbutt.attr('kind', kind[tinp])
+            inpbutt.attr('type', type[tinp])
             inpbutt.attr('value', val)
             inpbutt.attr('id', id)
             inpbutt.attr('name', name)
             inpbutt.css({'width': width+'px'})
-            if (kind[tinp] == 'button'){
+            if (type[tinp] == 'button'){
                 inpbutt.addClass("btn btn-default") // Bootstrap button
             }
 
