@@ -776,7 +776,10 @@ var maketoc = function(){
                 inpbutt.click(function(){
                     var time_delay = 1;
                     $('.' + action).each(function(){
-                        setTimeout(function(){$(this).submit()}, time_delay);
+                        setTimeout(function(){
+                            alert('clicked')
+                            $(this).submit()
+                           }, time_delay);
                         time_delay += 1;
                         }) // end each
                     }) // end click
