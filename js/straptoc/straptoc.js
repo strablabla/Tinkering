@@ -749,7 +749,7 @@ var maketoc = function(){
         var reginp = /^\$input\s*.*/
         var txt = $(this).text()
         var txtm = txt.match(reginp)
-        var type = {'b':'submit', 'i':'input'}
+        var type = {'b':'button', 'i':'input'}
         if (txtm){                                           // if regexp recognized
             var arg = txtm[0].split('$input')[1].trim()
             var as = arg.split(/\s+/)           // split arguments
