@@ -736,25 +736,29 @@ var maketoc = function(){
 //===================================================================== Input
     
     /*
+
+    Form button or input
+
     Add input
         * button with $input b value 
         * input form with $input i value id name action
+        
     */
 
     $('p').each( function(){
         var reginp = /^\$input\s*.*/
         var txt = $(this).text()
         var txtm = txt.match(reginp)
-        var kind = {'b':'button', 'i':'input'}
+        var kind = {'b':'submit', 'i':'input'}
         if (txtm){
             var arg = txtm[0].split('$input')[1].trim()
-            var as = arg.split(/\s+/)
+            var as = arg.split(/\s+/)           // split arguments
             var tinp = as[0]
             var val = as[1]
             var id = as[2]
             var name = as[3]
-            var width = as[4]
-            var action = as[5]
+            var width = as[4]                    // object width
+            var action = as[5]                   // address for action
             var inpbutt = $('<input/>')
             inpbutt.attr('kind', kind[tinp])
             inpbutt.attr('value', val)

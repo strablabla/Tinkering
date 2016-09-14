@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="UTF-8">
+<title>Test each li</title>
+
+<script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+
+
+<div class="onside" id="toc"></div>
+
+<xmp theme="cerulean" style="display:none;">
+    
+
+# janv 2016
+
+1/1/16
+
+apeiapeia
+aeaoeuae
+peoitpeit
+
+
+* Once upon a time ::
+    * The little man entered the forest ::
+        * So many sounds, strange atmosphere in there..
+    	
+[huppe link](#huppe)
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+
+<script> 
+
+$("ul").children().each(function(){   
+        if ($(this).html().split('\n')[0].search('::')!=-1){
+            $(this).next().toggle()
+            $('<a/>').append($('<span/>').text(" [-]").addClass('::')).insertBefore($(this).children())
+            } // end if
+          } // end function after each
+        ); // end each
+
+$('ul').html($('ul').html().replace(/\s\:\:/g,''))
+
+$("a").click(function (evt) {           // toggle for H1
+    if(evt.target.className == '::') // hide sublist elements
+        $(this).next().toggle();
+    });// end click
+
+
+</script>
+    
+</html>
