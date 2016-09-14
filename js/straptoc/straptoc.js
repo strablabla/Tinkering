@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/a74eb2b/js/straptoc/straptoc.js 
-//https://github.com/strablabla/Tinkering/a74eb2b/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/28c147f/js/straptoc/straptoc.js 
+//https://github.com/strablabla/Tinkering/28c147f/js/straptoc/straptoc.css
 
 
 var maketoc = function(){
@@ -757,7 +757,7 @@ var maketoc = function(){
             //var form = $('<div/>')
             for (i in ll){
             	l = ll[i]
-            	alert(l)
+            	// alert(l)
             	if (i==0){
             		var action = l.split(/\s+/)[1]
             		form = $('<form/>').attr('action', '/'+action)
@@ -767,16 +767,16 @@ var maketoc = function(){
             	else if (l.match(reginp)){
             		var ls = l.split(/\s+/)
             		var inp = $('<input/>')
-            		alert(ls)
-            		alert(ls.length)
+            		// alert(ls)
+            		// alert(ls.length)
             		for (j=1; j<ls.length; j++){
             			var el = ls[j]
-            			alert('elem is '+ el)
+            			// alert('elem is '+ el)
             			var att = dic_form[el[0]] 
             			//alert(el.slice(2))
             			var val = el.slice(2)
-            			alert('param is '+ att)
-            			alert('val is '+val)
+            			// alert('param is '+ att)
+            			// alert('val is '+val)
             			if (att == 'width'){
             				inp.css({'width': val})
             			}
