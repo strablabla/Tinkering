@@ -746,55 +746,70 @@ var maketoc = function(){
     */
 
     $('p').each( function(){
-        var reginp = /^\$input\s*.*/
-        var txt = $(this).text()
-        var txtm = txt.match(reginp)
-        var type = {'b':'button', 'i':'input'}
-        if (txtm){                                           // if regexp recognized
-            var arg = txtm[0].split('$input')[1].trim()
-            var as = arg.split(/\s+/)           // split arguments
-            var tinp = as[0]
-            var val = as[1]
-            var id = as[2]
-            var name = as[3]
-            var width = as[4]                    // object width
-            var action = as[5]                   // address for action
-            var inpbutt = $('<input/>')
-            inpbutt.attr('type', type[tinp])
-            inpbutt.attr('value', val)
-            inpbutt.attr('id', id)
-            inpbutt.attr('name', name)
-            inpbutt.css({'width': width+'px'})
-            if (type[tinp] == 'button'){
-                inpbutt.addClass("btn btn-default") // Bootstrap button
-                //$(function(){
 
-                // $(window).on("click", "#filter", function() {
-                //         alert('clicked!');
-                //     });
+        var regform = /^\$form\s*.*/
+        // var regform = /^\$form\s*/
+        // var reginp = /^\$inp\s*.*/
+        $(this).text()
+        var txtm = txt.match(regform)
+        if (txtm){ 
+            alert($(this).text())
+            //alert($(this).html())
+            } // end if
+    }) // end each
 
-                inpbutt.click(function(){
-                    var time_delay = 1;
-                    $('.' + action).each(function(){
-                        setTimeout(function(){
-                            alert('clicked')
-                            $(this).submit()
-                           }, time_delay);
-                        time_delay += 1;
-                        }) // end each
-                    }) // end click
-                  //}); // end  $(function())
-                $(this).replaceWith(inpbutt)
-                } // end if button 
-            if (type[tinp] == 'input'){
-                    var sub = $('<form/>').addClass(action)
-                                          .attr('action', '/'+ action)
-                                          .attr('method', 'post')
-                                          .append(inpbutt)
-                    $(this).replaceWith(sub)
-                } // end if input
-           }   // end if regexp
-        })                    // end each p
+    // $('p').each( function(){
+    //     var reginp = /^\$inp\s*.*/
+    //     var txt = $(this).text()
+    //     var txtm = txt.match(reginp)
+    //     var type = {'b':'button', 'i':'input'}
+    //     if (txtm){                                           // if regexp recognized
+    //         var arg = txtm[0].split('$input')[1].trim()
+    //         var as = arg.split(/\s+/)           // split arguments
+    //         var tinp = as[0]
+    //         var val = as[1]
+    //         var id = as[2]
+    //         var name = as[3]
+    //         var width = as[4]                    // object width
+    //         var action = as[5]                   // address for action
+    //         var inpbutt = $('<input/>')
+    //         inpbutt.attr('type', type[tinp])
+    //         inpbutt.attr('value', val)
+    //         inpbutt.attr('id', id)
+    //         inpbutt.attr('name', name)
+    //         inpbutt.css({'width': width +'px'})
+    //         if (type[tinp] == 'button'){
+    //             inpbutt.addClass("btn btn-default") // Bootstrap button
+    //             //$(function(){
+
+    //             // $(window).on("click", "#filter", function() {
+    //             //         alert('clicked!');
+    //             //     });
+
+    //             inpbutt.click(function(){
+    //                 var time_delay = 100;
+    //                 $('.' + action).each(function(){
+    //                     setTimeout(function(){
+    //                         alert('clicked')
+    //                         alert(time_delay)
+    //                         $(this).submit()
+    //                         time_delay += 100;
+    //                        }, time_delay);
+                        
+    //                     }) // end each
+    //                 }) // end click
+    //               //}); // end  $(function())
+    //             $(this).replaceWith(inpbutt)
+    //             } // end if button 
+    //         if (type[tinp] == 'input'){
+    //                 var sub = $('<form/>').addClass(action)
+    //                                       .attr('action', '/'+ action)
+    //                                       .attr('method', 'post')
+    //                                       .append(inpbutt)
+    //                 $(this).replaceWith(sub)
+    //             } // end if input
+    //        }   // end if regexp
+    //     })                    // end each p
 
 //===================================================================== TOC
 

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="UTF-8">
+<title>test color</title>
+
+
+<form>
+  <input type="button"  value="submit2forms" onclick="myFunction()">
+</form>
+
+<script>
+function myFunction() {
+setTimeout(function(){ document.getElementById("form1").submit();}, 3000);   
+setTimeout(function(){ document.getElementById("form2").submit();}, 6000);   
+}
+</script>
+<form  target="_blank" id="form1">
+<input type="text">
+<input type="submit">
+</form>
+<form target="_blank" id="form2">
+<input type="text">
+<input type="submit">
+</form>
+
+</html>
