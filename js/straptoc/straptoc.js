@@ -202,6 +202,7 @@ var maketoc = function(){
     var reg_width_pdf = reg_func('width_pdf') 
     var reg_width_content = reg_func('width_content')
     var reg_height_content = reg_func('height_content')
+    var reg_centered_content = reg_func('centered_content')
     var reg_width_iframe = reg_func('width_iframe')
     var reg_height_iframe = reg_func('height_iframe') 
     var reg_toggle_hide = reg_func('toggle_hide') 
@@ -241,6 +242,7 @@ var maketoc = function(){
             'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'},
             'content_width':{'reg':reg_width_content, 'cut':'§width_content', 'var': false},
             'content_height':{'reg':reg_height_content, 'cut':'§height_content', 'var': false},
+            'content_centered':{'reg':reg_centered_content, 'cut':'§centered_content', 'var': false},
             'iframe_width':{'reg':reg_width_iframe, 'cut':'§width_iframe', 'var': '900'},
             'iframe_height':{'reg':reg_height_iframe, 'cut':'§height_iframe', 'var': '400'},
             'toggle_hide':{'reg':reg_toggle_hide, 'cut':'§toggle_hide', 'var': 'p'},
@@ -638,6 +640,13 @@ var maketoc = function(){
       }
     if (param['content_height']['var'] != false){  
       $('#content').css({'height': param['content_height']['var']})
+      }
+    
+    if (param['content_centered']['var'] == 'true'){  
+        alert(param['content_centered']['var'])
+      var midwidth = parseInt(param['content_width']['var'].slice(0,-2))/2
+      midwidth  += 'px'
+      $('#content').css({ 'position': 'absolute', 'margin-left': '50%', 'left': '-' + midwidth })
       }
 
  //===================================================================== Navbar menu
