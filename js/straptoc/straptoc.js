@@ -643,7 +643,7 @@ var maketoc = function(){
       }
     
     if (param['content_centered']['var'] == 'true'){  
-        alert(param['content_centered']['var'])
+        // alert(param['content_centered']['var'])
       var midwidth = parseInt(param['content_width']['var'].slice(0,-2))/2
       midwidth  += 'px'
       $('#content').css({ 'position': 'absolute', 'margin-left': '50%', 'left': '-' + midwidth })
@@ -821,6 +821,9 @@ var maketoc = function(){
             		})
             		form.append(but)
             	  } // end else if 
+            	  else if (l.match(/\=/)){
+            	  	form.append($('<br/>'))
+            	  }
                } // end for
               $(this).replaceWith(form)
             } // end if match form
