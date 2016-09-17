@@ -760,7 +760,10 @@ var maketoc = function(){
     */
 
     var makearea = function(form, dict){
-        var txtarea = $('<textarea/>').addClass("form-control").attr('id',dict["id"]).attr('rows',dict["rows"])
+        var txtarea = $('<textarea/>').addClass("form-control")
+        for (k in dict){
+            txtarea.attr(k,dict[k])
+            }
         var divarea = $('<div/>').append(txtarea).addClass("form-group")
     // $('#content').append(divarea)
     form.append(divarea)
