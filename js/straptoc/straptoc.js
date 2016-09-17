@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/28c147f/js/straptoc/straptoc.js 
-//https://github.com/strablabla/Tinkering/28c147f/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/59e7535/js/straptoc/straptoc.js 
+//https://github.com/strablabla/Tinkering/59e7535/js/straptoc/straptoc.css
 
 
 var maketoc = function(){
@@ -759,10 +759,11 @@ var maketoc = function(){
 
     */
 
-    var makearea = function(dict){
+    var makearea = function(form, dict){
         var txtarea = $('<textarea/>').addClass("form-control").attr('id',dict["id"]).attr('rows',dict["rows"])
         var divarea = $('<div/>').append(txtarea).addClass("form-group")
-    $('#content').append(divarea)
+    // $('#content').append(divarea)
+    form.append(divarea)
     }
 
     $('p').each( function(){
@@ -791,20 +792,19 @@ var maketoc = function(){
             		// alert(ls)
             		// alert(ls.length)
             		for (j=1; j<ls.length; j++){
-            			var el = ls[j]
-            			// alert('elem is '+ el)
-            			var att = dic_form[el[0]] 
-            			//alert(el.slice(2))
-            			var val = el.slice(2)
-            			// alert('param is '+ att)
-            			// alert('val is '+val)
-            			if (att == 'width'){
-            				inp.css({'width': val})
-            			}
-            			else{
-            				inp.attr(att, val)
-            			}
-            			
+                			var el = ls[j]
+                			// alert('elem is '+ el)
+                			var att = dic_form[el[0]] 
+                			//alert(el.slice(2))
+                			var val = el.slice(2)
+                			// alert('param is '+ att)
+                			// alert('val is '+val)
+                			if (att == 'width'){
+                				inp.css({'width': val})
+                			}
+                			else{
+                				inp.attr(att, val)
+                			}
             		   } // end for
             		form.append(inp)
             	  } // end else if 
@@ -831,7 +831,7 @@ var maketoc = function(){
             	else if (l.match(/\=/)){         // line feed
             	  	form.append($('<br/>'))
             	  } // end  else if = 
-                else if (l.match(regcode)){         // line feed
+                else if (l.match(regcode)){         // textarea
                     var ls = l.split(/\s+/)
                     dict_area = {}
                     for (j=1; j<ls.length; j++){
@@ -840,7 +840,7 @@ var maketoc = function(){
                         var val = ls[j].slice(2)
                         dict_area[att] = val
                     } // end for through args
-                    makearea(dict_area)
+                    makearea(form, dict_area)   // 
                   } // end else if
                } // end for loop on cases
               $(this).replaceWith(form)
