@@ -754,16 +754,23 @@ var maketoc = function(){
     Form button or input
 
     Add input
-        * button with $input b value 
-        * input form with $input i value id name action
+        * button with $inp b value 
+        * input form with $inp i value id name action
 
     */
 
+    var makearea = function(dict){
+        var txtarea = $('<textarea/>').addClass("form-control").attr('id',dict["id"]).attr('rows',dict["rows"])
+        var divarea = $('<div/>').append(txtarea).addClass("form-group")
+    $('#content').append(divarea)
+    }
+
     $('p').each( function(){
-    	dic_form = {'v':'value', 'n':'name', 'i':'id', 'w':'width'}
+    	dic_form = {'v':'value', 'n':'name', 'i':'id', 'w':'width', 'r':'rows'}
         var regform = /^\$form\s*.*/
         var reginp = /^\$inp\s*.*/
         var regbut = /^\$but\s*.*/
+        var regcode = /^\$code\s*.*/
         txt = $(this).text()
         var txtm = txt.match(regform)
         if (txtm){ 
@@ -778,7 +785,7 @@ var maketoc = function(){
             						   .attr('id', action)
             						   .attr('method', 'post')
             		}
-            	else if (l.match(reginp)){
+            	else if (l.match(reginp)){        // input case
             		var ls = l.split(/\s+/)
             		var inp = $('<input/>')
             		// alert(ls)
@@ -801,7 +808,7 @@ var maketoc = function(){
             		   } // end for
             		form.append(inp)
             	  } // end else if 
-            	else if (l.match(regbut)){
+            	else if (l.match(regbut)){      // button case
             		var ls = l.split(/\s+/)
             		var but = $('<input/>')
             		for (j=1; j<ls.length; j++){
@@ -810,21 +817,32 @@ var maketoc = function(){
             			var val = ls[j].slice(2)
             			if (att == 'width'){
             				but.css({'width': val})
-            			}
-            			else{
+            			  }
+            			  else{
             				but.attr(att, val)
-            			}
-            		   } // end for
+            			  }
+            		   } // end for through args
             		but.addClass("btn btn-default")
             		but.click(function(){
             			$('#'+action).submit()
-            		})
+            		  }) // end click
             		form.append(but)
             	  } // end else if 
-            	  else if (l.match(/\=/)){
+            	else if (l.match(/\=/)){         // line feed
             	  	form.append($('<br/>'))
-            	  }
-               } // end for
+            	  } // end  else if = 
+                else if (l.match(regcode)){         // line feed
+                    var ls = l.split(/\s+/)
+                    dict_area = {}
+                    for (j=1; j<ls.length; j++){
+                        var el = ls[j]
+                        var att = dic_form[el[0]] 
+                        var val = ls[j].slice(2)
+                        dict_area[att] = val
+                    } // end for through args
+                    makearea(dict_area)
+                  } // end else if
+               } // end for loop on cases
               $(this).replaceWith(form)
             } // end if match form
     }) // end each p
