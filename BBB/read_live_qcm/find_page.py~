@@ -35,10 +35,10 @@ while(True):
                  color_app = [100,100,100]
                  cv2.drawContours(ctrs_bckgrd, [screenCnt], 0, color_app, 2)
                  #break
-	    color = np.random.randint(0,255,(3)).tolist()  #
+	    #color = np.random.randint(0,255,(3)).tolist()  #
 	    #cv2.drawContours(frame,[cnt], 0, color, 2)
             
-	    #cv2.drawContours(ctrs_bckgrd, [cnt], 0, color, 2)
+	    cv2.drawContours(ctrs_bckgrd, [cnt], 0, color, 2)
 	    cv2.imshow('output', ctrs_bckgrd)
 
     # Our operations on the frame come here
