@@ -20,27 +20,22 @@ while(True):
     image_area = gray.size
     for i, cnt in enumerate(contours):
         perim = cv2.arcLength(cnt, True)
-        # area = cv2.contourArea(cnt)
+        if  perim > 50:  
+            # cd = tuple(cnt[0][0])
+            # cf = tuple(cnt[-1][0])
+            # col = (150, 255, 230)
+            # diffcnt =  arr(cf)-arr(cd)
+            # dist = np.sqrt(diffcnt[0]**2+diffcnt[1]**2)
+            # if dist > 5 :
 
-        #print dist
-        if  perim > 50:  #  and area > image_area/4 :
-            cd = tuple(cnt[0][0])
-            cf = tuple(cnt[-1][0])
-            col = (150, 255, 230)
-            #cv2.circle(ctrs_bckgrd, cd, 10, (255,0,0))
-            #cv2.circle(ctrs_bckgrd, cf, 10, (0, 255, 0))
-            diffcnt =  arr(cf)-arr(cd)
-            dist = np.sqrt(diffcnt[0]**2+diffcnt[1]**2)
-            if dist > 5 :
-                color = np.random.randint(0,255,(3)).tolist()  #
-                cv2.drawContours(frame,[cnt], 0, color, 2)
-                cv2.drawContours(ctrs_bckgrd, [cnt], 0, color, 2)
-                cv2.imshow('output', ctrs_bckgrd)
-
-            #cv2.circle(ctrs_bckgrd, (100,100),10,(0,0,255),-1)
-            #cv2.circle(img,(200,200), 40, (0,0,255), -1)
-
-            #print np.sqrt((cnt[0]-cnt[-1])**2)
+            approx = cv2.approxPolyDP(cnt, 0.02*perim,True)
+            if len(approx) == 4:
+                 screenCnt = approx
+                 break
+    color = np.random.randint(0,255,(3)).tolist()  #
+    cv2.drawContours(frame,[cnt], 0, color, 2)
+    cv2.drawContours(ctrs_bckgrd, [cnt], 0, color, 2)
+    cv2.imshow('output', ctrs_bckgrd)
 
     # Our operations on the frame come here
     # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
