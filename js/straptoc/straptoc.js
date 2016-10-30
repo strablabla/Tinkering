@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/59e7535/js/straptoc/straptoc.js 
-//https://github.com/strablabla/Tinkering/59e7535/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/d262e9d/js/straptoc/straptoc.js 
+//https://github.com/strablabla/Tinkering/d262e9d/js/straptoc/straptoc.css
 
 
 var maketoc = function(){
@@ -691,7 +691,7 @@ var maketoc = function(){
     */
 
     var newhtml = ''
-    var list_split_h1 = $('#content').html().split('<h1')  // insert div for following position in toc
+    var list_split_h1 = $('#content').html().split('<h1')  // insert div with class "section" for following position in toc
     for (i in list_split_h1){
         if ((i>=1)&(i<list_split_h1.length)){
             newhtml += '<div class="section" id="'+i+'">\n<h1'+ list_split_h1[i] + '</div>\n'

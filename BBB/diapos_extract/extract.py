@@ -19,20 +19,13 @@ def thresh_callback(thresh):
     for i,cnt in enumerate(contours):
         color = np.random.randint(0,255,(3)).tolist()  # Select a random color   
         perim = cv2.arcLength(cnt, True)
-        #print perim
         if perim > p and not block:
             x,y,w,h = cv2.boundingRect(cnt)
             print x,y, w, h
             cv2.drawContours(drawing,[cnt],0,color,2)
             cv2.imshow('output',drawing)
-            #with open('im_rect.jpg', 'w'):
-            # plt.imshow(img)
             block = True
             subpic = img[y:y+h,x:x+w]
-            # fgbg = cv2.BackgroundSubstractorMOG()
-            #fgmask = fgbg.apply(subpic)
-            #cv2.bitwise_and(subpic, subpic, mask=fgmask)
-            print subpic[10,10]
             img[img==subpic[10,10]]=255
             cv2.imwrite('rect_bottom.png', subpic)
    
