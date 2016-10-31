@@ -40,7 +40,7 @@ while(True):
         cv2.drawContours(bckgrd, [cnt], 0, [100,100,100], 2)
         perim = cv2.arcLength(cnt, True)
         ii.cnt, ii.perim, ii.bckgrd = cnt, perim, bckgrd
-        if  10 < perim < 200:  
+        if  10 < perim < 100:  
             show_squares(ii)
 
         color = np.random.randint(0,255,(3)).tolist()  #
