@@ -95,13 +95,10 @@ def find_frame(ii):
         # x,y,w,h = cv2.boundingRect(screenCnt)
         # xmin, xmax, ymin, ymax = x, x+w, y, y+h
         # pts_frame = [xmin, xmax, ymin, ymax]
-        try:
-	    tl,tr,br,bl = order_pts_frame(screenCnt)
-	    dst = new_dim(tl,tr,br,bl,ii)
-	    perspective(ii, dst)
-	    save_im(ii)
-        except:
-            pass
+        tl,tr,br,bl = order_pts_frame(screenCnt)
+        dst = new_dim(tl,tr,br,bl,ii)
+        perspective(ii, dst)
+        save_im(ii)
         #return dst
 
 def find_inside_frame(ii):
