@@ -31,6 +31,7 @@
 
         <script src="http://cdn.mechasdf.com/lib/three.min.js"></script>
         <script src="http://cdn.mechasdf.com/lib/js/controls/TrackballControls.js"></script>
+        <script src="http://cdn.mechasdf.com/lib/js/controls/OrbitControls.js"></script>
         <script src="http://cdn.mechasdf.com/lib/js/controls/dat.gui.min.js"></script>
 
         <script >
@@ -126,6 +127,7 @@
                 $(document).keydown(function(event){
                 	if (event.which == "c".charCodeAt(0)-32){   // control with mouse
                         ctrl = !ctrl
+   
                       } // end if key code
 
                     if (event.which == "w".charCodeAt(0)-32){   
@@ -152,6 +154,10 @@
 
                     if (event.which == 38){   // right
                         camera.position.y += 10;
+                      } // end if key code
+
+                    if (event.which == 40){   // right
+                        camera.position.y += -10;
                       } // end if key code
 
                      if (event.which == "s".charCodeAt(0)-32){   // right
@@ -184,12 +190,18 @@
                 scene.add(ambient_light);
                 
 	                window.addEventListener('resize', onWindowResize, false);
-	                controls = new THREE.TrackballControls(camera, renderer.domElement);
+	                //controls = new THREE.TrackballControls(camera, renderer.domElement);
+	                controls = new THREE.OrbitControls(camera, renderer.domElement);
+
 	                controls.rotateSpeed = 0.4;
 	                controls.noZoom = false;
 	                controls.noPan = false;
 	                controls.staticMoving = false;
 	                controls.dynamicDampingFactor = 0.4;
+	                //vector = camera.getWorldDirection();
+	                //controls.target = new THREE.Vector3().addVectors(/*new line for readability*/
+    //camera.position, camera.getWorldDirection());
+
 
                 //controls.minDistance = 300;
                 //controls.maxDistance = 600;

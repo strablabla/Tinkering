@@ -8,9 +8,41 @@ cap.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT,240)
 thresh = 5
 max_thresh = 255
 
+def find_frame(cnt, perim, ctrs_bckgrd):
+    approx = cv2.approxPolyDP(cnt, 0.02*perim,True)
+    if len(approx) == 4:
+        print 'ooooo'
+        screenCnt = approx
+        color_app = [100,100,100]
+        cv2.drawContours(ctrs_bckgrd, [screenCnt], 0, color_app, 2)
+        x,y,w,h = cv2.boundingRect(screenCnt)
+        xmin, xmax, ymin, ymax = x, x+w, y, y+h
+        pts_frame = [xmin, xmax, ymin, ymax]
+        return pts_frame
+
+def find_inside_frame(cnt, perim, pts_frame, ctrs_bckgrd):
+    xmin, xmax, ymin, ymax = pts_frame
+    color_inside = [0,0,150]
+    m = cv2.moments(cnt) 
+    # cv2.drawContours(ctrs_bckgrd, [cnt], 0, color_inside, 2)
+    
+    try:
+        mx = int(m['m10']/m['m00'])
+        my = int(m['m01']/m['m00'])
+        approx = cv2.approxPolyDP(cnt, 0.02*perim,True)
+        cndl = len(approx) == 4
+        if mx in range(x,x+w) and my in range(y,y+h) and cndl:
+            print('inside')
+            cv2.drawContours(ctrs_bckgrd, [cnt], 0, color_inside, 2)
+                cv2.drawContours(frame,[cnt], 0, color_inside, 2)
+    except:
+        pass
+
+
 while(True):
     # Capture frame-by-frame
     ret, frame = cap.read()
+ 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     #blur = cv2.GaussianBlur(gray, (5,5), 0)
     edges = cv2.Canny(gray,thresh,max_thresh)
@@ -21,38 +53,14 @@ while(True):
     for i, cnt in enumerate(contours):
         perim = cv2.arcLength(cnt, True)
         if  perim > 800:  
-            approx = cv2.approxPolyDP(cnt, 0.02*perim,True)
-            if len(approx) == 4:
-                 print 'ooooo'
-                 screenCnt = approx
-                 color_app = [100,100,100]
-                 cv2.drawContours(ctrs_bckgrd, [screenCnt], 0, color_app, 2)
-                 #break
-                 x,y,w,h = cv2.boundingRect(screenCnt)
-                 #cut = edges[y:y+h,x:x+w]
-                 #cutflat = np.flatten(cut)
-	if perim < 200: 
-	    color_inside = [0,0,150]
-	    m = cv2.moments(cnt) 
-            # cv2.drawContours(ctrs_bckgrd, [cnt], 0, color_inside, 2)
-            
-            try:
-	        mx = int(m['m10']/m['m00'])
-	        my = int(m['m01']/m['m00'])
-                approx = cv2.approxPolyDP(cnt, 0.02*perim,True)
-                cndl = len(approx) == 4
-	        if mx in range(x,x+w) and my in range(y,y+h) and cndl:
-	            print('inside')
-	            cv2.drawContours(ctrs_bckgrd, [cnt], 0, color_inside, 2)
-                    cv2.drawContours(frame,[cnt], 0, color_inside, 2)
-            except:
-                pass
-                 #cv2.imshow('newdeges', newedges)
-	    color = np.random.randint(0,255,(3)).tolist()  #
-	    #cv2.drawContours(frame,[cnt], 0, color, 2)
-            
-	    #cv2.drawContours(ctrs_bckgrd, [cnt], 0, color, 2)
-	    cv2.imshow('output', ctrs_bckgrd)
+            pts_frame = find_frame(cnt, perim, ctrs_bckgrd)
+        if perim < 200: 
+            find_inside_frame(cnt, perim, pts_frame, ctrs_bckgr)
+            #cv2.imshow('newdeges', newedges)
+        color = np.random.randint(0,255,(3)).tolist()  #
+        #cv2.drawContours(frame,[cnt], 0, color, 2)  
+        #cv2.drawContours(ctrs_bckgrd, [cnt], 0, color, 2)
+        cv2.imshow('output', ctrs_bckgrd)
 
     # Our operations on the frame come here
     # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
