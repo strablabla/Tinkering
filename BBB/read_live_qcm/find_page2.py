@@ -65,6 +65,7 @@ def perspective(ii, dst):
     im_th3 = cv2.resize(im_th3,(700,800),interpolation = cv2.INTER_AREA)
 
 def save_im(ii):
+    print("save the image !!!!!")
     im_th1, im_th2 = ii.im_th1, ii.im_th2
     cv2.imshow("Final Image 1",im_th1)
     cv2.imshow("Final Image 2",im_th2)
@@ -96,10 +97,10 @@ def find_frame(ii):
         # xmin, xmax, ymin, ymax = x, x+w, y, y+h
         # pts_frame = [xmin, xmax, ymin, ymax]
         try:
-	    tl,tr,br,bl = order_pts_frame(screenCnt)
-	    dst = new_dim(tl,tr,br,bl,ii)
-	    perspective(ii, dst)
-	    save_im(ii)
+            tl,tr,br,bl = order_pts_frame(screenCnt)
+            dst = new_dim(tl,tr,br,bl,ii)
+            perspective(ii, dst)
+            save_im(ii)
         except:
             pass
         #return dst
@@ -148,13 +149,13 @@ while(True):
         ii.cnt, ii.perim, ii.bckgrd = cnt, perim, bckgrd
         if  perim > 800:  
             find_frame(ii)
-    	# if perim < 200: 
+        # if perim < 200: 
      #        find_inside_frame(ii)
             #cv2.imshow('newdeges', newedges)
-	    color = np.random.randint(0,255,(3)).tolist()  #
-	    #cv2.drawContours(frame,[cnt], 0, color, 2)  
-	    #cv2.drawContours(ctrs_bckgrd, [cnt], 0, color, 2)
-	    cv2.imshow('output', bckgrd)
+        color = np.random.randint(0,255,(3)).tolist()  #
+        #cv2.drawContours(frame,[cnt], 0, color, 2)  
+        #cv2.drawContours(ctrs_bckgrd, [cnt], 0, color, 2)
+        cv2.imshow('output', bckgrd)
 
     # Our operations on the frame come here
     # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
