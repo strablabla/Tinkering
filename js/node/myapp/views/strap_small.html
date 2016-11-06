@@ -37,7 +37,7 @@
 
 <xmp theme="simplex" style="display:none;">
 
-§menu toto:#janv%202016_oo    bobo:trash
+§menu toto:#janv%202016_oo    text:text
 §noiframe
 §width_video 10%
 §width_pdf 10%
@@ -115,6 +115,8 @@ aeapeae
 
 # Plot
 
+## there is in fact no plot at all..
+
 ## Blagues
 * Blagues de Physicien ::
     * ```
@@ -144,7 +146,27 @@ aeapeae
 <script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
 
 
-<script> maketoc() </script>
+<script> maketoc()</script>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+   var socket = io.connect();//'http://localhost:3000'
+
+   socket.on('connection', function() {
+       socket.emit('join', 'This is a message from client' );
+      });
+
+var aref = $('a[href="text"]');
+
+aref.click(function(){
+  //var h =  $(document).height() - $(window).height()
+  var top = $(window).scrollTop()
+  var ratio = top  // /h
+  socket.emit('scroll', ratio );
+ })// end click
+
+ </script>
 
 
 </html>

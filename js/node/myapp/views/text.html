@@ -47,6 +47,11 @@
 
 </div>
 
+<div class="col-sm-10">
+   <a type="button" class="btn btn-default" href='/' >go to strap</a>
+ </div>
+
+
  <script src="/socket.io/socket.io.js"></script>
 
  <script>
@@ -63,6 +68,14 @@
     $('#submit').click(function(){ // submit new text..
       socket.emit('return', $('#comment').val());
     }) // end click
+
+    socket.on('scroll', function(ratio) {  // retrieve text in textarea..
+        alert(ratio)
+        var h = $('#comment').height()
+        var scrollpos = parseInt(ratio) + 700 // h*parseFloat(ratio)
+        alert(scrollpos)
+        $('#comment').scrollTop(scrollpos)
+      })
 
 </script>
 
