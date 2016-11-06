@@ -46,11 +46,23 @@ io.sockets.on('connection', function (socket) {
           return console.log(err);
         }
         io.sockets.emit('message', data); // send the text to the client side.
-    });
-}); // sockets.on connection
+    }); // end fs.readFile
 
-io.sockets.on('join', function() {
-    console.log('client sent a message... ');
-  }); // end socket.on join
+    socket.on('join', function(data) {
+        console.log('client sent a message... ' + data);
+      }); // end socket.on join
+
+
+    socket.on('return', function(data) {
+        console.log('Retrieving the whole text modified... ' + data);
+        fs.writeFile("views/strap_small_diff.html", data, function(err) {
+          if(err) {
+              return console.log(err);
+          }
+          console.log("The file was saved!");
+        });
+      }); // end socket.on return
+
+}); // sockets.on connection
 
 server.listen(3000);
