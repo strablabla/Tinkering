@@ -37,20 +37,20 @@
 
  <div class="form-group">
   <label for="comment">Comment:</label>
-  <textarea class="form-control" rows="5" id="comment"></textarea>
+  <textarea class="form-control" rows="50" id="comment">aaaa</textarea>
 </div>
 
  <script src="/socket.io/socket.io.js"></script>
 
- <script>  
-    var socket = io.connect('http://localhost:3000');
-    // socket.on('connect', function(data) {
-
-    //     socket.emit('join', 'Hello World from client');
-    // });
+ <script>
+    var socket = io.connect();//'http://localhost:3000'
+    socket.on('connect', function(data) {
+        socket.emit('join', 'Hello World from client');
+    });
 
     socket.on('message', function(message) {
         alert('The server has a message for you: ' + message);
+        $('#comment').val(message)
         socket.emit('join', 'Hello World from client');
     })
 
