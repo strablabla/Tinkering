@@ -28,6 +28,8 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
+
+
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
 </script>
@@ -51,8 +53,8 @@
         top: 70px;
         /*left: 1110px;*/
         left: 620px;
-        max-height:1200px;
-        max-width:820px;
+        max-height:600px;
+        max-width:420px;
         background-color: #ffd1b3 ; /*#ddcccc;*/ #ffe6e6 #ffd1b3
         font-size:85%;
         overflow: scroll;
@@ -60,6 +62,7 @@
         z-index: 15;
         opacity: 0.9;
         }
+
 
 </style>
 
@@ -87,11 +90,10 @@
  <script>
 
  //var path = require("path");
- var dicframe = {"width": "700px", "height": "400px"}
- var iframe = $('<iframe/>').attr('src', 'strap_small.html').css(dicframe)
- $('#strap').append(iframe).draggable().css(dicframe)
 
-
+    var iframe = $('<iframe/>').attr('src', '/home/lio/Desktop/git/Tinkering/js/node/myapp/views/strap_small.html')
+    // alert(path.join(__dirname + '/views/strap_small.html'))
+    $('#strap').append(iframe)
     var socket = io.connect();  //'http://localhost:3000'
     socket.on('connection', function() {
         socket.emit('join', 'This is a message from client' );
@@ -112,10 +114,6 @@
         // alert(scrollpos)
         $('#comment').scrollTop(scrollpos)
       })
-
-      // $( document ).ready(function() {
-
-     // });
 
 </script>
 
