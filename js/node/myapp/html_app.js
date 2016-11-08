@@ -6,34 +6,13 @@ var app = express()
 var server = require('http').createServer(app);
 
 app.get('/',function(req,res){
-      res.sendFile(path.join(__dirname+'/views/strap_small.html'));
+      res.sendFile(path.join(__dirname + '/views/strap_small.html'));
   });
 
 app.get('/text',function(req,res){
-      res.sendFile(path.join(__dirname+'/views/text.html'));
+      res.sendFile(path.join(__dirname + '/views/text.html'));
   });
 
-var w = false
-var r = false
-
-if (w == true){
-    fs.writeFile("bingo.txt", "Hey there!", function(err) {
-	    if(err) {
-	        return console.log(err);
-	    }
-	    console.log("The file was saved!");
-    });
-}
-
-if (r == true){
-	//fs.readFile('bingo.txt', 'utf8', function (err,data) {
-	fs.readFile('views/strap_small.html', 'utf8', function (err,data) {
-		  if (err) {
-		    return console.log(err);
-		  }
-		  console.log(data);
-	});
-}
 
 // Loading socket.io
 var io = require('socket.io')(server);
@@ -49,7 +28,10 @@ io.sockets.on('connection', function (socket) {
         }
         io.sockets.emit('message', data); // send the text to the client side.
 
-        var save_current_version = function(data){
+    var save_current_version = function(data){
+          /*
+          Save the current strap_small.html
+          */
           var date = new Date()
           var minute = date.getMinutes();
           var hour = date.getHours();
@@ -57,7 +39,7 @@ io.sockets.on('connection', function (socket) {
           var month = date.getMonth();
           var year = date.getFullYear();
           var txt_date = [year, month, day, hour, minute].join('_')
-          fs.writeFile("views/saved/strap_small" + '_old_' + txt_date + ".html", data, function(err) {
+          fs.writeFile("views/saved/strap_small_old_" + txt_date + ".html", data, function(err) {
             if(err) {
                 return console.log(err);
             }
@@ -71,19 +53,18 @@ io.sockets.on('connection', function (socket) {
             }
             console.log("ratio from readFile is : " + ratio);
             io.sockets.emit('scroll', ratio); // send the text to the client side.
-        });
+        });  // end fs.readFile
 
         setInterval(function(data) { // Save the current strap version.
                 // Do something every 1 minute (60000 s)
                 save_current_version(data)
-          }, 60000);
+          }, 60000); // end set Interval
 
-    }); // end fs.readFile
+        }); // end fs.readFile views/strap_small.html
 
     socket.on('join', function(data) {
         console.log('client sent a message... ' + data);
       }); // end socket.on join
-
 
     socket.on('return', function(data) {
         console.log('Retrieving the whole text modified... ' + data);
@@ -95,8 +76,7 @@ io.sockets.on('connection', function (socket) {
         });
       }); // end socket.on return
 
-
-      socket.on('scroll', function(ratio) {
+    socket.on('scroll', function(ratio) {    // save the scroll position
           console.log('ratio is ... ' + ratio);
           fs.writeFile("views/scroll.json", ratio, function(err) {
             if(err) {
