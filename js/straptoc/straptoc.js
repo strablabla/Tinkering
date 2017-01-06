@@ -192,13 +192,13 @@ var maketoc = function(){
     var reg_col_h1 = reg_func('col_h1') 
     var reg_col_h2 = reg_func('col_h2')
     var reg_col_h3 = reg_func('col_h3')
-    var reg_col_sublist0 = reg_func('col_sublist0') 
-    var reg_col_sublist1 = reg_func('col_sublist1')
-    var reg_col_sublist2 = reg_func('col_sublist2')
-    var reg_mathsize = reg_func('mathsize')
-    var reg_col_toc = reg_func('col_toc')
-    var reg_notoc = reg_func('notoc')
-    var reg_width_video = reg_func('width_video') 
+    var reg_col_sublist0 = reg_func('col_sublist0')   // color sublist 0 
+    var reg_col_sublist1 = reg_func('col_sublist1')   // color sublist 1 
+    var reg_col_sublist2 = reg_func('col_sublist2')   // color sublist 2 
+    var reg_mathsize = reg_func('mathsize')           // size MathJax
+    var reg_col_toc = reg_func('col_toc')             // color of the TOC
+    var reg_notoc = reg_func('notoc')                 // remove the TOC
+    var reg_width_video = reg_func('width_video')     // videos's width
     var reg_width_pdf = reg_func('width_pdf') 
     var reg_width_content = reg_func('width_content')
     var reg_height_content = reg_func('height_content')
@@ -296,7 +296,7 @@ var maketoc = function(){
 
  //===================================================================== Context menu
 
-   /*
+  /*
    Associating a context menu to whatever component on the page. 
   */
  
