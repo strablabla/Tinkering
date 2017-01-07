@@ -4,27 +4,27 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/d262e9d/js/straptoc/straptoc.js 
+//https://github.com/strablabla/Tinkering/d262e9d/js/straptoc/straptoc.js
 //https://github.com/strablabla/Tinkering/d262e9d/js/straptoc/straptoc.css
 
 
 var maketoc = function(){
-    
-    
+
+
     /*
     Straptoc.js is a code for enhancing markdown capabilities. Straptoc.js modify the code produced by Strapdown.js. It adds many features such as possibility to insert videos (local, youtube), make Carousels, Portfolios.
     It simplifies also the markdown syntax in some cases. The whole code uses extensively jQuery library.
     */
-    
+
 
     // var scriptsToLoad = 0;
-    
-    
+
+
     // ["https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js",
     // "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js",
     // "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.1.1/jquery.contextMenu.js",
-    // "https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js", 
-    // "https://cdn.rawgit.com/alertifyjs/alertify.js/v1.0.6/dist/js/alertify.js", 
+    // "https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js",
+    // "https://cdn.rawgit.com/alertifyjs/alertify.js/v1.0.6/dist/js/alertify.js",
     // "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
     // // "https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.11/js/min/perfect-scrollbar.min.js"
     // ].forEach(
@@ -39,13 +39,13 @@ var maketoc = function(){
     //         };
     //    }
     // ) // end for Each
-    // 
+    //
     // var cssToLoad = 0;
-    // [// 'https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.11/css/perfect-scrollbar.css', 
-    //          "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.1.1/jquery.contextMenu.css", 
-    //          'https://fonts.googleapis.com/css?family=Enriqueta', 
-    //          'https://fonts.googleapis.com/css?family=Londrina+Solid', 
-    //          'https://fonts.googleapis.com/css?family=Pathway+Gothic+One', 
+    // [// 'https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.11/css/perfect-scrollbar.css',
+    //          "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.1.1/jquery.contextMenu.css",
+    //          'https://fonts.googleapis.com/css?family=Enriqueta',
+    //          'https://fonts.googleapis.com/css?family=Londrina+Solid',
+    //          'https://fonts.googleapis.com/css?family=Pathway+Gothic+One',
     //          "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css",
     //          "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
     //       ].forEach(function(href) {
@@ -62,17 +62,17 @@ var maketoc = function(){
     //          }
     //      ) // end for each
 
- 
+
     // var timer = setInterval(function() {
     //     //alert("scriptsToLoad "+ scriptsToLoad)
     //     if(scriptsToLoad == 0 & cssToLoad ==0) {
     //         clearInterval(timer);
 
     var help = function(){/*
-    
-    # Extended markdown: 
+
+    # Extended markdown:
     * :: , makes folding list (close by default)
-    * --link-- , creates a tag with id "link" 
+    * --link-- , creates a tag with id "link"
     * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
     * [pdf §§](hyperlink) insert a pdf with object tag.
     * [blabla ,,](hyperlink) insert whatever iframe
@@ -87,32 +87,32 @@ var maketoc = function(){
     * Size image, enter the size after the name eg: blabla 500x500(address)
     * @color to change color, for the moment works onl for lists.
     * [blabla %caption%](address) insert the caption under the image
-    * %%% for deleting symbolically a line, replacing  the tilde. 
-    * $carr and list of images in markdown language  after for making a carrousel with pictures. 
-    * $portf and list of images in markdown language  after for making a portfolio with pictures. 
+    * %%% for deleting symbolically a line, replacing  the tilde.
+    * $carr and list of images in markdown language  after for making a carrousel with pictures.
+    * $portf and list of images in markdown language  after for making a portfolio with pictures.
     * noiframes, at the beginning of the document to avoid loading of iframes.
-    * +++ rootpath for registering root path for \$carr or \$portf when muliple path with same root. 
+    * +++ rootpath for registering root path for \$carr or \$portf when muliple path with same root.
         *  eg for frames :
             * blabla
                 +++ root
                 [title iframe ,,](whatever.html)
         * Becareful
-            * no space after blabla 
+            * no space after blabla
             * +++ and [title .. on same column
     * ``` before code for show code.. no need to bracket the code.
     * §menu toto:hash bobo:trash, add items bobo and toto to navbar with links hash and trash
     * $input b blabla : makes a button blabla
-    * $input i ohoh : makes a input for entering text with placeholder ohoh. 
+    * $input i ohoh : makes a input for entering text with placeholder ohoh.
     * $* : line separation
     * §mathsize : set the size of the equations. Possible values : tiny, small, normalsize, large, Large, LARGE, huge, Huge
-    * $menu : 
+    * $menu :
         * eg : before H1 place $menu_zax link:nm_Edit:ic_edit:href_Introduction
     * $------- : permit to insert comment lines in the edition window
     * $u: utf8 string :, This replace the string between : by the utf8 translation.
     */}.toString().slice(14,-3)
-    
+
     var keys = function(){/*
-    # Keys: 
+    # Keys:
     * Esc + c : toggle carousels
     * Esc + d : toggle draggable
     * Esc + k : show keys
@@ -125,7 +125,7 @@ var maketoc = function(){
     * Plot :
         * shift + n : toggle plot tools
     */}.toString().slice(14,-3)
-    
+
     var toc_params = function(){/*
     # Doc parameters:
     * §menu toto:  inserting links in the navbar
@@ -148,18 +148,18 @@ var maketoc = function(){
     basename = function(path) {  return path.replace( /.*\//, "" ); }
     dirname = function(path) { return path.match( /.*\// ); }
 
-//===================================================================== Simple markdown 
+//===================================================================== Simple markdown
 
     /*
-    Simple markdown used for providing informations to the user. 
+    Simple markdown used for providing informations to the user.
     It handles classical markdown list syntax.
     */
-    
+
     simple_md = function(text){ // mini markdown for the help
         var all_text = text.split('\n')
         var htm = $('<div/>')
         var ul = $('<ul/>').css({'text-align':'left'})
-        for (i in all_text){  
+        for (i in all_text){
             var text_insert = all_text[i].trim().slice(1) // prepare text
             if (all_text[i].match(/^\s{4}\*/)){    // detect list first level
                 ul.append($('<li/>').text(text_insert))
@@ -189,23 +189,23 @@ var maketoc = function(){
     reg_func = function(name){return RegExp('^\\§'+name+'\\s*','g') } // function for regexp for configuration
     var reg_date = /\d{1,2}\/\d{1,2}\/\d{2}/; //find dates whatever is its position with regexp
     var reg_id = /--\w*--/; //regexp for identity
-    var reg_col_h1 = reg_func('col_h1') 
+    var reg_col_h1 = reg_func('col_h1')
     var reg_col_h2 = reg_func('col_h2')
     var reg_col_h3 = reg_func('col_h3')
-    var reg_col_sublist0 = reg_func('col_sublist0') 
+    var reg_col_sublist0 = reg_func('col_sublist0')
     var reg_col_sublist1 = reg_func('col_sublist1')
     var reg_col_sublist2 = reg_func('col_sublist2')
     var reg_mathsize = reg_func('mathsize')
     var reg_col_toc = reg_func('col_toc')
     var reg_notoc = reg_func('notoc')
-    var reg_width_video = reg_func('width_video') 
-    var reg_width_pdf = reg_func('width_pdf') 
+    var reg_width_video = reg_func('width_video')
+    var reg_width_pdf = reg_func('width_pdf')
     var reg_width_content = reg_func('width_content')
     var reg_height_content = reg_func('height_content')
     var reg_centered_content = reg_func('centered_content')
     var reg_width_iframe = reg_func('width_iframe')
-    var reg_height_iframe = reg_func('height_iframe') 
-    var reg_toggle_hide = reg_func('toggle_hide') 
+    var reg_height_iframe = reg_func('height_iframe')
+    var reg_toggle_hide = reg_func('toggle_hide')
     var reg_menu = reg_func('menu')
     var reg_help = reg_func('help')
     var reg_params = reg_func('params')
@@ -221,9 +221,9 @@ var maketoc = function(){
     var prefcarr = 'carousel0' // default first name for carousel
     var statekey = -1; // state for keyboard interactions
     var list_wind_open = [] // list of open windows
-    
+
 //===================================================================== Dictionary for parameters
-    
+
     /*
     Parameters for configuring the document
     */
@@ -252,9 +252,9 @@ var maketoc = function(){
          }
 
  //===================================================================== Go to top
-    
+
     /*
-    When near the bottom of the page, permits to go upward. 
+    When near the bottom of the page, permits to go upward.
     */
 
     $('body').prepend($('<div/>').attr('id','top'))
@@ -262,9 +262,9 @@ var maketoc = function(){
              .append($('<span/>').addClass("glyphicon glyphicon-chevron-up").attr('id','gotop')))
 
  //===================================================================== Go to bottom
- 
+
     /*
-    When near the top of the page, permits to go downward. 
+    When near the top of the page, permits to go downward.
     */
 
     $('body').prepend($('<div/>').attr('id','bottom'))
@@ -274,18 +274,18 @@ var maketoc = function(){
 //===================================================================== Carousels
 
     /*
-    Show all the Carousels implemented in the page. 
+    Show all the Carousels implemented in the page.
     */
-    
-    $('body').prepend($('<div/>').addClass('carr').attr('id',"carr")) 
+
+    $('body').prepend($('<div/>').addClass('carr').attr('id',"carr"))
     $('#carr').append($('<h1/>').text('Carousels')).toggle()
     $('#carr').draggable()
-    
+
  //===================================================================== Remove separating marks from edition
-    
+
   /*
    Separation for comments
-   syntax : $------------- comments here. 
+   syntax : $------------- comments here.
   */
 
     $("p").each(function(){
@@ -297,9 +297,9 @@ var maketoc = function(){
  //===================================================================== Context menu
 
    /*
-   Associating a context menu to whatever component on the page. 
+   Associating a context menu to whatever component on the page.
   */
- 
+
    $('body').attr('contextmenu',"share")
    $("p").each(function(){
        var txt = $(this).text().match(/^\$menu.*/)
@@ -307,7 +307,7 @@ var maketoc = function(){
            var args = txt[0].trim().split(/\s+/)
            var select = args[0].split('_')[1]
            var dic_args = {}
-           for (i in args){ 
+           for (i in args){
                if (i>0){
                var comm = args[i]
                   var sepcomm = comm.split(/\:/)
@@ -341,29 +341,29 @@ var maketoc = function(){
            });
            $('.context-menu-one').on('click', function(e){
                console.log('clicked', this);
-           })    
+           })
        });
     }) // end each
 
  //===================================================================== Zoom thumbnail and image
- 
+
     /*
     Zooming in image in Portfolio
     */
-    
+
     $('body').prepend($('<div/>').attr('id',"id_view_image_body"))
            .prepend($('<div/>').attr('id',"id_view_image"))
 
  //===================================================================== separating line
 
     /*
-    Simple line separation on the page. 
+    Simple line separation on the page.
     syntax : $*
     */
 
     $("p").each(function(){
       txt = $(this).text()
-      if (txt.match(/^\$\*/)) { 
+      if (txt.match(/^\$\*/)) {
             $(this).replaceWith($('<hr/>'))
           }   // end if txt.mtch
       })   // end each p
@@ -371,61 +371,61 @@ var maketoc = function(){
  //===================================================================== Simple bash code
 
     /*
-    Simplifying the syntax by replacing the use of the triple back quotes 2 times by using them only one time. 
+    Simplifying the syntax by replacing the use of the triple back quotes 2 times by using them only one time.
     syntax : * ```
-                text to be quoted.. 
+                text to be quoted..
     */
 
     $("p, li").each(function(){
     htm = $(this).html().split('\n')[0]
-    if (htm.match(/\`\`\`/)) { 
+    if (htm.match(/\`\`\`/)) {
         ht = $(this).html()
         var newtxt = ht.replace('```',' ').replace('<br>','\n').trim()
         var pre = $('<pre/>').append(
             $('<code/>').addClass("prettyprint lang- prettyprinted").attr('style', "")
                 .append($('<span/>').addClass("pln").text(newtxt))
                 ) // end append
-           $(this).text('').append(pre) 
+           $(this).text('').append(pre)
         }   // end if txt.mtch
     })   // end each p, li
 
  //===================================================================== register root path for $portf or $carr
- 
+
   /*
-   Register a shared path (root path) for group of images, pdfs, href etc.. 
+   Register a shared path (root path) for group of images, pdfs, href etc..
    syntax : +++ rootpath
   */
 
   $("p, li").each(function(){
     var htm = $(this).html()
     var txt = htm.split('\n')[1] || ' '
-    if (txt.match(/\+\+\+\.*/)) { 
+    if (txt.match(/\+\+\+\.*/)) {
         var addroot = txt.split('+++')[1].trim()+'/'
         $(this).find('*').each(function(){
-          
+
              //==============================   case of img
-             
-            if ($(this).parent().find('img')){    
+
+            if ($(this).parent().find('img')){
                   $(this).attr('src', addroot+$(this).attr('src')) // add root path to img
                 }
-                
+
              //==============================   case of pdfs
-             
-            if ($(this).text().match(/§§/)){   
+
+            if ($(this).text().match(/§§/)){
                 $(this).attr('href', addroot+$(this).attr('href')) // add root path to pdf
                }
             //==============================   case of local videos
-            
-            if (htm.match(/%%/)){   
+
+            if (htm.match(/%%/)){
                 $(this).attr('href', addroot+$(this).attr('href')) // add root path to vid
               }
             //==============================   case of local html
 
-            if (htm.match(/,,/)){   
+            if (htm.match(/,,/)){
                 //alert($(this).html())
                 $(this).attr('href', addroot+$(this).attr('href')) // add root path to html
                }
-            //==============================   
+            //==============================
             }) // end each
         } // end if txt.mtch
     }) // end each p, li
@@ -433,7 +433,7 @@ var maketoc = function(){
 //===================================================================== list of pdfs
 
     /*
-    Takes all the pdf addresses after $pdf and insert in list. 
+    Takes all the pdf addresses after $pdf and insert in list.
     */
 
     $("p, li").each(function(){
@@ -441,15 +441,15 @@ var maketoc = function(){
            var ulpdf = $('<ul/>')
            $(this).children('a').each(function(){
                 ulpdf.append($('<li/>').append($(this)))
-             }) // end each 
-           $(this).replaceWith(ulpdf) // replace whole p or li 
+             }) // end each
+           $(this).replaceWith(ulpdf) // replace whole p or li
         }   // end if regexp
     })   // end each p, li
 
 //===================================================================== list of iframes
 
     /*
-    Takes all the iframes addresses after $htm and insert in list. 
+    Takes all the iframes addresses after $htm and insert in list.
     */
 
     $("p, li").each(function(){
@@ -458,15 +458,15 @@ var maketoc = function(){
            $(this).children('a').each(function(){
                 //alert($(this).html())
                 ulhtm.append($('<li/>').append($(this)))
-             }) // end each 
-           $(this).replaceWith(ulhtm) // replace whole p or li 
+             }) // end each
+           $(this).replaceWith(ulhtm) // replace whole p or li
         }   // end if regexp
     })   // end each p, li
 
 //===================================================================== list of local videos
-    
+
     /*
-    Takes all the addresses after $vid and insert in list. 
+    Takes all the addresses after $vid and insert in list.
     */
 
     $("p, li").each(function(){
@@ -474,16 +474,16 @@ var maketoc = function(){
            var ulvid = $('<ul/>')
            $(this).children('a').each(function(){
                 ulvid.append($('<li/>').append($(this)))
-             }) // end each 
-           $(this).replaceWith(ulvid) // replace whole p or li 
+             }) // end each
+           $(this).replaceWith(ulvid) // replace whole p or li
         }   // end if regexp
     })   // end each p, li
 
 
  //===================================================================== Portfolio
- 
+
     /*
-    Takes all the addresses after $portf and insert in list. 
+    Takes all the addresses after $portf and insert in list.
     */
 
    $("p, li").each(function(){
@@ -500,20 +500,20 @@ var maketoc = function(){
                         ) // end append thumbnail
         divportf.append(divportfinner)
         }) // end each img
-        $(this).replaceWith(divportf) // replace whole p or li with portfolio. 
+        $(this).replaceWith(divportf) // replace whole p or li with portfolio.
      }   // end if regexp
  })   // end each p
 
 //===================================================================== Carousel
 
     /*
-    Takes all the addresses after $carr and insert in list. 
+    Takes all the addresses after $carr and insert in list.
     */
 
     $("p, li").each(function(){
-    
-        if ($(this).text().match(/^\$carr/)) { 
-        
+
+        if ($(this).text().match(/^\$carr/)) {
+
             var newcarr = function(){
                 var num = parseInt(prefcarr.split('carousel')[1])+1
                 var incremcarr = 'carousel' + num ;
@@ -525,7 +525,7 @@ var maketoc = function(){
             if (namecarr=='default'){
                   namecarr=newcarr()
               }
-            
+
                 var makecarr = function(s, namecarr){
                     var divcarr = $('<div/>').addClass("carousel slide")
                                               .attr('id',namecarr)
@@ -551,9 +551,9 @@ var maketoc = function(){
                             if (i == 0){divitem.addClass("active")}
                             divcarrinner.append(divitem) // end append
                             }) // end each
-                                  
+
                       //======================= iframe items
-                      
+
                       s.children('a').each(function(i){
                           //alert($(this).attr('href'))
                           var divitem = $('<div/>').addClass("item")
@@ -573,7 +573,7 @@ var maketoc = function(){
 
             $(this).replaceWith(divcarr)
             $('#carr').append(divcarrbis) // gathering all the carousels
-       
+
         } // end if regexp
     }) // end each p
 
@@ -583,11 +583,11 @@ var maketoc = function(){
     Corrects when there is no line feeding so as to split correctly the arguments.
     */
 
-    $("p").each(function(){   // correction if there is no line feeding after each parameter. 
-        if ($(this).text().match(/^§/)) {              
+    $("p").each(function(){   // correction if there is no line feeding after each parameter.
+        if ($(this).text().match(/^§/)) {
             var txtsplit = $(this).text().split(/§/).slice(1)
             for (i in txtsplit){
-                $('body').prepend($('<p/>').text('§'+txtsplit[i])) 
+                $('body').prepend($('<p/>').text('§'+txtsplit[i]))
                 $(this).hide()
             }   // end for
             $(this).remove() // remove the <p> block containign the parameters, only separated <p>
@@ -596,10 +596,10 @@ var maketoc = function(){
 
     //============================ Load the parameters
     /*
-       Load all the parameters defined ant the beginning of the straptoc document 
-    */  
+       Load all the parameters defined ant the beginning of the straptoc document
+    */
 
-    $("p").each(function() {          // Need to be placed before position in TOC.                       
+    $("p").each(function() {          // Need to be placed before position in TOC.
         for (elem in param){
             //alert($(this).text())
             if ($(this).text().match(param[elem]['reg']) ){     // finds loading parameters
@@ -610,39 +610,39 @@ var maketoc = function(){
                }// end if
         } // end for
     }); // end each
-    
+
 
     //===================================================================== Change color of titles
 
       /*
-        Changing color of H1, H2, H3.. 
-      */  
+        Changing color of H1, H2, H3..
+      */
 
-        if (param['color_h1']['var'] != false){  
+        if (param['color_h1']['var'] != false){
             $('h1').css({'color': param['color_h1']['var']})
             }
-        if (param['color_h2']['var'] != false){  
+        if (param['color_h2']['var'] != false){
             $('h2').css({'color': param['color_h2']['var']})
             }
-        if (param['color_h3']['var'] != false){  
+        if (param['color_h3']['var'] != false){
             $('h3').css({'color': param['color_h3']['var']})
             }
 
  //===================================================================== Change content width
 
    /*
-     Change the width of the page 
+     Change the width of the page
      Parameter : $width_content
-   */  
+   */
 
-   if (param['content_width']['var'] != false){  
+   if (param['content_width']['var'] != false){
       $('#content').css({'width': param['content_width']['var']})
       }
-    if (param['content_height']['var'] != false){  
+    if (param['content_height']['var'] != false){
       $('#content').css({'height': param['content_height']['var']})
       }
-    
-    if (param['content_centered']['var'] == 'true'){  
+
+    if (param['content_centered']['var'] == 'true'){
         // alert(param['content_centered']['var'])
       var midwidth = parseInt(param['content_width']['var'].slice(0,-2))/2
       midwidth  += 'px'
@@ -650,13 +650,13 @@ var maketoc = function(){
       }
 
  //===================================================================== Navbar menu
-   
+
    /*
    Insert element in the Navbar with hyperlinks
-   usage : $menu toto:hash 
-            toto is the name in the menu    
+   usage : $menu toto:hash
+            toto is the name in the menu
             hash is the hyperlink.
-   */   
+   */
 
     var lmenu = param['menu_list']['var'].split(/\s+/)
     var ul = $('<ul/>').addClass("nav navbar-nav")
@@ -666,20 +666,20 @@ var maketoc = function(){
         ul.append($('<li/>').append($('<a/>').text(name).attr('href',href)))
        } // end for
     $('.navbar-inner').children().append(ul)
-              
+
 //=====================================================================  Dates
 
     /*
-    eg : 12/7/1974 
+    eg : 12/7/1974
     the date is recognized and integrated in the TOC.
     */
-    
-    $("p").each(function() { 
+
+    $("p").each(function() {
       if ($(this).html().match(reg_date)){
-                $(this).replaceWith(function(){     // Replacing dates with p in date with h2 and 
+                $(this).replaceWith(function(){     // Replacing dates with p in date with h2 and
                     var h1prev = $(this).prev("h1").text()
                     var dateh2 = $('<h2/>').text($(this).text()).addClass('date')
-                    return dateh2; 
+                    return dateh2;
                    }) // end replaceWith
                } // end if
       }); // end each
@@ -687,7 +687,7 @@ var maketoc = function(){
 //=====================================================================   Position in TOC.
 
     /*
-    The current selected part of the document is indicated my a bigger police in the TOC. 
+    The current selected part of the document is indicated my a bigger police in the TOC.
     */
 
     var newhtml = ''
@@ -702,27 +702,27 @@ var maketoc = function(){
 //=====================================================================   line symbolic removal.
 
     /*
-    Instead of writing tildes, just write %%% at the end of the line. 
+    Instead of writing tildes, just write %%% at the end of the line.
     */
 
-    var regcbarree = /[A-Za-z0-9\.\'\s\u0080-\u00FF]*\%\%\%/g  // replace %%% by deleted text. 
-    var htm = $('#content').html()  
+    var regcbarree = /[A-Za-z0-9\.\'\s\u0080-\u00FF]*\%\%\%/g  // replace %%% by deleted text.
+    var htm = $('#content').html()
     var m = htm.replace(regcbarree,function(content){
         var barr = content.split('%%%')[0].trim()
         var barrcorr = '<del>'+barr+'</del>'
         return barrcorr
         }) // end replace
-    $('#content').html(m) 
+    $('#content').html(m)
 
 //===================================================================== mathjax
 
     /*
-    Mathjax made simply by adding $math at the beginning of the line. 
+    Mathjax made simply by adding $math at the beginning of the line.
     */
 
     $("p, li").each(function(){
     txt = $(this).text()
-    if (txt.match(/^\$math/)) { 
+    if (txt.match(/^\$math/)) {
           if (param['mathsize']['var'].length>0){ mathsize = '\\'+param['mathsize']['var']+' ' }
           $(this).replaceWith('$$'+ mathsize + txt.split('$math')[1]+'$$')
         }   // end if txt.mtch
@@ -731,10 +731,10 @@ var maketoc = function(){
 //=====================================================================  Tooltips
 
     /*
-    Tooltips are added by using curly brackets at the end of the line. 
+    Tooltips are added by using curly brackets at the end of the line.
     eg: # Title{This is a title}
     */
-    
+
     for (i=0; i<4; i++){     // Tooltips, iteration for nested list
         $("li, h1, h2, h3, h4").each(function(){     // Tooltips for h1, h2, h3, h4 and li
             var text = $(this).html().split('\n')[0]
@@ -748,13 +748,13 @@ var maketoc = function(){
         }
 
 //===================================================================== Input
-    
+
     /*
 
     Form button or input
 
     Add input
-        * button with $inp b value 
+        * button with $inp b value
         * input form with $inp i value id name action
 
     */
@@ -777,7 +777,7 @@ var maketoc = function(){
         var regcode = /^\$code\s*.*/
         txt = $(this).text()
         var txtm = txt.match(regform)
-        if (txtm){ 
+        if (txtm){
             var ll = txt.split('\n')
             //var form = $('<div/>')
             for (i in ll){
@@ -797,7 +797,7 @@ var maketoc = function(){
             		for (j=1; j<ls.length; j++){
                 			var el = ls[j]
                 			// alert('elem is '+ el)
-                			var att = dic_form[el[0]] 
+                			var att = dic_form[el[0]]
                 			//alert(el.slice(2))
                 			var val = el.slice(2)
                 			// alert('param is '+ att)
@@ -810,13 +810,13 @@ var maketoc = function(){
                 			}
             		   } // end for
             		form.append(inp)
-            	  } // end else if 
+            	  } // end else if
             	else if (l.match(regbut)){      // button case
             		var ls = l.split(/\s+/)
             		var but = $('<input/>')
             		for (j=1; j<ls.length; j++){
             			var el = ls[j]
-            			var att = dic_form[el[0]] 
+            			var att = dic_form[el[0]]
             			var val = ls[j].slice(2)
             			if (att == 'width'){
             				but.css({'width': val})
@@ -830,20 +830,20 @@ var maketoc = function(){
             			$('#'+action).submit()
             		  }) // end click
             		form.append(but)
-            	  } // end else if 
+            	  } // end else if
             	else if (l.match(/\=/)){         // line feed
             	  	form.append($('<br/>'))
-            	  } // end  else if = 
+            	  } // end  else if =
                 else if (l.match(regcode)){         // textarea
                     var ls = l.split(/\s+/)
                     dict_area = {}
                     for (j=1; j<ls.length; j++){
                         var el = ls[j]
-                        var att = dic_form[el[0]] 
+                        var att = dic_form[el[0]]
                         var val = ls[j].slice(2)
                         dict_area[att] = val
                     } // end for through args
-                    makearea(form, dict_area)   // 
+                    makearea(form, dict_area)   //
                   } // end else if
                } // end for loop on cases
               $(this).replaceWith(form)
@@ -855,28 +855,28 @@ var maketoc = function(){
 
     /*
     Table of Contents
-    It sums up the h1, h2 and h3 tags in a movable window with hyperlinks. 
+    It sums up the h1, h2 and h3 tags in a movable window with hyperlinks.
     */
 
     if(param['notoc']['var'] == false){
         $('body').prepend($('<div/>').addClass('onside').attr('id',"toc"))     // adds the Table of Contents at the beginning
     }
-    
+
     $('.onside').css({'background-color' : param['color_toc']['var']})    // modifying backgnd color for TOC
-    
+
     $('#toc').append($('<a/>').append($('<span/>').text("[--]").addClass('li_h1')));
     var ul1 = $("<ul/>"); // first levels with class
     $('#toc').append(ul1);
-    $('#toc').draggable() // make the toc draggable with jquery-ui widget draggable. 
+    $('#toc').draggable() // make the toc draggable with jquery-ui widget draggable.
     // read all the headers and make the TOC (with ref) and the id names
     var lnotoc = ['Carousels'] // list of excluded H1 (defined with inner HTML)
     for(var i = 0,  elems = $(":header"); i < elems.length; i++) {
         var nameh = elems[i].innerHTML.trim().split(reg_id)[0];
-        elems[i].id = nameh; // set the identity with inner html of the tag. 
-        
+        elems[i].id = nameh; // set the identity with inner html of the tag.
+
         //===================================================================== H1
-        
-        if($('[id="'+nameh+'"]').prop("tagName") == 'H1'){    // if H1    
+
+        if($('[id="'+nameh+'"]').prop("tagName") == 'H1'){    // if H1
             if (lnotoc.indexOf(nameh) == -1){
                 var nameh1 = nameh
                 var li1 = $("<li/>");
@@ -887,32 +887,32 @@ var maketoc = function(){
                 li1.append(ul2);
              }
         } // end if H1
-        
+
         //===================================================================== H2
-        
+
         else if($('[id="'+nameh+'"]').prop("tagName") == 'H2'){ // if H2
             elems[i].id = nameh1 +'_'+ nameh;                               // makes an id for H2
             var nameh2 = elems[i].id
             var namehhref = '#' + nameh2;
             var li2 = $("<li/>");
             ul2.append(li2);
-            var ul3 = $("<ul/>").addClass('lev2'); 
+            var ul3 = $("<ul/>").addClass('lev2');
             li2.append($('<a/>').attr('href', namehhref).html(nameh)
                                 .append($('<span/>').text(" [-]").addClass('li_h3'))) // end of li
                 .css({'list-style': 'square inside', 'line-height': '20px', 'color': param['color_sublist0']['var']}) // end append li2
-                //childr.css({'color': param['color_sublist']['var']}) 
+                //childr.css({'color': param['color_sublist']['var']})
             li2.append(ul3)
             } // end else if H2
-            
+
         //===================================================================== H3
-        
+
         else if($('[id="'+nameh+'"]').prop("tagName") == 'H3'){
             elems[i].id = nameh2 +'_'+ nameh;                               // makes an id for H3
             var nameh3 = elems[i].id
             var namehhref = '#'+nameh3;
             var li3 = $("<li/>");
             ul3.append(li3);
-            //var ul4 = $("<ul/>").addClass('lev3'); 
+            //var ul4 = $("<ul/>").addClass('lev3');
             li3.append($('<a/>').attr('href', namehhref).html(nameh).addClass(nameh)) // end of li
                 .css({'list-style': 'circle inside','line-height': '20px', 'color': param['color_sublist1']['var']}) // end append li3
             } // end else if H3
@@ -941,11 +941,11 @@ var maketoc = function(){
 //===================================================================== Folding videos
 
     /*
-    Implements the possibility to fold videos in a list. Behaviour by default. 
+    Implements the possibility to fold videos in a list. Behaviour by default.
     */
 
     $('a').each(function(){            // modifying videos for permitting folded list mechanism.
-            if ($(this).text().match(';;')){    
+            if ($(this).text().match(';;')){
                 var tlist = $(this).text().split(';;')[0] +' ::'
                 var underthis = $('<ul/>').append($('<li/>').append($(this).clone())) // put inside a list, inserted in ulvid
                 var ulvid = $('<li/>').append(tlist).append(underthis) // <li> with text then clone
@@ -957,7 +957,7 @@ var maketoc = function(){
 
     /*
     Implements the possibility to fold iframes in a list
-    It also registers root for multiple files with +++ mechanism. 
+    It also registers root for multiple files with +++ mechanism.
     */
 
     $("p, li").each(function(){
@@ -967,21 +967,21 @@ var maketoc = function(){
                     var txt = $(this).text().split(',,')[0]
                     var par = $(this).parent()
                     //================================== register root path for iframe
-                    if (par.html().match(/\+\+\+\.*/)) {  
-                        root = par.html().match(/\+\+\+.*/)[0].split(/\s/)[1] 
-                        oldhref = $(this).attr('href') 
+                    if (par.html().match(/\+\+\+\.*/)) {
+                        root = par.html().match(/\+\+\+.*/)[0].split(/\s/)[1]
+                        oldhref = $(this).attr('href')
                         $(this).attr('href', root + '/' + oldhref) // setting the new path with root
                         }
-                    var ifhref =  '<a href="'+ $(this).attr('href') + '">' + txt + '</a>' 
+                    var ifhref =  '<a href="'+ $(this).attr('href') + '">' + txt + '</a>'
                     var tlist = ifhref+ ' ::'
                     var underthis = $('<ul/>').append($('<li/>').append($(this).clone())) // put inside a list
                     var ulframe = $('<li/>').append(tlist).append(underthis).addClass('iframe')  // insert class iframe
-                    //==================================  root path 
-                    if (par.html().match(/\+\+\+\.*/)) { 
-                        var titleli = $('<li/>').append(tit ).append($('<ul/>').append(ulframe))                   
+                    //==================================  root path
+                    if (par.html().match(/\+\+\+\.*/)) {
+                        var titleli = $('<li/>').append(tit ).append($('<ul/>').append(ulframe))
                         childframe.push(ulframe) // keep in a list
                         }
-                    //====================================== no root path 
+                    //====================================== no root path
                     else{ par.replaceWith(ulframe)  // replace <a> parent with a <ul><li> containing <a>
                         }
                } // end if match ,,
@@ -989,44 +989,44 @@ var maketoc = function(){
             if (childframe.length> 0){
                 var ul = $('<ul/>')
                 for (i in childframe){
-                    ul.append(childframe[i]) // adding each iframe inside a list 
+                    ul.append(childframe[i]) // adding each iframe inside a list
                   }// end for
                 var tit = $(this).html().split(/\n/)[0] // Title of the parent
                 var newlistframe = $('<li/>').append(tit).append(ul)
                 $(this).replaceWith(newlistframe) // replace  parent with a list containing the iframes
             } // end if childframe.length> 0
      }) // end each p, li
-    
+
 //===================================================================== Folding lists, first step
 
     /*
-    Implements the possibility to fold lists. 
-    Go to sublevels.  
-    It is the first processing step. Insert :: etc.. 
+    Implements the possibility to fold lists.
+    Go to sublevels.
+    It is the first processing step. Insert :: etc..
     */
 
-    $("li").each(function(){    // need to be placed before  $("a").click    
+    $("li").each(function(){    // need to be placed before  $("a").click
         var htm = $(this).html();
         var childr = $(this).children('ul') // closing list when it finds :: in the code
-        if(htm.split('\n')[0].search('::')!=-1){ 
-                childr.toggle();                // close the sub lists 
+        if(htm.split('\n')[0].search('::')!=-1){
+                childr.toggle();                // close the sub lists
                 $('<a/>').append($('<span/>').text(" [-]").addClass('::'))
                          .insertBefore(childr)
-            } // end if 
+            } // end if
         }); // end each
 
 //===================================================================== Colors for sublists
 
-    $("li ul li").css({'color': param['color_sublist0']['var']}) 
-    $("li ul li ul li").css({'color': param['color_sublist1']['var']}) 
-    $("li ul li ul li ul li").css({'color': param['color_sublist2']['var']}) 
+    $("li ul li").css({'color': param['color_sublist0']['var']})
+    $("li ul li ul li").css({'color': param['color_sublist1']['var']})
+    $("li ul li ul li ul li").css({'color': param['color_sublist2']['var']})
 
 //=====================================================================  Folding lists, second step
 
     /*
-    Implements the possibility to fold lists. 
-    Go to sublevels.  
-    It is the second processing step. 
+    Implements the possibility to fold lists.
+    Go to sublevels.
+    It is the second processing step.
     */
 
     $("H1, H2, p, a, li").each(function(){       // insertion of <p> with id in tag <a>
@@ -1055,10 +1055,10 @@ var maketoc = function(){
     $('ul.lev2').toggle();                          //  close level 2 in TOC
 
 //===================================================================== key actions
-    
+
     /*
     Implemented keys actions
-    
+
     Esc + s : show the syntax
     Esc + k : show the shortcut keys
     Esc + d : toggle draggable attribute.
@@ -1067,19 +1067,19 @@ var maketoc = function(){
     Esc + t : toggle window with all list refering to the todo theme
     Esc + w : toggle all the windows
     Esc + p : toggle charts
-    Plot : 
+    Plot :
         * shift + n : toggle tools
-    
+
     */
 
     $(document).keydown(function(event){
 
         var list_wind = ['syntax', 'keys', 'carr', 'todotheme'] // list of windows
-        
+
         if (event.keyCode == "m".charCodeAt(0)-32 && statekey == 1){   // Toggle TOC
             $('#toc').toggle()
           } // end if key code
-        
+
           if (event.keyCode == "o".charCodeAt(0)-32 && statekey == 1){   // Toggle parameters information
               $('#params').toggle()
             } // end if key code
@@ -1087,20 +1087,20 @@ var maketoc = function(){
         if (event.keyCode == "s".charCodeAt(0)-32 && statekey == 1){   // Toggle syntax informations
             $('#syntax').toggle()
           } // end if key code
-        
+
         if (event.keyCode == "k".charCodeAt(0)-32 && statekey == 1){   // Toggle keys informations
             $('#keys').toggle()
             } // end if key code
-        
+
         if (event.keyCode == "c".charCodeAt(0)-32 && statekey == 1){   // Toggle carousels informations
           $('#carr').toggle()
           } // end if key code
-        
+
         if (event.keyCode == "r".charCodeAt(0)-32 && statekey == 1){   // Toggle resize
             for (i in list_wind ){
                   $('#'+list_wind[i]).css({ 'resize':'both', 'overflow' : 'scroll'})
               } // end for
-             $("div").each(function(){ 
+             $("div").each(function(){
                 if ($(this).hasClass('chart')
                     || $(this).attr('id') =='toc'){
                     $(this).resize()
@@ -1121,25 +1121,25 @@ var maketoc = function(){
                   } //end else
                 } // end for (i in list_wind )
             } // end if key code
-        
+
         if (event.keyCode == "t".charCodeAt(0)-32 && (statekey == 1 )){   // Toggle todotheme
-            $('#todotheme').toggle()  
+            $('#todotheme').toggle()
             if ($('#todotheme').is(':hidden')){ // todotheme is closed.
                 $('.theme').remove()
                 statekey = 1;
                 }
             else{
-              statekey = 'blocked' // prevent from opening windows when writing a theme. 
+              statekey = 'blocked' // prevent from opening windows when writing a theme.
               } // end else
             } // end if key code
-        
+
         if (event.keyCode == "p".charCodeAt(0)-32 && statekey == 1){   // Toggle charts
               $('.chart').toggle()
             } // end if key code
 
 
         // if(event.keyCode == "q".charCodeAt(0)-32){  // "q" key for showing sliders
-        //     $("a").each(function(){ 
+        //     $("a").each(function(){
         //           if ($(this).prop('id').match(/slider_\d*/)){
         //               $(this).toggle()
         //           } // end if
@@ -1147,7 +1147,7 @@ var maketoc = function(){
         //     } // end if key code
 
         if(event.keyCode == param['toggle_hide']['var'].charCodeAt(0)-32){  // hiding text key defined in the parameters
-            $("li").each(function(){ 
+            $("li").each(function(){
                 if ($(this).hasClass('^^')){
                     $(this).toggle()
                 } // end if
@@ -1155,7 +1155,7 @@ var maketoc = function(){
           }// end if key code
 
        if(event.keyCode == 'd'.charCodeAt(0)-32 && statekey == 1){  // toggle draggable
-            $("div").each(function(){ 
+            $("div").each(function(){
                 if ($(this).hasClass('ui-draggable')){
                   $(this).draggable('destroy')
                   } // end if
@@ -1171,7 +1171,7 @@ var maketoc = function(){
           }// end if key code
         })
 
-//===================================================================== 
+//=====================================================================
 
     var sel = ['§§'] // ';;',
     var debend = { ',,' : {'color':'#ff0066'},
@@ -1179,15 +1179,15 @@ var maketoc = function(){
                    '§§': {'deb' : '<object width='+'"' + param['pdf_width']['var'] + '"' + ' height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
 
 //=====================================================================   No video
-    
+
     /*
     Prevents the insertion of videos from the document parameters
     */
-    
+
     $("p, li").each(function(){
         var textp = $(this).text()
-         if (textp.match('§novideo')){ 
-             $(this).hide() 
+         if (textp.match('§novideo')){
+             $(this).hide()
              if (textp.trim() == '§novideo'){  // hides novideo
                 sel = ['§§'] // restricting the treatment to pdfs..
                 $("a").each(function(){ // removing ;;
@@ -1195,11 +1195,11 @@ var maketoc = function(){
                     if (texta.search(';;') != -1){
                         $(this).text(texta.replace(';;',''))
                                .css({'color': debend[';;']['color']}) // changes color for pdfs and videos
-                        } // end if == 
+                        } // end if ==
                     }) // end a.each
             } // end if match
          }// end if novideo
-    })  // end each 
+    })  // end each
 
 //===================================================================== No iframe
     /*
@@ -1209,51 +1209,51 @@ var maketoc = function(){
     $("p, li").each(function(){
         var textp = $(this).text()
          var regnoifr = '§noiframe'
-         if (textp.match(regnoifr)){ 
-             $(this).hide() 
+         if (textp.match(regnoifr)){
+             $(this).hide()
              if (textp.trim() == regnoifr){  // hides novideo
                 $("a").each(function(){ // removing ;;
                     var texta = $(this).text()
                     if (texta.search(',,') != -1){
                         $(this).text(texta.replace(',,',''))
                            .css({'color': debend[',,']['color']})
-                        } // end if == 
+                        } // end if ==
                     }) // end a.each
             } // end if match
          }// end if noiframe
-    })  // end each 
+    })  // end each
 
 //===================================================================== // taking href with blanks
 
-    $("p, li").each(function(){ 
+    $("p, li").each(function(){
          var textp = $(this).text()
          if (textp.match(reg_hyper)){    // search for format [blabla](addr blabla)
              var text1 = textp.match(reg_brack)[0].slice(1,-1)    // takes [blabla]
              var text2 = textp.match(reg_parent)[0].slice(1,-1)    // takes (addr blabla)
              var newtag = $('<a/>').text(text1).attr('href',text2)
              if ($(this).prop('tagName')== 'LI'){var newtag = $('<li/>').append(newtag)}    // correction of link to local file.
-             if ($(this).prop('tagName')== 'P'){var newtag = $('<p/>').append(newtag)}   // correction to avoid gluing lines.. 
+             if ($(this).prop('tagName')== 'P'){var newtag = $('<p/>').append(newtag)}   // correction to avoid gluing lines..
              $(this).replaceWith(newtag) // Replace the original tag
             }// end if
-       })  // end each 
-       
+       })  // end each
+
     var maketag = function(self, deb, end, select){ // makes the tags for pdfs and videos
         patt = {';;' : ["watch?v=", "embed/"], '§§' : ["none", "none"]}
         var tag = $("<ul/>").append($("<li/>")
                             .append(deb+self.attr('href')
-                            .replace(patt[select][0], patt[select][1])+end)) // make doc                                    
+                            .replace(patt[select][0], patt[select][1])+end)) // make doc
         var text = self.text().replace(select,'')
         $('<a/>').text(text).append($('<a/>').append($('<span/>').text( " [-]").addClass(select)))
                  .insertBefore(self).css({'color':debend[select]['color']})
         return tag
     }
-    
+
     $("a").each(function(){  // Deals with videos and pdfs
          for (i in sel){
              if($(this).text().search(sel[i]) != -1){
                    var obj = maketag($(this), debend[sel[i]]['deb'], debend[sel[i]]['end'], sel[i]) // makes the tag.
                    $(this).replaceWith(obj)
-                   obj.toggle() // hide 
+                   obj.toggle() // hide
                  } // end if
               }// end for
          }); // end each
@@ -1264,11 +1264,11 @@ var maketoc = function(){
     Toggle pdf and videos for closing the associated lists.
     */
 
-    $("a").click(function (evt) {  
-        var evtc = evt.target.className;              
-        if(evtc == ';;' | evtc == '§§') {      // toggle 
+    $("a").click(function (evt) {
+        var evtc = evt.target.className;
+        if(evtc == ';;' | evtc == '§§') {      // toggle
             $(this).parent().next().toggle(); // if click, activate next <ul>
-            } // end if event      
+            } // end if event
         });// end click
 
 //=====================================================================  Post it
@@ -1286,9 +1286,9 @@ var maketoc = function(){
         })
 
 //=====================================================================  Plot
-    
+
     /*
-    Insert a plot made with d3.js from given parameters. 
+    Insert a plot made with d3.js from given parameters.
     */
 
     $("p").each(function(){ // detect plot and apply plot function..
@@ -1336,13 +1336,13 @@ var maketoc = function(){
         if(evtc == 'li_h1' | evtc == 'li_h2' | evtc == 'li_h3' | evtc == '::')  // open close list on click
             $(this).next().toggle();
         });// end click
-        
-//=====================================================================  Change size img 
+
+//=====================================================================  Change size img
 
     /*
     Give the possibility to change size of images, [img widthxheight](href)
     */
-    
+
     $("img").each(function(){               // retrieve and change size images
             var reg_im = /\s*\d*x\d*\s*/
             if ($(this).attr('alt').match(reg_im)){
@@ -1352,16 +1352,16 @@ var maketoc = function(){
             }
         })
 
-//=====================================================================  Catption img 
-    
+//=====================================================================  Catption img
+
     /*
     Adding caption to image with %caption%
     */
-    
+
      $("img").each(function(){               // retrieve the caption and insert it under the image.
              var reg_caption = /\%.*\%/
-             if ($(this).attr('alt').match(reg_caption)){ 
-               
+             if ($(this).attr('alt').match(reg_caption)){
+
                var capt = $(this).attr('alt').match(reg_caption)[0].slice(1,-1);
                var captid = capt.replace(/\s+/g, '') + Math.floor((Math.random() * 1000) + 1);
                //alert(captid)
@@ -1370,14 +1370,14 @@ var maketoc = function(){
                $('#'+captid).append(caption)
              } // end if
          }) // end each
-        
-//=====================================================================  
+
+//=====================================================================
 
  $('a').each(function(){
 
         //=====================================================================   Youtube
 
-        if ($(this).text().match(';;')){      // replace the address with a div with 'youtube' class. 
+        if ($(this).text().match(';;')){      // replace the address with a div with 'youtube' class.
             var id = $(this).attr('href').split('v=')[1].trim()
             var newtag = $('<div/>').addClass('youtube')
                    .css({'width': '500px', 'height': '281px'})
@@ -1406,13 +1406,13 @@ var maketoc = function(){
             var keeplink = $('<a/>').text($(this).text().split('%%')[0])
                                     .attr('href',$(this).attr('href'))
             keeplink.insertBefore($(this))
-            $(this).replaceWith(div.append(vid)); 
+            $(this).replaceWith(div.append(vid));
         } // end if
  }) // end each
 
    //=====================================================================   Youtube
 
- $(".youtube").each(function() { // take the youtube class element and replace.. 
+ $(".youtube").each(function() { // take the youtube class element and replace..
      $(this).css('background-image', 'url(http://img.youtube.com/vi/' + this.id + '/hqdefault.jpg)');
      // Overlay the Play icon to make it look like a video player
      $(this).append($('<div/>', {'class': 'play'}));
@@ -1430,9 +1430,9 @@ var maketoc = function(){
 
 //===================================================================== Esc for permitting some keys.
 
-  $(document).keydown(function(event){   
+  $(document).keydown(function(event){
     /*
-    Close all the lists 
+    Close all the lists
     */
     if(event.keyCode == 27){ // Trigger statekeys with Escape
           if (statekey != 'blcoked'){
@@ -1450,11 +1450,11 @@ var maketoc = function(){
     keydown l close all the list in the whole document.
     */
 
-    if((event.keyCode == "l".charCodeAt(0)-32) && statekey == 1){  
+    if((event.keyCode == "l".charCodeAt(0)-32) && statekey == 1){
                 $('a > span').each(function(){
                   if ($(this).parent().next().css('display')=='block'){
                     if ($(this).parents('div').last().attr('id') != 'toc'){
-                      $(this).trigger('click') // close lists. 
+                      $(this).trigger('click') // close lists.
                     }
                   }
                 } // end function
@@ -1462,7 +1462,7 @@ var maketoc = function(){
            } // end if key code
      }) // end keydown
 
-//===================================================================== 
+//=====================================================================
 
      $("a").each(function(){                             // insert pdf from folder
          var txt = $(this).text()
@@ -1474,7 +1474,7 @@ var maketoc = function(){
             pdf_folder = $('<div/>')                    // make a div for inserting the pdfs
             pdf_folder.insertAfter($(this))             // insert the idv after the initial element.
             $.getJSON(jsoname, function(result){
-                for (i in result){                      // for each address in the json.. 
+                for (i in result){                      // for each address in the json..
                     alert(result[i])
                 var obj = $('<object/>').attr('data',result[i])
                                         .attr('type', "application/pdf")
@@ -1483,63 +1483,66 @@ var maketoc = function(){
                 pdf_folder.append(obj)                  // append the obj to the div.
                 } // end for
             }) // end get json
-         }// end if 
+         }// end if
      }) // end each
 
     $('#content').addClass('effect2')
     $('body').addClass('bodybgcol1')
 
      //===================================================================== utf8
-    
+
     /*
     insert utf8 hex codage in straptoc document.
     */
-    
+
     function decode_utf8(s) {
         return decodeURIComponent(s.replace(/\s+/g, '').replace(/[0-9a-f]{2}/g, '%$&'));
       }
-    
+
     $("p, li").each(function(){
       var txt = $(this).text()
       var regu = /\$u:.*:/
       utf = txt.split('\n')[0].match(regu)
       if (utf){
-        var u = utf[0].slice(3,-1) 
-        var txt_decoded = txt.replace(regu, decode_utf8(u)) 
-        $(this).text(txt_decoded) // 
+        var u = utf[0].slice(3,-1)
+        var txt_decoded = txt.replace(regu, decode_utf8(u))
+        $(this).text(txt_decoded) //
         //alert(txt_decoded)
       }   // end if regexp
     })   // end each p
-    
+
     //===================================================================== parameters
-    
+
     // Parameters for the document
 
-    $('body').prepend($('<div/>').addClass('params').attr('id',"params")) 
+    $('body').prepend($('<div/>').addClass('params').attr('id',"params"))
     $('#params').html(simple_md(toc_params)).toggle()
     $('#params').draggable()
 
     //===================================================================== syntax
-    
+
     // Syntax for producing a document
 
-    $('body').prepend($('<div/>').addClass('syntax').attr('id',"syntax")) 
+    $('body').prepend($('<div/>').addClass('syntax').attr('id',"syntax"))
     $('#syntax').html(simple_md(help)).toggle()
     $('#syntax').draggable()
 
     //===================================================================== keys
-    
-    // Keys shortcuts
-  
-    $('body').prepend($('<div/>').addClass('keys').attr('id',"keys")) 
-    $('#keys').html(simple_md(keys)).toggle()
+
+    /*
+     Keys shortcuts
+     div containing all the shortcuts
+    */
+
+    $('body').prepend($('<div/>').addClass('keys').attr('id',"keys"))
+    $('#keys').html(simple_md(keys))
     $('#keys').draggable()
-    
+
     //===================================================================== todotheme
-    
+
     // Themes in todo list
-  
-    $('body').prepend($('<div/>').addClass('todotheme').attr('id',"todotheme")) 
+
+    $('body').prepend($('<div/>').addClass('todotheme').attr('id',"todotheme"))
     $('#todotheme').toggle()
     $('#todotheme').draggable()
     var inptheme = $('<input/>').attr('type', 'input')
@@ -1559,7 +1562,7 @@ var maketoc = function(){
     $('#todotheme').append(inptheme) // btn btn-default
     $('#todotheme').append(buttheme)  // submit theme
     $('#todotheme').append(buttblock) // unblock theme
-    
+
     var showtheme = function(){
         var targ = $('#todo_input').val()
         // if ($('#todotheme').is(':hidden')){
@@ -1572,7 +1575,7 @@ var maketoc = function(){
                  $('#todotheme').append(newline.addClass('theme'))   // adding lists referencing to the theme
                } // end if
             }) // end each
-               $("a").click(function (evt) {                
+               $("a").click(function (evt) {
                var evtc = evt.target.className;
                if(evtc == '::')  // open close list on click
                    $(this).next().toggle();
@@ -1583,7 +1586,7 @@ var maketoc = function(){
 
     //===================================================================== esc
 
-    $('body').prepend($('<div/>').addClass('esc').attr('id',"esc")) 
+    $('body').prepend($('<div/>').addClass('esc').attr('id',"esc"))
     $('#esc').toggle()
 
      //    }  // end if all loads done
@@ -1591,7 +1594,7 @@ var maketoc = function(){
 
 
 
-}// end maketoc  
+}// end maketoc
 
 /*=====================================================================
  ========================== End of maketoc =============================
@@ -1599,11 +1602,11 @@ var maketoc = function(){
 
 registerKeyboardHandler = function(callback) {
   var callback = callback;
-  d3.select(window).on("keydown", callback);  
+  d3.select(window).on("keydown", callback);
 };
 
 var resizeplot = function(elemid, dataset, nodes_links, params){
-        new make_plot(elemid, dataset, nodes_links, params); 
+        new make_plot(elemid, dataset, nodes_links, params);
           $('.chart').resize(function(){
              $('#'+elemid).empty()
              new make_plot(elemid, dataset, nodes_links, params)
@@ -1630,15 +1633,15 @@ var plot = function(elemid, add_data, add_nodes_links, params){
 
 make_plot = function(elemid, dataset, nodes_links, params) {
   var self = this;
-  
+
   this.id = elemid        // identity for the plot
   this.dataset = dataset
   this.nodes_links = nodes_links
   this.chart = document.getElementById(elemid);
   $('#' + elemid).draggable()
   this.params = params || {};
-  this.xlim = this.params['xlim']  // xlim 
-  this.ylim = this.params['ylim']  // ylim 
+  this.xlim = this.params['xlim']  // xlim
+  this.ylim = this.params['ylim']  // ylim
   this.xlabel = this.params['xlabel'] // xlabel
   this.ylabel = this.params['ylabel']  // ylabel
   this.title = this.params['title'] // title
@@ -1647,18 +1650,18 @@ make_plot = function(elemid, dataset, nodes_links, params) {
   this.cy = this.chart.clientHeight; // chart height
   fillplot = this.params['fill'] || "#EEEEEE"
   var colrs = {'r':'red', 'k':'black', 'b':'blue', 'g':'green'};
-  // Interaction Parameters 
+  // Interaction Parameters
   this.show_circle = false; //
   this.moveaxis = false
-  this.drag_zoom = false  // drag and mouse rolling zoom. 
+  this.drag_zoom = false  // drag and mouse rolling zoom.
   this.brush_active = false // brush tool for zoom
   this.list_domains = []
-  this.zoom_margin = 20 // margin for dragging zoom 
-  this.show_grid = true; // boolean for plotting the grid or not. 
+  this.zoom_margin = 20 // margin for dragging zoom
+  this.show_grid = true; // boolean for plotting the grid or not.
   text_nb = 0
   list_txt = []
   this.insert_text = false // boolean for inserting text in the plot or not.
-  this.zoomx = false // boolean for zoom only in x. 
+  this.zoomx = false // boolean for zoom only in x.
   this.poszoom = 0   // index of the current zoom
   this.show_navig_plot = true;
   this.nbdecim = 3; // number of decimals
@@ -1667,11 +1670,11 @@ make_plot = function(elemid, dataset, nodes_links, params) {
   // Each commands executed is supposed to eliminates the other one in possible conflict.
   // * c : show the circles for modifying the plot
   // * b : mode brush
-  // * q : makes a zoom in x.. 
+  // * q : makes a zoom in x..
   // * d : toggle for drag and zoom.
-  
+
   var help_plot = function(){/*
-  
+
    # Commands
    Each commands executed is supposed to eliminates the other ones in possible conflict.
    * c : show the circles for modifying the plot
@@ -1681,13 +1684,13 @@ make_plot = function(elemid, dataset, nodes_links, params) {
    * x : move backward in the zoom
    * v : move forward in the zoom
    */}.toString().slice(14,-3)
-  
+
   var tools = function(){/*
-  
+
    # All tools
    Click on the tool
    * c : show the circles for modifying the plot
-   * b : box zoom 
+   * b : box zoom
    * q : zoomx
    * d : toggle for drag and zoom.
    * x : move backward in the zoom
@@ -1716,7 +1719,7 @@ make_plot = function(elemid, dataset, nodes_links, params) {
    //     htm.append(ul);
    //     return htm.html()
    // } // end function
-   
+
 
  //===================================================================== Rotation translation in svg
 
@@ -1783,18 +1786,18 @@ function elementMousedown(evt) {
           .html(htm)
       return htmnode
       }
-  
+
   var add_txt = function(label, w, h, ang, cl, W, H){    // adding text in the plot, position : (w, h), angle : ang
       var vv = document.getElementById('vis' + self.id);
-      createtext({"x":w,"y":h}, vv, label, cl, ang, W, H)  
+      createtext({"x":w,"y":h}, vv, label, cl, ang, W, H)
       }
 
   var add_txt_axis = function(label, w, h, ang, W, H){    // adding axis, (for Title and axis)
-      add_txt(label, w, h, ang, 'axis_txt', W, H)  
-      $('.axis_txt').addClass('axis')  
-      return $('#' + label + self.id)  
-      } 
-          
+      add_txt(label, w, h, ang, 'axis_txt', W, H)
+      $('.axis_txt').addClass('axis')
+      return $('#' + label + self.id)
+      }
+
   this.padding = {                                  // padding for the plot
      // "top":    this.title  ? 40 : 20,
      "top":    this.title  ? 80 : 20,
@@ -1807,7 +1810,7 @@ function elementMousedown(evt) {
     "width":  this.cx - this.padding.left - this.padding.right,
     "height": this.cy - this.padding.top  - this.padding.bottom
   };
-  
+
   make_scale = function(lim, size, inv){            // scale for the axis
       var inv = inv || false
       if (!inv){interv = [lim[0], lim[1]]} else {interv = [lim[1], lim[0]]}
@@ -1820,15 +1823,15 @@ function elementMousedown(evt) {
   this.downx = Math.NaN;       // drag x-axis logic
   this.downy = Math.NaN;        // drag y-axis logic
   this.dragged = this.selected = null;
-  
+
   this.line = d3.svg.line()                                      // defining line function
       .x(function(d, i) { return this.x(this.dataset[i].x); })
       .y(function(d, i) { return this.y(this.dataset[i].y); })
       .interpolate('linear')
-      
+
   datacount = this.size.width/30;
-  
-  this.vis = d3.select(this.chart).append("svg") // Create the main svg 
+
+  this.vis = d3.select(this.chart).append("svg") // Create the main svg
       .attr("width",  this.cx)
       .attr("height", this.cy)
       .attr("id", "vis" + self.id)
@@ -1838,7 +1841,7 @@ function elementMousedown(evt) {
   this.plot = this.vis.append("rect")  // For pointer events
       .attr("width", this.size.width)
       .attr("height", this.size.height)
-      .style("fill", fillplot) 
+      .style("fill", fillplot)
       .attr("pointer-events", "all")
       .attr('class', self.id)
 
@@ -1865,26 +1868,26 @@ function elementMousedown(evt) {
   // add the x-axis label
   if (this.xlabel) {
       var xlab = add_txt_axis(this.xlabel, this.size.width/2+50, 1.35*this.size.height)
-          xlab.css({"font-family": "Times New Roman","font-size": "20px"}) //"dy":"2.4em", 
+          xlab.css({"font-family": "Times New Roman","font-size": "20px"}) //"dy":"2.4em",
         }
   // add y-axis label
   if (this.ylabel) {
       var ylab = add_txt_axis(this.ylabel, 20, this.size.height, -90)
           ylab.css({"font-family": "Times New Roman","font-size": "20px"})
         }
-        
-    this.set_view = function(extent){                      // set the view for a given extent (double list). 
+
+    this.set_view = function(extent){                      // set the view for a given extent (double list).
           self.x1 = self.x.invert(extent[0][0]); self.x2 = self.x.invert(extent[1][0]) // x1, x2
           self.y1 = self.y.invert(extent[0][1]); self.y2 = self.y.invert(extent[1][1])  // y1, y2
           self.x.domain([self.x1, self.x2]);                     // set x domain
           self.y.domain([self.y1, self.y2]);                     // set y domain
           self.list_domains.push([[self.x1, self.x2], [self.y1, self.y2]])       // save views in history
        }
-        
+
     self.set_view([[0,0],[this.size.width, this.size.height]]) // Save the first view in self.list_domains (Initialisation)
-  
+
     this.redraw_all()();
-    
+
     this.vis.append("svg") // line attached to svg block"viewBox
       .attr("top", 0)
       .attr("left", 0)
@@ -1914,7 +1917,7 @@ function elementMousedown(evt) {
          .attr("class", "brush")
          .call(d3.svg.brush()
            .x(d3.scale.identity().domain([0, self.size.width]))
-           .y(d3.scale.identity().domain([0, self.size.height])) 
+           .y(d3.scale.identity().domain([0, self.size.height]))
            .on("brush", function() {
                extent = d3.event.target.extent();
                if (self.zoomx ==true){                // zoomx
@@ -1933,7 +1936,7 @@ function elementMousedown(evt) {
                   zoom_in()   // at the end of the brush action make a zoom
                 }
                 else{
-                    var rr = self.vis 
+                    var rr = self.vis
                     .append('rect') // rectangle inside the brush rectangle
                     .attr("x", extent[0][0]+self.zoom_margin/2)
                     .attr("y", extent[0][1]+self.zoom_margin/2)
@@ -1957,8 +1960,8 @@ function elementMousedown(evt) {
           self.y.domain(view_coord[1]);
           self.redraw_all()();
      }
-     
-  this.deactivate_all_not = function(avoid){  // deactivate all the tools but.. 
+
+  this.deactivate_all_not = function(avoid){  // deactivate all the tools but..
       if ((avoid != 'b') & (avoid != 'q') ){
           d3.selectAll(".brush").remove();  // deactivate brush
           self.brush_active = false;
@@ -1969,9 +1972,9 @@ function elementMousedown(evt) {
          }
      }
   }
-  
+
   var zoom_in = function(){ // zoom in for zoom_b and zoomx
-      
+
       d3.selectAll(".zoom_interact").remove() // remove the additional zoom windows
       self.set_view(extent)      // change the view
       self.redraw_all()();    // redraw axis etc
@@ -1984,17 +1987,17 @@ function elementMousedown(evt) {
     //deactivate_all_not(key)
     return (event.keyCode == key.charCodeAt(0)-32 && event.shiftKey)
   }
-  
-  $(document).keydown(function(event){   
+
+  $(document).keydown(function(event){
       if(keyev('t', event)){    // "h", key for tools documentation
               $('.alertify .alert > *').css({'text-align':'left'});
               alertify.alert(simple_md(tools))
-        } // end if key code          
+        } // end if key code
       if(keyev('h', event)){    // "h", key for help documentation
               $('.alertify .alert > *').css({'text-align':'left'});
               alertify.alert(simple_md(help_plot))
         } // end if key code
-      if(keyev('c', event)){    // add and remove circles.. 
+      if(keyev('c', event)){    // add and remove circles..
           self.show_circle = !self.show_circle;
           self.vis.selectAll('circle').remove()
           self.redraw_all()();
@@ -2005,8 +2008,8 @@ function elementMousedown(evt) {
            self.drag_zoom = ! self.drag_zoom;                          // toggle drag_zoom
            self.redraw_all()();
           } // end if keyev
-          
-      if(keyev('n', event)){         // remove the navig board. 
+
+      if(keyev('n', event)){         // remove the navig board.
           self.show_navig_plot = ! self.show_navig_plot
           if (self.show_navig_plot){
               $('#' + elemid).css({'height':'650'}) // long
@@ -2040,7 +2043,7 @@ make_plot.prototype.plot_drag = function() {
   var self = this;
   return function() {
     registerKeyboardHandler(self.keydown());
-    d3.select('body').style("cursor", "move"); 
+    d3.select('body').style("cursor", "move");
   }
 };
 
@@ -2049,7 +2052,7 @@ make_plot.prototype.refresh_navig_plot = function() {
     $('#navig_plot' + self.id).remove() // removing the menu
     self.menuplot(this.vis, this.add_html) // make the menu
     if (self.show_navig_plot == false){
-        $('#navig_plot'+self.id).hide(); 
+        $('#navig_plot'+self.id).hide();
         }
     }
 
@@ -2057,7 +2060,7 @@ make_plot.prototype.update = function() {
     // update graph, axes, labels, circles..
     var self = this;
     var lines = this.vis.select("path").attr("d", this.line(this.dataset));
-    self.refresh_navig_plot()   
+    self.refresh_navig_plot()
     if (d3.event && d3.event.keyCode) {
     d3.event.preventDefault();
     d3.event.stopPropagation();
@@ -2081,8 +2084,8 @@ make_plot.prototype.mouseup = function() { // mouse in its normal state
   return function() {
     document.onselectstart = function() { return true; };
     d3.select('body').style("cursor", "auto");
-    if (self.dragged) { 
-      self.dragged = null 
+    if (self.dragged) {
+      self.dragged = null
     }
   }
 }
@@ -2090,14 +2093,14 @@ make_plot.prototype.mouseup = function() { // mouse in its normal state
 make_plot.prototype.redraw_all = function() {         // redraw the whole plot
   var self = this;
   return function() {
-    var tx = function(d) { 
-      return "translate(" + self.x(d) + ",0)"; 
+    var tx = function(d) {
+      return "translate(" + self.x(d) + ",0)";
     },
-    ty = function(d) { 
+    ty = function(d) {
       return "translate(0," + self.y(d) + ")";
     },
-    stroke = function(d) { 
-      return d ? "#ccc" : "#666"; 
+    stroke = function(d) {
+      return d ? "#ccc" : "#666";
     },
     fx = self.x.tickFormat(10),
     fy = self.y.tickFormat(10);
@@ -2130,7 +2133,7 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
             .text(txt)
             .style("cursor", "ew-resize")
     }
-    // Regenerate x-ticks… 
+    // Regenerate x-ticks…
     gg = make_axes("g.x", self.x, tx, fx, 'x', 'y', self.size.height, stroke)
     gx = gg[0]; gxe = gg[1]
     ticks_txt(gxe, "y", self.size.height, "1em", fx)
@@ -2141,15 +2144,15 @@ make_plot.prototype.redraw_all = function() {         // redraw the whole plot
     ticks_txt(gye,"x",-3,".35em",fy)
     gy.exit().remove();
     grid_dic = {'x2':{true:self.size.width, false:0}, 'y2':{true:self.size.height, false:0}}
-    $('g.y line.grid').each(function(){$(this).attr("x2", grid_dic['x2'][self.show_grid])}) 
-    $('g.x line.grid').each(function(){$(this).attr("y2", grid_dic['y2'][self.show_grid])}) 
+    $('g.y line.grid').each(function(){$(this).attr("x2", grid_dic['x2'][self.show_grid])})
+    $('g.x line.grid').each(function(){$(this).attr("y2", grid_dic['y2'][self.show_grid])})
     if (self.drag_zoom == true){
          self.plot
          .call(d3.behavior.zoom().x(self.x).y(self.y)
                                 .on("zoom", self.redraw_all())
                                 )}            // end if self.drag_zoom
     self.update();       // update the whole plot
-  }  
+  }
 }
 
 function make_labels(svg, nodes_links, w, h) {
@@ -2166,7 +2169,7 @@ function make_labels(svg, nodes_links, w, h) {
         })
     links.forEach(function(data, i){
           var n = nodes[links[i]["source"]]
-          n["fixed"] = false                            // not fixed 
+          n["fixed"] = false                            // not fixed
           n["name"] = parseFloat(n["x"]).toFixed(3)     // value of position
           n["y"] += -100                                // begin above.
         })
@@ -2177,8 +2180,8 @@ function make_labels(svg, nodes_links, w, h) {
                     .attr("fill", "black")
                     .attr("font-family", "sans-serif")
                     .attr("font-size", "10px")
-                    .text(function(d) { 
-                        return d.name; }); 
+                    .text(function(d) {
+                        return d.name; });
     //alert('before force')
     var force = d3.layout.force()
                     .nodes(nodes)
@@ -2188,7 +2191,7 @@ function make_labels(svg, nodes_links, w, h) {
                     .charge([-200])
                     .gravity(0.1)
                     .start();
-                                
+
     /* Draw the edges/links between the nodes */
     //alert('before line')
     var edges = svg.selectAll("line")
@@ -2199,8 +2202,8 @@ function make_labels(svg, nodes_links, w, h) {
                     .style("stroke-width", 1)
                     .attr("marker-end", "url(#end)")
                     .attr("class","lll")
-    //alert('before circle')     
-             
+    //alert('before circle')
+
     var nodes = svg.selectAll("circle")
                     .data(nodes)
                     .enter()
@@ -2225,7 +2228,7 @@ function make_labels(svg, nodes_links, w, h) {
 
 make_plot.prototype.navig_button = function(func, glyph, arg, tooltip){
       self = this;
-      navmenu = $('#navig_plot' + self.id) 
+      navmenu = $('#navig_plot' + self.id)
       if (glyph != null){
             navmenu.append($('<button/>').attr('title', tooltip)
                 .append($('<span/>').attr('class', glyph))
@@ -2243,7 +2246,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
 
     // add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="infos"></div>', 320,-0, 0, 600, 300) // x, y, ang, w, h
     add_html(fig,'<div id="navig_plot'+self.id+'"'+' class ="navig_plot"></div>', 160, 400, 0, 375, 300, 'navplt') // x, y, ang, w, h
-    
+
     show_poszoom = function(){  // show current zoom position in the list of saved zoomed
         var numtot = Math.max(1, self.list_domains.length)
         var pos = self.poszoom+1 // increment zoom position
@@ -2267,7 +2270,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
             self.poszoom = 0;
             }
       } // end zoom_nav
-    
+
     put_text = function(){
          self.insert_text = ! self.insert_text;
             $('#vis'+self.id).click(function (evt) {
@@ -2284,13 +2287,13 @@ make_plot.prototype.menuplot = function(fig, add_html){
                 } // end if
             self.redraw_all()()
        }
-    
+
     grid_on_off = function(){    // grid on/off
         self.deactivate_all_not('g')   // deactivate all the other tools
         self.show_grid = ! self.show_grid;
         self.redraw_all()();
         } // end grid_on_off
-    
+
     brush_b = function(){ // zoom box
         if (self.brush_active == true){
             self.deactivate_all_not('b')           // deactivate all the other tools
@@ -2301,7 +2304,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
             self.brush_active = true;
             }
         } // end brush_b
-    
+
     brush_q = function(){   // zoom only in x
         self.zoomx = ! self.zoomx;
         if (self.brush_active == true){
@@ -2310,7 +2313,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
         else{
             self.make_brush();
             self.brush_active = true;
-            } 
+            }
         } // end brush_q
     go_home = function(){       // return to the first view
         zoom_nav('home')
@@ -2318,13 +2321,13 @@ make_plot.prototype.menuplot = function(fig, add_html){
         var pos = 1
         $('#poszoom').text(pos+'/'+numtot)
     }
-    
+
     drag_plot = function(){    // drag the plot
         self.deactivate_all_not('d')   // deactivate all the other tools
         self.drag_zoom = ! self.drag_zoom;     // toggle drag_zoom
         self.redraw_all()();
     }
-    
+
     self.navig_button(put_text, "glyphicon glyphicon-pencil", null, 'add text')  // add text
     self.navig_button(grid_on_off, "glyphicon glyphicon-th", null, 'toggle the grid')   // toggle grid
     self.navig_button(brush_b, "glyphicon glyphicon-search", null, 'pass to zoom box') // zoom box
@@ -2347,7 +2350,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
                                                      .val(self.y1.toFixed(self.nbdecim)+','+self.y2.toFixed(self.nbdecim))
                                         ) // end append input
                             ) // end append div
-    
+
     $('#navig_plot'+self.id).append($('<div/>').append($('<span/>').text('direct zoom'))
                                                 .append($('<input/>').attr('type','checkbox').attr('id','direct_zoom')
                                         )// end append input
@@ -2355,10 +2358,10 @@ make_plot.prototype.menuplot = function(fig, add_html){
      $('#navig_plot'+self.id) //.draggable()
     if (self.direct_zoom == true){$('#direct_zoom').prop('checked', true)} // checkbox true for direct zoom
     $(document).ready(function(){ // activates the tooltips
-                $('[data-toggle="tooltip"]').tooltip(); 
+                $('[data-toggle="tooltip"]').tooltip();
             })
 
-    
+
 } // end menu_plot
 
 //=====================================================================  Sliders
@@ -2369,11 +2372,11 @@ make_plot.prototype.menuplot = function(fig, add_html){
     */
 
     var drag_slider = d3.behavior.drag()
-        .origin(function(d) {  return d }) 
+        .origin(function(d) {  return d })
         .on("dragstart", dragstarted)
         .on("drag", function(d) {
             if (d.dir == "x"){
-                d.action(); // 
+                d.action(); //
                 return d3.select(this).attr("cx", d.x  = d3.event.x);
                 }
             else if (d.dir == "y"){
@@ -2391,14 +2394,14 @@ make_plot.prototype.menuplot = function(fig, add_html){
                 .data(data)
                 .enter()
                 .append("line")
-                .attr('x1', function(d){return d.xbar}) // 
+                .attr('x1', function(d){return d.xbar}) //
                 .attr('y1', function(d){return d.ybar})
-                .attr('x2', function(d){if ( d.dir=="x" ){ return d.slength + d.xbar } else { return d.xbar }}) // 
+                .attr('x2', function(d){if ( d.dir=="x" ){ return d.slength + d.xbar } else { return d.xbar }}) //
                 .attr('y2', function(d){if ( d.dir=="y" ){ return d.slength + d.ybar } else { return d.ybar }})
                 .attr('stroke', function(d){return d.col})
                 .attr('stroke-width', '4px')
             }
-        slider_button = function(data){ 
+        slider_button = function(data){
             var slider_butt = name_svg
               .selectAll("svg_slider_button")
               .data(data)
@@ -2411,7 +2414,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
               .attr("fill", function(d){return d.col})
               .attr("class", "slide")
               .call(drag_slider);
-            }  
+            }
         slider_line(data);
         slider_button(data);
     }
@@ -2426,7 +2429,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
 //=====================================================================  position in TOC
 
     /*
-    Indicate position on the page by changing size of character in the TOC. 
+    Indicate position on the page by changing size of character in the TOC.
     */
 
     function fixTitle() {
@@ -2435,7 +2438,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
             var offset = $this.offset().top;
             var scrollTop = $(window).scrollTop();
             if (scrollTop > offset) {
-               var ind = $this.attr('id') 
+               var ind = $this.attr('id')
                var origftsize = $('#toc').css("font-size")
                $('#toc li a').css("font-size", origftsize)
                $('#toc  li:nth-child(' + ind + ') > a').css("font-size", "150%")
@@ -2465,14 +2468,14 @@ make_plot.prototype.menuplot = function(fig, add_html){
             $("#id_view_image").html("");
             $("#id_view_image_body").removeClass("view_image_body");
             $("#id_view_image").removeClass("view_image");
-        }); 
+        });
 
     }
 
 //===================================================================== Go to top
 
     /*
-    Go to the top of the whole page. 
+    Go to the top of the whole page.
     */
 
     function gototop(){
@@ -2492,15 +2495,15 @@ make_plot.prototype.menuplot = function(fig, add_html){
             return false;
         });
     }
-    
+
 //===================================================================== Go to bottom
 
     /*
-    Go to the bottom of the whole page. 
+    Go to the bottom of the whole page.
     */
 
     function gotobottom(){
-        
+
         $(window).scroll(function(){
             if ($(this).scrollTop() < $(document).height()/2) {
                 // alert('$(this).scrollTop() < 10')
@@ -2521,7 +2524,7 @@ make_plot.prototype.menuplot = function(fig, add_html){
     /*
     Fine and elegant scroller
     */
-    
+
     $(document).ready(function () {
         $(window).scroll(fixTitle);
         $('[data-toggle="tooltip"]').tooltip(); // activates the tooltips
@@ -2536,5 +2539,3 @@ make_plot.prototype.menuplot = function(fig, add_html){
         }
 
     });
-
-
