@@ -192,6 +192,7 @@ var maketoc = function(){
     var reg_col_h1 = reg_func('col_h1')
     var reg_col_h2 = reg_func('col_h2')
     var reg_col_h3 = reg_func('col_h3')
+<<<<<<< HEAD
     var reg_col_sublist0 = reg_func('col_sublist0')
     var reg_col_sublist1 = reg_func('col_sublist1')
     var reg_col_sublist2 = reg_func('col_sublist2')
@@ -200,6 +201,16 @@ var maketoc = function(){
     var reg_notoc = reg_func('notoc')
     var reg_width_video = reg_func('width_video')
     var reg_width_pdf = reg_func('width_pdf')
+=======
+    var reg_col_sublist0 = reg_func('col_sublist0')   // color sublist 0 
+    var reg_col_sublist1 = reg_func('col_sublist1')   // color sublist 1 
+    var reg_col_sublist2 = reg_func('col_sublist2')   // color sublist 2 
+    var reg_mathsize = reg_func('mathsize')           // size MathJax
+    var reg_col_toc = reg_func('col_toc')             // color of the TOC
+    var reg_notoc = reg_func('notoc')                 // remove the TOC
+    var reg_width_video = reg_func('width_video')     // videos's width
+    var reg_width_pdf = reg_func('width_pdf') 
+>>>>>>> 6348afc0f7c2bfd9479760e2a0add5ad30c129f4
     var reg_width_content = reg_func('width_content')
     var reg_height_content = reg_func('height_content')
     var reg_centered_content = reg_func('centered_content')
@@ -296,8 +307,13 @@ var maketoc = function(){
 
  //===================================================================== Context menu
 
+<<<<<<< HEAD
    /*
    Associating a context menu to whatever component on the page.
+=======
+  /*
+   Associating a context menu to whatever component on the page. 
+>>>>>>> 6348afc0f7c2bfd9479760e2a0add5ad30c129f4
   */
 
    $('body').attr('contextmenu',"share")
