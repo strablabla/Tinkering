@@ -117,7 +117,8 @@ div.onside {
    box-shadow: 0.5em 0.5em 0.7em;
    left: 50px;
    max-height: 300px;
-   width: 300px;
+   /*width: 300px;*/
+   width: auto;
    background-color:#ccffcc;
    font-size:85%;
    overflow: scroll;
@@ -127,10 +128,10 @@ div.onside {
 
 /*When passing on the green square show the keys*/
 
- .esc:hover ~ .keys{
+ /*.esc:hover ~ .keys{
      background-color: #ddcccc;
      display : block;
-     }
+     }*/
 
 /*==================================================
  * Carousels

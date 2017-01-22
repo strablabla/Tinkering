@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/6d098d6/js/straptoc/straptoc.js
-//https://github.com/strablabla/Tinkering/6d098d6/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/d547305/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/d547305/js/straptoc/straptoc.css
 
 
 var maketoc = function(){
@@ -257,6 +257,8 @@ var maketoc = function(){
             'help':{'reg':reg_help, 'cut':'§help', 'var': false},
             'params':{'reg':reg_params, 'cut':'§params', 'var': false}
          }
+
+
 
  //===================================================================== Go to top
 
@@ -1596,10 +1598,17 @@ var maketoc = function(){
     $('body').prepend($('<div/>').addClass('esc').attr('id',"esc"))
     $('#esc').toggle()
 
+    //===================================================================== Show keys
+    /*
+    Click on the green square for showing the keys.
+    */
+
+    $('#esc').click(function(){
+        $('#keys').toggle()
+    })
+
      //    }  // end if all loads done
      // },25); // end  setInterval(function() {}, time )
-
-
 
 }// end maketoc
 
