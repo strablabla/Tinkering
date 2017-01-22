@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/d547305/js/straptoc/straptoc.js
-//https://github.com/strablabla/Tinkering/d547305/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/b22f3a4/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/b22f3a4/js/straptoc/straptoc.css
 
 
 var maketoc = function(){
@@ -877,6 +877,15 @@ var maketoc = function(){
     var ul1 = $("<ul/>"); // first levels with class
     $('#toc').append(ul1);
     $('#toc').draggable() // make the toc draggable with jquery-ui widget draggable.
+    $('#toc').click(function(){
+        if($(this).css("opacity")==0.9){
+            $(this).css({"opacity":0.2})
+        }
+        else{
+            $(this).css({"opacity":0.9})
+        }
+
+    })
     // read all the headers and make the TOC (with ref) and the id names
     var lnotoc = ['Carousels'] // list of excluded H1 (defined with inner HTML)
     for(var i = 0,  elems = $(":header"); i < elems.length; i++) {

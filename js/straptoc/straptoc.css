@@ -1,5 +1,6 @@
 /*==================================================
  * Table of Content
+ * panel for the TOC
  * ===============================================*/
 
 div.onside {
@@ -10,9 +11,11 @@ div.onside {
    box-shadow: 0.5em 0.5em 0.7em;
    right: 50px;
    max-height: 500px;
+   width:auto;
    background-color:#FFCC99; /*#FFF;*/
    font-size:85%;
    overflow: scroll;
+   opacity:0.9;
    /*resize: both;*/
  }
 
@@ -27,8 +30,11 @@ div.onside {
    overflow: scroll;
  }
 
- div.postit {
+ /*==================================================
+  * Post it
+  * ===============================================*/
 
+ div.postit {
     padding-left: 20px;
     padding-right: 20px;
     padding-bottom: 20px;
