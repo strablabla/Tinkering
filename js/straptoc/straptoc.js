@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/9e96a95/js/straptoc/straptoc.js
-//https://github.com/strablabla/Tinkering/9e96a95/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/6d098d6/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/6d098d6/js/straptoc/straptoc.css
 
 
 var maketoc = function(){
@@ -113,15 +113,20 @@ var maketoc = function(){
 
     var keys = function(){/*
     # Keys:
-    * Esc + c : toggle carousels
-    * Esc + d : toggle draggable
-    * Esc + k : show keys
-    * Esc + l : toggle all lists
-    * Esc + m : toggle TOC
-    * Esc + r : resize
-    * Esc + s : show syntax
-    * Esc + t : toggle todo theme
-    * Esc + w : toggle all the windows (except TOC)
+    * keys and syntax
+        * Esc + k : show keys
+        * Esc + s : show syntax
+    * TOC
+        * Esc + m : toggle TOC
+    * Secondary panels
+        * Esc + c : toggle carousels
+        * Esc + t : toggle todo theme
+    * Lists
+        * Esc + l : toggle all lists
+    * Handle windows
+        * Esc + r : resize
+        * Esc + d : toggle draggable
+        * Esc + w : toggle all the windows (except TOC)
     * Plot :
         * shift + n : toggle plot tools
     */}.toString().slice(14,-3)
