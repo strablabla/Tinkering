@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/b22f3a4/js/straptoc/straptoc.js
-//https://github.com/strablabla/Tinkering/b22f3a4/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/1b0f256/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/1b0f256/js/straptoc/straptoc.css
 
 
 var maketoc = function(){
@@ -1441,10 +1441,15 @@ var maketoc = function(){
          // The height and width of the iFrame should be the same as parent
          var iframe = $('<iframe/>', {'frameborder': '0', 'src': iframe_url, 'width': $(this).width(), 'height': $(this).height() })
          var div = $('<div/>').css({'text-align':'center'})
+         div.attr('id', "youtube_"+this.id)
+         //div.draggable()
          // Replace the YouTube thumbnail with YouTube HTML5 Player
          $(this).replaceWith(div.append(iframe));
-     });
- });
+         $("#youtube_"+this.id).draggable() // make the video draggable
+     }); // delegate
+
+ }); // youtube each
+
 
 //===================================================================== Esc for permitting some keys.
 
