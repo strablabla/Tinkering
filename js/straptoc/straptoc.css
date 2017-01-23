@@ -10,8 +10,8 @@ div.onside {
    padding-bottom: 20px;
    box-shadow: 0.5em 0.5em 0.7em;
    right: 50px;
-   /*max-height: 500px;*/
-   height: auto;
+   max-height: 500px;
+   /*height: auto;*/
    width:auto;
    background-color:#FFCC99; /*#FFF;*/
    font-size:85%;
@@ -119,7 +119,7 @@ div.onside {
    left: 50px;
    max-height: 500px;
    width: 500px;
-   background-color:#ccffcc;
+   background-color: #A9E2F3; /*#58D3F7; #ddffcc;*/
    font-size:85%;
    overflow: scroll;
    width: 50%;

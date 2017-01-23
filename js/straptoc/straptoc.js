@@ -4,21 +4,17 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/b0f0a72/js/straptoc/straptoc.js
-//https://github.com/strablabla/Tinkering/b0f0a72/js/straptoc/straptoc.css
-
+//https://github.com/strablabla/Tinkering/66577e3/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/66577e3/js/straptoc/straptoc.css
 
 var maketoc = function(){
-
 
     /*
     Straptoc.js is a code for enhancing markdown capabilities. Straptoc.js modify the code produced by Strapdown.js. It adds many features such as possibility to insert videos (local, youtube), make Carousels, Portfolios.
     It simplifies also the markdown syntax in some cases. The whole code uses extensively jQuery library.
     */
 
-
     // var scriptsToLoad = 0;
-
 
     // ["https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js",
     // "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js",
@@ -71,25 +67,30 @@ var maketoc = function(){
     var help = function(){/*
 
     # Extended markdown:
-    * :: , makes folding list (close by default)
+    * Lists
+        * :: , makes folding list (close by default)
+        * Alt L for folding/unfolding lists.
+    * Insert docs
+        * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
+        * [pdf §§](hyperlink) insert a pdf with object tag.
+        * [blabla ,,](hyperlink) insert whatever iframe
+        * [blabla %%](hyperlink) insert a local video with no autoplay by default (works with Chrome but not with Firefox)
+    * Pictures
+        * [blabla %caption%](address) insert the caption under the image
+        * Size image, enter the size after the name eg: blabla 500x500(address)
+        * $portf and list of images in markdown language  after for making a portfolio with pictures.
+        * $carr and list of images in markdown language  after for making a carrousel with pictures.
+    * hide
+        * double ^, is used to hide some text
+    * Deactivate objects
+        * Set notoc to true for removing the TOC.
+        * novideo, at the beginning of the document to avoid loading of videos.
+    * Tooltips
+        * insertion of tooltip : after h1 or h2, write the tooltip betweeen {}
     * --link-- , creates a tag with id "link"
-    * [video ;;](hyperlink) insert a video with the hyperlink through iframe element.
-    * [pdf §§](hyperlink) insert a pdf with object tag.
-    * [blabla ,,](hyperlink) insert whatever iframe
-    * [blabla %%](hyperlink) insert a local video with no autoplay by default (works with Chrome but not with Firefox)
-    * novideo, at the beginning of the document to avoid loading of videos.
     * @@ blabla, copy the li, blabla @@ paste the li (@@ must be glued)
-    * key "k", to make appear disappear the sliders.
-    * insertion of tooltip : after h1 or h2, write the tooltip betweeen {}
-    * double ^, is used to hide some text
-    * Alt L for folding/unfolding lists.
-    * Set notoc to true for removing the TOC.
-    * Size image, enter the size after the name eg: blabla 500x500(address)
     * @color to change color, for the moment works onl for lists.
-    * [blabla %caption%](address) insert the caption under the image
     * %%% for deleting symbolically a line, replacing  the tilde.
-    * $carr and list of images in markdown language  after for making a carrousel with pictures.
-    * $portf and list of images in markdown language  after for making a portfolio with pictures.
     * noiframes, at the beginning of the document to avoid loading of iframes.
     * +++ rootpath for registering root path for \$carr or \$portf when muliple path with same root.
         *  eg for frames :
