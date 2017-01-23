@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/1b0f256/js/straptoc/straptoc.js
-//https://github.com/strablabla/Tinkering/1b0f256/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/b0f0a72/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/b0f0a72/js/straptoc/straptoc.css
 
 
 var maketoc = function(){
@@ -869,7 +869,7 @@ var maketoc = function(){
 
     if(param['notoc']['var'] == false){
         $('body').prepend($('<div/>').addClass('onside').attr('id',"toc"))     // adds the Table of Contents at the beginning
-    }
+    } // end if
 
     $('.onside').css({'background-color' : param['color_toc']['var']})    // modifying backgnd color for TOC
 
@@ -877,15 +877,18 @@ var maketoc = function(){
     var ul1 = $("<ul/>"); // first levels with class
     $('#toc').append(ul1);
     $('#toc').draggable() // make the toc draggable with jquery-ui widget draggable.
-    $('#toc').click(function(){
-        if($(this).css("opacity")==0.9){
-            $(this).css({"opacity":0.2})
-        }
-        else{
-            $(this).css({"opacity":0.9})
-        }
+    toc_touch = $('<div/>').addClass('onside_touch').attr('id','toc_touch');
+    $('#toc').append(toc_touch)
 
-    })
+    $('#toc_touch').click(function(){
+        if($('#toc').css("opacity") > 0.89){
+            $('#toc').css({"opacity":0.1})
+            }
+        else{
+            $('#toc').css({"opacity":0.9})
+        }
+    }) // end toc_touch click
+
     // read all the headers and make the TOC (with ref) and the id names
     var lnotoc = ['Carousels'] // list of excluded H1 (defined with inner HTML)
     for(var i = 0,  elems = $(":header"); i < elems.length; i++) {

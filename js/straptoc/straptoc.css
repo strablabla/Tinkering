@@ -10,7 +10,8 @@ div.onside {
    padding-bottom: 20px;
    box-shadow: 0.5em 0.5em 0.7em;
    right: 50px;
-   max-height: 500px;
+   /*max-height: 500px;*/
+   height: auto;
    width:auto;
    background-color:#FFCC99; /*#FFF;*/
    font-size:85%;
@@ -18,6 +19,20 @@ div.onside {
    opacity:0.9;
    /*resize: both;*/
  }
+
+ /*Toc interaction panel*/
+
+ div.onside_touch {
+    position: relative;
+    left: 0px;
+    height: 20px;
+    width:auto;
+    background-color:#FFCC99; /*#FFF;*/
+    opacity:0.9;
+    /*resize: both;*/
+  }
+
+
 
  div.under {
    position: fixed;
