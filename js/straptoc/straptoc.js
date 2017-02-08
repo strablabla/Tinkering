@@ -1565,6 +1565,30 @@ var maketoc = function(){
     $('#keys').html(simple_md(keys))
     $('#keys').draggable()
 
+    //===================================================================== Insert molecules
+
+    /*
+     Insert molecules for dynamic view with D3mol.js
+    */
+
+        $("p").each(function(){ // detect plot and apply plot function..
+         var text = $(this).text()
+         if (text.match(/^\$pdb\s*/)){
+            var txt = text.split(/^\$pdb/)
+
+            var divpdb = $('<div/>').css({'height':'400px','width':'400px', 'position': 'relative'})
+            divpdb.attr('data-pdb',txt[1].trim())
+                  .attr('data-style','stick')
+                  .attr('data-backgroundcolor','0xffffff')
+                  .addClass('viewer_3Dmoljs')
+
+            $(this).replaceWith(divpdb);
+
+            } // end if
+        }) // end each
+
+
+
     //===================================================================== todotheme
 
     // Themes in todo list
