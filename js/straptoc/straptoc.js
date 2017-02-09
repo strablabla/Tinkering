@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/66577e3/js/straptoc/straptoc.js
-//https://github.com/strablabla/Tinkering/66577e3/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/6dacf60/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/6dacf60/js/straptoc/straptoc.css
 
 var maketoc = function(){
 
@@ -1570,19 +1570,53 @@ var maketoc = function(){
     /*
      Insert molecules for dynamic view with D3mol.js
     */
+        var dic_style = {}
 
         $("p").each(function(){ // detect plot and apply plot function..
          var text = $(this).text()
          if (text.match(/^\$pdb\s*/)){
             var txt = text.split(/^\$pdb/)
+            var args = txt[1].trim().split(/\s+/)
+            //alert(args)
+            var name_pdb = args[0]
+            
+            for (i in args){
+                if (i != 0){
+                    var splitarg = args[i].split(/\:/)
+                    if (splitarg[0].match('ch')){
+                        //alert(splitarg)
+                        dic_style['data-select'+i] = 'chain:'+splitarg[0].slice(-1)
+                        dic_style['data-style'+i]= splitarg[1]
+                        //alert(dic_style['data-select'+i])
+                    }
+                } //     
+            }
 
-            var divpdb = $('<div/>').css({'height':'400px','width':'400px', 'position': 'relative'})
-            divpdb.attr('data-pdb',txt[1].trim())
+            var shiftleft = parseInt($('#content').css('width').slice(0,-2))/4
+            // alert(shiftleft)
+            var divpdbout = $('<div/>').addClass('3D')
+            var divpdb = $('<div/>').css({'left': shiftleft+'px','height':'400px','width':'400px', 'position': 'relative'}) 
+
+            //-----------
+
+            divpdb.attr('data-pdb',name_pdb.trim())
                   .attr('data-style','stick')
                   .attr('data-backgroundcolor','0xffffff')
                   .addClass('viewer_3Dmoljs')
 
-            $(this).replaceWith(divpdb);
+            $.each(dic_style, function(key, value) { 
+                  // alert(key + '_' + value)
+                  divpdb.attr(key, value)
+                });
+
+            //divpdbout.parent().css({'position':'relative'})
+            divpdbout.append(divpdb)
+            
+            $(this).replaceWith(divpdbout);
+
+
+
+         
 
             } // end if
         }) // end each

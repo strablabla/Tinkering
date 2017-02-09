@@ -387,6 +387,28 @@ img .thumbnail
         filter: alpha(opacity=100);
     }
 
+/*==================================================
+ * 3Dmol.js
+ * ===============================================*/
+
+  div.3D {
+    position: relative;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
+    box-shadow: 0.5em 0.5em 0.7em;
+    right: 50px;
+    max-width: 500px;
+    max-height: 500px;
+    background-color:#ccffcc; /*#FFF;*/
+    font-size:85%;
+    z-index: 3;
+  }
+
+  
 
 /*==================================================
  * Plot
