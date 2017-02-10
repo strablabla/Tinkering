@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/6dacf60/js/straptoc/straptoc.js
-//https://github.com/strablabla/Tinkering/6dacf60/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/a8a8cba/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/a8a8cba/js/straptoc/straptoc.css
 
 var maketoc = function(){
 
@@ -89,7 +89,7 @@ var maketoc = function(){
         * insertion of tooltip : after h1 or h2, write the tooltip betweeen {}
     * --link-- , creates a tag with id "link"
     * @@ blabla, copy the li, blabla @@ paste the li (@@ must be glued)
-    * @color to change color, for the moment works onl for lists.
+    * @color to change color, for the moment works only for lists.
     * %%% for deleting symbolically a line, replacing  the tilde.
     * noiframes, at the beginning of the document to avoid loading of iframes.
     * +++ rootpath for registering root path for \$carr or \$portf when muliple path with same root.
@@ -959,6 +959,50 @@ var maketoc = function(){
             }) // end each
         }// end if
      })// end each
+
+//===================================================================== Make bold and underline
+
+var stl = ['b', 'u']
+for (i in stl){
+    var currstl = stl[i]
+    // alert(currstl)
+    $("p").each(function(){ 
+        var txt = $(this).html();
+        //var rep = new RegExp('"'+'/\w+/');
+        // var re = /\"\w*.*\"b/
+        var re = new RegExp('\"\w*.*\"'+currstl, 'g');
+        // var re = new RegExp('.{' + num + '}\S*\s+', 'g');
+        var tm = txt.match(re)
+        if (tm){
+            var ttmm = tm.toString().slice(1,-2)
+            nwstl = '<'+ currstl +'>' + ttmm + '</'+ currstl +'>'
+            //alert(bold)
+            var newtxt = txt.replace(tm, nwstl)
+            $(this).html(newtxt)
+          }  // end if
+     }) // end each
+
+} // end for
+
+//===================================================================== Make underline
+
+    // $("p").each(function(){                // plugin list from one place to another..
+    //      var splitxt = $(this).html().split(/\s+/);
+    //      var foundu = false
+    //      for (i in splitxt){
+    //         if (splitxt[i].match(/@u/)){
+    //             foundu = true
+    //             var newslptxt = '<u>' + splitxt[i].trim().slice(0,-3) + '</u>'
+    //             splitxt[i] = newslptxt
+    //           } // end if
+
+    //      } // end for
+    //      if (foundu){
+    //         var newtext = splitxt.join(' ')
+    //         $(this).replaceWith($('<p/>').html(newtext))
+    //      }
+         
+    //  })// end each
 
 //===================================================================== Folding videos
 
