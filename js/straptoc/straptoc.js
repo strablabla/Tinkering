@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/1e3a613/js/straptoc/straptoc.js
-//https://github.com/strablabla/Tinkering/b25eeb2/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/beae8ef/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/beae8ef/js/straptoc/straptoc.css
 
 var maketoc = function(){
 
@@ -962,25 +962,70 @@ var maketoc = function(){
 
 //===================================================================== Make bold and underline
 
-var stl = ['b', 'u']
+var stl = ['b', 'u', 'c']
 for (i in stl){
     var currstl = stl[i]
     // alert(currstl)
     $("p, li").each(function(){ 
         var txt = $(this).html();
-        var re = new RegExp('\"[^"]+\"' + currstl, 'g')
+        if (stl[i] != 'c'){
+            var re = new RegExp('\"[^"]+\"' + currstl + ' ', 'g')
+            }
+        else{
+            var re = new RegExp('\"[^"]+\"' + currstl + '\.' +  ' ', 'g')
+        }
+        // alert(re)
         var tm = txt.match(re)
         if (tm){
             //alert(tm)
-            var ttmm = tm.toString().slice(1,-2)
-            nwstl = '<'+ currstl +'>' + ttmm + '</'+ currstl +'>'
-            //alert(bold)
-            var newtxt = txt.replace(tm, nwstl)
-            $(this).html(newtxt)
+            txtm = tm.toString()
+            if (stl[i] != 'c'){
+                var ttmm = txtm.slice(1,-2)
+                nwstl = '<'+ currstl +'>' + ttmm + '</'+ currstl +'>'
+                //alert(nwstl)
+                var newtxt = txt.replace(tm, nwstl)
+                $(this).html(newtxt)
+            }
+            else if (stl[i] == 'c'){
+
+                dic_col = {'r':'red', 'b':'blue', 'y':'yellow', 'g':'green', 'o':'orange', 'm':'magenta'}
+                var ttmm = txtm.slice(1,-4)
+                var col = txtm.slice(-2).trim()
+                //alert(col)
+                nwstl =  $('<p/>').text(ttmm).css({'color':dic_col[col]})
+                interm = $('<div/>').append(nwstl)
+                //alert(interm.html())
+                var newtxt = txt.replace(tm, interm.html())
+                $(this).html(newtxt)
+                // alert(col)
+            }
+
           }  // end if
      }) // end each
 
 } // end for
+
+//===================================================================== color text
+
+// var stl = ['c']
+// for (i in stl){
+//     var currstl = stl[i]
+//     $("p, li").each(function(){ 
+//         var txt = $(this).html();
+//         var re = new RegExp('\"[^"]+\"' + currstl + ' ' , 'g')
+//         var tm = txt.match(re)
+//         if (tm){
+//             alert(tm)
+//             var ttmm = tm.toString().slice(1,-2)
+//             nwstl = '<p style="text-color:red;">' + ttmm + '</p>'
+
+//             alert(nwstl)
+//             var newtxt = txt.replace(tm, nwstl)
+//             $(this).html(newtxt)
+//           }  // end if
+//      }) // end each
+
+// } // end for
 
 //===================================================================== Make underline
 
