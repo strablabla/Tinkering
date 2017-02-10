@@ -4,7 +4,7 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/b25eeb2/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/1e3a613/js/straptoc/straptoc.js
 //https://github.com/strablabla/Tinkering/b25eeb2/js/straptoc/straptoc.css
 
 var maketoc = function(){
@@ -966,12 +966,12 @@ var stl = ['b', 'u']
 for (i in stl){
     var currstl = stl[i]
     // alert(currstl)
-    $("p").each(function(){ 
+    $("p, li").each(function(){ 
         var txt = $(this).html();
         var re = new RegExp('\"[^"]+\"' + currstl, 'g')
         var tm = txt.match(re)
         if (tm){
-            alert(tm)
+            //alert(tm)
             var ttmm = tm.toString().slice(1,-2)
             nwstl = '<'+ currstl +'>' + ttmm + '</'+ currstl +'>'
             //alert(bold)
