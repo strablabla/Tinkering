@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/a8a8cba/js/straptoc/straptoc.js
-//https://github.com/strablabla/Tinkering/a8a8cba/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/b25eeb2/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/b25eeb2/js/straptoc/straptoc.css
 
 var maketoc = function(){
 
@@ -968,12 +968,10 @@ for (i in stl){
     // alert(currstl)
     $("p").each(function(){ 
         var txt = $(this).html();
-        //var rep = new RegExp('"'+'/\w+/');
-        // var re = /\"\w*.*\"b/
-        var re = new RegExp('\"\w*.*\"'+currstl, 'g');
-        // var re = new RegExp('.{' + num + '}\S*\s+', 'g');
+        var re = new RegExp('\"[^"]+\"' + currstl, 'g')
         var tm = txt.match(re)
         if (tm){
+            alert(tm)
             var ttmm = tm.toString().slice(1,-2)
             nwstl = '<'+ currstl +'>' + ttmm + '</'+ currstl +'>'
             //alert(bold)
