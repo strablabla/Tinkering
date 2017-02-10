@@ -992,7 +992,7 @@ for (i in stl){
                 var ttmm = txtm.slice(1,-4)
                 var col = txtm.slice(-2).trim()
                 //alert(col)
-                nwstl =  $('<p/>').text(ttmm).css({'color':dic_col[col]})
+                nwstl =  $('<span/>').text(ttmm + ' ').css({'color':dic_col[col]})
                 interm = $('<div/>').append(nwstl)
                 //alert(interm.html())
                 var newtxt = txt.replace(tm, interm.html())
