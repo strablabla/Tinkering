@@ -967,40 +967,53 @@ for (i in stl){
     var currstl = stl[i]
     // alert(currstl)
     $("p, li").each(function(){ 
-        var txt = $(this).html();
+        var txt = $(this).html().replace(/\<br\>/g, ' <br>'); // .replace('<br>',' ')
+        // var txt = $(this).html()
+        // alert('txt found with $("p, li").each ' + txt)
         if (stl[i] != 'c'){
-            var re = new RegExp('\"[^"]+\"' + currstl + ' ', 'g')
+            var re = new RegExp('\"[^"]+\"' + currstl + ' ', 'g')   // case color
             }
         else{
-            var re = new RegExp('\"[^"]+\"' + currstl + '\.' +  ' ', 'g')
+            var re = new RegExp('\"[^"]+\"' + currstl + '\.' +  ' ', 'g') // case b or u
         }
         // alert(re)
+        // txt = txt.replace(/\<br\>/g,' \n')
         var tm = txt.match(re)
         if (tm){
-            //alert(tm)
-            txtm = tm.toString()
-            if (stl[i] != 'c'){
-                var ttmm = txtm.slice(1,-2)
-                nwstl = '<'+ currstl +'>' + ttmm + '</'+ currstl +'>'
-                //alert(nwstl)
-                var newtxt = txt.replace(tm, nwstl)
-                $(this).html(newtxt)
-            }
-            else if (stl[i] == 'c'){
+            // alert(txt)
+            //alert('Text matched is ' + tm)
+            // alert(txt.replace(/\<br\>/g,' \n'))
+            for (i in tm){
+                // alert(tm[i])
+                txtm = tm[i].toString()
+                //alert(stl[i])
+                if (currstl != 'c'){               // case b or u
+                    var ttmm = txtm.slice(1,-3)
+                    nwstl = '<'+ currstl +'>' + ttmm  + '</'+ currstl +'>' + ' '
+                    // alert(nwstl)
+                    var bu = new RegExp(tm[i], 'g')
+                    var txt = txt.replace(bu, nwstl)
+                    // alert("newtxt " + txt)
+                    $(this).html(txt)
+                }
 
-                dic_col = {'r':'red', 'b':'blue', 'y':'yellow', 'g':'green', 'o':'orange', 'm':'magenta'}
-                var ttmm = txtm.slice(1,-4)
-                var col = txtm.slice(-2).trim()
-                //alert(col)
-                nwstl =  $('<span/>').text(ttmm + ' ').css({'color':dic_col[col]})
-                interm = $('<div/>').append(nwstl)
-                //alert(interm.html())
-                var newtxt = txt.replace(tm, interm.html())
-                $(this).html(newtxt)
-                // alert(col)
-            }
+                else if (currstl == 'c'){    // case color
 
-          }  // end if
+                    dic_col = {'r':'red', 'b':'blue', 'y':'yellow', 'g':'green', 'o':'orange', 'm':'magenta'}
+                    var ttmm = txtm.slice(1,-4)
+                    var col = txtm.slice(-2).trim()
+                    //alert(col)
+                    nwstl =  $('<span/>').text(ttmm + ' ').css({'color':dic_col[col]})
+                    interm = $('<div/>').append(nwstl)
+                    //  alert(interm.html())
+                    var cc = new RegExp(tm[i], 'g')
+                    var txt = txt.replace(cc, interm.html())
+                    $(this).html(txt)
+                    // alert(col)
+                }
+            } // end for
+
+          }  // end if tm
      }) // end each
 
 } // end for
