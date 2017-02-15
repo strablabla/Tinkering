@@ -960,105 +960,78 @@ var maketoc = function(){
         }// end if
      })// end each
 
-//===================================================================== Make bold and underline
+//===================================================================== Make bold, underline and color
 
-var stl = ['b', 'u', 'c']
-for (i in stl){
-    var currstl = stl[i]
-    // alert(currstl)
-    $("p, li").each(function(){ 
-        var txt = $(this).html().replace(/\<br\>/g, ' <br>'); // .replace('<br>',' ')
-        // var txt = $(this).html()
-        // alert('txt found with $("p, li").each ' + txt)
-        if (stl[i] != 'c'){
-            var re = new RegExp('\"[^"]+\"' + currstl + ' ', 'g')   // case color
+var buc = function(pli){
+
+    var stl = ['b','u','c'] // 'b', 'u', 
+    for (i in stl){
+        var currstl = stl[i]
+        // alert(currstl)
+        pli.each(function(){ 
+            var txt = $(this).html().replace(/\<br\>/g, ' <br>'); // .replace('<br>',' ')
+            // var txt = $(this).html()
+
+            // alert('txt found with $("li").each ' + txt)
+            // alert('currstl '+ currstl)
+
+            if (currstl != 'c'){
+                var re = new RegExp('\"[^"]+\"' + currstl + ' ', 'g')   // case color
+                }
+            else{
+                var re = new RegExp('\"[^"]+\"' + currstl + '\.' +  ' ', 'g') // case b or u
             }
-        else{
-            var re = new RegExp('\"[^"]+\"' + currstl + '\.' +  ' ', 'g') // case b or u
-        }
-        // alert(re)
-        // txt = txt.replace(/\<br\>/g,' \n')
-        var tm = txt.match(re)
-        if (tm){
-            // alert(txt)
-            //alert('Text matched is ' + tm)
-            // alert(txt.replace(/\<br\>/g,' \n'))
-            for (i in tm){
-                // alert(tm[i])
-                txtm = tm[i].toString()
-                //alert(stl[i])
-                if (currstl != 'c'){               // case b or u
-                    var ttmm = txtm.slice(1,-3)
-                    nwstl = '<'+ currstl +'>' + ttmm  + '</'+ currstl +'>' + ' '
-                    // alert(nwstl)
-                    var bu = new RegExp(tm[i], 'g')
-                    var txt = txt.replace(bu, nwstl)
-                    // alert("newtxt " + txt)
-                    $(this).html(txt)
-                }
+            // alert(re)
+            // txt = txt.replace(/\<br\>/g,' \n')
+            var tm = txt.match(re)
+            if (tm){
+                // alert(txt)
 
-                else if (currstl == 'c'){    // case color
+                // alert('Text matched is ' + tm + '!!!!!')
 
-                    dic_col = {'r':'red', 'b':'blue', 'y':'yellow', 'g':'green', 'o':'orange', 'm':'magenta'}
-                    var ttmm = txtm.slice(1,-4)
-                    var col = txtm.slice(-2).trim()
-                    //alert(col)
-                    nwstl =  $('<span/>').text(ttmm + ' ').css({'color':dic_col[col]})
-                    interm = $('<div/>').append(nwstl)
-                    //  alert(interm.html())
-                    var cc = new RegExp(tm[i], 'g')
-                    var txt = txt.replace(cc, interm.html())
-                    $(this).html(txt)
-                    // alert(col)
-                }
-            } // end for
+                // alert(txt.replace(/\<br\>/g,' \n'))
+                for (i in tm){
+                    // alert(tm[i])
+                    txtm = tm[i].toString()
+                    //alert(stl[i])
+                    if (currstl != 'c'){               // case b or u
+                        var ttmm = txtm.slice(1,-3)
+                        nwstl = '<'+ currstl +'>' + ttmm  + '</'+ currstl +'>' + ' '
+                        // alert(nwstl)
+                        var bu = new RegExp(tm[i], 'g')
+                        var txt = txt.replace(bu, nwstl)
+                        //alert("newtxt " + txt)
+                        $(this).html(txt)
+                    }
 
-          }  // end if tm
-     }) // end each
+                    else if (currstl == 'c'){    // case color
+                        // alert('Text matched for color is ' + txtm)
+                        dic_col = {'r':'red', 'b':'blue', 'y':'yellow', 'g':'green', 'o':'orange', 'm':'magenta'}
+                        var ttmm = txtm.slice(1,-4)
+                        var col = txtm.slice(-2).trim()
+                        //alert(col)
+                        var nwstl =  $('<span/>').text(ttmm + ' ').css({'color':dic_col[col]})
+                        interm = $('<div/>').append(nwstl)
 
-} // end for
+                        //alert(interm.html())
 
-//===================================================================== color text
+                        var cc = new RegExp(tm[i], 'g')
+                        var txt = txt.replace(cc, interm.html())
+                        $(this).html(txt)
+                        // alert(col)
+                        // alert(txt)
+                    }
+                } // end for (i in tm) i in text matched
 
-// var stl = ['c']
-// for (i in stl){
-//     var currstl = stl[i]
-//     $("p, li").each(function(){ 
-//         var txt = $(this).html();
-//         var re = new RegExp('\"[^"]+\"' + currstl + ' ' , 'g')
-//         var tm = txt.match(re)
-//         if (tm){
-//             alert(tm)
-//             var ttmm = tm.toString().slice(1,-2)
-//             nwstl = '<p style="text-color:red;">' + ttmm + '</p>'
+              }  // end if tm
+         }) // end each p, li
 
-//             alert(nwstl)
-//             var newtxt = txt.replace(tm, nwstl)
-//             $(this).html(newtxt)
-//           }  // end if
-//      }) // end each
+    } // end for (i in stl)
 
-// } // end for
+}
 
-//===================================================================== Make underline
-
-    // $("p").each(function(){                // plugin list from one place to another..
-    //      var splitxt = $(this).html().split(/\s+/);
-    //      var foundu = false
-    //      for (i in splitxt){
-    //         if (splitxt[i].match(/@u/)){
-    //             foundu = true
-    //             var newslptxt = '<u>' + splitxt[i].trim().slice(0,-3) + '</u>'
-    //             splitxt[i] = newslptxt
-    //           } // end if
-
-    //      } // end for
-    //      if (foundu){
-    //         var newtext = splitxt.join(' ')
-    //         $(this).replaceWith($('<p/>').html(newtext))
-    //      }
-         
-    //  })// end each
+buc($("li")) // dealing with list
+buc($("p"))  // dealing with p
 
 //===================================================================== Folding videos
 
