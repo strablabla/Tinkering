@@ -964,11 +964,11 @@ var maketoc = function(){
 
 var buc = function(pli){
 
-    var stl = ['b','u','c'] // 'b', 'u', 
+    var stl = ['b','u','c'] // 'b', 'u',
     for (i in stl){
         var currstl = stl[i]
         // alert(currstl)
-        pli.each(function(){ 
+        pli.each(function(){
             var txt = $(this).html().replace(/\<br\>/g, ' <br>'); // .replace('<br>',' ')
             // var txt = $(this).html()
 
@@ -1046,6 +1046,13 @@ buc($("p"))  // dealing with p
                 var ulvid = $('<li/>').append(tlist).append(underthis) // <li> with text then clone
                 $(this).parent().replaceWith(ulvid) // replace <a> with a <ul> containing <a>
              } // end if
+
+             if ($(this).text().match('%%')){    // modifying local videos for permitting folded list mechanism.
+                 var tlist = $(this).text().split('%%')[0] +' ::'
+                 var underthis = $('<ul/>').append($('<li/>').append($(this).clone())) // put inside a list, inserted in ulvid
+                 var ulvid = $('<li/>').append(tlist).append(underthis) // <li> with text then clone
+                 $(this).parent().replaceWith(ulvid) // replace <a> with a <ul> containing <a>
+              } // end if
         })
 
 //===================================================================== Folding iframes and root mechanism (+++) with multiple iframes
@@ -1652,7 +1659,7 @@ buc($("p"))  // dealing with p
             var args = txt[1].trim().split(/\s+/)
             //alert(args)
             var name_pdb = args[0]
-            
+
             for (i in args){
                 if (i != 0){
                     var splitarg = args[i].split(/\:/)
@@ -1662,13 +1669,13 @@ buc($("p"))  // dealing with p
                         dic_style['data-style'+i]= splitarg[1]
                         //alert(dic_style['data-select'+i])
                     }
-                } //     
+                } //
             }
 
             var shiftleft = parseInt($('#content').css('width').slice(0,-2))/4
             // alert(shiftleft)
             var divpdbout = $('<div/>').addClass('3D')
-            var divpdb = $('<div/>').css({'left': shiftleft+'px','height':'400px','width':'400px', 'position': 'relative'}) 
+            var divpdb = $('<div/>').css({'left': shiftleft+'px','height':'400px','width':'400px', 'position': 'relative'})
 
             //-----------
 
@@ -1677,19 +1684,19 @@ buc($("p"))  // dealing with p
                   .attr('data-backgroundcolor','0xffffff')
                   .addClass('viewer_3Dmoljs')
 
-            $.each(dic_style, function(key, value) { 
+            $.each(dic_style, function(key, value) {
                   // alert(key + '_' + value)
                   divpdb.attr(key, value)
                 });
 
             //divpdbout.parent().css({'position':'relative'})
             divpdbout.append(divpdb)
-            
+
             $(this).replaceWith(divpdbout);
 
 
 
-         
+
 
             } // end if
         }) // end each

@@ -18,6 +18,7 @@ app.get('/text',function(req,res){
       res.sendFile(path.join(__dirname + '/views/text.html'));
   });
 
+app.use(express.static('public'));
 
 // Loading socket.io
 var io = require('socket.io')(server);
