@@ -47,7 +47,7 @@ class LIST_INSERT(object):
         except:
             root = input(mess)  # root
         self.prefix = os.getcwd()
-        self.prefix  = '../../' + root + self.prefix.split(root)[1]
+        self.prefix  =  root + self.prefix.split(root)[1]  # '../../' +
         dic_categ = {}                                                # list categories
         for path, dirs, files in os.walk('.'):                        # Go through the folders
             for f in files:                                           # considering files
