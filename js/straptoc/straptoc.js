@@ -223,6 +223,11 @@ var maketoc = function(){
     var reg_brack = /\[\w*.*\]/
     var reg_parent = /\(.*\w*.*\)/
 
+// ============================================== Redefining some classes
+
+$('.str, .pun, .typ, .pln, .lit').css({"color":"black"})
+$('.prettyprint').css({"text-align":"justify"})
+
 // ============================================== global parameters
 
     var num_slider = 0
@@ -970,26 +975,14 @@ var buc = function(pli){
         // alert(currstl)
         pli.each(function(){
             var txt = $(this).html().replace(/\<br\>/g, ' <br>'); // .replace('<br>',' ')
-            // var txt = $(this).html()
-
-            // alert('txt found with $("li").each ' + txt)
-            // alert('currstl '+ currstl)
-
             if (currstl != 'c'){
                 var re = new RegExp('\"[^"]+\"' + currstl + ' ', 'g')   // case color
                 }
             else{
                 var re = new RegExp('\"[^"]+\"' + currstl + '\.' +  ' ', 'g') // case b or u
             }
-            // alert(re)
-            // txt = txt.replace(/\<br\>/g,' \n')
             var tm = txt.match(re)
             if (tm){
-                // alert(txt)
-
-                // alert('Text matched is ' + tm + '!!!!!')
-
-                // alert(txt.replace(/\<br\>/g,' \n'))
                 for (i in tm){
                     // alert(tm[i])
                     txtm = tm[i].toString()
@@ -1003,7 +996,6 @@ var buc = function(pli){
                         //alert("newtxt " + txt)
                         $(this).html(txt)
                     }
-
                     else if (currstl == 'c'){    // case color
                         // alert('Text matched for color is ' + txtm)
                         dic_col = {'r':'red', 'b':'blue', 'y':'yellow', 'g':'green', 'o':'orange', 'm':'magenta'}
@@ -1012,9 +1004,7 @@ var buc = function(pli){
                         //alert(col)
                         var nwstl =  $('<span/>').text(ttmm + ' ').css({'color':dic_col[col]})
                         interm = $('<div/>').append(nwstl)
-
                         //alert(interm.html())
-
                         var cc = new RegExp(tm[i], 'g')
                         var txt = txt.replace(cc, interm.html())
                         $(this).html(txt)

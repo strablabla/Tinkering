@@ -408,7 +408,7 @@ img .thumbnail
     z-index: 3;
   }
 
-  
+
 
 /*==================================================
  * Plot
@@ -554,4 +554,9 @@ hr {
     margin-right: auto;
     border-style: inset;
     border-width: 1px;
+}
+
+
+p{
+    text-align: justify;
 }
