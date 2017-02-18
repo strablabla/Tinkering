@@ -7,6 +7,7 @@ from path import path
 Build the straptoc code for inserting images, pdf etc in a straptoc document.
 syntax:
      lins type corr (alias lins="python git/../list_insert.py")
+Becareful !!! don't use underscore for folders names.
 
 '''
 p = path()
@@ -19,15 +20,19 @@ class LIST_INSERT(object):
         '''
         '''
         self.kind = kind            # Kind of files on which we want to make straptoc code
-        self.strap_kind = {'pdf':'$pdf', 'vid':'$vid', 'img':'$portf', 'html':'$htm'}
-        self.kind_filter = {'pdf':['.pdf'], 'vid':['.mp4'], 'img':['jpg','png'], 'html':['.htm']}
+        self.strap_kind = {'pdf':'$pdf', 'vid':'$vid', 'img':'$portf', 'html':'$htm'} # elements inserted for strptoc code
+        self.kind_filter = {'pdf':['.pdf'], 'vid':['.mp4'], 'img':['jpg','png'], 'html':['.htm']} # list for filtering
 
     def pref(self, level):
         '''
         Prefix for folders
         '''
         return " "*level*4 + '* '
+
     def make_code(self, f, kind):
+        '''
+        Makes the code according to the type of element to insert in the staptoc document.
+        '''
         code = {'pdf':'[{0} §§]({1})'.format(f[:-4], f),      # pdf
                 'vid':'[{0}%%]({1})'.format(f[:-4], f),       # vid
                 'img':'![%{0}%]({1})'.format(f[:-4], f),      # img
@@ -39,18 +44,15 @@ class LIST_INSERT(object):
         '''
         Produces the code to be inserted in the straptoc document.
         '''
-        pf = os.getcwd()                   # path folder
-        dn = os.path.basename(pf)          # directory name
-        addr = path.joinpath(*path(pf).splitall()[-(level+1):])[:]
-        dic_infos[dn] = [level,addr]
-
+        pf = os.getcwd()                                # path folder
+        dn = os.path.basename(pf)                       # directory name
+        root = path.joinpath(*path(pf).splitall()[-(level+1):])[:]  # root address for straptoc
         for i,f in enumerate(glob.glob('*')):
             if path(f).isfile():
                 if i == 0:
                     if level>0:
                         print(self.pref(level) + self.strap_kind[self.kind])
-                        print(" "*level*4 + '+++ ' + addr)
-                dic_infos[dn].append(f)
+                        print(" "*level*4 + '+++ ' + root)
                 for k in  self.kind_filter[self.kind]:
                     if k in f:
                         print(" "*level*4 + self.make_code(f, self.kind))
@@ -61,8 +63,6 @@ class LIST_INSERT(object):
                 self.find_insert(level=level)    # recursion
                 os.chdir(path('../'))            # go back
                 level +=-1
-        #print(dic_infos)
-        self.dic_infos = dic_infos
 
 def make_list():
     mess = "root in CloudStation? eg encours/blabla finishing before current folder "
