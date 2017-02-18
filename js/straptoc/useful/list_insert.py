@@ -20,6 +20,7 @@ class LIST_INSERT(object):
         '''
         self.kind = kind            # Kind of files on which we want to make straptoc code
         self.strap_kind = {'pdf':'$pdf', 'vid':'$vid', 'img':'$portf', 'html':'$htm'}
+        self.kind_filter = {'pdf':['.pdf'], 'vid':['.mp4'], 'img':['jpg','png'], 'html':['.htm']}
 
     def pref(self, level):
         '''
@@ -36,7 +37,7 @@ class LIST_INSERT(object):
 
     def find_insert(self, dic_infos={}, level=0):
         '''
-        Produces the code to be inserted in the straptoc document. 
+        Produces the code to be inserted in the straptoc document.
         '''
         pf = os.getcwd()                   # path folder
         dn = os.path.basename(pf)          # directory name
@@ -48,7 +49,9 @@ class LIST_INSERT(object):
         for f in glob.glob('*'):
             if path(f).isfile():
                 dic_infos[dn].append(f)
-                print(" "*level*4 + self.make_code(f, self.kind))
+                for k in  self.kind_filter[self.kind]:
+                    if k in f:
+                        print(" "*level*4 + self.make_code(f, self.kind))
             elif path(f).isdir():  #
                 print(self.pref(level) + f + ' ::')
                 os.chdir(f)                      # go inside
@@ -64,5 +67,6 @@ def make_list():
     root = input(mess)  # root python 3
 
 if __name__=='__main__':
-    li = LIST_INSERT()
+    kind = sys.argv[1]
+    li = LIST_INSERT(kind=kind)
     li.find_insert()
