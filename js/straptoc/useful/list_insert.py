@@ -6,7 +6,8 @@ from path import path
 '''
 Build the straptoc code for inserting images, pdf etc in a straptoc document.
 syntax:
-    python list_insert.py kind_of_object_to_insert corr
+     lins type corr (alias lins="python git/../list_insert.py")
+
 '''
 p = path()
 
@@ -17,20 +18,26 @@ class LIST_INSERT(object):
     def __init__(self, kind='pdf'):
         '''
         '''
-        self.kind = kind
+        self.kind = kind            # Kind of files on which we want to make straptoc code
         self.strap_kind = {'pdf':'$pdf', 'vid':'$vid', 'img':'$portf', 'html':'$htm'}
 
     def pref(self, level):
+        '''
+        Prefix for folders
+        '''
         return " "*level*4 + '* '
     def make_code(self, f, kind):
         code = {'pdf':'[{0} §§]({1})'.format(f[:-4], f),      # pdf
                 'vid':'[{0}%%]({1})'.format(f[:-4], f),       # vid
                 'img':'![%{0}%]({1})'.format(f[:-4], f),      # img
-                'html':'[{0},,]({1})'.format(f[:-5], f)
+                'html':'[{0},,]({1})'.format(f[:-5], f)       # iframes
                 }
         return code[kind]
 
     def find_insert(self, dic_infos={}, level=0):
+        '''
+        Produces the code to be inserted in the straptoc document. 
+        '''
         pf = os.getcwd()                   # path folder
         dn = os.path.basename(pf)          # directory name
         addr = path.joinpath(*path(pf).splitall()[-(level+1):])[:]
