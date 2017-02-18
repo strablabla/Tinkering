@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/bdacdc0/js/straptoc/straptoc.js
-//https://github.com/strablabla/Tinkering/bdacdc0/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/2220b5a/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/2220b5a/js/straptoc/straptoc.css
 
 var maketoc = function(){
 

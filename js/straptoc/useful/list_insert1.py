@@ -15,7 +15,6 @@ class LIST_INSERT(object):
         '''
         self.kind = kind
         if param1 == "corr":
-
             self.corr = True
         else:
             self.corr = False
@@ -44,9 +43,9 @@ class LIST_INSERT(object):
         if not root:
             mess = "root in CloudStation? eg encours/blabla finishing before current folder "
             try:
-                root = raw_input(mess)  # root
+                root = raw_input(mess)  # root python 2.7
             except:
-                root = input(mess)  # root
+                root = input(mess)  # root python 3
         if not path:
             self.prefix = os.getcwd()
             self.prefix  =  root + self.prefix.split(root)[1]  # '../../' +
