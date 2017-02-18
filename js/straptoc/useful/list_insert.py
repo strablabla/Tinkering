@@ -43,11 +43,13 @@ class LIST_INSERT(object):
         dn = os.path.basename(pf)          # directory name
         addr = path.joinpath(*path(pf).splitall()[-(level+1):])[:]
         dic_infos[dn] = [level,addr]
-        if level>0:
-            print(self.pref(level) + self.strap_kind[self.kind])
-            print(" "*level*4 + '+++ ' + addr)
-        for f in glob.glob('*'):
+
+        for i,f in enumerate(glob.glob('*')):
             if path(f).isfile():
+                if i == 0:
+                    if level>0:
+                        print(self.pref(level) + self.strap_kind[self.kind])
+                        print(" "*level*4 + '+++ ' + addr)
                 dic_infos[dn].append(f)
                 for k in  self.kind_filter[self.kind]:
                     if k in f:
