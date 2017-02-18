@@ -1668,9 +1668,12 @@ buc($("p"))  // dealing with p
             var divpdb = $('<div/>').css({'left': shiftleft+'px','height':'400px','width':'400px', 'position': 'relative'})
 
             //-----------
-
-            divpdb.attr('data-pdb',name_pdb.trim())
-                  .attr('data-style','stick')
+            if (name_pdb.match(/\.pdb/)){
+                alert(name_pdb.trim())
+                divpdb.attr('data-href',name_pdb.trim())
+            }
+            else {divpdb.attr('data-pdb',name_pdb.trim())}
+            divpdb.attr('data-style','stick')
                   .attr('data-backgroundcolor','0xffffff')
                   .addClass('viewer_3Dmoljs')
 
