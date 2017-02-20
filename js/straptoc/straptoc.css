@@ -32,8 +32,6 @@ div.onside {
     /*resize: both;*/
   }
 
-
-
  div.under {
    position: fixed;
    padding-bottom: 20px;
@@ -86,7 +84,7 @@ div.onside {
  }
 
  /*==================================================
- * Parameters
+ * Parameters: Parameters for the straptoc document ;
  * ===============================================*/
 
  div.params {   /*Straptoc parameters*/
@@ -106,7 +104,7 @@ div.onside {
  }
 
  /*==================================================
- * Syntax
+ * Syntax : Straptoc list of syntax rules ;
  * ===============================================*/
 
  div.syntax {   /*Straptoc syntax*/
@@ -126,7 +124,7 @@ div.onside {
  }
 
 /*==================================================
- * Keys
+ * Keys : Keys available for interacting with the document;
  * ===============================================*/
 
  div.keys {  /* All keys*/
@@ -137,7 +135,7 @@ div.onside {
    padding-right: 40px;
    box-shadow: 0.5em 0.5em 0.7em;
    left: 50px;
-   max-height: 300px;
+   max-height: auto; /*300px;*/
    /*width: 300px;*/
    width: auto;
    background-color:#ccffcc;

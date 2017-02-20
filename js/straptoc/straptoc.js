@@ -112,11 +112,14 @@ var maketoc = function(){
     * $u: utf8 string :, This replace the string between : by the utf8 translation.
     * $pdb : pdb files insertion in the document. 
         * syntax is $pdb path_to_pdb(or pdb name in the databse) options
+        * eg: $pdb data/5u3j.pdb chA:cartoon
     * color, bold and underline : done using double quote and options
         * "blabla"u makes balbla underlined
         * "blabla"b makes blabla bold
         * "blabla"cb makes blabla with color blue
         * "blabla"cg makes blabla with color green etc..
+    * $post : insert a postit
+        * eg: $post Il était une fois cb , makes a postit with text Il était une fois with blue color.. 
     */}.toString().slice(14,-3)
 
     var keys = function(){/*
@@ -1378,8 +1381,28 @@ buc($("p"))  // dealing with p
 
     $("p").each(function(){ // POST'IT
              var html = $(this).html()
-             if (html.match(/^\$post\s*/)){
-                 var newtag = $('<div/>').html(html.split('$post')[1]).addClass('postit').draggable()
+             var reg_post = /^\$post\s*/
+             if (html.match(reg_post)){
+                 var txt = html.split(reg_post)
+                 var args = txt[1].trim().split(/\s+/)
+                 var splhtml = html.split('$post')
+                 var newtag = $('<div/>').html(splhtml[1])
+                                         .addClass('postit')
+                                         .draggable()
+            dic_col = {'r':'red', 'b':'blue', 'y':'yellow', 'g':'green', 'o':'orange', 'm':'magenta'}
+
+            var arg = args.slice(-1)[0]
+            // alert(arg.match(/c.$/))
+            if (arg.match(/c.$/)){
+                //alert(splitarg)
+                var col = arg.slice(-1)[0]
+                newtag.css({'background-color': dic_col[col]}) // modify the color
+                var newhtm = newtag.html().replace('c'+col, '')
+                alert(newhtm)
+                newtag.html(newhtm)
+            }
+          
+
                  $(this).replaceWith(newtag)
                 }// end if
         })
