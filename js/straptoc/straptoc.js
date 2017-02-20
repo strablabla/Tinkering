@@ -112,6 +112,11 @@ var maketoc = function(){
     * $u: utf8 string :, This replace the string between : by the utf8 translation.
     * $pdb : pdb files insertion in the document. 
         * syntax is $pdb path_to_pdb(or pdb name in the databse) options
+    * color, bold and underline : done using double quote and options
+        * "blabla"u makes balbla underlined
+        * "blabla"b makes blabla bold
+        * "blabla"cb makes blabla with color blue
+        * "blabla"cg makes blabla with color green etc..
     */}.toString().slice(14,-3)
 
     var keys = function(){/*
