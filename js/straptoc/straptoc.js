@@ -110,6 +110,8 @@ var maketoc = function(){
         * eg : before H1 place $menu_zax link:nm_Edit:ic_edit:href_Introduction
     * $------- : permit to insert comment lines in the edition window
     * $u: utf8 string :, This replace the string between : by the utf8 translation.
+    * $pdb : pdb files insertion in the document. 
+        * syntax is $pdb path_to_pdb(or pdb name in the databse) options
     */}.toString().slice(14,-3)
 
     var keys = function(){/*
@@ -1638,7 +1640,9 @@ buc($("p"))  // dealing with p
     //===================================================================== Insert molecules
 
     /*
-     Insert molecules for dynamic view with D3mol.js
+    Insert molecules for dynamic view of pdb files with D3mol.js
+    pdbs can be load on the database or locally. 
+    It is possible to add visualisation options like the kind of representation (stick, cartoon etc.. )
     */
         var dic_style = {}
 
@@ -1662,6 +1666,8 @@ buc($("p"))  // dealing with p
                 } //
             }
 
+            //-----------
+
             var shiftleft = parseInt($('#content').css('width').slice(0,-2))/4
             // alert(shiftleft)
             var divpdbout = $('<div/>').addClass('3D')
@@ -1669,7 +1675,7 @@ buc($("p"))  // dealing with p
 
             //-----------
             if (name_pdb.match(/\.pdb/)){
-                alert(name_pdb.trim())
+                // alert(name_pdb.trim())
                 divpdb.attr('data-href',name_pdb.trim())
             }
             else {divpdb.attr('data-pdb',name_pdb.trim())}
@@ -1687,14 +1693,8 @@ buc($("p"))  // dealing with p
 
             $(this).replaceWith(divpdbout);
 
-
-
-
-
             } // end if
         }) // end each
-
-
 
     //===================================================================== todotheme
 
