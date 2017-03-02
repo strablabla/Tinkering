@@ -425,32 +425,43 @@ $('.prettyprint').css({"text-align":"justify"})
     var htm = $(this).html()
     var txt = htm.split('\n')[1] || ' '
     if (txt.match(/\+\+\+\.*/)) {
-        var addroot = txt.split('+++')[1].trim()+'/'
+        var addroot = txt.split('+++')[1].trim()+'/'   // makes the root
         $(this).find('*').each(function(){
 
              //==============================   case of img
 
             if ($(this).parent().find('img')){
-                  $(this).attr('src', addroot+$(this).attr('src')) // add root path to img
+                  $(this).attr('src', addroot + $(this).attr('src')) // add root path to img
                 }
 
              //==============================   case of pdfs
 
             if ($(this).text().match(/§§/)){
-                $(this).attr('href', addroot+$(this).attr('href')) // add root path to pdf
-               }
+                $(this).attr('href', addroot + $(this).attr('href')) // add root path to pdf
+
+            var reg_tooltip = /\{(.|\n)*\}/
+            
+            if ($(this).text().match(reg_tooltip)){
+                    $(this).attr('title', $(this).text().match(reg_tooltip)[0].slice(1,-1)) // add the attribute title
+                    var newhtm = $(this).html().replace(reg_tooltip, ' ')                   // remove the brackets
+                    $(this).html(newhtm)
+                } // end match
+
+               } // end if
             //==============================   case of local videos
 
             if (htm.match(/%%/)){
-                $(this).attr('href', addroot+$(this).attr('href')) // add root path to vid
+                $(this).attr('href', addroot + $(this).attr('href')) // add root path to vid
               }
             //==============================   case of local html
 
             if (htm.match(/,,/)){
                 //alert($(this).html())
-                $(this).attr('href', addroot+$(this).attr('href')) // add root path to html
+                $(this).attr('href', addroot + $(this).attr('href')) // add root path to html
                }
             //==============================
+
+
             }) // end each
         } // end if txt.mtch
     }) // end each p, li
@@ -766,10 +777,10 @@ $('.prettyprint').css({"text-align":"justify"})
             var reg_tooltip = /\{.*\}/
             if (text.match(reg_tooltip)){
                 $(this).attr('title', text.match(reg_tooltip)[0].slice(1,-1)) // add the attribute title
-                var newhtm = $(this).html().replace(reg_tooltip, ' ') // remove the brackets
+                var newhtm = $(this).html().replace(reg_tooltip, ' ')         // remove the brackets
                 $(this).html(newhtm)
                 } // end match
-            })
+            }) // end each
         }
 
 //===================================================================== Input
@@ -1290,9 +1301,9 @@ buc($("p"))  // dealing with p
         var textp = $(this).text()
          if (textp.match('§novideo')){
              $(this).hide()
-             if (textp.trim() == '§novideo'){  // hides novideo
-                sel = ['§§'] // restricting the treatment to pdfs..
-                $("a").each(function(){ // removing ;;
+             if (textp.trim() == '§novideo'){     // hides novideo
+                sel = ['§§']                      // restricting the treatment to pdfs..
+                $("a").each(function(){           // removing ;;
                     var texta = $(this).text()
                     if (texta.search(';;') != -1){
                         $(this).text(texta.replace(';;',''))
@@ -1342,11 +1353,12 @@ buc($("p"))  // dealing with p
     var maketag = function(self, deb, end, select){ // makes the tags for pdfs and videos
         patt = {';;' : ["watch?v=", "embed/"], '§§' : ["none", "none"]}
         var tag = $("<ul/>").append($("<li/>")
-                            .append(deb+self.attr('href')
-                            .replace(patt[select][0], patt[select][1])+end)) // make doc
+                            .append(deb + self.attr('href')
+                            .replace(patt[select][0], patt[select][1]) + end)) // make doc
         var text = self.text().replace(select,'')
         $('<a/>').text(text).append($('<a/>').append($('<span/>').text( " [-]").addClass(select)))
                  .insertBefore(self).css({'color':debend[select]['color']})
+                 .attr('title', self.attr('title')) // Adding tooltip
         return tag
     }
 
@@ -1398,7 +1410,7 @@ buc($("p"))  // dealing with p
                 var col = arg.slice(-1)[0]
                 newtag.css({'background-color': dic_col[col]}) // modify the color
                 var newhtm = newtag.html().replace('c'+col, '')
-                alert(newhtm)
+                // alert(newhtm)
                 newtag.html(newhtm)
             }
           
