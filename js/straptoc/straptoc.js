@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/2220b5a/js/straptoc/straptoc.js
-//https://github.com/strablabla/Tinkering/2220b5a/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/79c0cae/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/79c0cae/js/straptoc/straptoc.css
 
 var maketoc = function(){
 
@@ -216,7 +216,8 @@ var maketoc = function(){
     var reg_col_toc = reg_func('col_toc')             // color of the TOC
     var reg_notoc = reg_func('notoc')                 // remove the TOC
     var reg_width_video = reg_func('width_video')     // videos's width
-    var reg_width_pdf = reg_func('width_pdf')
+    var reg_width_pdf = reg_func('width_pdf')         // pdf's width
+    var reg_height_pdf = reg_func('height_pdf')         // pdf's width
 
     var reg_width_content = reg_func('width_content')
     var reg_height_content = reg_func('height_content')
@@ -263,6 +264,7 @@ $('.prettyprint').css({"text-align":"justify"})
             'notoc':{'reg':reg_notoc, 'cut':'§notoc', 'var': false},
             'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': '80%' },
             'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'},
+            'pdf_height':{'reg':reg_height_pdf, 'cut':'§height_pdf', 'var': '80%'},
             'content_width':{'reg':reg_width_content, 'cut':'§width_content', 'var': false},
             'content_height':{'reg':reg_height_content, 'cut':'§height_content', 'var': false},
             'content_centered':{'reg':reg_centered_content, 'cut':'§centered_content', 'var': false},
@@ -273,8 +275,6 @@ $('.prettyprint').css({"text-align":"justify"})
             'help':{'reg':reg_help, 'cut':'§help', 'var': false},
             'params':{'reg':reg_params, 'cut':'§params', 'var': false}
          }
-
-
 
  //===================================================================== Go to top
 
@@ -1287,9 +1287,11 @@ buc($("p"))  // dealing with p
 //=====================================================================
 
     var sel = ['§§'] // ';;',
+    var wpdf = '"' + param['pdf_width']['var'] + '"'
+    var hpdf = '"' + param['pdf_height']['var'] + '"'
     var debend = { ',,' : {'color':'#ff0066'},
                    ';;' : {'deb' : '<iframe width='+'"' + param['vid_width']['var'] + '"' + 'height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
-                   '§§': {'deb' : '<object width='+'"' + param['pdf_width']['var'] + '"' + ' height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
+                   '§§': {'deb' : '<object width='+ wpdf + ' height=' + hpdf + ' type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
 
 //=====================================================================   No video
 
