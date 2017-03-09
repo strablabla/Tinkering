@@ -49,7 +49,7 @@
 
 $menu_bim link:nm_Edit:ic_edit:href_Blagues
 
-# Green{Origines contains all the informations relative to languages..}
+# first{Origines contains all the informations relative to languages..}
 
 Les langues italiques formaient, à côté des langues celtiques, germaniques et helléniques, une sous-famille « centum » de langues indo-européennes qui incluait le latin, parlé par la population du Latium en Italie centrale (les Latins), et d'autres parlers comme l'ombrien et l'osque, au voisinage immédiat d'une langue étrusque non indo-européenne mais dont le latin a subi l'influence culturelle. De nos jours, les langues italiques sont représentées par les langues romanes, issues du latin (l'italien, le roumain/moldave, l'aroumain, le français, l'occitan, le francoprovençal, le catalan, l'espagnol, le portugais, le sarde, le ladin, le corse, …, ainsi que des langues aujourd'hui éteintes comme le dalmate ou le mozarabe).
 
@@ -61,7 +61,7 @@ Les langues italiques formaient, à côté des langues celtiques, germaniques et
 
     À la Renaissance, la fonction scientifique et philosophique de la langue latine commence à décliner, tout comme sa fonction diplomatique (Ordonnance de Villers-Cotterêts, 1539). Cela n'empêchera pas Érasme de publier une quantité de textes en un latin redevenu classique et très riche ; de même, René Descartes (1596-1650) écrit volontiers en latin... surtout lorsqu'il est pressé (même s'il publie son Discours de la méthode d'abord en français pour des raisons particulières ;
 
-# Néolatin
+# last
 
     Le terme néolatin s'est répandu vers la fin des années 1890 parmi les linguistes et les scientifiques. Il sert aux spécialistes des lettres classiques pour désigner l'utilisation de la langue latine après la Renaissance, dans un but aussi bien scientifique que littéraire. Le début de la période est imprécis mais le développement de l'éducation chez les laïcs, l'acceptation des normes littéraires humanistes, ainsi que la grande disponibilité de textes latins qui a suivi l'invention de l'imprimerie, marquent une transition vers une ère nouvelle à la fin du xve siècle.
 
@@ -78,13 +78,23 @@ Les langues italiques formaient, à côté des langues celtiques, germaniques et
 
 <a href='https://mail.google.com/mail' id='mail' target="_blank"> blabla </a>
 <a href='http://www.lemonde.fr/' id='lemonde' target="_blank"> lem </a>
+<a href='#last' id='good' > last </a>
+<a href='#first' id='bad' > first </a>
 
 <script>
 if (annyang) {
 
   var mail=function(){document.getElementById("mail").click()}
   var lem=function(){document.getElementById("lemonde").click()}
-  var commands = {'mail': mail, 'news': lem}; //'*link': link,
+  var last=function(){
+      alert('goooood');
+      $("#good").click()
+  }
+  var first=function(){
+      alert('baddddd')
+      $("#bad").click()
+  }
+  var commands = {'open mail': mail, 'open news': lem, 'good':last, 'bad':first};
 
   annyang.addCommands(commands);
   annyang.start();
