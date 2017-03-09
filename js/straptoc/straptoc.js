@@ -4,8 +4,8 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/79c0cae/js/straptoc/straptoc.js
-//https://github.com/strablabla/Tinkering/79c0cae/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/666f0ad/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/666f0ad/js/straptoc/straptoc.css
 
 var maketoc = function(){
 
@@ -988,6 +988,16 @@ $('.prettyprint').css({"text-align":"justify"})
 
 //===================================================================== Make bold, underline and color
 
+/*
+Change color in the text.
+Example : 
+
+"blabla"cb colors blabla in blue,
+"blabla"u underlines blabla,
+"blabla"b makes blabla in bold
+
+*/
+
 var buc = function(pli){
 
     var stl = ['b','u','c'] // 'b', 'u',
@@ -1007,14 +1017,12 @@ var buc = function(pli){
                 for (i in tm){
                     // alert(tm[i])
                     txtm = tm[i].toString()
-                    //alert(stl[i])
                     if (currstl != 'c'){               // case b or u
                         var ttmm = txtm.slice(1,-3)
                         nwstl = '<'+ currstl +'>' + ttmm  + '</'+ currstl +'>' + ' '
                         // alert(nwstl)
                         var bu = new RegExp(tm[i], 'g')
                         var txt = txt.replace(bu, nwstl)
-                        //alert("newtxt " + txt)
                         $(this).html(txt)
                     }
                     else if (currstl == 'c'){    // case color
@@ -1025,20 +1033,14 @@ var buc = function(pli){
                         //alert(col)
                         var nwstl =  $('<span/>').text(ttmm + ' ').css({'color':dic_col[col]})
                         interm = $('<div/>').append(nwstl)
-                        //alert(interm.html())
                         var cc = new RegExp(tm[i], 'g')
                         var txt = txt.replace(cc, interm.html())
                         $(this).html(txt)
-                        // alert(col)
-                        // alert(txt)
                     }
                 } // end for (i in tm) i in text matched
-
               }  // end if tm
          }) // end each p, li
-
     } // end for (i in stl)
-
 }
 
 buc($("li")) // dealing with list
