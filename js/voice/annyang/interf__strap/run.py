@@ -9,6 +9,7 @@ from threading import Thread
 from time import sleep
 from flask import Flask, render_template, request
 import flask
+import subprocess
 
 app = Flask(__name__, static_url_path = '/static')
 
@@ -16,19 +17,13 @@ app = Flask(__name__, static_url_path = '/static')
 def index():
     return render_template('straptoc_eg_small.html')
 
-@app.route('/control', methods = ['POST'])
-def control():
-    '''
-    Control of the vehicule displacements
-    '''
-    dic_direct = {"forward":"f", "back":"b", "right":"r", "left":"l", 'btn':"btn_direct"}
-    dic_cam = {"up":"c", "down":"x", "right":"w", "left":"q", 'btn':"btn_cam"}
-    dic_acc = {"acc":"a"}
-    list_ctrl = [dic_direct, dic_cam, dic_acc]
-    for dic in list_ctrl:
-        control_task(dic, ser)
-
-    return render_template('first_page.html')
+@app.route('/zic', methods = ['POST'])
+def zic():
+    print(request.form.get('musique'))
+    if request.form.get('musique'):
+        print('triggering the music !!!! ')
+        subprocess.Popen(['vlc', '/home/lio/Téléchargements/youtube/zic/Sexy/Papetti'])
+    return render_template('hello.html')
 
 if __name__ == "__main__":
     import threading, webbrowser

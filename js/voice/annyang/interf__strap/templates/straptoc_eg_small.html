@@ -34,6 +34,8 @@
   src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
 </script>
 
+<div id='up' > first </div>
+
 <xmp theme="simplex" style="display:none;">
 
 §menu Blagues:#Plot_Blagues Sous-rubrique:#Short-title_sous-rubrique
@@ -46,8 +48,6 @@
 
 # Introduction
 ## example
-
-$menu_bim link:nm_Edit:ic_edit:href_Blagues
 
 # first{Origines contains all the informations relative to languages..}
 
@@ -68,9 +68,7 @@ Les langues italiques formaient, à côté des langues celtiques, germaniques et
 # Short-title
 ## sous-rubrique
 
-
 </xmp>
-
 
 <script src="/static/strapdown.js"> //https://strapdownjs.com/v/0.2/ </script>
 
@@ -78,27 +76,41 @@ Les langues italiques formaient, à côté des langues celtiques, germaniques et
 
 <a href='https://mail.google.com/mail' id='mail' target="_blank"> blabla </a>
 <a href='http://www.lemonde.fr/' id='lemonde' target="_blank"> lem </a>
-<a href='#last' id='good' > last </a>
-<a href='#first' id='bad' > first </a>
+
+<div   id='here' > last </div>
 
 <script>
 if (annyang) {
 
   var mail=function(){document.getElementById("mail").click()}
   var lem=function(){document.getElementById("lemonde").click()}
+
   var last=function(){
-      alert('goooood');
-      $("#good").click()
+      //alert('bottom');
+        $('html, body').animate({
+            scrollTop: $("#here").offset().top
+        }, 2000);
   }
   var first=function(){
-      alert('baddddd')
-      $("#bad").click()
+      //alert('up')
+      $('html, body').animate({
+          scrollTop: $("#up").offset().top
+      }, 2000);
   }
-  var commands = {'open mail': mail, 'open news': lem, 'good':last, 'bad':first};
+
+  var zic=function(){
+      alert('yesssss')
+      document.getElementById('zic').click()
+     }
+  var commands = {'open mail': mail, 'open news': lem,'good':last, 'bad':first, 'music': zic}; //
 
   annyang.addCommands(commands);
   annyang.start();
 }
 </script>
+
+<form action='/zic' method="post" id='formzic'>
+    <input type='submit' id='zic' name='musique' >
+</form>
 
 </html>
