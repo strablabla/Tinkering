@@ -57,6 +57,10 @@ Les langues italiques formaient, à côté des langues celtiques, germaniques et
 ### poaepaeuapeauepaue
 * eaheahea
 
+# Song
+
+* [Pagal Tujhe Main Kar Dunga, - Romantic Song ;;](https://www.youtube.com/watch?v=psY23vRJb8w)
+
 # Latin humaniste
 
     À la Renaissance, la fonction scientifique et philosophique de la langue latine commence à décliner, tout comme sa fonction diplomatique (Ordonnance de Villers-Cotterêts, 1539). Cela n'empêchera pas Érasme de publier une quantité de textes en un latin redevenu classique et très riche ; de même, René Descartes (1596-1650) écrit volontiers en latin... surtout lorsqu'il est pressé (même s'il publie son Discours de la méthode d'abord en français pour des raisons particulières ;
@@ -98,15 +102,24 @@ if (annyang) {
       }, 2000);
   }
 
+  var song=function(){document.getElementById("psY23vRJb8w").click()}
+
   var zic=function(){
-      alert('yesssss')
       document.getElementById('zic').click()
      }
-  var commands = {'open mail': mail, 'open news': lem,'good':last, 'bad':first, 'music': zic}; //
+
+  var commands = {'open mail': mail, 'open news': lem,
+     'last':last, 'first':first, 'music': zic,'song':song }; //
 
   annyang.addCommands(commands);
   annyang.start();
 }
+
+
+// $('h1').each(function(){
+//     alert($(this).attr('id'))
+// })
+
 </script>
 
 <form action='/zic' method="post" id='formzic'>

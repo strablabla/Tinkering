@@ -3,7 +3,7 @@ Server for communication with vehicule.
 threaded = True in app.run for not blocking communication with SSE.
 '''
 import os, sys, time
-sys.path.append('/usr/lib/python2.7/dist-packages')
+#sys.path.append('/usr/lib/python2.7/dist-packages')
 import numpy as np
 from threading import Thread
 from time import sleep
@@ -22,7 +22,8 @@ def zic():
     print(request.form.get('musique'))
     if request.form.get('musique'):
         print('triggering the music !!!! ')
-        subprocess.Popen(['vlc', '/home/lio/Téléchargements/youtube/zic/Sexy/Papetti'])
+        #subprocess.Popen(['vlc', '/home/lio/Téléchargements/youtube/zic/Sexy/Papetti'])
+        subprocess.Popen(['vlc', '/home/lio/Téléchargements/youtube/zic/Films/LalaLand'])
     return render_template('hello.html')
 
 if __name__ == "__main__":
