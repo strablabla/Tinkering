@@ -5,34 +5,53 @@
 <title>Todo list exemple</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/1.6.0/annyang.js"></script>
-<script  src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script  src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
-<script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.1.1/jquery.contextMenu.js"></script>
-<script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.11/js/min/perfect-scrollbar.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script  src="/static/js/jquery.min.js"></script>
+<script  src="/static/js/jquery-ui.js"></script>
+<script  src="/static/js/jquery.contextMenu.js"></script>
+<script  src="/static/js/perfect-scrollbar.min.js"></script>
+<script src="/static/js/d3.min.js"></script>
 <!-- ####### Straptoc -->
-<script  src="https://cdn.rawgit.com/strablabla/Tinkering/6348afc/js/straptoc/straptoc.js"></script>
-<link rel="stylesheet" href="https://cdn.rawgit.com/strablabla/Tinkering/6348afc/js/straptoc/straptoc.css">
+<script  src="/static/js/straptoc.js"></script>
+<link rel="stylesheet" href="/static/css/straptoc.css">
 <!-- CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.1.1/jquery.contextMenu.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.11/css/perfect-scrollbar.css">
+<link rel="stylesheet" href="/static/css/jquery.contextMenu.css">
+<link rel="stylesheet" href="/static/css/perfect-scrollbar.css">
 <!-- Fonts -->
 <link href='https://fonts.googleapis.com/css?family=Pathway+Gothic+One' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Londrina+Solid' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Enriqueta' rel='stylesheet' type='text/css'>
 <!-- Bootstrap -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="/static/css/strapdown.css">
 
-<!--  1ecab69-->
+<script src="/static/js/bootstrap.min.js"></script>
 
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-</script>
-<script type="text/javascript" async
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
-</script>
+
+<style>
+
+/*
+
+*/
+
+div.journal{
+    position: fixed;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    box-shadow: 0.5em 0.5em 0.7em;
+    top: 270px;
+    left: 50%;
+    margin-left: -250px;
+    height: 350px;
+    width: 500px;
+    background-color: #ddffcc;
+    font-size:85%;
+    z-index: 30;
+    }
+
+</style>
 
 <div id='up' > first </div>
 
@@ -74,7 +93,7 @@ Les langues italiques formaient, à côté des langues celtiques, germaniques et
 
 </xmp>
 
-<script src="/static/strapdown.js"> //https://strapdownjs.com/v/0.2/ </script>
+<script src="/static/js/strapdown.js"> //https://strapdownjs.com/v/0.2/ </script>
 
 <script> maketoc() </script>
 
@@ -84,6 +103,12 @@ Les langues italiques formaient, à côté des langues celtiques, germaniques et
 <div   id='here' > last </div>
 
 <script>
+
+var jj = $('</div>').addClass('journal').attr('id','jrn')
+                       .append($('</div>').text("lemonde"))
+                       .append($('</div>').text("Nouvel obs"))
+$('#content').append(jj)
+
 if (annyang) {
 
   var mail=function(){document.getElementById("mail").click()}
@@ -107,14 +132,26 @@ if (annyang) {
   var zic=function(){
       document.getElementById('zic').click()
      }
+  var test=function(){
+     alert('helllloooo')
+    }
+   var table=function(){
+        $('#toc').toggle()
+    }
+   var key=function(){
+         $('#keys').toggle()
+     }
+   var syntax=function(){
+           $('#syntax').toggle()
+       }
 
   var commands = {'open mail': mail, 'open news': lem,
-     'last':last, 'first':first, 'music': zic,'song':song }; //
+     'last':last, 'first':first, 'music': zic,'song':song,
+     'car': test, 'table':table, "panel key":key, "syntax":syntax }; //
 
   annyang.addCommands(commands);
   annyang.start();
 }
-
 
 // $('h1').each(function(){
 //     alert($(this).attr('id'))
