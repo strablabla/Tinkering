@@ -7,7 +7,8 @@ import os, sys, time
 import numpy as np
 from threading import Thread
 from time import sleep
-from flask import Flask, render_template, request
+from flask import Flask, render_template,request,\
+			redirect, url_for, session
 import flask
 import subprocess
 
@@ -22,9 +23,10 @@ def zic():
     print(request.form.get('musique'))
     if request.form.get('musique'):
         print('triggering the music !!!! ')
-        #subprocess.Popen(['vlc', '/home/lio/Téléchargements/youtube/zic/Sexy/Papetti'])
-        subprocess.Popen(['vlc', '/home/lio/Téléchargements/youtube/zic/Films/LalaLand'])
-    return render_template('hello.html')
+        subprocess.Popen(['vlc', '/home/lio/Téléchargements/youtube/zic/Sexy/Papetti'])
+        #subprocess.Popen(['vlc', '/home/lio/Téléchargements/youtube/zic/Films/LalaLand'])
+    # return render_template('hello.html')
+    return redirect(url_for('index'))
 
 if __name__ == "__main__":
     import threading, webbrowser
