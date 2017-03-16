@@ -85,14 +85,14 @@ var maketoc = function(){
     * Deactivate objects
         * Set notoc to true for removing the TOC.
         * novideo, at the beginning of the document to avoid loading of videos.
+        * noiframes, at the beginning of the document to avoid loading of iframes.
     * Tooltips
         * insertion of tooltip : after h1 or h2, write the tooltip betweeen {}
-    * --link-- , creates a tag with id "link"
     * @@ blabla, copy the li, blabla @@ paste the li (@@ must be glued)
     * @color to change color, for the moment works only for lists.
     * %%% for deleting symbolically a line, replacing  the tilde.
-    * noiframes, at the beginning of the document to avoid loading of iframes.
-    * +++ rootpath for registering root path for \$carr or \$portf when muliple path with same root.
+    * Common path
+        * syntax : +++ rootpath for  \$carr or \$portf  \$pdf when muliple path with same root.
         *  eg for frames :
             * blabla
                 +++ root
@@ -101,23 +101,29 @@ var maketoc = function(){
             * no space after blabla
             * +++ and [title .. on same column
     * ``` before code for show code.. no need to bracket the code.
-    * §menu toto:hash bobo:trash, add items bobo and toto to navbar with links hash and trash
-    * $input b blabla : makes a button blabla
-    * $input i ohoh : makes a input for entering text with placeholder ohoh.
-    * $* : line separation
-    * §mathsize : set the size of the equations. Possible values : tiny, small, normalsize, large, Large, LARGE, huge, Huge
+    * links and buttons
+        * §menu toto:hash bobo:trash, add items bobo and toto to navbar with links hash and trash
+        * $input b blabla : makes a button blabla
+        * $input i ohoh : makes a input for entering text with placeholder ohoh.
+        * --link-- , creates a tag with id "link"
+    * separation
+        * $* : horizontal line separation
+    * math 
+        * §mathsize : set the size of the equations. Possible values : tiny, small, normalsize, large, Large, LARGE, huge, Huge
     * $menu :
         * eg : before H1 place $menu_zax link:nm_Edit:ic_edit:href_Introduction
-    * $------- : permit to insert comment lines in the edition window
+    * comments
+        * $------- : permit to insert comment lines in the edition window
     * $u: utf8 string :, This replace the string between : by the utf8 translation.
     * $pdb : pdb files insertion in the document. 
-        * syntax is $pdb path_to_pdb(or pdb name in the databse) options
+        * syntax is $pdb path_to_pdb(or pdb name in the database) options
         * eg: $pdb data/5u3j.pdb chA:cartoon
-    * color, bold and underline : done using double quote and options
-        * "blabla"u makes balbla underlined
-        * "blabla"b makes blabla bold
-        * "blabla"cb makes blabla with color blue
-        * "blabla"cg makes blabla with color green etc..
+    * color, bold and underline
+        * This is done using double quote and options
+            * "blabla"u makes balbla underlined
+            * "blabla"b makes blabla bold
+            * "blabla"cb makes blabla with color blue
+            * "blabla"cg makes blabla with color green etc..
     * $post : insert a postit
         * eg: $post Il était une fois cb , makes a postit with text Il était une fois with blue color.. 
     */}.toString().slice(14,-3)
@@ -178,7 +184,7 @@ var maketoc = function(){
         for (i in all_text){
             var text_insert = all_text[i].trim().slice(1) // prepare text
             if (all_text[i].match(/^\s{4}\*/)){    // detect list first level
-                ul.append($('<li/>').text(text_insert))
+                ul.append($('<li/>').text(text_insert).css({"font-weight": "bold"}))
                 } // end if
             if (all_text[i].match(/^\s{8}\*/)){  // detect list second level
                     var interm1 = $('<ul/>').append($('<li/>').text(text_insert))
@@ -389,7 +395,8 @@ $('.prettyprint').css({"text-align":"justify"})
     $("p").each(function(){
       txt = $(this).text()
       if (txt.match(/^\$\*/)) {
-            $(this).replaceWith($('<hr/>'))
+            var hr = $('<hr/>')
+            $(this).replaceWith(hr)
           }   // end if txt.mtch
       })   // end each p
 
