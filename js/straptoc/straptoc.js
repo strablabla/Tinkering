@@ -4,8 +4,9 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/666f0ad/js/straptoc/straptoc.js
-//https://github.com/strablabla/Tinkering/666f0ad/js/straptoc/straptoc.css
+//#######
+//https://github.com/strablabla/Tinkering/e68d63f/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/e68d63f/js/straptoc/straptoc.css
 
 var maketoc = function(){
 
@@ -1034,7 +1035,7 @@ var buc = function(pli){
                     }
                     else if (currstl == 'c'){    // case color
                         // alert('Text matched for color is ' + txtm)
-                        dic_col = {'r':'red', 'b':'blue', 'y':'yellow', 'g':'green', 'o':'orange', 'm':'magenta'}
+                        dic_col = {'r':'red', 'b':'blue', 'y':'#ffe066', 'g':'#8cd98c', 'o':'orange', 'm':'#cc0066'}
                         var ttmm = txtm.slice(1,-4)
                         var col = txtm.slice(-2).trim()
                         //alert(col)
@@ -1412,7 +1413,9 @@ buc($("p"))  // dealing with p
                  var newtag = $('<div/>').html(splhtml[1])
                                          .addClass('postit')
                                          .draggable()
-            dic_col = {'r':'red', 'b':'blue', 'y':'yellow', 'g':'green', 'o':'orange', 'm':'magenta'}
+            dic_col = {'r':'red', 'b':'blue', 'y':'#ffe066', 'g':'#b3ffb3', 'o':'orange', 'm':'#cc0066'}
+            // #b3ffb3
+            // green #c2f0c2', '#c6ffb3'
 
             var arg = args.slice(-1)[0]
             // alert(arg.match(/c.$/))
