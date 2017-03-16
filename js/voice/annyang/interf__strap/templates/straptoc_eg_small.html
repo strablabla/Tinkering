@@ -93,6 +93,9 @@ Les langues italiques formaient, à côté des langues celtiques, germaniques et
 
 <a href='https://mail.google.com/mail' id='mail' target="_blank"> blabla </a>
 <a href='http://www.lemonde.fr/' id='lemonde' target="_blank"> lem </a>
+<a href='http://www.arte.tv/guide/fr/emissions/AJT/arte-journal' id='arte' target="_blank"> arte </a>
+<a href='http://www.tarjetarojaonline.me/' id='foot' target="_blank"> foot </a>
+
 
 <div   id='here' > last </div>
 
@@ -102,16 +105,18 @@ Les langues italiques formaient, à côté des langues celtiques, germaniques et
 // var jj = $('</div>').attr('id','jrn')
 //                        .append($('</div>').text("lemonde"))
 //                        .append($('</div>').text("Nouvel obs"))
-$('#content').append($('</div>').text("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
+//$('#content').append($('</div>').text("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
 
-$('#content').html('oooo')
+//$('#content').html('oooo')
 
-alert($('#content').html())
+//alert($('#content').html())
 
 if (annyang) {
 
   var mail=function(){document.getElementById("mail").click()}
   var lem=function(){document.getElementById("lemonde").click()}
+  var arte=function(){document.getElementById("arte").click()}
+  var foot=function(){document.getElementById("foot").click()}
 
   var last=function(){
       //alert('bottom');
@@ -146,7 +151,8 @@ if (annyang) {
 
   var commands = {'open mail': mail, 'open news': lem,
      'last':last, 'first':first, 'music': zic,'song':song,
-     'car': test, 'table':table, "which keys":key, "syntax":syntax }; //
+     'car': test, 'table':table, "which keys":key, "syntax":syntax,
+     'channel seven':arte, 'foot':foot }; //
 
   annyang.addCommands(commands);
   annyang.start();
