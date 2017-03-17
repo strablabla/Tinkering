@@ -1798,6 +1798,12 @@ buc($("p"))  // dealing with p
 
     //===================================================================== esc
 
+    var help = $('<div/>').addClass('help').attr('id',"help").text("help")
+    $('body').prepend(help)
+    $('#help').click(function(){$('#keys').toggle()})
+   
+    //===================================================================== esc
+
     $('body').prepend($('<div/>').addClass('esc').attr('id',"esc"))
     $('#esc').toggle()
 

@@ -213,9 +213,32 @@ div.onside {
     box-shadow: 0.5em 0.5em 0.7em;
     background-color:#00cc66;
     color:green;
+    right:20px;
+    top:10px;
     font-size:85%;
     height:30px;
     width:30px;
+    z-index: 50;
+  }
+
+/*==================================================
+ * Green square for indicating that the keys are active.
+ * ===============================================*/
+
+ div.help {
+    position: fixed;
+    padding-right: 0px;
+    /*box-shadow: 0.5em 0.5em 0.7em;*/
+    background-color:#e0e0d1;
+    right:20px;
+    top:5px;
+    font-size:100%;
+    text-align: center;
+    padding-top: 5px;
+    height:30px;
+    width:100px;
+    z-index: 50;
+    opacity:0.8;
   }
 
 /*==================================================
