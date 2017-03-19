@@ -4,8 +4,9 @@
 //     document.head.appendChild(sc);
 // }
 
-//https://github.com/strablabla/Tinkering/2220b5a/js/straptoc/straptoc.js
-//https://github.com/strablabla/Tinkering/2220b5a/js/straptoc/straptoc.css
+//#######
+//https://github.com/strablabla/Tinkering/e68d63f/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/e68d63f/js/straptoc/straptoc.css
 
 var maketoc = function(){
 
@@ -85,14 +86,14 @@ var maketoc = function(){
     * Deactivate objects
         * Set notoc to true for removing the TOC.
         * novideo, at the beginning of the document to avoid loading of videos.
+        * noiframes, at the beginning of the document to avoid loading of iframes.
     * Tooltips
         * insertion of tooltip : after h1 or h2, write the tooltip betweeen {}
-    * --link-- , creates a tag with id "link"
     * @@ blabla, copy the li, blabla @@ paste the li (@@ must be glued)
     * @color to change color, for the moment works only for lists.
     * %%% for deleting symbolically a line, replacing  the tilde.
-    * noiframes, at the beginning of the document to avoid loading of iframes.
-    * +++ rootpath for registering root path for \$carr or \$portf when muliple path with same root.
+    * Common path
+        * syntax : +++ rootpath for  \$carr or \$portf  \$pdf when muliple path with same root.
         *  eg for frames :
             * blabla
                 +++ root
@@ -101,23 +102,29 @@ var maketoc = function(){
             * no space after blabla
             * +++ and [title .. on same column
     * ``` before code for show code.. no need to bracket the code.
-    * §menu toto:hash bobo:trash, add items bobo and toto to navbar with links hash and trash
-    * $input b blabla : makes a button blabla
-    * $input i ohoh : makes a input for entering text with placeholder ohoh.
-    * $* : line separation
-    * §mathsize : set the size of the equations. Possible values : tiny, small, normalsize, large, Large, LARGE, huge, Huge
+    * links and buttons
+        * §menu toto:hash bobo:trash, add items bobo and toto to navbar with links hash and trash
+        * $input b blabla : makes a button blabla
+        * $input i ohoh : makes a input for entering text with placeholder ohoh.
+        * --link-- , creates a tag with id "link"
+    * separation
+        * $* : horizontal line separation
+    * math 
+        * §mathsize : set the size of the equations. Possible values : tiny, small, normalsize, large, Large, LARGE, huge, Huge
     * $menu :
         * eg : before H1 place $menu_zax link:nm_Edit:ic_edit:href_Introduction
-    * $------- : permit to insert comment lines in the edition window
+    * comments
+        * $------- : permit to insert comment lines in the edition window
     * $u: utf8 string :, This replace the string between : by the utf8 translation.
     * $pdb : pdb files insertion in the document. 
-        * syntax is $pdb path_to_pdb(or pdb name in the databse) options
+        * syntax is $pdb path_to_pdb(or pdb name in the database) options
         * eg: $pdb data/5u3j.pdb chA:cartoon
-    * color, bold and underline : done using double quote and options
-        * "blabla"u makes balbla underlined
-        * "blabla"b makes blabla bold
-        * "blabla"cb makes blabla with color blue
-        * "blabla"cg makes blabla with color green etc..
+    * color, bold and underline
+        * This is done using double quote and options
+            * "blabla"u makes balbla underlined
+            * "blabla"b makes blabla bold
+            * "blabla"cb makes blabla with color blue
+            * "blabla"cg makes blabla with color green etc..
     * $post : insert a postit
         * eg: $post Il était une fois cb , makes a postit with text Il était une fois with blue color.. 
     */}.toString().slice(14,-3)
@@ -178,7 +185,7 @@ var maketoc = function(){
         for (i in all_text){
             var text_insert = all_text[i].trim().slice(1) // prepare text
             if (all_text[i].match(/^\s{4}\*/)){    // detect list first level
-                ul.append($('<li/>').text(text_insert))
+                ul.append($('<li/>').text(text_insert).css({"font-weight": "bold"}))
                 } // end if
             if (all_text[i].match(/^\s{8}\*/)){  // detect list second level
                     var interm1 = $('<ul/>').append($('<li/>').text(text_insert))
@@ -216,7 +223,8 @@ var maketoc = function(){
     var reg_col_toc = reg_func('col_toc')             // color of the TOC
     var reg_notoc = reg_func('notoc')                 // remove the TOC
     var reg_width_video = reg_func('width_video')     // videos's width
-    var reg_width_pdf = reg_func('width_pdf')
+    var reg_width_pdf = reg_func('width_pdf')         // pdf's width
+    var reg_height_pdf = reg_func('height_pdf')         // pdf's width
 
     var reg_width_content = reg_func('width_content')
     var reg_height_content = reg_func('height_content')
@@ -263,6 +271,7 @@ $('.prettyprint').css({"text-align":"justify"})
             'notoc':{'reg':reg_notoc, 'cut':'§notoc', 'var': false},
             'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': '80%' },
             'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'},
+            'pdf_height':{'reg':reg_height_pdf, 'cut':'§height_pdf', 'var': '80%'},
             'content_width':{'reg':reg_width_content, 'cut':'§width_content', 'var': false},
             'content_height':{'reg':reg_height_content, 'cut':'§height_content', 'var': false},
             'content_centered':{'reg':reg_centered_content, 'cut':'§centered_content', 'var': false},
@@ -273,8 +282,6 @@ $('.prettyprint').css({"text-align":"justify"})
             'help':{'reg':reg_help, 'cut':'§help', 'var': false},
             'params':{'reg':reg_params, 'cut':'§params', 'var': false}
          }
-
-
 
  //===================================================================== Go to top
 
@@ -389,7 +396,8 @@ $('.prettyprint').css({"text-align":"justify"})
     $("p").each(function(){
       txt = $(this).text()
       if (txt.match(/^\$\*/)) {
-            $(this).replaceWith($('<hr/>'))
+            var hr = $('<hr/>')
+            $(this).replaceWith(hr)
           }   // end if txt.mtch
       })   // end each p
 
@@ -988,6 +996,16 @@ $('.prettyprint').css({"text-align":"justify"})
 
 //===================================================================== Make bold, underline and color
 
+/*
+Change color in the text.
+Example : 
+
+"blabla"cb colors blabla in blue,
+"blabla"u underlines blabla,
+"blabla"b makes blabla in bold
+
+*/
+
 var buc = function(pli){
 
     var stl = ['b','u','c'] // 'b', 'u',
@@ -1007,38 +1025,30 @@ var buc = function(pli){
                 for (i in tm){
                     // alert(tm[i])
                     txtm = tm[i].toString()
-                    //alert(stl[i])
                     if (currstl != 'c'){               // case b or u
                         var ttmm = txtm.slice(1,-3)
                         nwstl = '<'+ currstl +'>' + ttmm  + '</'+ currstl +'>' + ' '
                         // alert(nwstl)
                         var bu = new RegExp(tm[i], 'g')
                         var txt = txt.replace(bu, nwstl)
-                        //alert("newtxt " + txt)
                         $(this).html(txt)
                     }
                     else if (currstl == 'c'){    // case color
                         // alert('Text matched for color is ' + txtm)
-                        dic_col = {'r':'red', 'b':'blue', 'y':'yellow', 'g':'green', 'o':'orange', 'm':'magenta'}
+                        dic_col = {'r':'red', 'b':'blue', 'y':'#ffe066', 'g':'#8cd98c', 'o':'orange', 'm':'#cc0066'}
                         var ttmm = txtm.slice(1,-4)
                         var col = txtm.slice(-2).trim()
                         //alert(col)
                         var nwstl =  $('<span/>').text(ttmm + ' ').css({'color':dic_col[col]})
                         interm = $('<div/>').append(nwstl)
-                        //alert(interm.html())
                         var cc = new RegExp(tm[i], 'g')
                         var txt = txt.replace(cc, interm.html())
                         $(this).html(txt)
-                        // alert(col)
-                        // alert(txt)
                     }
                 } // end for (i in tm) i in text matched
-
               }  // end if tm
          }) // end each p, li
-
     } // end for (i in stl)
-
 }
 
 buc($("li")) // dealing with list
@@ -1287,9 +1297,11 @@ buc($("p"))  // dealing with p
 //=====================================================================
 
     var sel = ['§§'] // ';;',
+    var wpdf = '"' + param['pdf_width']['var'] + '"'
+    var hpdf = '"' + param['pdf_height']['var'] + '"'
     var debend = { ',,' : {'color':'#ff0066'},
                    ';;' : {'deb' : '<iframe width='+'"' + param['vid_width']['var'] + '"' + 'height="315" src="', 'end' : '" frameborder="0" allowfullscreen></iframe>','color':'#cc99ff'},
-                   '§§': {'deb' : '<object width='+'"' + param['pdf_width']['var'] + '"' + ' height="500" type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
+                   '§§': {'deb' : '<object width='+ wpdf + ' height=' + hpdf + ' type="application/pdf" data="' , 'end' : '"></object>', 'color':'#ff6600'}}
 
 //=====================================================================   No video
 
@@ -1401,7 +1413,9 @@ buc($("p"))  // dealing with p
                  var newtag = $('<div/>').html(splhtml[1])
                                          .addClass('postit')
                                          .draggable()
-            dic_col = {'r':'red', 'b':'blue', 'y':'yellow', 'g':'green', 'o':'orange', 'm':'magenta'}
+            dic_col = {'r':'red', 'b':'blue', 'y':'#ffe066', 'g':'#b3ffb3', 'o':'orange', 'm':'#cc0066'}
+            // #b3ffb3
+            // green #c2f0c2', '#c6ffb3'
 
             var arg = args.slice(-1)[0]
             // alert(arg.match(/c.$/))
@@ -1782,6 +1796,12 @@ buc($("p"))  // dealing with p
           //} // end if hidden
       }// end shotheme function
 
+    //===================================================================== esc
+
+    var help = $('<div/>').addClass('help').attr('id',"help").text("help")
+    $('body').prepend(help)
+    $('#help').click(function(){$('#keys').toggle()})
+   
     //===================================================================== esc
 
     $('body').prepend($('<div/>').addClass('esc').attr('id',"esc"))

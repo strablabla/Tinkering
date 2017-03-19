@@ -35,6 +35,9 @@
 */
 
 div.commands{
+    border-style:solid;
+    border-color: #ddffcc;
+    border-width:40px;
     position: fixed;
     padding-left: 20px;
     padding-right: 20px;
@@ -44,11 +47,12 @@ div.commands{
     top: 270px;
     left: 50%;
     margin-left: -250px;
-    height: 350px;
+    max-height: 600px;
     width: 500px;
-    background-color: #ddffcc;
+    background-color: white ;
     font-size:85%;
     z-index: 10000;
+    overflow: scroll;
     }
 
 </style>
@@ -101,7 +105,6 @@ Les langues italiques formaient, à côté des langues celtiques, germaniques et
 <div   id='here' >  </div>
 
 <script>
-
 
 if (annyang) {
 
@@ -156,23 +159,24 @@ var syno=function(){
 }
 
 var comm = function(){/*
-# Commands:
-* music
-    * "music" : trigger vlc
-    * "song" : trigger youtube song
-* news
-    * "open news" : open Lemonde.fr
-* TV
-    * "channel seven" : open Arte direct.
-* Widgets
-    * table : open/hide TOC
-    * syntax : straptoc syntax
-    * keys : keys for straptoc
-* mails
-    * "open mail" : open Gmail
-* synology
-    * "synology": launch synology (need after to enter password)
-*
+
+    # Commands:
+    * music
+        * "music" : trigger vlc
+        * "song" : trigger youtube song
+    * news
+        * "open news" : open Lemonde.fr
+    * TV
+        * "channel seven" : open Arte direct.
+    * Widgets
+        * table : open/hide TOC
+        * syntax : straptoc syntax
+        * keys : keys for straptoc
+    * mails
+        * "open mail" : open Gmail
+    * synology
+        * "synology": launch synology (need after to enter password)
+
 */}.toString().slice(14,-3)
 $('#commands').html(simple_md(comm)).toggle()
 $('#commands').draggable()
