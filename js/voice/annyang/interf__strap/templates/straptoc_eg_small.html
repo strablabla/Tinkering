@@ -34,7 +34,7 @@
 
 */
 
-div.journal{
+div.commands{
     position: fixed;
     padding-left: 20px;
     padding-right: 20px;
@@ -48,12 +48,12 @@ div.journal{
     width: 500px;
     background-color: #ddffcc;
     font-size:85%;
-    z-index: 30;
+    z-index: 10000;
     }
 
 </style>
 
-<div id='up' > first </div>
+<div class='commands' id='commands' > </div>
 
 <xmp theme="simplex" style="display:none;">
 
@@ -66,17 +66,18 @@ div.journal{
 §toggle_hide p
 
 # Introduction
+
+say "voice commands"
+
 ## example
 
 # first{Origines contains all the informations relative to languages..}
 
 Les langues italiques formaient, à côté des langues celtiques, germaniques et helléniques, une sous-famille « centum » de langues indo-européennes qui incluait le latin, parlé par la population du Latium en Italie centrale (les Latins), et d'autres parlers comme l'ombrien et l'osque, au voisinage immédiat d'une langue étrusque non indo-européenne mais dont le latin a subi l'influence culturelle.
 
-
 # Song
 
 * [Pagal Tujhe Main Kar Dunga, - Romantic Song ;;](https://www.youtube.com/watch?v=psY23vRJb8w)
-
 
 # last
 
@@ -91,25 +92,16 @@ Les langues italiques formaient, à côté des langues celtiques, germaniques et
 
 <script> maketoc() </script>
 
-<a href='https://mail.google.com/mail' id='mail' target="_blank"> blabla </a>
-<a href='http://www.lemonde.fr/' id='lemonde' target="_blank"> lem </a>
-<a href='http://www.arte.tv/guide/fr/emissions/AJT/arte-journal' id='arte' target="_blank"> arte </a>
-<a href='http://www.tarjetarojaonline.me/' id='foot' target="_blank"> foot </a>
-
+<a href='https://mail.google.com/mail' id='mail' target="_blank">  </a>
+<a href='http://www.lemonde.fr/' id='lemonde' target="_blank">  </a>
+<!-- <a href='http://www.arte.tv/guide/fr/emissions/AJT/arte-journal' id='arte' target="_blank"> arte </a> -->
+<a href='http://www.arte.tv/guide/fr/direct' id='arte' target="_blank"> </a>
+<a href='http://www.tarjetarojaonline.me/' id='foot' target="_blank"> </a>
 
 <div   id='here' > last </div>
 
 <script>
 
-
-// var jj = $('</div>').attr('id','jrn')
-//                        .append($('</div>').text("lemonde"))
-//                        .append($('</div>').text("Nouvel obs"))
-//$('#content').append($('</div>').text("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
-
-//$('#content').html('oooo')
-
-//alert($('#content').html())
 
 if (annyang) {
 
@@ -124,12 +116,7 @@ if (annyang) {
             scrollTop: $("#here").offset().top
         }, 2000);
   }
-  var first=function(){
-      //alert('up')
-      $('html, body').animate({
-          scrollTop: $("#up").offset().top
-      }, 2000);
-  }
+
 
   var song=function(){document.getElementById("psY23vRJb8w").click()}
 
@@ -148,19 +135,39 @@ if (annyang) {
    var syntax=function(){
            $('#syntax').toggle()
        }
+   var commands=function(){
+           $('#commands').toggle()
+       }
 
   var commands = {'open mail': mail, 'open news': lem,
-     'last':last, 'first':first, 'music': zic,'song':song,
-     'car': test, 'table':table, "which keys":key, "syntax":syntax,
-     'channel seven':arte, 'foot':foot }; //
+     'end':last,  'music': zic,'song':song,
+     'car': test, 'table':table, "keys":key, "syntax":syntax,
+     'channel seven':arte, 'foot':foot, 'commands':commands, 'voice commands':commands }; //
 
   annyang.addCommands(commands);
   annyang.start();
 }
 
-// $('h1').each(function(){
-//     alert($(this).attr('id'))
-// })
+var comm = function(){/*
+# Commands:
+* music
+    * "music" : trigger vlc
+    * "song" : trigger youtube song
+* news
+    * "open news" : open Lemonde.fr
+* TV
+    * "channel seven" : open Arte direct.
+* Widgets
+    * table : open/hide TOC
+    * syntax : straptoc syntax
+    * keys : keys for straptoc
+* mails
+    * "open mail" : open Gmail
+*
+*/}.toString().slice(14,-3)
+$('#commands').html(simple_md(comm)).toggle()
+$('#commands').draggable()
+
 
 </script>
 
