@@ -98,7 +98,7 @@ Les langues italiques formaient, à côté des langues celtiques, germaniques et
 <a href='http://www.arte.tv/guide/fr/direct' id='arte' target="_blank"> </a>
 <a href='http://www.tarjetarojaonline.me/' id='foot' target="_blank"> </a>
 
-<div   id='here' > last </div>
+<div   id='here' >  </div>
 
 <script>
 
@@ -125,6 +125,9 @@ if (annyang) {
  var notes=function(){
      document.getElementById('notes').click()
     }
+var syno=function(){
+    document.getElementById('syno').click()
+   }
 
   var test=function(){
      alert('helllloooo')
@@ -145,7 +148,8 @@ if (annyang) {
   var commands = {'open mail': mail, 'open news': lem,
      'end':last,  'music': zic, notes:'notes', 'song':song,
      'car': test, 'table':table, "keys":key, "syntax":syntax,
-     'channel seven':arte, 'foot':foot, 'commands':commands, 'voice commands':commands }; //
+     'channel seven':arte, 'foot':foot, 'commands':commands,
+      'voice commands':commands, 'synology':syno }; //
 
   annyang.addCommands(commands);
   annyang.start();
@@ -166,6 +170,8 @@ var comm = function(){/*
     * keys : keys for straptoc
 * mails
     * "open mail" : open Gmail
+* synology
+    * "synology": launch synology (need after to enter password)
 *
 */}.toString().slice(14,-3)
 $('#commands').html(simple_md(comm)).toggle()
@@ -175,10 +181,13 @@ $('#commands').draggable()
 </script>
 
 <form action='/zic' method="post" id='formzic'>
-    <input type='submit' id='zic' name='musique' >
+    <input type='submit' id='zic' name='musique' hidden >
 </form>
 <form action='/notes' method="post" id='formnotes'>
-    <input type='submit' id='notes' name='mes_notes' >
+    <input type='submit' id='notes' name='mes_notes' hidden>
+</form>
+<form action='/syno' method="post" id='formsyno'>
+    <input type='submit' id='syno' name='synology' hidden>
 </form>
 
 </html>

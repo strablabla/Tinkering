@@ -25,8 +25,19 @@ def notes():
 		print('opening notes !!!! ')
 		utow='$HOME/CloudStation/Infosutiles/own/utiles_own.html'
 		tdow='$HOME/CloudStation/Todo/own/todo_own.html'
-		comm = 'atom {0} {1}; screen -S chrome_ow chromium-browser {0} {1} ; exit'.format(utow, tdow)
-		subprocess.call(comm, shell=True)
+		comm0 = 'atom {0} {1}'.format(utow, tdow)
+		comm1 = 'screen -S chrome_ow chromium-browser {0} {1} ; exit'.format(utow, tdow)
+		subprocess.call(comm0, shell=True)
+		subprocess.call(comm1, shell=True)
+	return redirect(url_for('index'))
+
+@app.route('/syno', methods = ['POST'])
+def syno():
+	print(request.form.get('synology'))
+	if request.form.get('synology'):
+		print('opening synology !!!! ')
+		comm0 = 'sudo /usr/bin/synology-cloud-station-drive'
+		subprocess.call(comm0, shell=True)
 	return redirect(url_for('index'))
 
 @app.route('/zic', methods = ['POST'])
