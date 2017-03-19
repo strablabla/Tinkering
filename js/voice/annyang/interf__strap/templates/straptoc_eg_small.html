@@ -55,9 +55,53 @@ div.commands{
     overflow: scroll;
     }
 
+div.news{
+    border-style:solid;
+    border-color: #ddaacc;
+    border-width:40px;
+    position: fixed;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    box-shadow: 0.5em 0.5em 0.7em;
+    top: 270px;
+    left: 50%;
+    margin-left: -250px;
+    max-height: 700px;
+    width: 500px;
+    background-color: white ;
+    font-size:85%;
+    z-index: 10000;
+
+    }
+div.message{
+
+    position: fixed;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    box-shadow: 0.5em 0.5em 0.7em;
+    top: 100px;
+    left: 50%;
+    margin-left: -250px;
+    height: 50px;
+    width: 100px;
+    background-color: #ddaacc ;
+    font-size:100%;
+    z-index: 10000;
+    text-align:center;
+
+    }
+
 </style>
 
 <div class='commands' id='commands' > </div>
+<div class='message' id='popup' hidden> </div>
+<!-- <div class='news' id='news' >
+    <iframe frameborder="0" height="400" src="http://www.lemonde.fr/" width="400"></iframe>
+</div> -->
 
 <xmp theme="simplex" style="display:none;">
 
@@ -106,12 +150,20 @@ Les langues italiques formaient, à côté des langues celtiques, germaniques et
 
 <script>
 
+var mess = function(title){
+   $( "#popup" ).text(title).show();
+   setTimeout(function() {
+      $( "#popup" ).hide();
+  }, 4000);
+  }
+
+
 if (annyang) {
 
-  var mail=function(){document.getElementById("mail").click()}
-  var lem=function(){document.getElementById("lemonde").click()}
-  var arte=function(){document.getElementById("arte").click()}
-  var foot=function(){document.getElementById("foot").click()}
+  var mail=function(){mess('mail');document.getElementById("mail").click()}
+  var lem=function(){mess('Lemonde');document.getElementById("lemonde").click()}
+  var arte=function(){mess('arte');document.getElementById("arte").click()}
+  var foot=function(){mess('foot'); document.getElementById("foot").click()}
 
   var last=function(){
       //alert('bottom');
@@ -123,34 +175,42 @@ if (annyang) {
   var song=function(){document.getElementById("psY23vRJb8w").click()}
 
   var zic=function(){
+      mess('music')
       document.getElementById('zic').click()
      }
  var notes=function(){
+     mess('notes')
      document.getElementById('notes').click()
     }
 var syno=function(){
+    mess('synology')
     document.getElementById('syno').click()
    }
 
   var test=function(){
-     alert('helllloooo')
+      mess('test')
+     // alert('helllloooo')
     }
    var table=function(){
+       mess('table')
         $('#toc').toggle()
     }
    var key=function(){
+       mess('keys')
          $('#keys').toggle()
      }
    var syntax=function(){
+       mess('syntax')
            $('#syntax').toggle()
        }
    var commands=function(){
+         mess('commands')
            $('#commands').toggle()
        }
 
   var commands = {'open mail': mail, 'open news': lem,
      'end':last,  'music': zic, notes:'notes', 'song':song,
-     'car': test, 'table':table, "keys":key, "syntax":syntax,
+     'table':table, "keys":key, "syntax":syntax, 'testing':test,
      'channel seven':arte, 'foot':foot, 'commands':commands,
       'voice commands':commands, 'synology':syno }; //
 
@@ -176,22 +236,20 @@ var comm = function(){/*
         * "open mail" : open Gmail
     * synology
         * "synology": launch synology (need after to enter password)
+    * test
+        * "testing": test
 
 */}.toString().slice(14,-3)
 $('#commands').html(simple_md(comm)).toggle()
 $('#commands').draggable()
 
+//$('.news').append($('</iframe>').attr('src','https://www.google.fr/'))
+//$('#news').append($('</iframe>').attr('src','https://www.w3schools.com')).draggable()
 
 </script>
 
-<form action='/zic' method="post" id='formzic'>
-    <input type='submit' id='zic' name='musique' hidden >
-</form>
-<form action='/notes' method="post" id='formnotes'>
-    <input type='submit' id='notes' name='mes_notes' hidden>
-</form>
-<form action='/syno' method="post" id='formsyno'>
-    <input type='submit' id='syno' name='synology' hidden>
-</form>
+<form action='/zic' method="post" id='formzic'><input type='submit' id='zic' name='musique' hidden ></form>
+<form action='/notes' method="post" id='formnotes'><input type='submit' id='notes' name='mes_notes' hidden></form>
+<form action='/syno' method="post" id='formsyno'><input type='submit' id='syno' name='synology' hidden></form>
 
 </html>
