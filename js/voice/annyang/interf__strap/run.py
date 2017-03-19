@@ -18,12 +18,24 @@ app = Flask(__name__, static_url_path = '/static')
 def index():
     return render_template('straptoc_eg_small.html')
 
+@app.route('/notes', methods = ['POST'])
+def notes():
+	print(request.form.get('mes_notes'))
+	if request.form.get('mes_notes'):
+		print('opening notes !!!! ')
+		utow='$HOME/CloudStation/Infosutiles/own/utiles_own.html'
+		tdow='$HOME/CloudStation/Todo/own/todo_own.html'
+		comm = 'atom {0} {1}; screen -S chrome_ow chromium-browser {0} {1} ; exit'.format(utow, tdow)
+		subprocess.call(comm, shell=True)
+	return redirect(url_for('index'))
+
 @app.route('/zic', methods = ['POST'])
 def zic():
     print(request.form.get('musique'))
     if request.form.get('musique'):
         print('triggering the music !!!! ')
         subprocess.Popen(['vlc', '/home/lio/Téléchargements/youtube/zic/Sexy/Papetti'])
+
         #subprocess.Popen(['vlc', '/home/lio/Téléchargements/youtube/zic/Films/LalaLand'])
     # return render_template('hello.html')
     return redirect(url_for('index'))

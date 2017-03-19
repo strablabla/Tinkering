@@ -117,12 +117,15 @@ if (annyang) {
         }, 2000);
   }
 
-
   var song=function(){document.getElementById("psY23vRJb8w").click()}
 
   var zic=function(){
       document.getElementById('zic').click()
      }
+ var notes=function(){
+     document.getElementById('notes').click()
+    }
+
   var test=function(){
      alert('helllloooo')
     }
@@ -140,7 +143,7 @@ if (annyang) {
        }
 
   var commands = {'open mail': mail, 'open news': lem,
-     'end':last,  'music': zic,'song':song,
+     'end':last,  'music': zic, notes:'notes', 'song':song,
      'car': test, 'table':table, "keys":key, "syntax":syntax,
      'channel seven':arte, 'foot':foot, 'commands':commands, 'voice commands':commands }; //
 
@@ -173,6 +176,9 @@ $('#commands').draggable()
 
 <form action='/zic' method="post" id='formzic'>
     <input type='submit' id='zic' name='musique' >
+</form>
+<form action='/notes' method="post" id='formnotes'>
+    <input type='submit' id='notes' name='mes_notes' >
 </form>
 
 </html>
