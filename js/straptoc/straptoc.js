@@ -111,6 +111,7 @@ var maketoc = function(){
         * $* : horizontal line separation
     * math 
         * §mathsize : set the size of the equations. Possible values : tiny, small, normalsize, large, Large, LARGE, huge, Huge
+        * $eq : put the equation in a box. Has to be put before Mathjax code..
     * $menu :
         * eg : before H1 place $menu_zax link:nm_Edit:ic_edit:href_Introduction
     * comments
@@ -166,6 +167,7 @@ var maketoc = function(){
     * §toggle_hide k : give to the key  k the ability to hide the toggable parts of the doc.
     * §help true  : possibility of having a help menu
     * §mathsize size : change the size of the equations written with Mathjax
+    * §col_eq col : color for the equation box
     */}.toString().slice(14,-3)
 
     basename = function(path) {  return path.replace( /.*\//, "" ); }
@@ -221,10 +223,11 @@ var maketoc = function(){
     var reg_col_sublist2 = reg_func('col_sublist2')   // color sublist 2
     var reg_mathsize = reg_func('mathsize')           // size MathJax
     var reg_col_toc = reg_func('col_toc')             // color of the TOC
+    var reg_col_eq = reg_func('col_eq')               // color of equation boxes
     var reg_notoc = reg_func('notoc')                 // remove the TOC
     var reg_width_video = reg_func('width_video')     // videos's width
     var reg_width_pdf = reg_func('width_pdf')         // pdf's width
-    var reg_height_pdf = reg_func('height_pdf')         // pdf's width
+    var reg_height_pdf = reg_func('height_pdf')        // pdf's width
 
     var reg_width_content = reg_func('width_content')
     var reg_height_content = reg_func('height_content')
@@ -268,6 +271,7 @@ $('.prettyprint').css({"text-align":"justify"})
             'color_sublist2':{'reg':reg_col_sublist2, 'cut':'§col_sublist2', 'var': 'green'},
             'mathsize':{'reg':reg_mathsize, 'cut':'§mathsize', 'var': ''},
             'color_toc':{'reg':reg_col_toc, 'cut':'§col_toc', 'var': '#FFCC99'},
+            'color_eq':{'reg':reg_col_eq, 'cut':'§col_eq', 'var': '#FFCC99'},
             'notoc':{'reg':reg_notoc, 'cut':'§notoc', 'var': false},
             'vid_width':{'reg':reg_width_video, 'cut':'§width_video', 'var': '80%' },
             'pdf_width':{'reg':reg_width_pdf, 'cut':'§width_pdf', 'var': '80%'},
@@ -325,6 +329,31 @@ $('.prettyprint').css({"text-align":"justify"})
             $(this).remove()
         }
     })
+
+ //===================================================================== Frame for Mathjax equations
+
+
+    /*
+    Frame for equations
+    */
+
+    $('p').each(function(){
+      var txt = $(this).text()
+      if (txt.match(/^\$eq/)){
+        // alert(txt)
+        newtxt = txt.replace("$eq", " ")
+        $(this).text(newtxt).wrap("<div class='eq'></div>")
+      }   // end if
+    })  // end each
+
+    /*
+    Activating or not box shadow for equations
+    */
+
+    $('.eq').each(function(){
+        $(this).css({"box-shadow": "none", 'background-color' : param['color_eq']['var']})
+    })
+
 
  //===================================================================== Context menu
 
