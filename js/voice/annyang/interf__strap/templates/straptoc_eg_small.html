@@ -145,6 +145,7 @@ Les langues italiques formaient, à côté des langues celtiques, germaniques et
 <!-- <a href='http://www.arte.tv/guide/fr/emissions/AJT/arte-journal' id='arte' target="_blank"> arte </a> -->
 <a href='http://www.arte.tv/guide/fr/direct' id='arte' target="_blank"> </a>
 <a href='http://www.tarjetarojaonline.me/' id='foot' target="_blank"> </a>
+<a href='http://strasbourg.curieux.net/agenda/' id='events' target="_blank"> </a>
 
 <div   id='here' >  </div>
 
@@ -164,6 +165,7 @@ if (annyang) {
   var lem=function(){mess('Lemonde');document.getElementById("lemonde").click()}
   var arte=function(){mess('arte');document.getElementById("arte").click()}
   var foot=function(){mess('foot'); document.getElementById("foot").click()}
+  var events=function(){mess('events'); document.getElementById("events").click()}
 
   var last=function(){
       //alert('bottom');
@@ -212,7 +214,8 @@ var syno=function(){
      'end':last,  'music': zic, notes:'notes', 'song':song,
      'table':table, "keys":key, "syntax":syntax, 'testing':test,
      'channel seven':arte, 'foot':foot, 'commands':commands,
-      'voice commands':commands, 'synology':syno }; //
+      'voice commands':commands, 'synology':syno,
+     'events':events }; //
 
   annyang.addCommands(commands);
   annyang.start();
@@ -238,6 +241,10 @@ var comm = function(){/*
         * "synology": launch synology (need after to enter password)
     * test
         * "testing": test
+    * notes
+        * "notes": open utiles_own and todo_own in Chromium and Atom
+    * infos Strasbourg
+        * "events": open page http://strasbourg.curieux.net/agenda/
 
 */}.toString().slice(14,-3)
 $('#commands').html(simple_md(comm)).toggle()
