@@ -27,13 +27,35 @@
 
 <script src="/static/js/bootstrap.min.js"></script>
 
-
 <style>
 
 /*
-
+Panel with music choices
 */
+div.musics{
+    border-style:solid;
+    border-color: #ddffcc;
+    border-width:40px;
+    position: fixed;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    box-shadow: 0.5em 0.5em 0.7em;
+    top: 270px;
+    left: 50%;
+    margin-left: -250px;
+    max-height: 600px;
+    width: 500px;
+    background-color: white ;
+    font-size:85%;
+    z-index: 10000;
+    overflow: scroll;
+    }
 
+/*
+Panel containing vocal commands
+*/
 div.commands{
     border-style:solid;
     border-color: #ddffcc;
@@ -80,14 +102,14 @@ div.message{
     position: fixed;
     padding-left: 20px;
     padding-right: 20px;
-    padding-bottom: 20px;
+    padding-bottom: 40px;
     padding-top: 20px;
     box-shadow: 0.5em 0.5em 0.7em;
     top: 100px;
     left: 50%;
     margin-left: -250px;
     height: 50px;
-    width: 100px;
+    width: auto;
     background-color: #ddaacc ;
     font-size:100%;
     z-index: 10000;
@@ -98,6 +120,7 @@ div.message{
 </style>
 
 <div class='commands' id='commands' > </div>
+<div class='musics' id='musics' > </div>
 <div class='message' id='popup' hidden> </div>
 <!-- <div class='news' id='news' >
     <iframe frameborder="0" height="400" src="http://www.lemonde.fr/" width="400"></iframe>
@@ -158,7 +181,6 @@ var mess = function(title){
   }, 4000);
   }
 
-
 if (annyang) {
 
   var mail=function(){mess('mail');document.getElementById("mail").click()}
@@ -176,8 +198,9 @@ if (annyang) {
 
   var song=function(){document.getElementById("psY23vRJb8w").click()}
 
-  var zic=function(){
+  var zic=function(music){
       mess('music')
+      $('#zic').attr('name',music)
       document.getElementById('zic').click()
      }
  var notes=function(){
@@ -205,17 +228,21 @@ var syno=function(){
        mess('syntax')
            $('#syntax').toggle()
        }
-   var commands=function(){
-         mess('commands')
-           $('#commands').toggle()
-       }
+   var voice_commands=function(){mess('commands');$('#commands').toggle()}
+   var choice_musics=function(){mess('musics choices');$('#musics').toggle()}
 
-  var commands = {'open mail': mail, 'open news': lem,
-     'end':last,  'music': zic, notes:'notes', 'song':song,
+  var commands = {
+      'open mail': mail, 'open news': lem,
+     'end':last,   notes:'notes', 'song':song,
      'table':table, "keys":key, "syntax":syntax, 'testing':test,
-     'channel seven':arte, 'foot':foot, 'commands':commands,
+     'channel seven':arte, 'foot':foot, 'commands':voice_commands,
       'voice commands':commands, 'synology':syno,
-     'events':events }; //
+     'events':events, "choice music":choice_musics,
+     'jazz':function(){return zic('jazz')},
+     'french':function(){return zic('french')},
+     'bollywood':function(){return zic('bollywood')},
+     'sexy music':function(){return zic('sexy')}
+  }; // 'music': zic,
 
   annyang.addCommands(commands);
   annyang.start();
@@ -247,8 +274,24 @@ var comm = function(){/*
         * "events": open page http://strasbourg.curieux.net/agenda/
 
 */}.toString().slice(14,-3)
+
 $('#commands').html(simple_md(comm)).toggle()
 $('#commands').draggable()
+
+var all_musics = function(){/*
+
+    # Musics:
+    * Jazz
+        * aaaa
+    * French
+        * aaaa
+    * Bollywood
+        * aaaa
+
+*/}.toString().slice(14,-3)
+
+$('#musics').html(simple_md(all_musics)).toggle()
+$('#musics').draggable()
 
 //$('.news').append($('</iframe>').attr('src','https://www.google.fr/'))
 //$('#news').append($('</iframe>').attr('src','https://www.w3schools.com')).draggable()

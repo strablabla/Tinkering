@@ -42,14 +42,18 @@ def syno():
 
 @app.route('/zic', methods = ['POST'])
 def zic():
-    print(request.form.get('musique'))
-    if request.form.get('musique'):
-        print('triggering the music !!!! ')
-        subprocess.Popen(['vlc', '/home/lio/Téléchargements/youtube/zic/Sexy/Papetti'])
+	if request.form.get('jazz'): print('########  jazz')
+	if request.form.get('french'): print('########  french')
+	if request.form.get('bollywood'): print('########  bollywood')
 
-        #subprocess.Popen(['vlc', '/home/lio/Téléchargements/youtube/zic/Films/LalaLand'])
-    # return render_template('hello.html')
-    return redirect(url_for('index'))
+	if request.form.get('sexy'):
+		print(request.form.get('musique'))
+		print('triggering the music !!!! ')
+		subprocess.Popen(['vlc', '/home/lio/Téléchargements/youtube/zic/Sexy'])
+
+	#subprocess.Popen(['vlc', '/home/lio/Téléchargements/youtube/zic/Films/LalaLand'])
+	# return render_template('hello.html')
+	return redirect(url_for('index'))
 
 if __name__ == "__main__":
     import threading, webbrowser
