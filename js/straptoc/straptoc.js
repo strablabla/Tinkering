@@ -1630,34 +1630,44 @@ buc($("p"))  // dealing with p
 
     /*
     keydown l close all the list in the whole document.
+    Esc + l, toggle all lists
     */
 
-    if((event.keyCode == "l".charCodeAt(0)-32) && statekey == 1){
-                $('a > span').each(function(){
-                  if ($(this).parent().next().css('display')=='block'){
-                    if ($(this).parents('div').last().attr('id') != 'toc'){
-                      $(this).trigger('click') // close lists.
-                    }
-                  }
-                } // end function
-              ) //end each
-           } // end if key code
-     }) // end keydown
+        if((event.keyCode == "l".charCodeAt(0)-32) && statekey == 1){
+            $("li").toggle()
+          }
+    }) // end keydown
+
+    // if((event.keyCode == "l".charCodeAt(0)-32) && statekey == 1){
+    //             $('a > span').each(function(){
+    //               if ($(this).parent().next().css('display')=='block'){
+    //                 if ($(this).parents('div').last().attr('id') != 'toc'){
+    //                   $(this).trigger('click') // close lists.
+    //                 }
+    //               }
+    //             } // end function
+    //           ) //end each
+    //        } // end if key code
+    //  }) // end keydown
 
 //=====================================================================
+
+    /*
+    pdf
+    */
 
      $("a").each(function(){                             // insert pdf from folder
          var txt = $(this).text()
          if (txt.match(reg_folder)){                     // check <<
             var txt_short = txt.split('<<')[0].trim()    // take the title
-            var jsoname = 'json/' + txt_short + ".json"  // make the adress for the json
+            var jsoname = 'json/' + txt_short + ".json"  // make the address for the json
             $(this).text(txt_short)                      // remove << in the title
-            alert(jsoname)
+            // alert(jsoname)
             pdf_folder = $('<div/>')                    // make a div for inserting the pdfs
-            pdf_folder.insertAfter($(this))             // insert the idv after the initial element.
+            pdf_folder.insertAfter($(this))             // insert the div after the initial element.
             $.getJSON(jsoname, function(result){
                 for (i in result){                      // for each address in the json..
-                    alert(result[i])
+                    // alert(result[i])
                 var obj = $('<object/>').attr('data',result[i])
                                         .attr('type', "application/pdf")
                                         .attr('width',"100%")
