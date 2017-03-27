@@ -109,7 +109,7 @@ var maketoc = function(){
         * --link-- , creates a tag with id "link"
     * separation
         * $* : horizontal line separation
-    * math 
+    * math
         * §mathsize : set the size of the equations. Possible values : tiny, small, normalsize, large, Large, LARGE, huge, Huge
         * $eq : put the equation in a box. Has to be put before Mathjax code..
     * $menu :
@@ -117,7 +117,7 @@ var maketoc = function(){
     * comments
         * $------- : permit to insert comment lines in the edition window
     * $u: utf8 string :, This replace the string between : by the utf8 translation.
-    * $pdb : pdb files insertion in the document. 
+    * $pdb : pdb files insertion in the document.
         * syntax is $pdb path_to_pdb(or pdb name in the database) options
         * eg: $pdb data/5u3j.pdb chA:cartoon
     * color, bold and underline
@@ -127,7 +127,7 @@ var maketoc = function(){
             * "blabla"cb makes blabla with color blue
             * "blabla"cg makes blabla with color green etc..
     * $post : insert a postit
-        * eg: $post Il était une fois cb , makes a postit with text Il était une fois with blue color.. 
+        * eg: $post Il était une fois cb , makes a postit with text Il était une fois with blue color..
     */}.toString().slice(14,-3)
 
     var keys = function(){/*
@@ -229,11 +229,11 @@ var maketoc = function(){
     var reg_width_pdf = reg_func('width_pdf')         // pdf's width
     var reg_height_pdf = reg_func('height_pdf')        // pdf's width
 
-    var reg_width_content = reg_func('width_content')
-    var reg_height_content = reg_func('height_content')
+    var reg_width_content = reg_func('width_content')        //  content width
+    var reg_height_content = reg_func('height_content')      //  content height
     var reg_centered_content = reg_func('centered_content')
-    var reg_width_iframe = reg_func('width_iframe')
-    var reg_height_iframe = reg_func('height_iframe')
+    var reg_width_iframe = reg_func('width_iframe')          //  iframe width
+    var reg_height_iframe = reg_func('height_iframe')        //  iframe height
     var reg_toggle_hide = reg_func('toggle_hide')
     var reg_menu = reg_func('menu')
     var reg_help = reg_func('help')
@@ -246,8 +246,12 @@ var maketoc = function(){
 
 // ============================================== Redefining some classes
 
-$('.str, .pun, .typ, .pln, .lit').css({"color":"black"})
-$('.prettyprint').css({"text-align":"justify"})
+    /*
+    Removes color bugs in text area.
+    */
+
+    $('.str, .pun, .typ, .pln, .lit').css({"color":"black"})
+    $('.prettyprint').css({"text-align":"justify"})
 
 // ============================================== global parameters
 
@@ -477,7 +481,7 @@ $('.prettyprint').css({"text-align":"justify"})
                 $(this).attr('href', addroot + $(this).attr('href')) // add root path to pdf
 
             var reg_tooltip = /\{(.|\n)*\}/
-            
+
             if ($(this).text().match(reg_tooltip)){
                     $(this).attr('title', $(this).text().match(reg_tooltip)[0].slice(1,-1)) // add the attribute title
                     var newhtm = $(this).html().replace(reg_tooltip, ' ')                   // remove the brackets
@@ -1027,7 +1031,7 @@ $('.prettyprint').css({"text-align":"justify"})
 
 /*
 Change color in the text.
-Example : 
+Example :
 
 "blabla"cb colors blabla in blue,
 "blabla"u underlines blabla,
@@ -1456,7 +1460,7 @@ buc($("p"))  // dealing with p
                 // alert(newhtm)
                 newtag.html(newhtm)
             }
-          
+
 
                  $(this).replaceWith(newtag)
                 }// end if
@@ -1734,7 +1738,7 @@ buc($("p"))  // dealing with p
 
     /*
     Insert molecules for dynamic view of pdb files with D3mol.js
-    pdbs can be load on the database or locally. 
+    pdbs can be load on the database or locally.
     It is possible to add visualisation options like the kind of representation (stick, cartoon etc.. )
     */
         var dic_style = {}
@@ -1840,7 +1844,7 @@ buc($("p"))  // dealing with p
     var help = $('<div/>').addClass('help').attr('id',"help").text("help")
     $('body').prepend(help)
     $('#help').click(function(){$('#keys').toggle()})
-   
+
     //===================================================================== esc
 
     $('body').prepend($('<div/>').addClass('esc').attr('id',"esc"))
