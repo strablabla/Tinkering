@@ -1634,25 +1634,23 @@ buc($("p"))  // dealing with p
 
     /*
     keydown l close all the list in the whole document.
-    Esc + l, toggle all lists
+    Esc + l, toggle all lists, open and close
     */
 
-        if((event.keyCode == "l".charCodeAt(0)-32) && statekey == 1){
-            $("li").toggle()
-          }
-    }) // end keydown
+    if((event.keyCode == "l".charCodeAt(0)-32) && statekey == 1){
+                $('a > span').each(function(){
 
-    // if((event.keyCode == "l".charCodeAt(0)-32) && statekey == 1){
-    //             $('a > span').each(function(){
-    //               if ($(this).parent().next().css('display')=='block'){
-    //                 if ($(this).parents('div').last().attr('id') != 'toc'){
-    //                   $(this).trigger('click') // close lists.
-    //                 }
-    //               }
-    //             } // end function
-    //           ) //end each
-    //        } // end if key code
-    //  }) // end keydown
+                  //if ($(this).parent().next().css('display') == 'block'){
+
+                    if ($(this).parents('div').last().attr('id') != 'toc'){
+                      $(this).trigger('click') // close lists.
+                      } // if not toc
+
+                  // } // if display == block 
+
+               }) // end a > span each(function(), 
+           } // end if key code l
+     }) // end keydown (end of all keys functions)
 
 //=====================================================================
 
