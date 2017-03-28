@@ -213,16 +213,16 @@ div.onside {
     box-shadow: 0.5em 0.5em 0.7em;
     background-color:#00cc66;
     color:green;
-    right:130px;
-    top:5px;
+    left:110px;
+    top:80px;
     font-size:85%;
-    height:30px;
-    width:30px;
+    height:20px;
+    width:20px;
     z-index: 50;
   }
 
 /*==================================================
- * Green square for indicating that the keys are active.
+ * Show keys
  * ===============================================*/
 
  div.help {
@@ -231,6 +231,26 @@ div.onside {
     /*box-shadow: 0.5em 0.5em 0.7em;*/
     background-color:#e0e0d1;
     right:20px;
+    top:5px;
+    font-size:100%;
+    text-align: center;
+    padding-top: 5px;
+    height:30px;
+    width:100px;
+    z-index: 50;
+    opacity:0.8;
+  }
+
+/*==================================================
+ * Show TOC
+ * ===============================================*/
+
+ div.showtoc {
+    position: fixed;
+    padding-right: 0px;
+    /*box-shadow: 0.5em 0.5em 0.7em;*/
+    background-color:#FFCC99;
+    right:140px;
     top:5px;
     font-size:100%;
     text-align: center;

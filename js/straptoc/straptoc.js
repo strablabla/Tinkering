@@ -5,8 +5,8 @@
 // }
 
 //#######
-//https://github.com/strablabla/Tinkering/e68d63f/js/straptoc/straptoc.js
-//https://github.com/strablabla/Tinkering/e68d63f/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/11ab26d/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/11ab26d/js/straptoc/straptoc.css
 
 var maketoc = function(){
 
@@ -126,6 +126,7 @@ var maketoc = function(){
             * "blabla"b makes blabla bold
             * "blabla"cb makes blabla with color blue
             * "blabla"cg makes blabla with color green etc..
+            * available colors : 'r', 'b', 'y', 'g', 'o', 'm'
     * $post : insert a postit
         * eg: $post Il était une fois cb , makes a postit with text Il était une fois with blue color..
     */}.toString().slice(14,-3)
@@ -142,6 +143,7 @@ var maketoc = function(){
         * Esc + t : toggle todo theme
     * Lists
         * Esc + l : toggle all lists
+            * open/close
     * Handle windows
         * Esc + r : resize
         * Esc + d : toggle draggable
@@ -949,13 +951,10 @@ var maketoc = function(){
     $('#toc').append(toc_touch)
 
     $('#toc_touch').click(function(){
-        if($('#toc').css("opacity") > 0.89){
-            $('#toc').css({"opacity":0.1})
-            }
-        else{
-            $('#toc').css({"opacity":0.9})
-        }
-    }) // end toc_touch click
+        $('#showtoc').toggle()
+        $('#toc').toggle()
+        }) // end toc_touch click
+
 
     // read all the headers and make the TOC (with ref) and the id names
     var lnotoc = ['Carousels'] // list of excluded H1 (defined with inner HTML)
@@ -1036,6 +1035,7 @@ Example :
 "blabla"cb colors blabla in blue,
 "blabla"u underlines blabla,
 "blabla"b makes blabla in bold
+available colors : 'r', 'b', 'y', 'g', 'o', 'm'
 
 */
 
@@ -1837,11 +1837,21 @@ buc($("p"))  // dealing with p
           //} // end if hidden
       }// end shotheme function
 
-    //===================================================================== esc
+    //===================================================================== help
 
     var help = $('<div/>').addClass('help').attr('id',"help").text("help")
     $('body').prepend(help)
     $('#help').click(function(){$('#keys').toggle()})
+
+    //===================================================================== showtoc
+
+    var showtoc = $('<div/>').addClass('showtoc').attr('id',"showtoc").text("ToC")
+    $('body').prepend(showtoc)
+    $('#showtoc').click(function(){
+        $('#toc').toggle()
+        $('#showtoc').toggle()
+    })
+    $('#showtoc').toggle()
 
     //===================================================================== esc
 
