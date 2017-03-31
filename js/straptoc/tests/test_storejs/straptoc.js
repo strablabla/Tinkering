@@ -1728,47 +1728,33 @@ buc($("p"))  // dealing with p
     //===================================================================== Notes
 
     // Taking Notes
-   
+
     $('body').prepend($('<div/>').addClass('notes').attr('id',"notes"))
-    $('#notes').toggle()
-    $('#notes').append($('</div>').text('Notes'))
-    $('#notes').html(' <textarea class="form-control" name="textarea" id="textarea" rows="10"></textarea>') 
-    $('#notes').append($('<input/>').attr('type','button').addClass('btn btn-default').attr('id','notif').val('save'))
-    // $('#notes').append($('<input>').attr('type','button').attr('id','inside').val('show'))
+    $('#notes').html('<textarea class="form-control" name="textarea" id="textarea" rows="15"></textarea>') 
+    $('#notes').append($('<input>').attr('type','button').attr('id','notif').val('note'))
+    $('#notes').append($('<input>').attr('type','button').attr('id','inside').val('in'))
     $('#notes').draggable()
     
-   // Restitute textarea
 
-   try {
-        var val_inside = store.get('txt')
-        $('#textarea').val(val_inside)
-        }
-    catch(err) {
-        alert("no library store.js")
-        }
     
-    // Save textarea
-
     $('#notif').click(function(){
         try {
-            store.set('txt', $('#textarea').val())
+            //var items = new Store('items')
+            store.set('number', 5)
             }
         catch(err) {
             alert("no library store.js")
             }
     })
-
-    // Show textarea
-
-    // $('#inside').click(function(){
-    //     try {
-    //         var val_inside = store.get('txt')
-    //         alert(val_inside)
-    //         }
-    //     catch(err) {
-    //         alert("no library store.js")
-    //         }
-    // })
+    $('#inside').click(function(){
+        try {
+            var val_inside = store.get('number')
+            alert(val_inside)
+            }
+        catch(err) {
+            alert("no library store.js")
+            }
+    })
 
     //===================================================================== keys
 

@@ -73,17 +73,16 @@ div.onside {
   div.notes {               /*Straptoc notes*/
    border-style:solid;
    border-color: #A9E2F3;
-   border-width:5px;
+   border-width:10px;
    position: fixed;
    padding-top: 20px;
    padding-bottom: 20px;
    padding-left: 20px;
    padding-right: 20px;
    box-shadow: 0.5em 0.5em 0.7em;
-   top:120px;
-   left: 20px;
+   left: 50px;
    height: auto;
-   width: 300px;
+   width: 400px;
    background-color: white; 
    font-size:85%;
    overflow: scroll;
