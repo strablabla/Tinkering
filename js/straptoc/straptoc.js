@@ -5,8 +5,8 @@
 // }
 
 //#######
-//https://github.com/strablabla/Tinkering/9a2c9da/js/straptoc/straptoc.js
-//https://github.com/strablabla/Tinkering/9a2c9da/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/4e2fe9c/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/4e2fe9c/js/straptoc/straptoc.css
 
 var maketoc = function(){
 
@@ -1731,27 +1731,27 @@ buc($("p"))  // dealing with p
    
     $('body').prepend($('<div/>').addClass('notes').attr('id',"notes"))
     $('#notes').toggle()
-    $('#notes').append($('</div>').text('Notes'))
-    $('#notes').html(' <textarea class="form-control" name="textarea" id="textarea" rows="10"></textarea>') 
-    $('#notes').append($('<input/>').attr('type','button').addClass('btn btn-default').attr('id','notif').val('save'))
+    $('#notes').append($('</div>').text('Notes')) // adding title
+    $('#notes').html(' <textarea class="form-control" name="textarea" id="textarea" rows="10"></textarea>')            // textarea
+    $('#notes').append($('<input/>').attr('type','button').addClass('btn btn-default').attr('id','notif').val('save')) // save
     // $('#notes').append($('<input>').attr('type','button').attr('id','inside').val('show'))
     $('#notes').draggable()
     
    // Restitute textarea
 
    try {
-        var val_inside = store.get('txt')
+        var val_inside = store.get(location.pathname.substring(1))
         $('#textarea').val(val_inside)
         }
     catch(err) {
-        alert("no library store.js")
+        //alert("no library store.js")
         }
     
     // Save textarea
 
     $('#notif').click(function(){
         try {
-            store.set('txt', $('#textarea').val())
+            store.set(location.pathname.substring(1), $('#textarea').val())
             }
         catch(err) {
             alert("no library store.js")
