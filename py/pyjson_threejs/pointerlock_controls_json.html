@@ -3,9 +3,10 @@
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 		<title>three.js - pointerlock controls</title>
-
+       
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<script src='3d.json'></script>
 		<style>
 			html, body {
 				width: 100%;
@@ -104,9 +105,7 @@ THREE.PointerLockControls = function ( camera ) {
 	};
 
 	this.dispose = function() {
-
 		document.removeEventListener( 'mousemove', onMouseMove, false );
-
 	};
 
 	document.addEventListener( 'mousemove', onMouseMove, false );
@@ -114,9 +113,7 @@ THREE.PointerLockControls = function ( camera ) {
 	this.enabled = false;
 
 	this.getObject = function () {
-
 		return yawObject;
-
 	};
 
 	this.getDirection = function() {
@@ -129,11 +126,9 @@ THREE.PointerLockControls = function ( camera ) {
 		return function( v ) {
 
 			rotation.set( pitchObject.rotation.x, yawObject.rotation.y, 0 );
-
 			v.copy( direction ).applyEuler( rotation );
 
 			return v;
-
 		};
 
 	}();
@@ -155,9 +150,74 @@ THREE.PointerLockControls = function ( camera ) {
 
 		<script>
 
-			var camera, scene, renderer;
+
+            var camera, scene, renderer, controls;
+            var FTICR2Dmap_mesh = 0.25; 
+ 
+            var FTICR2Dmap_detail = 8, FTICR2Dmap_roughness = 0.7;
+            var dist0 = 1e3;
+            var dist1 = 1e4;
+            var dist2 = 1e5;
+            var dist3 = 1e6;
+            var dist4 = 1e7;
+            var dist5 = 1e8;
+
+            function Visu3d(detail) {
+                this.size = Math.pow(2, detail) + 1;
+                this.max = this.size - 1;
+                this.map = new Float32Array(this.size * this.size);
+            }
+
+            Visu3d.prototype.get = function (x, y) {
+                if (x < 0 || x > this.max || y < 0 || y > this.max) return -1;
+                return this.map[x + this.size * y];
+            };
+
+            Visu3d.prototype.set = function (x, y, val) {
+                this.map[x + this.size * y] = val;
+            };
+
+            Visu3d.prototype.generate = function () {
+                var self = this;
+                this.set(0, 0, self.max);
+                this.set(this.max, 0, self.max / 2);
+                this.set(this.max, this.max, 0);
+                this.set(0, this.max, self.max / 2);    
+                for (var i=0; i< data.length;i++) {
+                  self.get(data[i].x, data[i].y);
+                  self.set(data[i].x, data[i].y, data[i].z);
+                }
+     
+            }
+
+            Visu3d.prototype.addMesh = function () {
+                var self = this;
+                var FTICR2Dmap_geometry = new THREE.PlaneGeometry(512, 512, this.size - 1, this.size - 1);
+                var min_height = Infinity;
+                var max_height = -Infinity;
+                for (var y = 0; y < this.size; y++) {
+                    for (var x = 0; x < this.size; x++) {
+                        var height_val = this.get(x, y);
+                        if ( height_val < min_height ) min_height = height_val;
+                        if ( height_val > max_height ) max_height = height_val;
+                        if ( height_val < 0 ) height_val = 0;
+                        if (y === 0 || y === this.size - 1 || x === 0 || x === this.size - 1) height_val = 0.0;
+                        FTICR2Dmap_geometry.vertices[y * this.size + x].z = height_val;
+                    }
+                }
+
+                FTICR2Dmap_geometry.computeFaceNormals();
+                FTICR2Dmap_geometry.computeVertexNormals();
+                scene.remove(FTICR2Dmap_mesh);
+                FTICR2Dmap_material  = new THREE.MeshNormalMaterial();
+                FTICR2Dmap_mesh = new THREE.Mesh(FTICR2Dmap_geometry, FTICR2Dmap_material);
+                FTICR2Dmap_mesh.rotation.x = -Math.PI / 2.0;
+                scene.add(FTICR2Dmap_mesh);
+            }
+
+		
 			var geometry, material, mesh;
-			var controls;
+			
 
 			var objects = [];
 
@@ -378,69 +438,6 @@ THREE.PointerLockControls = function ( camera ) {
 
 				// objects
 
-            var camera, scene, renderer, controls;
-            var FTICR2Dmap_mesh = 0.25; 
- 
-            var FTICR2Dmap_detail = 8, FTICR2Dmap_roughness = 0.7;
-            var dist0 = 1e3;
-            var dist1 = 1e4;
-            var dist2 = 1e5;
-            var dist3 = 1e6;
-            var dist4 = 1e7;
-            var dist5 = 1e8;
-
-            function Visu3d(detail) {
-                this.size = Math.pow(2, detail) + 1;
-                this.max = this.size - 1;
-                this.map = new Float32Array(this.size * this.size);
-            }
-
-            Visu3d.prototype.get = function (x, y) {
-                if (x < 0 || x > this.max || y < 0 || y > this.max) return -1;
-                return this.map[x + this.size * y];
-            };
-
-            Visu3d.prototype.set = function (x, y, val) {
-                this.map[x + this.size * y] = val;
-            };
-
-            Visu3d.prototype.generate = function () {
-                var self = this;
-                this.set(0, 0, self.max);
-                this.set(this.max, 0, self.max / 2);
-                this.set(this.max, this.max, 0);
-                this.set(0, this.max, self.max / 2);    
-                for (var i=0; i< data.length;i++) {
-                  self.get(data[i].x, data[i].y);
-                  self.set(data[i].x, data[i].y, data[i].z);
-                }
-     
-            }
-
-            Visu3d.prototype.addMesh = function () {
-                var self = this;
-                var FTICR2Dmap_geometry = new THREE.PlaneGeometry(512, 512, this.size - 1, this.size - 1);
-                var min_height = Infinity;
-                var max_height = -Infinity;
-                for (var y = 0; y < this.size; y++) {
-                    for (var x = 0; x < this.size; x++) {
-                        var height_val = this.get(x, y);
-                        if ( height_val < min_height ) min_height = height_val;
-                        if ( height_val > max_height ) max_height = height_val;
-                        if ( height_val < 0 ) height_val = 0;
-                        if (y === 0 || y === this.size - 1 || x === 0 || x === this.size - 1) height_val = 0.0;
-                        FTICR2Dmap_geometry.vertices[y * this.size + x].z = height_val;
-                    }
-                }
-
-                FTICR2Dmap_geometry.computeFaceNormals();
-                FTICR2Dmap_geometry.computeVertexNormals();
-                scene.remove(FTICR2Dmap_mesh);
-                FTICR2Dmap_material  = new THREE.MeshNormalMaterial();
-                FTICR2Dmap_mesh = new THREE.Mesh(FTICR2Dmap_geometry, FTICR2Dmap_material);
-                FTICR2Dmap_mesh.rotation.x = -Math.PI / 2.0;
-                scene.add(FTICR2Dmap_mesh);
-            }
 
 				// geometry = new THREE.BoxGeometry( 20, 20, 20 );
 
