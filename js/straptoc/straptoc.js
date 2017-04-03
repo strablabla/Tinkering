@@ -5,8 +5,8 @@
 // }
 
 //#######
-//https://github.com/strablabla/Tinkering/4e2fe9c/js/straptoc/straptoc.js
-//https://github.com/strablabla/Tinkering/4e2fe9c/js/straptoc/straptoc.css
+//https://github.com/strablabla/Tinkering/e3d2059/js/straptoc/straptoc.js
+//https://github.com/strablabla/Tinkering/e3d2059/js/straptoc/straptoc.css
 
 var maketoc = function(){
 

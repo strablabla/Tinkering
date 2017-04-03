@@ -14,7 +14,7 @@ class Three_json(object):
 
     def example(self):
         '''
-        Produces a 2D numpy dataset object.
+        Produces a 2D numpy dataset object Z[i,j]
         '''
         self.ampl = 50
         self.Nx = 300
