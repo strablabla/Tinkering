@@ -40,6 +40,20 @@ class Three_json(object):
         print (Z.shape)
         return Z
 
+    def example_2(self):
+        '''
+        Produces a 2D numpy dataset object Z[i,j]
+        '''
+        self.ampl = 50
+        self.Nx = 300
+        self.Ny = 300
+        Z = np.empty((self.Nx, self.Ny))
+        for i in range(self.Nx):
+            for j in range(self.Ny):
+                Z[i,j] = 0.05*np.sin(i**2*np.pi/float(self.Nx)*4 + j**2*np.pi/float(self.Ny)*4)
+        print (Z.shape)
+        return Z
+
     def plot_shape_3d(self, Z):
         '''
         Makes the json file used by three-json.html for plotting a shape in 3D from a 2D numpy array containing the z values.
@@ -66,4 +80,4 @@ class Three_json(object):
 
 if __name__=='__main__':
     tj = Three_json()
-    tj.plot_shape_3d(tj.example_1())
+    tj.plot_shape_3d(tj.example_2())

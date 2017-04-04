@@ -7,7 +7,7 @@
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 		<title>three.js - pointerlock controls</title>
-       
+
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<script src='3d.json'></script>
@@ -71,7 +71,7 @@
         <script type="text/javascript" src="three_with_json/TrackballControls.js"></script>
         <script type="text/javascript" src="three_with_json/Detector.js"></script>
         <script type="text/javascript" src="three_with_json/dat.js"></script>
-		
+
 		<!-- "https://gist.github.com/bitbrain/108a2b2baa86abff5a722fd606ef4060.js" -->
 <script>
 
@@ -153,7 +153,7 @@ THREE.PointerLockControls = function ( camera ) {
 		<script>
 
             var camera, scene, renderer, controls;
-            var FTICR2Dmap_mesh = 0.25; 
+            var FTICR2Dmap_mesh = 0.25;
             var FTICR2Dmap_detail = 8, FTICR2Dmap_roughness = 0.7;
             var dist0 = 1e3;
             var dist1 = 1e4;
@@ -182,7 +182,7 @@ THREE.PointerLockControls = function ( camera ) {
                 this.set(0, 0, self.max);
                 this.set(this.max, 0, self.max / 2);
                 this.set(this.max, this.max, 0);
-                this.set(0, this.max, self.max / 2);    
+                this.set(0, this.max, self.max / 2);
                 for (var i=0; i< data.length;i++) {
                   self.get(data[i].x, data[i].y);
                   self.set(data[i].x, data[i].y, data[i].z);
@@ -437,7 +437,8 @@ THREE.PointerLockControls = function ( camera ) {
 
 					velocity.x -= velocity.x * 1.0 * delta;               // velocity x
 					velocity.z -= velocity.z * 1.0 * delta;               // velocity z
-					velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass   // velocity y  taking in account the gravity. 
+					// velocity.y = 0;
+					velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass   // velocity y  taking in account the gravity.
 
 					if ( moveForward ) velocity.z -= 400.0 * delta;
 					if ( moveBackward ) velocity.z += 400.0 * delta;
@@ -446,12 +447,11 @@ THREE.PointerLockControls = function ( camera ) {
 
 					if ( isOnObject === true ) {
 						velocity.y = Math.max( 0, velocity.y );
-
 						canJump = true;
 					}
 
 					controls.getObject().translateX( velocity.x * delta );
-					controls.getObject().translateY( velocity.y * delta );
+					controls.getObject().translateY( velocity.y * delta ); // velocity.y * delta
 					controls.getObject().translateZ( velocity.z * delta );
 
 					if ( controls.getObject().position.y < 10 ) {
@@ -471,6 +471,6 @@ THREE.PointerLockControls = function ( camera ) {
             };
 
 		</script><canvas width="1078" height="575" style="width: 1078px; height: 575px;"></canvas>
-	
+
 
 </body></html>
