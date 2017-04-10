@@ -9,17 +9,15 @@
 
 <section>
 
-
 </section>
 
   <div id="container"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
-  <script src="js/THREEx.KeyboardState.js"></script>
+  <script src="http://stemkoski.github.io/Three.js/js/KeyboardState.js"></script>
 
-  <script src="jquery-2.0.3.js"></script>
+  <script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
   <script type="text/javascript">
-
 
 var renderer, scene, camera, mesh;
 
@@ -38,18 +36,6 @@ tableau('Photographes/bettina_rheims_rose_c_est_paris.jpg', size_tab, 200, 0, 10
 tableau('Photographes/Doisneau-Anita.jpg', size_tab, 500, 0, 150, -1);
 tableau('Photographes/rouge.jpg', size_tab, -200, 0, 100, 0);
 tableau('Photographes/russian_flight_attendants_61.jpg', size_tab, -500, 0, 150, 1);
-//load_js('conotorus.js')
-//load_js('chair.js', 20)
-//load_js('talo.js',50)
-//load_collada('DoricColumn.dae');
-//load_collada('vase4.dae');
-
-//$(document).ready(function(){
-// $("#msgid").html("This is Hello World by JQuery");
-//});
-//
-// Button Set
-//$("#radio1").buttonset();
 
 
 function init(){
@@ -112,23 +98,10 @@ function load_js(file, scale){
   var loader = new THREE.JSONLoader();
   loader.load(file, function (geometry, materials) {
 
-//    	mesh = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial( { overdraw: true } ) );
-//					scene.add( mesh );
-    //    mesh = new THREE.Mesh( geometry,  new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('mumart/abstr.jpg',
-    //new THREE.SphericalReflectionMapping()), overdraw: true } ));
 
-    //alert(materials);
-    //new THREE.MeshLambertMaterial({
-    //    color: 'blue' , new THREE.MeshLambertMaterial( materials )
-    //  }));
-    ////material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
-    //material = new THREE.MeshFaceMaterial( {color: 0xFF0000}  );
-    ////var zmesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial(material) );
     var zmesh = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial( materials ) );
     setMaterial(zmesh, new THREE.MeshBasicMaterial({color: 0xfff000}));
-    //setMaterial(zmesh, new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture('Blender/acero.jpg')}));
-    //zmesh.position.set( 0,0,0 );
-    //var zmesh = new THREE.Mesh( geometry, material );
+   
     zmesh.position.set( 0,0,0 );
     //
     zmesh.scale.set( scale,scale,scale );
@@ -227,15 +200,8 @@ function toggle(){
 
 }
 
-
 </script>
 
-<!--  <div id="msgid">
-</div>
-
-<div id="radio1">
-        <input type="radio" id="radio1" name="radio" /><label for="radio1">Choice 1</label>
-</div>-->
 
 </body>
 </html>
