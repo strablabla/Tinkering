@@ -1,0 +1,222 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Gallerie avec objets</title>
+    <meta charset="utf-8">
+    <link  href="css/main.css" rel="stylesheet"/>
+  </head>
+<body>
+
+<section>
+
+</section>
+
+  <div id="container"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+  <script src="http://stemkoski.github.io/Three.js/js/KeyboardState.js"></script>
+
+  <script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/soundmanager2/2.97a.20150601/script/soundmanager2-jsmin.js"></script>
+
+  <script type="text/javascript">
+
+var renderer, scene, camera, mesh;
+
+size_tab = 100;
+camera_speed = 0.06;
+displac_speed = 50;
+go = true;
+init();
+animate();
+keys();
+nbtouch = 0
+
+make_ground('Decor/mosaique-mur-prestige-decor-mix-noir.jpg', -100)
+tableau('Photographes/Bettina-Rheims.jpg', size_tab, 0, 0, 120, 0.7);
+tableau('Photographes/bettina_rheims_rose_c_est_paris.jpg', size_tab, 200, 0, 100, 0);
+tableau('Photographes/Doisneau-Anita.jpg', size_tab, 500, 0, 150, -1);
+tableau('Photographes/rouge.jpg', size_tab, -200, 0, 100, 0);
+tableau('Photographes/russian_flight_attendants_61.jpg', size_tab, -500, 0, 150, 1);
+
+soundManager.setup({
+  url: '/path/to/swf-files/',
+  onready: function() {
+    var mySound = soundManager.createSound({
+      id: 'aSound',
+      //url: '/home/lio/Téléchargements/youtube/zic/Oriental/Souad_Massi_Ya Kalbi.mp4'
+      url: 'Souad_Massi_Ya Kalbi.mp4'
+    });
+    mySound.play();
+  },
+  ontimeout: function() {
+    // Hrmm, SM2 could not start. Missing SWF? Flash blocked? Show an error, etc.?
+  }
+});
+
+function init(){
+
+  // on initialise le moteur de rendu
+  renderer = new THREE.WebGLRenderer();
+
+  // si WebGL ne fonctionne pas sur votre navigateur vous pouvez utiliser le moteur de rendu Canvas à la place
+  // renderer = new THREE.CanvasRenderer();
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  document.getElementById('container').appendChild(renderer.domElement);
+
+  // on initialise la scène
+  scene = new THREE.Scene();
+
+  // on initialise la camera que l’on place ensuite sur la scène
+  camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000 );
+  camera.position.set(0, 0, 1000);
+  scene.add(camera);
+
+    // on effectue le rendu de la scène
+    renderer.render( scene, camera );
+} // end of function init()
+
+//######################################"
+
+function tableau(txt, size,  x, z, y, roty){
+    // on créé un  plan pour lequel on définit un matériau puis on l’ajoute à la scène
+    var geom = new THREE.PlaneGeometry( size, size, 2);
+    var mat= new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture(txt), overdraw: true } );
+    var tabl = new THREE.Mesh( geom, mat); // , new THREE.SphericalReflectionMapping()
+
+    tabl.position.x = +x;
+    tabl.position.z = +z;
+    tabl.rotation.y += roty;
+    tabl.position.y = y; //hauteur
+    scene.add(tabl);
+}
+
+function load_collada(model) {
+  var dae, skin;
+  var loader = new THREE.ColladaLoader();
+  loader.options.convertUpAxis = true;
+  loader.load( model, function ( collada ) {
+      dae = collada.scene;
+      skin = collada.skins[ 0 ];
+      dae.scale.x = dae.scale.y = dae.scale.z = 20;
+      dae.updateMatrix();
+      scene.add(dae);
+      dae_material = collada.scene.children[ 0 ].material;
+      setMaterial(dae, new THREE.MeshBasicMaterial({color: 0xff0000}));
+      dae.scale.set(3.0, 3.0, 3.0);
+      dae.updateMatrix();
+      });
+}
+
+function load_js(file, scale){
+  // Load the mesh exported from blender
+  var loader = new THREE.JSONLoader();
+  loader.load(file, function (geometry, materials) {
+
+
+    var zmesh = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial( materials ) );
+    setMaterial(zmesh, new THREE.MeshBasicMaterial({color: 0xfff000}));
+
+    zmesh.position.set( 0,0,0 );
+    //
+    zmesh.scale.set( scale,scale,scale );
+    scene.add( zmesh );
+    renderer.render( scene, camera );
+  }); // end of loader.load
+}
+
+var setMaterial = function(node, material) {
+  node.material = material;
+  if (node.children) {
+    for (var i = 0; i < node.children.length; i++) {
+      setMaterial(node.children[i], material);
+    }
+  }
+}
+
+function make_ground(pic, level) {
+  var geom = new THREE.CubeGeometry( 1000, 1, 1000);
+  var mat = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( pic
+  ), overdraw: true, receiveShadow : true  } ); // new THREE.SphericalReflectionMapping()
+  ground = new THREE.Mesh(geom, mat);
+  ground.position.y = level;
+  scene.add(ground);
+}
+
+function printObject(o) {
+  var out = '';
+  for (var p in o) {
+    out += p + ': ' + o[p] + '\n';
+  }
+  alert(out);
+}
+
+function animate(){
+    requestAnimationFrame( animate );
+    renderer.render( scene, camera );
+}
+
+function keys() {
+  document.addEventListener('keydown', function(event) {
+  if(event.keyCode == "a".charCodeAt(0)-32) { //go up
+      camera.position.y+=10
+    }
+  if(event.keyCode == "q".charCodeAt(0)-32) { //go up
+      camera.position.y+=-10
+    }
+  if(event.keyCode == 32) {toggle()};
+  if(event.keyCode == 38) { //up arrow: 38
+    if (go == false) {
+      rotate_up();
+    }
+    else go_ahead();
+    }
+  else if(event.keyCode == 32) {//space
+      toggle();
+    }
+  else if(event.keyCode == 40) {//down arrow
+    if (go == false) {
+      rotate_down();
+    }
+    else go_back();
+    }
+  else if(event.keyCode == 37) {//left arrow
+      rotate_right();
+    }
+  else if(event.keyCode == 39) {//right arrow
+  rotate_left();
+    }
+  }); // end of addEventListener
+}
+
+function go_ahead(){
+  camera.position.z += -displac_speed*Math.cos(camera.rotation.y);
+  camera.position.x += -displac_speed*Math.sin(camera.rotation.y);
+  }
+
+function go_back(){
+  camera.position.z += displac_speed*Math.cos(camera.rotation.y);
+  camera.position.x += displac_speed*Math.sin(camera.rotation.y);
+  }
+
+function rotate_right(){ camera.rotation.y += camera_speed;}
+function rotate_left(){ camera.rotation.y += -camera_speed;}
+function rotate_up(){ camera.rotation.x += camera_speed;}
+function rotate_down(){ camera.rotation.x += -camera_speed;}
+
+function toggle(){
+  nbtouch += 1;
+  if (nbtouch == 2) {go = false}
+  else if (nbtouch == 4){
+    go = true;
+    nbtouch =0
+    }
+  //alert(nbtouch)
+
+}
+
+</script>
+
+
+</body>
+</html>
