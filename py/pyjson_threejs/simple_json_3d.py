@@ -82,7 +82,7 @@ class Three_json(object):
         Produces a 2D numpy dataset object Z[i,j]
         '''
         N = 500
-        sub = 50
+        sub = 10
         self.Nx = N
         self.Ny = N
         nbpts = 20
@@ -100,8 +100,57 @@ class Three_json(object):
             for i in range(sub):
                 for j in range(sub):
 
-                    Z[i+pos[0],j+pos[1]] = self.ampl*(np.sin(2*i*np.pi/sub) + np.sin(2*j*np.pi/sub))
+                    Z[i+pos[0],j+pos[1]] = self.ampl*(np.sin(2*i*np.pi/sub)**2 + np.sin(2*j*np.pi/sub)**2)
+        return Z
 
+    def example_5(self):
+        '''
+        Produces a 2D numpy dataset object Z[i,j]
+        '''
+        N = 500
+        sub = 10
+        self.Nx = N
+        self.Ny = N
+        nbpts = 20
+        low = 2*sub
+        up = N-2*sub
+        Z = np.empty((self.Nx, self.Ny))
+        pos = [100, 100]
+        step = 6
+        for n in range(nbpts):
+            self.ampl = 3 # *np.random.randn()
+            ri = np.random.randint(low,up)
+            rj = np.random.randint(low,up)
+            pos[0]+=step
+            pos[1]+=step
+            for i in range(sub):
+                for j in range(sub):
+                    Z[i+pos[0],j+pos[1]] = self.ampl*(np.sin(2*i*np.pi/sub) + np.sin(2*j*np.pi/sub))
+        return Z
+
+    def example_6(self):
+        '''
+        Produces a 2D numpy dataset object Z[i,j]
+        '''
+        N = 500
+        sub = 10
+        self.Nx = N
+        self.Ny = N
+        nbpts = 20
+        low = 2*sub
+        up = N-2*sub
+        Z = np.empty((self.Nx, self.Ny))
+        pos = [100, 100]
+        step = 2
+        for n in range(nbpts):
+            self.ampl = 3 # *np.random.randn()
+            ri = np.random.randint(low,up)
+            rj = np.random.randint(low,up)
+            pos[0]+=step
+            pos[1]+=step
+            for i in range(sub):
+                for j in range(sub):
+                    Z[i+pos[0],j+pos[1]] = np.abs(self.ampl*(np.sin(2*i*np.pi/sub) + np.sin(2*j*np.pi/sub)))
         return Z
 
     def plot_shape_3d(self, Z):
@@ -130,4 +179,4 @@ class Three_json(object):
 
 if __name__=='__main__':
     tj = Three_json()
-    tj.plot_shape_3d(tj.example_4())
+    tj.plot_shape_3d(tj.example_6())
