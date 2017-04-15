@@ -56,7 +56,7 @@ class Three_json(object):
 
     def example_3(self):
         '''
-        Produces a 2D numpy dataset object Z[i,j]
+        Produces Hills in a 2D numpy dataset object Z[i,j]
         '''
         N = 500
         sub = 50
@@ -72,9 +72,7 @@ class Three_json(object):
             rj = np.random.randint(low,up)
             for i in range(sub):
                 for j in range(sub):
-
                     Z[i+ri,j+rj] = self.ampl*(np.sin(2*i*np.pi/sub) + np.sin(2*j*np.pi/sub))
-
         return Z
 
     def example_4(self):
@@ -99,13 +97,12 @@ class Three_json(object):
             pos[1]+=step
             for i in range(sub):
                 for j in range(sub):
-
                     Z[i+pos[0],j+pos[1]] = self.ampl*(np.sin(2*i*np.pi/sub)**2 + np.sin(2*j*np.pi/sub)**2)
         return Z
 
     def example_5(self):
         '''
-        Produces a 2D numpy dataset object Z[i,j]
+        Produces Hills as a 2D numpy dataset object Z[i,j]
         '''
         N = 500
         sub = 10
@@ -166,7 +163,7 @@ class Three_json(object):
         Z[100:120,100:200] = 10
         return Z
 
-    def example_8(self):
+    def example_8(self, nbwalls= 10):
         '''
         Make walls
         '''
@@ -174,13 +171,9 @@ class Three_json(object):
         sub = 10
         self.Nx = N
         self.Ny = N
-        nbwalls = 30
         Z = np.empty((self.Nx, self.Ny))
         self.ampl = 1 #
-        print("aaaaahhhh")
-        def hello(debug=1):
-            print("Hellllloooooo")
-        hello()
+
         def make_walls(Z, nbwalls, debug=2):
             pos = [100, 100]
             width = 2
@@ -190,8 +183,6 @@ class Three_json(object):
             for n in range(nbwalls):
                 posold = pos.copy()
                 sgn = (-1)**(np.random.randint(2,11))
-
-
                 direc = np.random.randint(2,11)
                 ######
                 if direc%2 == 0:  # x direction
@@ -233,10 +224,7 @@ class Three_json(object):
                     mode = 'y'
 
             return Z
-        Z = make_walls(Z, nbwalls)
-        #print(Z[Z==10])
-
-        return Z
+        return make_walls(Z, nbwalls)
 
     def plot_shape_3d(self, Z):
         '''
@@ -264,4 +252,4 @@ class Three_json(object):
 
 if __name__=='__main__':
     tj = Three_json()
-    tj.plot_shape_3d(tj.example_8())
+    tj.plot_shape_3d(tj.example_8(nbwalls= 100))

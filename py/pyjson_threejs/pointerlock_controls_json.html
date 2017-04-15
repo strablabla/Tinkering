@@ -9,59 +9,8 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<script src='3d.json'></script>
-		<style>
-			html, body {
-				width: 100%;
-				height: 100%;
-			}
+		<link rel="stylesheet" type="text/css" href="gallerie.css">
 
-			body {
-				background-color: #ffffff;
-				margin: 0;
-				overflow: hidden;
-				font-family: arial;
-			}
-
-			#blocker {
-
-				position: absolute;
-
-				width: 100%;
-				height: 100%;
-
-				background-color: rgba(0,0,0,0.5);
-
-			}
-
-			#instructions {
-
-				width: 100%;
-				height: 100%;
-
-				display: -webkit-box;
-				display: -moz-box;
-				display: box;
-
-				-webkit-box-orient: horizontal;
-				-moz-box-orient: horizontal;
-				box-orient: horizontal;
-
-				-webkit-box-pack: center;
-				-moz-box-pack: center;
-				box-pack: center;
-
-				-webkit-box-align: center;
-				-moz-box-align: center;
-				box-align: center;
-
-				color: #ffffff;
-				text-align: center;
-
-				cursor: pointer;
-
-			}
-
-		</style>
 	</head>
 	<body>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
@@ -69,72 +18,9 @@
         <script type="text/javascript" src="three_with_json/TrackballControls.js"></script>
         <script type="text/javascript" src="three_with_json/Detector.js"></script>
         <script type="text/javascript" src="three_with_json/dat.js"></script>
-
-		<!-- "https://gist.github.com/bitbrain/108a2b2baa86abff5a722fd606ef4060.js" -->
-<script>
-
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
-THREE.PointerLockControls = function ( camera ) {
-
-	var scope = this;
-
-	camera.rotation.set( 0, 0, 0 );
-
-	var pitchObject = new THREE.Object3D();
-	pitchObject.add(camera);
-
-	var yawObject = new THREE.Object3D();
-	yawObject.position.y = 10;
-	yawObject.add( pitchObject );
-
-	var PI_2 = Math.PI / 2;
-
-	var onMouseMove = function ( event ) {
-
-		if ( scope.enabled === false ) return;
-
-		var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
-		var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
-
-		yawObject.rotation.y -= movementX * 0.008; //0.002
-		pitchObject.rotation.x -= movementY * 0.008; //0.002
-		pitchObject.rotation.x = Math.max( - PI_2, Math.min( PI_2, pitchObject.rotation.x ) );
-
-	};
-
-	this.dispose = function() {
-		document.removeEventListener( 'mousemove', onMouseMove, false );
-	};
-
-	document.addEventListener( 'mousemove', onMouseMove, false );
-
-	this.enabled = false;
-
-	this.getObject = function () {
-		return yawObject;
-	};
-
-	this.getDirection = function() {
-
-		// assumes the camera itself is not rotated
-
-		var direction = new THREE.Vector3( 0, 0, - 1 );
-		var rotation = new THREE.Euler( 0, 0, 0, "YXZ" );
-
-		return function( v ) {
-			rotation.set( pitchObject.rotation.x, yawObject.rotation.y, 0 );
-			v.copy( direction ).applyEuler( rotation );
-			return v;
-		};
-
-	}();
-
-};
-
-</script>
+        <script type="text/javascript" src="point_locker.js"></script>
+		<script type="text/javascript" src="landscape.js"></script>
+		<script type="text/javascript" src="graphical_elems.js"></script>
 
 		<div id="blocker" style="display: -webkit-box;">
 
@@ -158,58 +44,6 @@ THREE.PointerLockControls = function ( camera ) {
             var dist4 = 1e7;
             var dist5 = 1e8;
 
-            function Visu3d(detail) {
-                this.size = Math.pow(2, detail) + 1;
-                this.max = this.size - 1;
-                this.map = new Float32Array(this.size * this.size);
-            }
-
-            Visu3d.prototype.get = function (x, y) {
-                if (x < 0 || x > this.max || y < 0 || y > this.max) return -1;
-                return this.map[x + this.size * y];
-            };
-
-            Visu3d.prototype.set = function (x, y, val) {
-                this.map[x + this.size * y] = val;
-            };
-
-            Visu3d.prototype.generate = function () {
-                var self = this;
-                this.set(0, 0, self.max);
-                this.set(this.max, 0, self.max / 2);
-                this.set(this.max, this.max, 0);
-                this.set(0, this.max, self.max / 2);
-                for (var i=0; i< data.length;i++) {
-                  self.get(data[i].x, data[i].y);
-                  self.set(data[i].x, data[i].y, data[i].z);
-                }
-            }
-
-            Visu3d.prototype.addMesh = function () {
-                var self = this;
-                var FTICR2Dmap_geometry = new THREE.PlaneGeometry(512, 512, this.size - 1, this.size - 1);
-                var min_height = Infinity;
-                var max_height = -Infinity;
-                for (var y = 0; y < this.size; y++) {
-                    for (var x = 0; x < this.size; x++) {
-                        var height_val = this.get(x, y);
-                        if ( height_val < min_height ) min_height = height_val;
-                        if ( height_val > max_height ) max_height = height_val;
-                        if ( height_val < 0 ) height_val = 0;
-                        if (y === 0 || y === this.size - 1 || x === 0 || x === this.size - 1) height_val = 0.0;
-                        FTICR2Dmap_geometry.vertices[y * this.size + x].z = height_val;
-                    }
-                }
-
-                FTICR2Dmap_geometry.computeFaceNormals();
-                FTICR2Dmap_geometry.computeVertexNormals();
-                scene.remove(FTICR2Dmap_mesh);
-                FTICR2Dmap_material  = new THREE.MeshNormalMaterial();
-                FTICR2Dmap_mesh = new THREE.Mesh(FTICR2Dmap_geometry, FTICR2Dmap_material);
-                FTICR2Dmap_mesh.rotation.x = -Math.PI / 2.0;
-                scene.add(FTICR2Dmap_mesh);
-            }
-
 			var geometry, material, mesh;
 			var objects = [];
 			var raycaster;
@@ -218,67 +52,8 @@ THREE.PointerLockControls = function ( camera ) {
 
 			// http://www.html5rocks.com/en/tutorials/pointerlock/intro/
 
-			var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
+			ptlock()
 
-			if ( havePointerLock ) {
-				var element = document.body;
-				var pointerlockchange = function ( event ) {
-					if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
-						controlsEnabled = true;
-						controls.enabled = true;
-						blocker.style.display = 'none';
-
-					} else {
-
-						controls.enabled = false;
-						blocker.style.display = '-webkit-box';
-						blocker.style.display = '-moz-box';
-						blocker.style.display = 'box';
-						instructions.style.display = '';
-					}
-				};
-
-				var pointerlockerror = function ( event ) {
-					instructions.style.display = '';
-				};
-
-				// Hook pointer lock state change events
-				document.addEventListener( 'pointerlockchange', pointerlockchange, false );
-				document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
-				document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
-				document.addEventListener( 'pointerlockerror', pointerlockerror, false );
-				document.addEventListener( 'mozpointerlockerror', pointerlockerror, false );
-				document.addEventListener( 'webkitpointerlockerror', pointerlockerror, false );
-
-				instructions.addEventListener( 'click', function ( event ) {
-					instructions.style.display = 'none';
-					// Ask the browser to lock the pointer
-					element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
-
-					if ( /Firefox/i.test( navigator.userAgent ) ) {
-
-						var fullscreenchange = function ( event ) {
-
-							if ( document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element ) {
-								document.removeEventListener( 'fullscreenchange', fullscreenchange );
-								document.removeEventListener( 'mozfullscreenchange', fullscreenchange );
-								element.requestPointerLock();
-							}
-						};
-
-						document.addEventListener( 'fullscreenchange', fullscreenchange, false );
-						document.addEventListener( 'mozfullscreenchange', fullscreenchange, false );
-						element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
-						element.requestFullscreen();
-					} else {
-						element.requestPointerLock();
-					}
-				}, false );
-
-			} else {
-
-				instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
-			}
 
 			init();
 			generate()
@@ -293,160 +68,12 @@ THREE.PointerLockControls = function ( camera ) {
 			var prevTime = performance.now();
 			var velocity = new THREE.Vector3();
 
-			function init() {
-
-				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
-				scene = new THREE.Scene();
-				scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
-				var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
-				light.position.set( 0.5, 1, 0.75 );
-				scene.add( light );
-				controls = new THREE.PointerLockControls( camera );
-				scene.add( controls.getObject() );
-
-				var onKeyDown = function ( event ) {
-
-					switch ( event.keyCode ) {
-
-						case 38: // up
-						case 87: // w
-							moveForward = true;
-							break;
-
-						case 37: // left
-						case 65: // a
-							moveLeft = true; break;
-
-						case 40: // down
-						case 83: // s
-							moveBackward = true;
-							break;
-
-						case 39: // right
-						case 68: // d
-							moveRight = true;
-							break;
-
-						case 32: // space
-							if ( canJump === true ) controls.getObject().translateY(1000); // velocity.y += 1000;  // jump
-
-							canJump = false;
-							break;
-					}
-				};
-
-				var onKeyUp = function ( event ) {
-
-					switch( event.keyCode ) {
-
-						case 38: // up
-						case 87: // w
-							moveForward = false;
-							break;
-
-						case 37: // left
-						case 65: // a
-							moveLeft = false;
-							break;
-
-						case 40: // down
-						case 83: // s
-							moveBackward = false;
-							break;
-
-						case 39: // right
-						case 68: // d
-							moveRight = false;
-							break;
-					}
-				};
-
-				document.addEventListener( 'keydown', onKeyDown, false );
-				document.addEventListener( 'keyup', onKeyUp, false );
-
-				raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
-
-				// floor
-
-				geometry = new THREE.PlaneGeometry( 2000, 2000, 100, 100 );
-				geometry.rotateX( - Math.PI / 2 );
-
-				for ( var i = 0, l = geometry.vertices.length; i < l; i ++ ) {
-
-					var vertex = geometry.vertices[ i ];
-					vertex.x += Math.random() * 20 - 10;
-					vertex.y += Math.random() * 2;
-					vertex.z += Math.random() * 20 - 10;
-
-				}
-
-				for ( var i = 0, l = geometry.faces.length; i < l; i ++ ) {
-
-					var face = geometry.faces[ i ];
-					face.vertexColors[ 0 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-					face.vertexColors[ 1 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-					face.vertexColors[ 2 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-
-				}
-
-				material = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
-				mesh = new THREE.Mesh( geometry, material );
-				scene.add( mesh );
-				renderer = new THREE.WebGLRenderer();
-				renderer.setClearColor( 0xffffff );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				document.body.appendChild( renderer.domElement );
-				window.addEventListener( 'resize', onWindowResize, false );
-
-			}
+			make_ground('Decor/Hippone_Mosaïque_romaine_les_Amours_vendangeurs.jpg', 0) //-100
 
 			function onWindowResize() {
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
 				renderer.setSize( window.innerWidth, window.innerHeight );
-			}
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				if ( controlsEnabled ) {
-					raycaster.ray.origin.copy( controls.getObject().position );
-					raycaster.ray.origin.y -= 10;
-
-					var intersections = raycaster.intersectObjects( objects );
-					var isOnObject = intersections.length > 0;
-					var time = performance.now();
-					var delta = ( time - prevTime ) / 1000;
-
-					velocity.x -= velocity.x * 1.0 * delta;               // velocity x
-					velocity.z -= velocity.z * 1.0 * delta;               // velocity z
-					// velocity.y = 0;
-					velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass   // velocity y  taking in account the gravity.
-
-					if ( moveForward ) velocity.z -= 400.0 * delta;
-					if ( moveBackward ) velocity.z += 400.0 * delta;
-					if ( moveLeft ) velocity.x -= 400.0 * delta;
-					if ( moveRight ) velocity.x += 400.0 * delta;
-
-					if ( isOnObject === true ) {
-						velocity.y = Math.max( 0, velocity.y );
-						canJump = true;
-					}
-
-					controls.getObject().translateX( velocity.x * delta );
-					controls.getObject().translateY( velocity.y * delta ); // velocity.y * delta
-					controls.getObject().translateZ( velocity.z * delta );
-                    var posy = 50
-					if ( controls.getObject().position.y < posy ) {
-						velocity.y = 0;
-						controls.getObject().position.y = posy;
-						canJump = true;
-					}
-					prevTime = time;
-				}
-				renderer.render( scene, camera );
 			}
 
             function generate() {
@@ -456,6 +83,5 @@ THREE.PointerLockControls = function ( camera ) {
             };
 
 		</script><canvas width="1078" height="575" style="width: 1078px; height: 575px;"></canvas>
-
-
-</body></html>
+</body>
+</html>
