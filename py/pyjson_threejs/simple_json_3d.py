@@ -153,6 +153,91 @@ class Three_json(object):
                     Z[i+pos[0],j+pos[1]] = np.abs(self.ampl*(np.sin(2*i*np.pi/sub) + np.sin(2*j*np.pi/sub)))
         return Z
 
+    def example_7(self):
+        '''
+        Parallelepiped
+        '''
+        N = 500
+        self.Nx = N
+        self.Ny = N
+        Z = np.empty((self.Nx, self.Ny))
+        pos = [100, 100]
+        self.ampl = 3 # *np.random.randn()
+        Z[100:120,100:200] = 10
+        return Z
+
+    def example_8(self):
+        '''
+        Make walls
+        '''
+        N = 500
+        sub = 10
+        self.Nx = N
+        self.Ny = N
+        nbwalls = 30
+        Z = np.empty((self.Nx, self.Ny))
+        self.ampl = 1 #
+        print("aaaaahhhh")
+        def hello(debug=1):
+            print("Hellllloooooo")
+        hello()
+        def make_walls(Z, nbwalls, debug=2):
+            pos = [100, 100]
+            width = 2
+            lmin, lmax = 4, 8
+            print('in make_walls')
+            mode = None
+            for n in range(nbwalls):
+                posold = pos.copy()
+                sgn = (-1)**(np.random.randint(2,11))
+
+
+                direc = np.random.randint(2,11)
+                ######
+                if direc%2 == 0:  # x direction
+                    print('x')
+                    ri = 5*sgn # *np.random.randint(lmin, lmax)
+                    if mode == 'x':
+                        if debug>0:
+                            print('continue x')
+                        pos[0]+= np.sign(ri_old)*abs(ri)
+                    else:
+                        pos[0]+=ri
+                        ri_old = ri
+                    if debug>1:
+                        print('ri ', ri)
+                        print("posold ", posold)
+                        print("pos ", pos)
+                    posmin = min(posold[0],pos[0])
+                    posmax = max(posold[0],pos[0])
+                    Z[posmin:posmax, posold[1]:posold[1]+width] = 10
+                    mode = 'x'
+
+                else:            # y direction
+                    print('y')
+                    rj = 5*sgn # *np.random.randint(lmin, lmax)
+                    if mode == 'y':
+                        if debug>0:
+                            print('continue y')
+                        pos[1]+= np.sign(rj_old)*abs(rj)
+                    else:
+                        pos[1]+=rj
+                        rj_old = rj
+                    if debug>1:
+                        print('rj ', rj)
+                        print("posold ", posold)
+                        print("pos ", pos)
+                    posmin = min(posold[1],pos[1])
+                    posmax = max(posold[1],pos[1])
+                    Z[posold[0]:posold[0]+width, posmin:posmax] = 10
+                    mode = 'y'
+
+            return Z
+        Z = make_walls(Z, nbwalls)
+        #print(Z[Z==10])
+
+        return Z
+
     def plot_shape_3d(self, Z):
         '''
         Makes the json file used by three-json.html for plotting a shape in 3D from a 2D numpy array containing the z values.
@@ -179,4 +264,4 @@ class Three_json(object):
 
 if __name__=='__main__':
     tj = Three_json()
-    tj.plot_shape_3d(tj.example_6())
+    tj.plot_shape_3d(tj.example_8())
