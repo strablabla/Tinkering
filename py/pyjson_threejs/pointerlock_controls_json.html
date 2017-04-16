@@ -35,8 +35,8 @@
 		<script>
 
             var camera, scene, renderer, controls;
-            var FTICR2Dmap_mesh = 0.25;
-            var FTICR2Dmap_detail = 8, FTICR2Dmap_roughness = 0.7;
+            var landscape_map_mesh = 0.25;
+            var landscape_map_detail = 8, landscape_map_roughness = 0.7;
             var dist0 = 1e3;
             var dist1 = 1e4;
             var dist2 = 1e5;
@@ -52,9 +52,7 @@
 
 			// http://www.html5rocks.com/en/tutorials/pointerlock/intro/
 
-			ptlock()
-
-
+			ptlock() // pointerlocker document links
 			init();
 			generate()
 			animate();
@@ -68,7 +66,8 @@
 			var prevTime = performance.now();
 			var velocity = new THREE.Vector3();
 
-			make_ground('Decor/Hippone_Mosaïque_romaine_les_Amours_vendangeurs.jpg', 0) //-100
+			//make_ground('Decor/Hippone_Mosaïque_romaine_les_Amours_vendangeurs.jpg', 0) //-100
+			make_ground_repetitive('Decor/Hippone_Mosaïque_romaine_les_Amours_vendangeurs.jpg', 0, 20)
 
 			function onWindowResize() {
 				camera.aspect = window.innerWidth / window.innerHeight;
@@ -77,9 +76,9 @@
 			}
 
             function generate() {
-                var FTICR2Dmap = new Visu3d(parseInt(FTICR2Dmap_detail));
-                FTICR2Dmap.generate(FTICR2Dmap_roughness);
-                FTICR2Dmap.addMesh();
+                var landscape_map = new Visu3d(parseInt(landscape_map_detail));
+                landscape_map.generate(landscape_map_roughness);
+                landscape_map.addMesh();
             };
 
 		</script><canvas width="1078" height="575" style="width: 1078px; height: 575px;"></canvas>

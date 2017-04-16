@@ -193,7 +193,7 @@ class Three_json(object):
                             print('continue x')
                         pos[0]+= np.sign(ri_old)*abs(ri)
                     else:
-                        pos[0]+=ri
+                        pos[0] += ri
                         ri_old = ri
                     if debug>1:
                         print('ri ', ri)
@@ -212,7 +212,7 @@ class Three_json(object):
                             print('continue y')
                         pos[1]+= np.sign(rj_old)*abs(rj)
                     else:
-                        pos[1]+=rj
+                        pos[1] += rj
                         rj_old = rj
                     if debug>1:
                         print('rj ', rj)

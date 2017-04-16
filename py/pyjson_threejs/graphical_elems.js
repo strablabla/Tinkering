@@ -12,10 +12,27 @@ function tableau(txt, size,  x, z, y, roty){
 }
 
 function make_ground(pic, level) {
-  var geom = new THREE.CubeGeometry( 100, 1, 100);
+  var geom = new THREE.CubeGeometry( 500, 1, 500);
   var mat = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( pic
   ), overdraw: true, receiveShadow : true  } ); // new THREE.SphericalReflectionMapping()
   ground = new THREE.Mesh(geom, mat);
   ground.position.y = level;
   scene.add(ground);
+}
+
+function make_ground_repetitive(pic, level, size) {
+    halfnb = 10
+    for (j=-halfnb; j<halfnb; j++){
+          for (i=-halfnb; i<halfnb; i++){
+              var geom = new THREE.CubeGeometry( size, 1, size);
+              var mat = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( pic
+              ), overdraw: true, receiveShadow : true  } ); // new THREE.SphericalReflectionMapping()
+              ground = new THREE.Mesh(geom, mat);
+              ground.position.y = level;
+              ground.position.x = size*i
+              ground.position.z = size*j;
+              scene.add(ground);
+         }
+      }
+
 }
