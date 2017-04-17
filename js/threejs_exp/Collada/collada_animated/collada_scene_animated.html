@@ -80,12 +80,20 @@
                 var landscape_map = new Visu3d(parseInt(landscape_map_detail));
                 landscape_map.generate(landscape_map_roughness);
                 landscape_map.addMesh();
-				/* Collada.*/
-				loader = new THREE.ColladaLoader();
-				loader.load('scene.dae', function(collada) {
-				  collada.scene.scale.set(0.1, 0.1, 0.1);
-				  scene.add(collada.scene);
-			  })
+				/* Collada meuble.*/
+				// loader = new THREE.ColladaLoader();
+				// loader.load('scene.dae', function(collada) {
+				//   collada.scene.scale.set(0.5, 0.5, 0.5);
+				//   scene.add(collada.scene);
+				//   })
+				 /* Collada building.*/
+				  loader = new THREE.ColladaLoader();
+				  // Small_Building_1/Small_Building_1.dae
+				  loader.load('Small_Building_1.dae', function(collada) {
+					collada.scene.scale.set(0.3, 0.3, 0.3);
+					dae.position.set(100,100,100);
+					scene.add(collada.scene)
+			      })
             };
 
 		</script><canvas width="1078" height="575" style="width: 1078px; height: 575px;"></canvas>
