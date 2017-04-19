@@ -154,7 +154,7 @@ function init() {
 
     material = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
     mesh = new THREE.Mesh( geometry, material );
-    scene.add( mesh );
+    // scene.add( mesh );
     renderer = new THREE.WebGLRenderer();
     renderer.setClearColor( 0xffffff );
     renderer.setPixelRatio( window.devicePixelRatio );
