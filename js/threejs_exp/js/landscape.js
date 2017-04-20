@@ -25,9 +25,9 @@ Visu3d.prototype.generate = function () {
     }
 }
 
-Visu3d.prototype.addMesh = function () {
+Visu3d.prototype.addMesh = function (wall_material) {
     var self = this;
-    var FTICR2Dmap_geometry = new THREE.PlaneGeometry(512, 512, this.size - 1, this.size - 1);
+    var geometry = new THREE.PlaneGeometry(512, 512, this.size - 1, this.size - 1);
     var min_height = Infinity;
     var max_height = -Infinity;
     for (var y = 0; y < this.size; y++) {
@@ -37,15 +37,16 @@ Visu3d.prototype.addMesh = function () {
             if ( height_val > max_height ) max_height = height_val;
             if ( height_val < 0 ) height_val = 0;
             if (y === 0 || y === this.size - 1 || x === 0 || x === this.size - 1) height_val = 0.0;
-            FTICR2Dmap_geometry.vertices[y * this.size + x].z = height_val;
+            geometry.vertices[y * this.size + x].z = height_val;
         }
     }
 
-    FTICR2Dmap_geometry.computeFaceNormals();
-    FTICR2Dmap_geometry.computeVertexNormals();
-    scene.remove(FTICR2Dmap_mesh);
-    FTICR2Dmap_material  = new THREE.MeshNormalMaterial();
-    FTICR2Dmap_mesh = new THREE.Mesh(FTICR2Dmap_geometry, FTICR2Dmap_material);
-    FTICR2Dmap_mesh.rotation.x = -Math.PI / 2.0;
-    scene.add(FTICR2Dmap_mesh);
+    geometry.computeFaceNormals();
+    geometry.computeVertexNormals();
+    scene.remove(mesh);
+    //var wall_material = 'Decor/mur_crepi.jpg'
+    material  = new THREE.MeshBasicMaterial({ map: THREE.ImageUtils.loadTexture(wall_material), overdraw: true, receiveShadow : true  });
+    mesh = new THREE.Mesh(geometry, material); //MeshNormalMaterial
+    mesh.rotation.x = -Math.PI / 2.0;
+    scene.add(mesh);
 }

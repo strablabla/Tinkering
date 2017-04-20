@@ -18,9 +18,9 @@
         <script type="text/javascript" src="three_with_json/TrackballControls.js"></script>
         <script type="text/javascript" src="three_with_json/Detector.js"></script>
         <script type="text/javascript" src="three_with_json/dat.js"></script>
-        <script type="text/javascript" src="point_locker.js"></script>
-		<script type="text/javascript" src="landscape.js"></script>
-		<script type="text/javascript" src="graphical_elems.js"></script>
+        <script type="text/javascript" src="../../js/threejs_exp/js/point_locker.js"></script>
+		<script type="text/javascript" src="../../js/threejs_exp/js/landscape.js"></script>
+		<script type="text/javascript" src="../../js/threejs_exp/js/graphical_elems.js"></script>
 
 		<div id="blocker" style="display: -webkit-box;">
 
@@ -78,7 +78,7 @@
             function generate() {
                 var landscape_map = new Visu3d(parseInt(landscape_map_detail));
                 landscape_map.generate(landscape_map_roughness);
-                landscape_map.addMesh();
+                landscape_map.addMesh('Decor/mur_crepi.jpg');
             };
 
 		</script><canvas width="1078" height="575" style="width: 1078px; height: 575px;"></canvas>
