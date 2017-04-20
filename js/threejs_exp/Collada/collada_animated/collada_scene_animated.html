@@ -80,6 +80,7 @@
                 var landscape_map = new Visu3d(parseInt(landscape_map_detail));
                 landscape_map.generate(landscape_map_roughness);
                 landscape_map.addMesh();
+
 				/* Collada meuble.*/
 				// loader = new THREE.ColladaLoader();
 				// loader.load('scene.dae', function(collada) {
@@ -87,13 +88,24 @@
 				//   scene.add(collada.scene);
 				//   })
 				 /* Collada building.*/
+				 var size_tab = 100
+				 tableau('Photographes/Bettina-Rheims.jpg', size_tab, 0, 0, 50, 0.7);
 				  loader = new THREE.ColladaLoader();
 				  // Small_Building_1/Small_Building_1.dae
-				  loader.load('Small_Building_1.dae', function(collada) {
-					collada.scene.scale.set(0.3, 0.3, 0.3);
-					dae.position.set(100,100,100);
+				  loader.load('dae/scene.dae', function(collada) {
+					collada.scene.scale.set(1,1,1);
+					//collada.position.set(100,100,100);
 					scene.add(collada.scene)
 			      })
+				  loader = new THREE.ColladaLoader();
+				  loader.load('dae/vase4.dae', function(collada) {
+					collada.scene.scale.set(0.5,0.5,0.5);
+					collada.scene.position.x = 0;
+					collada.scene.position.y = 0;
+					collada.scene.position.z = 100;
+					collada.scene.rotation.x = - Math.PI / 2;
+					scene.add(collada.scene)
+				  })
             };
 
 		</script><canvas width="1078" height="575" style="width: 1078px; height: 575px;"></canvas>
