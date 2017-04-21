@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<!-- pointerlock_controls with json for defining shapes.  -->
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+		<title>three.js - pointerlock controls</title>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<script src='3d.json'></script>
+		<link rel="stylesheet" type="text/css" href="gallerie.css">
+
+	</head>
+	<body>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+		<!-- type="text/javascript" src="three_with_json/three.js" -->
+        <script type="text/javascript" src="three_with_json/TrackballControls.js"></script>
+        <script type="text/javascript" src="three_with_json/Detector.js"></script>
+        <script type="text/javascript" src="three_with_json/dat.js"></script>
+        <script type="text/javascript" src="point_locker.js"></script>
+		<script type="text/javascript" src="landscape.js"></script>
+		<script type="text/javascript" src="graphical_elems.js"></script>
+		<script src="https://cdn.rawgit.com/mrdoob/three.js/r69/examples/js/loaders/ColladaLoader.js"></script>
+
+		<div id="blocker" style="display: -webkit-box;">
+
+			<div id="instructions">
+				<span style="font-size:40px">Click to play</span>
+				<br>
+				(W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
+			</div>
+
+		</div>
+
+		<script>
+
+            var camera, scene, renderer, controls;
+            var landscape_map_mesh = 0.25;
+            var landscape_map_detail = 8, landscape_map_roughness = 0.7;
+            var dist0 = 1e3;
+            var dist1 = 1e4;
+            var dist2 = 1e5;
+            var dist3 = 1e6;
+            var dist4 = 1e7;
+            var dist5 = 1e8;
+
+			var geometry, material, mesh;
+			var objects = [];
+			var raycaster;
+			var blocker = document.getElementById( 'blocker' );
+			var instructions = document.getElementById( 'instructions' );
+
+			// http://www.html5rocks.com/en/tutorials/pointerlock/intro/
+
+			ptlock() // pointerlocker document links
+			init();
+			generate()
+			animate();
+
+			var controlsEnabled = false;
+			var moveForward = false;
+			var moveBackward = false;
+			var moveLeft = false;
+			var moveRight = false;
+			var canJump = false;
+			var prevTime = performance.now();
+			var velocity = new THREE.Vector3();
+
+			//make_ground('Decor/Hippone_Mosaïque_romaine_les_Amours_vendangeurs.jpg', 0) //-100
+			make_ground_repetitive('Decor/Hippone_Mosaïque_romaine_les_Amours_vendangeurs.jpg', 0, 20)
+
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+
+            function generate() {
+                var landscape_map = new Visu3d(parseInt(landscape_map_detail));
+                landscape_map.generate(landscape_map_roughness);
+                landscape_map.addMesh();
+
+				/* Collada meuble.*/
+				// loader = new THREE.ColladaLoader();
+				// loader.load('scene.dae', function(collada) {
+				//   collada.scene.scale.set(0.5, 0.5, 0.5);
+				//   scene.add(collada.scene);
+				//   })
+				 /* Collada building.*/
+				 var size_tab = 100
+				 tableau('Photographes/Bettina-Rheims.jpg', size_tab, 0, 0, 50, 0.7);
+				  loader = new THREE.ColladaLoader();
+				  // Small_Building_1/Small_Building_1.dae
+				  loader.load('dae/scene.dae', function(collada) {
+					collada.scene.scale.set(1,1,1);
+					//collada.position.set(100,100,100);
+					scene.add(collada.scene)
+			      })
+				  loader = new THREE.ColladaLoader();
+				  loader.load('dae/vase4.dae', function(collada) {
+					collada.scene.scale.set(0.5,0.5,0.5);
+					collada.scene.position.x = 0;
+					collada.scene.position.y = 0;
+					collada.scene.position.z = 100;
+					collada.scene.rotation.x = - Math.PI / 2;
+					scene.add(collada.scene)
+				  })
+				  //talo
+				  loader = new THREE.ColladaLoader();
+				  loader.load('dae/talo.dae', function(collada) {
+					collada.scene.scale.set(0.5,0.5,0.5);
+					collada.scene.position.x = 0;
+					collada.scene.position.y = 0;
+					collada.scene.position.z = 100;
+					collada.scene.rotation.x = - Math.PI / 2;
+					scene.add(collada.scene)
+				  })
+				  // Column
+				  loader = new THREE.ColladaLoader();
+				  loader.load('dae/DoricColumn.dae', function(collada) {
+					collada.scene.scale.set(0.5,0.5,0.5);
+					collada.scene.position.x = 0;
+					collada.scene.position.y = 0;
+					collada.scene.position.z = 100;
+					collada.scene.rotation.x = - Math.PI / 2;
+					scene.add(collada.scene)
+				  })
+				  // Talia
+				  loader = new THREE.ColladaLoader();
+				  loader.load('dae/Talia/Talia.dae', function(collada) {
+					collada.scene.scale.set(0.5,0.5,0.5);
+					collada.scene.position.x = 10;
+					collada.scene.position.y = 10;
+					collada.scene.position.z = 100;
+					collada.scene.rotation.x = 0; //- Math.PI / 2;
+					scene.add(collada.scene)
+				  })
+
+            };
+
+		</script><canvas width="1078" height="575" style="width: 1078px; height: 575px;"></canvas>
+</body>
+</html>
