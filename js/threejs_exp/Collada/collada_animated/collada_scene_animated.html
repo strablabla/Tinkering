@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 
-<!-- pointerlock_controls with json for defining shapes.  -->
-
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-		<title>three.js - pointerlock controls</title>
+		<title>collada scene animated</title>
 
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
@@ -70,16 +68,14 @@
             function generate() {
                 var landscape_map = new Visu3d(parseInt(landscape_map_detail));
                 landscape_map.generate(landscape_map_roughness);
-                landscape_map.addMesh('Decor/photo-oriental-mosaic-decoration-in-doha.jpg');
+                landscape_map.addMesh('Decor/mur_crepi.jpg');
 
 				 /* Collada building.*/
 				 var size_tab = 100
 				 tableau('Photographes/Bettina-Rheims.jpg', size_tab, 0, 0, 50, 0.7);
 				  loader = new THREE.ColladaLoader();
-				  // Small_Building_1/Small_Building_1.dae
 				  loader.load('dae/scene.dae', function(collada) {
 					collada.scene.scale.set(1,1,1);
-					//collada.position.set(100,100,100);
 					scene.add(collada.scene)
 			      })
 				 var pihalf = Math.PI/2

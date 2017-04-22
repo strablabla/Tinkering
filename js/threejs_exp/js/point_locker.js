@@ -3,8 +3,6 @@ var moveForward = false;
 var moveBackward = false;
 var moveLeft = false;
 var moveRight = false;
-// var moveUp = false;
-// var moveDown = false;
 var canJump = false;
 var prevTime = performance.now();
 var velocity = new THREE.Vector3();
@@ -79,7 +77,7 @@ function init() {
         switch ( event.keyCode ) {
 
             case 38: // up
-            case 87: // w
+            case 90: // z
                 moveForward = true;
                 break;
 
@@ -88,21 +86,23 @@ function init() {
 				break;
 
             case 40: // down
+			case 68: // d
                 moveBackward = true;
                 break;
 
             case 39: // right
-            case 68: // d
                 moveRight = true;
                 break;
 
-			// case 65: // a
-			// 	moveUp = true;
-			// 	break;
-			//
-			// case 83: // s
-			// 	moveDown = true;
-			// 	break;
+			case 65: // a
+				posy += 5;
+				break;
+
+			case 83: // s
+				posy += -5;
+				break;
+
+
 
             case 32: // space
                 if ( canJump === true ) controls.getObject().translateY(100); // velocity.y += 1000;  // jump
@@ -117,7 +117,7 @@ function init() {
         switch( event.keyCode ) {
 
             case 38: // up
-            case 87: // w
+            case 90: // z
                 moveForward = false;
                 break;
 
@@ -126,6 +126,7 @@ function init() {
                 break;
 
             case 40: // down
+			case 68: // d
                 moveBackward = false;
                 break;
 
@@ -134,13 +135,6 @@ function init() {
                 moveRight = false;
                 break;
 
-			// case 65: // a, moving up
-			// 	moveUp = false;
-			// 	break;
-			//
-			// case 83: // s, moving down
-			// 	moveDown = false;
-			// 	break;
 
         }
     };
