@@ -1,3 +1,14 @@
+var controlsEnabled = false;
+var moveForward = false;
+var moveBackward = false;
+var moveLeft = false;
+var moveRight = false;
+// var moveUp = false;
+// var moveDown = false;
+var canJump = false;
+var prevTime = performance.now();
+var velocity = new THREE.Vector3();
+
 THREE.PointerLockControls = function ( camera ) {
 
 	var scope = this;
@@ -50,6 +61,8 @@ THREE.PointerLockControls = function ( camera ) {
 
 };
 
+var posy = 150
+
 function init() {
 
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
@@ -71,11 +84,10 @@ function init() {
                 break;
 
             case 37: // left
-            case 65: // a
-                moveLeft = true; break;
+                moveLeft = true;
+				break;
 
             case 40: // down
-            case 83: // s
                 moveBackward = true;
                 break;
 
@@ -84,8 +96,16 @@ function init() {
                 moveRight = true;
                 break;
 
+			// case 65: // a
+			// 	moveUp = true;
+			// 	break;
+			//
+			// case 83: // s
+			// 	moveDown = true;
+			// 	break;
+
             case 32: // space
-                if ( canJump === true ) controls.getObject().translateY(1000); // velocity.y += 1000;  // jump
+                if ( canJump === true ) controls.getObject().translateY(100); // velocity.y += 1000;  // jump
 
                 canJump = false;
                 break;
@@ -102,12 +122,10 @@ function init() {
                 break;
 
             case 37: // left
-            case 65: // a
                 moveLeft = false;
                 break;
 
             case 40: // down
-            case 83: // s
                 moveBackward = false;
                 break;
 
@@ -115,6 +133,15 @@ function init() {
             case 68: // d
                 moveRight = false;
                 break;
+
+			// case 65: // a, moving up
+			// 	moveUp = false;
+			// 	break;
+			//
+			// case 83: // s, moving down
+			// 	moveDown = false;
+			// 	break;
+
         }
     };
 
@@ -122,38 +149,6 @@ function init() {
     document.addEventListener( 'keyup', onKeyUp, false );
 
     raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
-
-
-	// floor
-
-	//make_ground('Decor/Hippone_Mosaïque_romaine_les_Amours_vendangeurs.jpg', 0) //-100
-
-	// geometry = new THREE.PlaneGeometry( 2000, 2000, 100, 100 );
-	// geometry.rotateX( - Math.PI / 2 );
-	//
-	// for ( var i = 0, l = geometry.vertices.length; i < l; i ++ ) {
-	//
-	//     var vertex = geometry.vertices[ i ];
-	//     vertex.x += Math.random() * 20 - 10;
-	//     vertex.y += Math.random() * 2;
-	//     vertex.z += Math.random() * 20 - 10;
-	// }
-	//
-	// for ( var i = 0, l = geometry.faces.length; i < l; i ++ ) {
-	//
-	//     var face = geometry.faces[ i ];
-	//     face.vertexColors[ 0 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-	//     face.vertexColors[ 1 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-	//     face.vertexColors[ 2 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-	//
-	// }
-	//
-	// material = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
-	// mesh = new THREE.Mesh( geometry, material );
-	//scene.add( mesh );
-
-
-
     renderer = new THREE.WebGLRenderer();
     renderer.setClearColor( 0xffffff );
     renderer.setPixelRatio( window.devicePixelRatio );
@@ -179,12 +174,16 @@ function animate() {
         velocity.x -= velocity.x * 1.0 * delta;               // velocity x
         velocity.z -= velocity.z * 1.0 * delta;               // velocity z
         // velocity.y = 0;
-        velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass   // velocity y  taking in account the gravity.
+        velocity.y -= 9.8 * 10.0 * delta; // 100.0 = mass   // velocity y  taking in account the gravity.
 
-        if ( moveForward ) velocity.z -= 400.0 * delta;
-        if ( moveBackward ) velocity.z += 400.0 * delta;
-        if ( moveLeft ) velocity.x -= 400.0 * delta;
-        if ( moveRight ) velocity.x += 400.0 * delta;
+		var horiz_speed = 40.0 // Horizontal speed
+		var vert_speed = 40.0 // Vertical speed
+        if ( moveForward ) velocity.z -= horiz_speed * delta;
+        if ( moveBackward ) velocity.z += horiz_speed * delta;
+        if ( moveLeft ) velocity.x -= horiz_speed * delta;
+        if ( moveRight ) velocity.x += horiz_speed * delta;
+		// if ( moveUp ) velocity.y -= vert_speed * delta;       // moving up
+		// if ( moveDown ) velocity.y += vert_speed * delta;     // moving down
 
         if ( isOnObject === true ) {
             velocity.y = Math.max( 0, velocity.y );
@@ -194,7 +193,7 @@ function animate() {
         controls.getObject().translateX( velocity.x * delta );
         controls.getObject().translateY( velocity.y * delta ); // velocity.y * delta
         controls.getObject().translateZ( velocity.z * delta );
-        var posy = 50
+
         if ( controls.getObject().position.y < posy ) {
             velocity.y = 0;
             controls.getObject().position.y = posy;

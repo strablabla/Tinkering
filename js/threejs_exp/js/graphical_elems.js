@@ -1,3 +1,15 @@
+function import_collada(addr, scale, position, rotation){ // import collada files
+    loader = new THREE.ColladaLoader();
+    loader.load(addr, function(collada) {
+      collada.scene.scale.set(scale[0],scale[1],scale[2]);
+      collada.scene.position.x = position[0];
+      collada.scene.position.y = position[1];
+      collada.scene.position.z = position[2];
+      collada.scene.rotation.x = rotation[0];
+      scene.add(collada.scene)
+    })
+}// end import_collada
+
 function tableau(txt, size,  x, z, y, roty){
     // on créé un  plan pour lequel on définit un matériau puis on l’ajoute à la scène
     var geom = new THREE.PlaneGeometry( size, size, 2);

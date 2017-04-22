@@ -18,9 +18,9 @@
         <script type="text/javascript" src="three_with_json/TrackballControls.js"></script>
         <script type="text/javascript" src="three_with_json/Detector.js"></script>
         <script type="text/javascript" src="three_with_json/dat.js"></script>
-        <script type="text/javascript" src="point_locker.js"></script>
-		<script type="text/javascript" src="landscape.js"></script>
-		<script type="text/javascript" src="graphical_elems.js"></script>
+        <script type="text/javascript" src="../../js/point_locker.js"></script>
+		<script type="text/javascript" src="../../js/landscape.js"></script>
+		<script type="text/javascript" src="../../js/graphical_elems.js"></script>
 		<script src="https://cdn.rawgit.com/mrdoob/three.js/r69/examples/js/loaders/ColladaLoader.js"></script>
 
 		<div id="blocker" style="display: -webkit-box;">
@@ -58,15 +58,6 @@
 			generate()
 			animate();
 
-			var controlsEnabled = false;
-			var moveForward = false;
-			var moveBackward = false;
-			var moveLeft = false;
-			var moveRight = false;
-			var canJump = false;
-			var prevTime = performance.now();
-			var velocity = new THREE.Vector3();
-
 			//make_ground('Decor/Hippone_Mosaïque_romaine_les_Amours_vendangeurs.jpg', 0) //-100
 			make_ground_repetitive('Decor/Hippone_Mosaïque_romaine_les_Amours_vendangeurs.jpg', 0, 20)
 
@@ -79,14 +70,8 @@
             function generate() {
                 var landscape_map = new Visu3d(parseInt(landscape_map_detail));
                 landscape_map.generate(landscape_map_roughness);
-                landscape_map.addMesh();
+                landscape_map.addMesh('Decor/photo-oriental-mosaic-decoration-in-doha.jpg');
 
-				/* Collada meuble.*/
-				// loader = new THREE.ColladaLoader();
-				// loader.load('scene.dae', function(collada) {
-				//   collada.scene.scale.set(0.5, 0.5, 0.5);
-				//   scene.add(collada.scene);
-				//   })
 				 /* Collada building.*/
 				 var size_tab = 100
 				 tableau('Photographes/Bettina-Rheims.jpg', size_tab, 0, 0, 50, 0.7);
@@ -97,15 +82,8 @@
 					//collada.position.set(100,100,100);
 					scene.add(collada.scene)
 			      })
-				  loader = new THREE.ColladaLoader();
-				  loader.load('dae/vase4.dae', function(collada) {
-					collada.scene.scale.set(0.5,0.5,0.5);
-					collada.scene.position.x = 0;
-					collada.scene.position.y = 0;
-					collada.scene.position.z = 100;
-					collada.scene.rotation.x = - Math.PI / 2;
-					scene.add(collada.scene)
-				  })
+				 var pihalf = Math.PI/2
+  				 import_collada('dae/vase4.dae', [0.5,0.5,0.5], [0,0,100], [-pihalf,0,0])                   // vase
             };
 
 		</script><canvas width="1078" height="575" style="width: 1078px; height: 575px;"></canvas>
