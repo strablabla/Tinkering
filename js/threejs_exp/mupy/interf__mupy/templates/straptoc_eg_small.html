@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="UTF-8">
+<title>Todo list exemple</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/1.6.0/annyang.js"></script>
+<script  src="/static/js/jquery.min.js"></script>
+<script  src="/static/js/jquery-ui.js"></script>
+<script  src="/static/js/jquery.contextMenu.js"></script>
+<script  src="/static/js/perfect-scrollbar.min.js"></script>
+<script src="/static/js/d3.min.js"></script>
+<!-- ####### Straptoc -->
+<script  src="/static/js/straptoc.js"></script>
+<link rel="stylesheet" href="/static/css/straptoc.css">
+<!-- CSS -->
+<link rel="stylesheet" href="/static/css/jquery.contextMenu.css">
+<link rel="stylesheet" href="/static/css/perfect-scrollbar.css">
+<!-- Fonts -->
+<link href='https://fonts.googleapis.com/css?family=Pathway+Gothic+One' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Londrina+Solid' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Enriqueta' rel='stylesheet' type='text/css'>
+<!-- Bootstrap -->
+<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="/static/css/strapdown.css">
+
+<script src="/static/js/bootstrap.min.js"></script>
+
+<style>
+
+/*
+Panel with music choices
+*/
+div.musics{
+    border-style:solid;
+    border-color: #ff6666;
+    border-width:40px;
+    position: fixed;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    box-shadow: 0.5em 0.5em 0.7em;
+    top: 270px;
+    left: 50%;
+    margin-left: -250px;
+    max-height: 600px;
+    width: 500px;
+    background-color: white ;
+    font-size:85%;
+    z-index: 10000;
+    overflow: scroll;
+    }
+
+/*
+Panel containing vocal commands
+*/
+div.commands{
+    border-style:solid;
+    border-color: #ddffcc;
+    border-width:40px;
+    position: fixed;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    box-shadow: 0.5em 0.5em 0.7em;
+    top: 50px;
+    left: 50%;
+    margin-left: -250px;
+    max-height: 600px;
+    width: 500px;
+    background-color: white ;
+    font-size:85%;
+    z-index: 10000;
+    overflow: scroll;
+    }
+
+div.news{
+    border-style:solid;
+    border-color: #ddaacc;
+    border-width:40px;
+    position: fixed;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    box-shadow: 0.5em 0.5em 0.7em;
+    top: 270px;
+    left: 50%;
+    margin-left: -250px;
+    max-height: 700px;
+    width: 500px;
+    background-color: white ;
+    font-size:85%;
+    z-index: 10000;
+
+    }
+div.message{
+
+    position: fixed;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 40px;
+    padding-top: 20px;
+    box-shadow: 0.5em 0.5em 0.7em;
+    top: 100px;
+    left: 10%;
+    margin-left: -250px;
+    height: 50px;
+    width: auto;
+    background-color: #ddaacc ;
+    font-size:100%;
+    z-index: 10000;
+    text-align:center;
+
+    }
+
+</style>
+
+<div class='commands' id='commands' > </div>
+<div class='musics' id='musics' > </div>
+<div class='message' id='popup' hidden> </div>
+<!-- <div class='news' id='news' >
+    <iframe frameborder="0" height="400" src="http://www.lemonde.fr/" width="400"></iframe>
+</div> -->
+
+<xmp theme="simplex" style="display:none;">
+
+§menu Blagues:#Plot_Blagues Sous-rubrique:#Short-title_sous-rubrique
+§width_video 50%
+§width_pdf 90%
+§col_sublist0 #993399
+§col_sublist1 #3366ff
+§col_sublist2 #990033
+§toggle_hide p
+
+# Introduction
+
+say "voice commands"
+
+# Song
+
+* [Pagal Tujhe Main Kar Dunga, - Romantic Song ;;](https://www.youtube.com/watch?v=psY23vRJb8w)
+
+
+</xmp>
+
+<script src="/static/js/strapdown.js"> //https://strapdownjs.com/v/0.2/ </script>
+
+<script> maketoc() </script>
+
+<a href='https://mail.google.com/mail' id='mail' target="_blank">  </a>
+<a href='http://www.lemonde.fr/' id='lemonde' target="_blank">  </a>
+<!-- <a href='http://www.arte.tv/guide/fr/emissions/AJT/arte-journal' id='arte' target="_blank"> arte </a> -->
+<a href='http://www.arte.tv/guide/fr/direct' id='arte' target="_blank"> </a>
+<a href='http://www.tarjetarojaonline.me/' id='foot' target="_blank"> </a>
+<a href='http://strasbourg.curieux.net/agenda/' id='events' target="_blank"> </a>
+
+<div   id='here' >  </div>
+
+<script>
+
+var mess = function(title){
+   $( "#popup" ).text(title).show();
+   setTimeout(function() {
+      $( "#popup" ).hide();
+  }, 4000);
+  }
+
+if (annyang) {
+
+  var mail=function(){mess('mail');document.getElementById("mail").click()}
+  var lem=function(){mess('Lemonde');document.getElementById("lemonde").click()}
+  var arte=function(){mess('arte');document.getElementById("arte").click()}
+  var foot=function(){mess('foot'); document.getElementById("foot").click()}
+  var events=function(){mess('events'); document.getElementById("events").click()}
+
+  var last=function(){
+      //alert('bottom');
+        $('html, body').animate({
+            scrollTop: $("#here").offset().top
+        }, 2000);
+  }
+
+  var song=function(){document.getElementById("psY23vRJb8w").click()}
+
+  var zic=function(music){
+      mess('music')
+      $('#zic').attr('name',music)
+      document.getElementById('zic').click()
+     }
+ var notes=function(){
+     mess('notes')
+     document.getElementById('notes').click()
+    }
+var syno=function(){
+    mess('synology')
+    document.getElementById('syno').click()
+   }
+
+  var test=function(){
+      mess('test')
+     // alert('helllloooo')
+    }
+   var table=function(){
+       mess('table')
+        $('#toc').toggle()
+    }
+   var key=function(){
+       mess('keys')
+         $('#keys').toggle()
+     }
+   var syntax=function(){
+       mess('syntax')
+           $('#syntax').toggle()
+       }
+   var voice_commands=function(){mess('commands');$('#commands').toggle()}
+   var choice_musics=function(){mess('musics choices');$('#musics').toggle()}
+
+  var commands = {
+      'open mail': mail, 'open news': lem,
+     'end':last,   notes:'notes', 'song':song,
+     'table':table, "keys":key, "syntax":syntax, 'testing':test,
+     'channel seven':arte, 'foot':foot, 'commands':voice_commands,
+      'voice commands':commands, 'synology':syno,
+     'events':events, "choice music":choice_musics,
+     'jazz':function(){return zic('jazz')},
+     'french':function(){return zic('french')},
+     'bollywood':function(){return zic('bollywood')},
+     'sexy music':function(){return zic('sexy')}
+  }; // 'music': zic,
+
+  annyang.addCommands(commands);
+  annyang.start();
+}
+
+var comm = function(){/*
+
+    # Commands:
+    * music
+        * "music" : trigger vlc
+        * "song" : trigger youtube song
+    * news
+        * "open news" : open Lemonde.fr
+    * TV
+        * "channel seven" : open Arte direct.
+    * Widgets
+        * table : open/hide TOC
+        * syntax : straptoc syntax
+        * keys : keys for straptoc
+    * mails
+        * "open mail" : open Gmail
+    * synology
+        * "synology": launch synology (need after to enter password)
+    * test
+        * "testing": test
+    * notes
+        * "notes": open utiles_own and todo_own in Chromium and Atom
+    * infos Strasbourg
+        * "events": open page http://strasbourg.curieux.net/agenda/
+
+*/}.toString().slice(14,-3)
+
+$('#commands').html(simple_md(comm)).toggle()
+$('#commands').draggable()
+
+var all_musics = function(){/*
+
+    # Musics:
+    * Jazz
+        * aaaa
+    * French
+        * aaaa
+    * Bollywood
+        * aaaa
+
+*/}.toString().slice(14,-3)
+
+$('#musics').html(simple_md(all_musics)).toggle()
+$('#musics').draggable()
+
+//$('.news').append($('</iframe>').attr('src','https://www.google.fr/'))
+//$('#news').append($('</iframe>').attr('src','https://www.w3schools.com')).draggable()
+
+</script>
+
+<form action='/zic' method="post" id='formzic'><input type='submit' id='zic' name='musique' hidden ></form>
+<form action='/notes' method="post" id='formnotes'><input type='submit' id='notes' name='mes_notes' hidden></form>
+<form action='/syno' method="post" id='formsyno'><input type='submit' id='syno' name='synology' hidden></form>
+
+</html>
