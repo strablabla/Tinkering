@@ -52,9 +52,6 @@ function onDocumentMouseMove( event ) {
             INTERSECTED = intersects[ 0 ].object;
             INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
 
-            plane.position.copy( INTERSECTED.position );
-            plane.lookAt( camera.position );
-
         }
 
         container.style.cursor = 'pointer';
@@ -89,7 +86,6 @@ function onDocumentMouseDown( event ) {
         SELECTED = intersects[ 0 ].object;
 
         var intersects = raycaster.intersectObject( plane );
-        offset.copy( intersects[ 0 ].point ).sub( plane.position );
 
         container.style.cursor = 'move';
 
@@ -104,8 +100,6 @@ function onDocumentMouseUp( event ) {
     controls.enabled = true;
 
     if ( INTERSECTED ) {
-
-        plane.position.copy( INTERSECTED.position );
 
         SELECTED = null;
 
