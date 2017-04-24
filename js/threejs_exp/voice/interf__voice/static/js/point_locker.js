@@ -163,7 +163,7 @@ function animate() {
         // velocity.y = 0;
         velocity.y -= 9.8 * 10.0 * delta; // 100.0 = mass       // velocity y  taking in account the gravity.
 
-		var horiz_speed = 40.0                                  // Horizontal speed
+		var horiz_speed = 120.0                                  // Horizontal speed
 		var vert_speed = 40.0                                   // Vertical speed
         if ( moveForward ) velocity.z -= horiz_speed * delta;
         if ( moveBackward ) velocity.z += horiz_speed * delta;

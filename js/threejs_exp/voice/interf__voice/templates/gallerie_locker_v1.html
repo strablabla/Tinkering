@@ -21,6 +21,7 @@
         <script type="text/javascript" src="/static/js/point_locker.js"></script>
 		<script type="text/javascript" src="/static/js/landscape.js"></script>
 		<script type="text/javascript" src="/static/js/graphical_elems.js"></script>
+		<script type="text/javascript" src="/static/js/make_objects.js"></script>
 
 		<div id="blocker" style="display: -webkit-box;">
 
@@ -60,7 +61,7 @@
 			if (annyang) {
 			  alert('in annyang')
 			  var test=function(){alert('helllloooo')}
-			  var commands = {'open car': test}; // 'music': zic,
+			  var commands = {'open': test, 'make cube': make_cube, 'new shape': make_cube}; // 'music': zic,
 			  annyang.addCommands(commands);
 			  annyang.start();
 			}
@@ -77,7 +78,7 @@
                 FTICR2Dmap.addMesh('/static/Decor/mur_crepi.jpg');
 				make_ground_repetitive('/static/Decor/marbre_sol.jpg', 0, 20)
                 size_tab = 100;
-                tableau('/static/Photographes/Bettina-Rheims.jpg', size_tab, 0, 0, 120, 0.7);
+                //tableau('/static/Photographes/Bettina-Rheims.jpg', size_tab, 0, 0, 120, 0.7);
                 tableau('/static/Photographes/bettina_rheims_rose_c_est_paris.jpg', size_tab, 200, 0, 100, 0);
                 tableau('/static/Photographes/Doisneau-Anita.jpg', size_tab, 500, 0, 150, -1);
                 tableau('/static/Photographes/rouge.jpg', size_tab, -200, 0, 100, 0);
