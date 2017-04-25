@@ -3,9 +3,18 @@ import subprocess as sub
 
 '''
 # uPy side
-acc = pyb.Accel()
-print(acc.x()+'\n')
 
+import pyb
+acc = pyb.Accel()
+
+green = pyb.LED(2)
+green.on()
+yellow = pyb.LED(3)
+yellow.on()
+while 1:
+    print(acc.x()+'\n')
+    
+#-------------------------------
 # Sending a command to the uPy
 ser.write('pyb.LED(1).on() \r') #
 '''
