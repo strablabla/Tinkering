@@ -1,8 +1,8 @@
 var controlsEnabled = false;
-var moveForward = false;
-var moveBackward = false;
-var moveLeft = false;
-var moveRight = false;
+var moveForward = false;        // forward
+var moveBackward = false;       // backward
+var moveLeft = false;           // left
+var moveRight = false;          // right
 var canJump = false;
 var prevTime = performance.now();
 var velocity = new THREE.Vector3();
@@ -102,8 +102,6 @@ function init() {
 				posy += -5;
 				break;
 
-
-
             case 32: // space
                 if ( canJump === true ) controls.getObject().translateY(100); // velocity.y += 1000;  // jump
 
@@ -170,7 +168,7 @@ function animate() {
         // velocity.y = 0;
         velocity.y -= 9.8 * 10.0 * delta; // 100.0 = mass   // velocity y  taking in account the gravity.
 
-		var horiz_speed = 40.0 // Horizontal speed
+		var horiz_speed = 120.0 // Horizontal speed
 		var vert_speed = 40.0 // Vertical speed
         if ( moveForward ) velocity.z -= horiz_speed * delta;
         if ( moveBackward ) velocity.z += horiz_speed * delta;
