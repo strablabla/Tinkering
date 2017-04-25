@@ -19,7 +19,6 @@ app = Flask(__name__, static_url_path = '/static')
 def index():
     return render_template('gallerie_locker_v1_mupy.html')
 
-
 def accelero():
 	ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1) # Establish serial connection.
 	while 1:
