@@ -16,9 +16,7 @@ app = Flask(__name__, static_url_path = '/static')
 
 @app.route('/')
 def index():
-    return render_template('gallerie_locker_v1.html')
-
-
+    return render_template('gallerie_locker_v1_mupy.html')
 
 if __name__ == "__main__":
     import threading, webbrowser

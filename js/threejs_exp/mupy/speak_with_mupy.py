@@ -21,8 +21,10 @@ while 1:
 # Sending a command to the uPy
 ser.write('pyb.LED(1).on() \r') #
 '''
-
-ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1) # Establish serial connection.
+try:
+	ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)             # Establish serial connection.
+except:
+	ser = serial.Serial('/dev/tty.usbmodem3A22', 115200, timeout=1)    # Establish serial connection.
 
 while 1:
     l=ser.readline()

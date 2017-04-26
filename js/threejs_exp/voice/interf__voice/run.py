@@ -18,8 +18,6 @@ app = Flask(__name__, static_url_path = '/static')
 def index():
     return render_template('gallerie_locker_v1.html')
 
-
-
 if __name__ == "__main__":
     import threading, webbrowser
     chrome_path = '/usr/bin/google-chrome %s'
