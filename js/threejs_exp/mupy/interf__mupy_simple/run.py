@@ -81,6 +81,6 @@ if __name__ == "__main__":
     else:
         chrome_path = "/usr/bin/google-chrome %s"
     port = 9611
-    url = "https://127.0.0.1:{0}".format(port)
+    url = "http://127.0.0.1:{0}".format(port)
     threading.Timer(1.25, lambda: webbrowser.get(chrome_path).open(url)).start() # open a page in the browser.
-    app.run(port = port, debug = False, use_reloader = False, ssl_context='adhoc') # threaded = True, 
+    app.run(port = port, debug = False, use_reloader = False) # threaded = True, , ssl_context='adhoc'
