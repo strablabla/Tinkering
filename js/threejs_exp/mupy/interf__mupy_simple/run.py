@@ -16,63 +16,47 @@ from time import sleep
 import platform
 platf = platform.system()
 
-
-
-
 from flask import Flask, render_template,request,\
 			redirect, url_for, session
 import flask
-# ### Flask Socket io
-# from flask_socketio import SocketIO
-# from flask_socketio import send, emit
-
-
+### Flask Socket io
+from flask_socketio import SocketIO
+from flask_socketio import send, emit
 
 ###
 import subprocess
 import serial
 from threading import Thread
 
-
-
 app = Flask(__name__, static_url_path = '/static')
-# socketio = SocketIO(app) # Flask websocket
+socketio = SocketIO(app) # Flask websocket
 
-# def accelero():
-#     try:
-#         ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)             # Establish serial connection.
-#     except:
-#         ser = serial.Serial('/dev/tty.usbmodem3A22', 115200, timeout=1)    # Establish serial connection.
-#     while 1:
-#         l=ser.readline()
-#         print(l)
-#     return l
+def accelero(ser):
+    l = ser.readline()
+    return l
 
-# def background_thread():
-#     '''
-#     Background task for following the processing
-#     Reads information about processing in nbfolders.txt
-#     Called in index()
-#     '''
-#     global time_elapsed, processed, t0, superp_done 
-#     count = 0
-#     try:
-#         os.remove('Interf/static/superp.html')
-#     except:
-#         print('file not existing')
-#     while True:
-#         data = accelero()
-#         socketio.emit('follow', {'data': data}, namespace='/accelero')
+def background_thread():
+    '''
+    Background task
+    '''
+    if platf == 'Darwin':
+        ser = serial.Serial('/dev/tty.usbmodem3A22', 115200, timeout=1)    # Establish serial connection.
+    else:
+        ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)             # Establish serial connection.
+    while True:
+        data = accelero(ser)
+        #print(data)
+        socketio.emit('follow', {'data': data}, namespace='/accelero')
 
 @app.route('/')
 def index():
-    #launch_thread()
+    launch_thread()
     return render_template('gallerie_locker_v1_mupy.html')
 
 def launch_thread():
     thread = Thread(target=background_thread)
     thread.daemon = True
-    thread.start()  
+    thread.start()
 
 if __name__ == "__main__":
     import threading, webbrowser
@@ -83,4 +67,4 @@ if __name__ == "__main__":
     port = 9611
     url = "http://127.0.0.1:{0}".format(port)
     threading.Timer(1.25, lambda: webbrowser.get(chrome_path).open(url)).start() # open a page in the browser.
-    app.run(port = port, debug = False, use_reloader = False) # threaded = True, , ssl_context='adhoc'
+    app.run(port = port, debug = False, use_reloader = False)                    # threaded = True, , ssl_context='adhoc'
