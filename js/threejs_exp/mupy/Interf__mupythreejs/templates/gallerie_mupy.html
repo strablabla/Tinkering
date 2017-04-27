@@ -11,16 +11,7 @@
 		<script src='/static/3d.json'></script>
 		<link rel="stylesheet" type="text/css" href="/static/css/gallerie.css">
 
-		<script type="text/javascript" charset="utf-8">
-		        $(document).ready(function(){
-		            namespace = '/test'; // change to an empty string to use the global namespace
-		            var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
-		            socket.on('my response', function(msg) {
-						msg.accel.split('')
-		                $('#log').html('<br>Received #' + msg.count + ': ' + msg.data + ': ' + msg.accel);
-		            });// end socket.on
-		        });
-		</script>
+
 
 	</head>
 	<body>
@@ -33,6 +24,7 @@
         <script type="text/javascript" src="/static/js/point_locker.js"></script>
 		<script type="text/javascript" src="/static/js/landscape.js"></script>
 		<script type="text/javascript" src="/static/js/graphical_elems.js"></script>
+		<script type="text/javascript" src="/static/js/make_objects.js"></script>
 
 		<div id="blocker" style="display: -webkit-box;">
 
@@ -43,6 +35,8 @@
 			</div>
 
 		</div>
+
+		<div id="log"></div>
 
 		<script>
 
@@ -82,13 +76,26 @@
                 map.addMesh('/static/Decor/mur_crepi.jpg');
 				make_ground_repetitive('/static/Decor/marbre_sol.jpg', 0, 20)
                 size_tab = 100;
-                tableau('/static/Photographes/Bettina-Rheims.jpg', size_tab, 0, 0, 120, 0.7);
-                tableau('/static/Photographes/bettina_rheims_rose_c_est_paris.jpg', size_tab, 200, 0, 100, 0);
                 tableau('/static/Photographes/Doisneau-Anita.jpg', size_tab, 500, 0, 150, -1);
                 tableau('/static/Photographes/rouge.jpg', size_tab, -200, 0, 100, 0);
                 tableau('/static/Photographes/russian_flight_attendants_61.jpg', size_tab, -500, 0, 150, 1);
-            };
 
-		</script><canvas width="1078" height="575" style="width: 1078px; height: 575px;"></canvas>
+            };
+			
+					$(document).ready(function(){
+						namespace = '/mupy'; // change to an empty string to use the global namespace
+						var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+						obj = make_cube()
+						socket.on('accel_data', function(msg) {
+							valx = msg.accel.split(',')[0]
+							$('#log').html('<br>Received #' + msg.count + msg.accel);
+
+							obj.position.x = 200*Math.abs(parseInt(valx))
+						});// end socket.on
+					});
+
+		</script>
+
+		<canvas width="1078" height="575" style="width: 1078px; height: 575px;"></canvas>
 
 </body></html>

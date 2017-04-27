@@ -86,5 +86,6 @@ function make_cube(){
 
         scene.add( object );
         objects.push( object );
+        return object
 
 } // end function

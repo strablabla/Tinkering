@@ -11,12 +11,15 @@
     <!-- include bootstrap -->
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
-<script type="text/javascript" charset="utf-8">
+<script>
+        var valx = 0
         $(document).ready(function(){
             namespace = '/mupy'; // change to an empty string to use the global namespace
             var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
             socket.on('accel_data', function(msg) {
                 $('#log').html('<br>Received #' + msg.count + ': ' + msg.accel);
+                valx = msg.accel.split(',')[0]
+                $('#loglog').html('<br> ' + 'x=' + valx);
             });// end socket.on
         });
 </script>
@@ -26,6 +29,9 @@
 
     <h2>Receive:</h2>
     <div id="log"></div>
+
+    <div id="loglog"></div>
+
 
   </body>
 </html>

@@ -58,7 +58,7 @@ def index():
         thread = Thread(target=background_thread)
         thread.daemon = True
         thread.start()
-    return render_template('first_page.html')
+    return render_template('gallerie_mupy.html') # gallerie_mupy.html # first_page.html
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
