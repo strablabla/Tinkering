@@ -60,11 +60,12 @@ def launch_thread():
 
 if __name__ == "__main__":
     import threading, webbrowser
-    if platf == 'Darwin':
-        chrome_path = "open -a /Applications/Google\ Chrome.app %s"
-    else:
-        chrome_path = "/usr/bin/google-chrome %s"
+    # if platf == 'Darwin':
+    #     chrome_path = "open -a /Applications/Google\ Chrome.app %s"
+    # else:
+    #     chrome_path = "/usr/bin/google-chrome %s"
     port = 9611
     url = "http://127.0.0.1:{0}".format(port)
-    threading.Timer(1.25, lambda: webbrowser.get(chrome_path).open(url)).start() # open a page in the browser.
+    # threading.Timer(1.25, lambda: webbrowser.get(chrome_path).open(url)).start() # open a page in the browser.
     app.run(port = port, debug = False, use_reloader = False)                    # threaded = True, , ssl_context='adhoc'
+    socketio.run(app)
