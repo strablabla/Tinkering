@@ -73,10 +73,11 @@ def background_thread():
     """Example of how to send server generated events to clients."""
     count = 0
     while True:
-        time.sleep(10)
+        #time.sleep(0.1)
         count += 1
+        data_accel = accelero(ser)
         socketio.emit('my response',
-                      {'data': 'Server generated event', 'count': count},
+                      {'data': 'Server generated event', 'count': count, 'accel': str(data_accel)},
                       namespace='/test')
 @app.route('/')
 def index():
@@ -90,7 +91,6 @@ def index():
 @socketio.on('my event', namespace='/test')
 def test_message(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
-
     emit('my response',
          {'data': message['data'], 'count': session['receive_count']})
 

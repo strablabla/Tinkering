@@ -45,15 +45,9 @@ table {
             // event handler for server sent data
             // the data is displayed in the "Received" section of the page
             socket.on('my response', function(msg) {
-                $('#log').append('<br>Received #' + msg.count + ': ' + msg.data + ': ' + msg.accel);
+                $('#log').html('<br>Received #' + msg.count + ': ' + msg.data + ': ' + msg.accel);
             });
 
-            // handlers for the different forms in the page
-            // these send data to the server in a variety of ways
-            $('form#direction').submit(function(event) {
-                socket.emit('my direction', {data: $('#joy').val()});
-                return false;
-            });
 
         });
     </script>
@@ -62,33 +56,6 @@ table {
   <body>
 
 <hr>
-
-  <form  id='direction' method="POST" action='#'>
-
-    <h3>Vehicule direction</h3>
-
-    <div class="container">
-
-      <div id="joystick"   ></div>
-      <div id="joypos"  ></div>
-      <button class="btn btn-default"   id="joy" type = 'submit' name = 'btn_direct' value=''/>
-
-    </div>
-
-        <script>
-        var svg = d3.select("#joystick")
-                    .append("svg")
-                    .attr("width", 600)
-                    .attr("height", 300);
-
-        var param_joy = [{'x':150, 'y':150, 'col': 'green'}]
-        var size_joy_butt = 20
-        $("#joy").hide()
-        joy(param_joy, svg)
-
-        </script>
-
-      </form>
 
     <h2>Receive:</h2>
     <div id="log"></div>
