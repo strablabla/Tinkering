@@ -47,7 +47,6 @@ def background_thread():
     """Example of how to send server generated events to clients."""
     count = 0
     while True:
-        #time.sleep(0.1)
         count += 1
         data_accel = str(accelero(ser))[2:-5]
         socketio.emit('accel_data',{'count': count, 'accel': str(data_accel)}, namespace='/mupy')
@@ -58,7 +57,8 @@ def index():
         thread = Thread(target=background_thread)
         thread.daemon = True
         thread.start()
-    return render_template('gallerie_mupy.html') # gallerie_mupy.html # first_page.html
+    return render_template('gallerie_mupy.html') #
+    #return render_template('first_page.html') #
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)

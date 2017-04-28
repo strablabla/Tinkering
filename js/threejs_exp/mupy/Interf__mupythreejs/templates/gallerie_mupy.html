@@ -11,13 +11,12 @@
 		<script src='/static/3d.json'></script>
 		<link rel="stylesheet" type="text/css" href="/static/css/gallerie.css">
 
-
-
 	</head>
 	<body>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/1.6.0/annyang.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
         <script type="text/javascript" src="/static/js/TrackballControls.js"></script>
         <script type="text/javascript" src="/static/js/Detector.js"></script>
         <script type="text/javascript" src="/static/js/dat.js"></script>
@@ -49,8 +48,11 @@
 			var blocker = document.getElementById( 'blocker' );
 			var instructions = document.getElementById( 'instructions' );
 
+			namespace = '/mupy'; // change to an empty string to use the global namespace
+			var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
 			// http://www.html5rocks.com/en/tutorials/pointerlock/intro/
 			//$('#instructions').click()
+
 			ptlock()
 			init();
 			generate()
@@ -79,20 +81,14 @@
                 tableau('/static/Photographes/Doisneau-Anita.jpg', size_tab, 500, 0, 150, -1);
                 tableau('/static/Photographes/rouge.jpg', size_tab, -200, 0, 100, 0);
                 tableau('/static/Photographes/russian_flight_attendants_61.jpg', size_tab, -500, 0, 150, 1);
+				obj = make_cube()
+				socket.on('accel_data', function(msg) {
+					valx = msg.accel.split(',')[0]
+					console.log('###############################' + valx)
+					obj.position.x = 10*parseInt(valx)
+				  });// end socket.on
 
             };
-			
-					$(document).ready(function(){
-						namespace = '/mupy'; // change to an empty string to use the global namespace
-						var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
-						obj = make_cube()
-						socket.on('accel_data', function(msg) {
-							valx = msg.accel.split(',')[0]
-							$('#log').html('<br>Received #' + msg.count + msg.accel);
-
-							obj.position.x = 200*Math.abs(parseInt(valx))
-						});// end socket.on
-					});
 
 		</script>
 

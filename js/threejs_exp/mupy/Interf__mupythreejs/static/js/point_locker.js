@@ -147,6 +147,7 @@ function init() {
 function animate() {
 	//alert('Helllooo welcome in animate !!!! ')
     requestAnimationFrame( animate );
+
     if ( controlsEnabled ) {
         raycaster.ray.origin.copy( controls.getObject().position );
         raycaster.ray.origin.y -= 10;
