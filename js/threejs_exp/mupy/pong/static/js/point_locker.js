@@ -6,6 +6,9 @@ var moveRight = false;
 var canJump = false;
 var prevTime = performance.now();
 var velocity = new THREE.Vector3();
+var velocity_ball = new THREE.Vector3();
+var speed_ball = 200
+velocity_ball.z = speed_ball;
 //alert('Helllooo welcome in point_locker.js !!!! ')
 
 THREE.PointerLockControls = function ( camera ) {
@@ -177,6 +180,14 @@ function animate() {
         controls.getObject().translateX( velocity.x * delta );
         controls.getObject().translateY( velocity.y * delta ); // velocity.y * delta
         controls.getObject().translateZ( velocity.z * delta );
+
+		ball.position.z += velocity_ball.z * delta
+		if (ball.position.z>200){
+			velocity_ball.z = -speed_ball;
+		}
+		else if (ball.position.z<-200){
+			velocity_ball.z = +speed_ball;
+		}
 
         if ( controls.getObject().position.y < posy ) {
             velocity.y = 0;

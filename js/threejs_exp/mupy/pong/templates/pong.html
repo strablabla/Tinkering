@@ -47,11 +47,13 @@
 			var raycaster;
 			var blocker = document.getElementById( 'blocker' );
 			var instructions = document.getElementById( 'instructions' );
+			var ball
 
 			namespace = '/mupy'; // change to an empty string to use the global namespace
 			var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
 			// http://www.html5rocks.com/en/tutorials/pointerlock/intro/
 			//$('#instructions').click()
+
 
 			ptlock()
 			init();
@@ -72,6 +74,7 @@
 				renderer.setSize( window.innerWidth, window.innerHeight );
 			}
 
+
             function generate() {
 
 				pitch = make_pitch()
@@ -83,7 +86,9 @@
 					valx = msg.accel.split(',')[0]
 					rack1.position.x = 10*parseInt(valx)
 				  });// end socket.on
-            };
+
+
+            }; // end generate
 
 		</script>
 
