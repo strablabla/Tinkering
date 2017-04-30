@@ -54,7 +54,6 @@
 			// http://www.html5rocks.com/en/tutorials/pointerlock/intro/
 			//$('#instructions').click()
 
-
 			ptlock()
 			init();
 			generate()
@@ -74,9 +73,8 @@
 				renderer.setSize( window.innerWidth, window.innerHeight );
 			}
 
-
             function generate() {
-
+				
 				pitch = make_pitch()
 				rack1 = make_racket(-200)
 				rack2 = make_racket(200)
@@ -86,8 +84,6 @@
 					valx = msg.accel.split(',')[0]
 					rack1.position.x = 10*parseInt(valx)
 				  });// end socket.on
-
-
             }; // end generate
 
 		</script>

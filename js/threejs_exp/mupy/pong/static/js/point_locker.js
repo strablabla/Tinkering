@@ -7,8 +7,11 @@ var canJump = false;
 var prevTime = performance.now();
 var velocity = new THREE.Vector3();
 var velocity_ball = new THREE.Vector3();
-var speed_ball = 200
+var speed_ball = 80
+var angle_ball = 0
 velocity_ball.z = speed_ball;
+velocity_ball.x = 0;
+
 //alert('Helllooo welcome in point_locker.js !!!! ')
 
 THREE.PointerLockControls = function ( camera ) {
@@ -147,6 +150,20 @@ function init() {
 
 }
 
+function zreflection(zsign){
+	angle_ball = Math.atan2(Math.abs(velocity_ball.x),Math.abs(velocity_ball.z))
+	sign = Math.sign(velocity_ball.x)
+	velocity_ball.x = sign*speed_ball*Math.abs(Math.sin(angle_ball))
+	velocity_ball.z = zsign*speed_ball*Math.cos(angle_ball)
+}
+
+function xreflection(xsign){
+	angle_ball = Math.atan2(Math.abs(velocity_ball.x),Math.abs(velocity_ball.z))
+	sign = Math.sign(velocity_ball.z)
+	velocity_ball.x = xsign*speed_ball*Math.abs(Math.sin(angle_ball))
+	velocity_ball.z = sign*speed_ball*Math.cos(angle_ball)
+}
+
 function animate() {
 	//alert('Helllooo welcome in animate !!!! ')
     requestAnimationFrame( animate );
@@ -182,12 +199,37 @@ function animate() {
         controls.getObject().translateZ( velocity.z * delta );
 
 		ball.position.z += velocity_ball.z * delta
+		ball.position.x += velocity_ball.x * delta
+		if (ball.position.z<-200){
+			var diff = rack1.position.x-ball.position.x
+			var dist = Math.abs(diff)
+			console.log('############################ dist is ' + dist)
+		    if (dist<30){
+				sign = 1
+				if (velocity_ball.x != 0){
+					sign = Math.sign(velocity_ball.x)
+				}
+				angle_ball = dist/30* Math.PI/2
+				velocity_ball.x = sign*speed_ball*Math.abs(Math.sin(angle_ball))
+				velocity_ball.z = speed_ball*Math.cos(angle_ball)
+			}
+			else{
+				//angle_ball = Math.atan2(velocity_ball.x,velocity_ball.z)
+				zreflection(1)
+			};
+		} // end if
 		if (ball.position.z>200){
-			velocity_ball.z = -speed_ball;
+			zreflection(-1)
 		}
-		else if (ball.position.z<-200){
-			velocity_ball.z = +speed_ball;
-		}
+		if (ball.position.x>100){
+			  //velocity_ball.x *= -1;
+			  xreflection(-1)
+			}
+
+		if (ball.position.x<-100){
+			  //velocity_ball.x *= -1;
+			  xreflection(1)
+			}
 
         if ( controls.getObject().position.y < posy ) {
             velocity.y = 0;
