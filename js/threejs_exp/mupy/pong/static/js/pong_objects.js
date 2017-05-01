@@ -18,11 +18,32 @@ function make_pitch(){
 
 } // end function
 
+function make_net(){
+    //alert("make racket")
+    for (var i=-9; i<10; i++){
+
+        var geometry = new THREE.CubeGeometry( 5, 2, 2 );
+
+            var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xffffff } ) );
+            object.material.ambient = object.material.color;
+            //----------------
+            object.position.x = i*10;
+            object.position.y = 10 ;
+            object.position.z = 0;
+            //----------------
+            object.castShadow = true;
+            object.receiveShadow = true;
+            //----------------
+            scene.add( object );
+            objects.push( object );
+    }
+} // end function
+
 posx = 0
 
 function make_racket(pos_z){
     //alert("make racket")
-    var geometry = new THREE.CubeGeometry( 40, 40, 10 );
+    var geometry = new THREE.CubeGeometry( 40, 20, 10 );
 
         var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xffffff } ) );
         object.material.ambient = object.material.color;
