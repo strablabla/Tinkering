@@ -164,6 +164,13 @@ function xreflection(xsign){
 	velocity_ball.z = sign*speed_ball*Math.cos(angle_ball)
 }
 
+function make_pong(){
+	var mySound = soundManager.createSound({
+    url: '/static/sounds/pong.wav'
+    });
+    mySound.play();
+}
+
 function animate() {
 	//alert('Helllooo welcome in animate !!!! ')
     requestAnimationFrame( animate );
@@ -216,10 +223,12 @@ function animate() {
 			else{
 				//angle_ball = Math.atan2(velocity_ball.x,velocity_ball.z)
 				zreflection(1)
+				make_pong()
 			};
 		} // end if
 		if (ball.position.z>200){
 			zreflection(-1)
+			make_pong()
 		}
 		if (ball.position.x>100){
 			  //velocity_ball.x *= -1;
