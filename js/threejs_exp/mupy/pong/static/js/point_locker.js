@@ -12,6 +12,7 @@ var angle_ball = 0
 velocity_ball.z = speed_ball;
 velocity_ball.x = 0;
 
+
 //alert('Helllooo welcome in point_locker.js !!!! ')
 
 THREE.PointerLockControls = function ( camera ) {
@@ -205,13 +206,16 @@ function animate() {
         controls.getObject().translateY( velocity.y * delta ); // velocity.y * delta
         controls.getObject().translateZ( velocity.z * delta );
 
+		racket1.position.x += velocity_racket1.x * delta
+		console.log('########## the speed is ' + velocity_racket1.x)
+
 		ball.position.z += velocity_ball.z * delta
 		ball.position.x += velocity_ball.x * delta
-		if (ball.position.z<-200){
-			var diff = rack1.position.x-ball.position.x
+		if (ball.position.z < -200){
+			var diff = racket1.position.x-ball.position.x
 			var dist = Math.abs(diff)
 			console.log('############################ dist is ' + dist)
-		    if (dist<30){
+		    if (dist < 30){
 				sign = 1
 				if (velocity_ball.x != 0){
 					sign = Math.sign(velocity_ball.x)
@@ -226,16 +230,16 @@ function animate() {
 				make_pong()
 			};
 		} // end if
-		if (ball.position.z>200){
+		if (ball.position.z > 200){
 			zreflection(-1)
 			make_pong()
 		}
-		if (ball.position.x>100){
+		if (ball.position.x > 100){
 			  //velocity_ball.x *= -1;
 			  xreflection(-1)
 			}
 
-		if (ball.position.x<-100){
+		if (ball.position.x < -100){
 			  //velocity_ball.x *= -1;
 			  xreflection(1)
 			}

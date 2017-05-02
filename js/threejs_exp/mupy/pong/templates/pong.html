@@ -55,6 +55,12 @@
 			// http://www.html5rocks.com/en/tutorials/pointerlock/intro/
 			//$('#instructions').click()
 
+			//------
+			var velocity_racket1 = new THREE.Vector3();
+			var speed_racket1 = 10;
+			velocity_racket1.x = speed_racket1;
+			//------
+
 			ptlock()
 			init();
 			generate()
@@ -78,13 +84,13 @@
 
 				pitch = make_pitch()
 				make_net()
-				rack1 = make_racket(-200)
-				rack2 = make_racket(200)
+				racket1 = make_racket(-200)
+				racket2 = make_racket(200)
 				ball = make_pong_ball()
 
 				socket.on('accel_data', function(msg) {
-					valx = msg.accel.split(',')[0]
-					rack1.position.x = 10*parseInt(valx)
+					valx = parseInt(msg.accel.split(',')[0])
+					velocity_racket1.x = valx*10-racket1.position.x
 				  });// end socket.on
             }; // end generate
 
