@@ -87,6 +87,8 @@
 				racket1 = make_racket(-200)
 				racket2 = make_racket(200)
 				ball = make_pong_ball()
+				//make_score()
+				
 
 				socket.on('accel_data', function(msg) {
 					valx = parseInt(msg.accel.split(',')[0])

@@ -96,3 +96,30 @@ function make_pong_ball(){
         objects.push( object );
         return object
 } // end function
+
+// function make_score(){
+//     alert("make counter")
+    
+//     var list_numb = [[0,0,0],[0,10,0],[0,20,0]];
+//     // for (i in list_numb){
+//     //     var pos = list_numb[i]
+//     //     // alert(pos[0])
+
+//     //     var geometry = new THREE.CubeGeometry(10,10,10);
+//     //     var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial({color: 0xffffff}) );
+//     //     object.material.ambient = object.material.color;
+//     // //     //----------------
+//     //     // object.position.x = pos[0];
+//     //     // object.position.y = pos[1] ;
+//     //     // object.position.z = pos[2];
+//     // //     //----------------
+//     // //     object.castShadow = true;
+//     // //     object.receiveShadow = true;
+//     // //     //----------------
+//     // //     scene.add( object );
+//     // } // end for
+
+// } // end function
+
+
+
