@@ -97,24 +97,37 @@ function make_pong_ball(){
         return object
 } // end function
 
-function make_score(player, numb){
+function make_score(player, numb, zpos){
     alert("make counter")
     // https://www.sonelec-musique.com/electronique_theorie_afficheurs_led.html
     var xpos = -130;
-    if (player == 1){
-        zpos = -20
-    }
-    else{
-        zpos = 20
-    }
-    var dic_numb = {1:[0,1,1,0,0,0,0], 2:[1,1,0,1,1,0,1]};
+    alert(numb)
+    alert(zpos)
+    // if (player == 1){
+    //     zpos = -20
+    // }
+    // else{
+    //     zpos = 20
+    // }
+    var dic_numb = {
+                    0:[1,1,1,1,1,1,0], // A,B,C,D,E,F,G
+                    1:[0,1,1,0,0,0,0],  
+                    2:[1,1,0,1,1,0,1],
+                    3:[1,1,1,1,0,0,1],
+                    4:[0,1,1,0,0,1,1],
+                    5:[1,0,1,1,1,0,1],
+                    6:[1,0,1,1,1,1,1],
+                    7:[1,1,1,0,0,0,0],
+                    8:[1,1,1,1,1,1,1],
+                    9:[1,1,1,1,0,1,1]
+                };
     var cn = dic_numb[numb] // current number
     var col = 0xff0000
     //-----------------
     var dic_horiz = [cn[0],cn[3],cn[6]] // A,D,G
     for (i=0; i<3; i++){
         var geometry = new THREE.CubeGeometry(3,3,10);
-        alert(dic_horiz[i])
+        //alert(dic_horiz[i])
         var obj = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial({color: col}) );
         obj.material.ambient = obj.material.color;
         obj.position.x = xpos;
@@ -130,7 +143,7 @@ function make_score(player, numb){
     var dic_vert = [cn[2],cn[1],cn[4],cn[5]] // C,B,E,F
     for (i=0; i<4; i++){
         var geometry = new THREE.CubeGeometry(3,10,3);
-        alert(dic_vert[i])
+        //alert(dic_vert[i])
         var obj = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial({color: col}) );
         obj.material.ambient = obj.material.color;
         obj.position.x = xpos;

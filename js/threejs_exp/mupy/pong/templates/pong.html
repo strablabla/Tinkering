@@ -49,6 +49,7 @@
 			var blocker = document.getElementById( 'blocker' );
 			var instructions = document.getElementById( 'instructions' );
 			var ball
+			var score = [0,0]
 
 			namespace = '/mupy'; // change to an empty string to use the global namespace
 			var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
@@ -86,8 +87,12 @@
 				racket1 = make_racket(-200)
 				racket2 = make_racket(200)
 				ball = make_pong_ball()
-				make_score(1,1)
-				make_score(2,2)
+				// for (i=0;i<10;i++){
+				// 	make_score(1,i, 20*i)
+    //                }
+				// make_score(1,3)
+				// make_score(2,4)
+				make_score(1,3,-20)
 				socket.on('accel_data', function(msg) {
 					valx = parseInt(msg.accel.split(',')[0])
 					velocity_racket1.x = valx*10-racket1.position.x

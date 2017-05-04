@@ -228,6 +228,8 @@ function animate() {
 				//angle_ball = Math.atan2(velocity_ball.x,velocity_ball.z)
 				zreflection(1)
 				make_pong()
+				//score[0] += 1
+				//make_score(2,score[1])
 			};
 		} // end if
 		if (ball.position.z > 200){
