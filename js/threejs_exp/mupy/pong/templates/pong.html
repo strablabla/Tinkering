@@ -50,6 +50,7 @@
 			var instructions = document.getElementById( 'instructions' );
 			var ball
 			var score = [0,0]
+			var list_ball_position = []
 
 			namespace = '/mupy'; // change to an empty string to use the global namespace
 			var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);

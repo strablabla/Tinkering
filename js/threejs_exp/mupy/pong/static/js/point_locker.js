@@ -13,6 +13,7 @@ velocity_ball.z = speed_ball;
 velocity_ball.x = 0;
 
 
+
 //alert('Helllooo welcome in point_locker.js !!!! ')
 
 THREE.PointerLockControls = function ( camera ) {
@@ -78,6 +79,10 @@ function init() {
     var onKeyDown = function ( event ) {
 
         switch ( event.keyCode ) {
+
+            case 80: // P
+                console.log(list_ball_position)
+                break;
 
             case 38: // up
             case 90: // z
@@ -211,6 +216,7 @@ function animate() {
 
 		ball.position.z += velocity_ball.z * delta           // ball position main axis
 		ball.position.x += velocity_ball.x * delta           // ball position lateral axis
+		list_ball_position.push(ball.position.z)
 		if (ball.position.z < -200){                         // inferior limit and rebouncing                   
 			var diff = racket1.position.x-ball.position.x
 			var dist = Math.abs(diff)
