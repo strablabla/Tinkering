@@ -209,9 +209,9 @@ function animate() {
 		racket1.position.x += velocity_racket1.x * delta
 		console.log('########## the speed is ' + velocity_racket1.x)
 
-		ball.position.z += velocity_ball.z * delta
-		ball.position.x += velocity_ball.x * delta
-		if (ball.position.z < -200){
+		ball.position.z += velocity_ball.z * delta           // ball position main axis
+		ball.position.x += velocity_ball.x * delta           // ball position lateral axis
+		if (ball.position.z < -200){                         // inferior limit and rebouncing                   
 			var diff = racket1.position.x-ball.position.x
 			var dist = Math.abs(diff)
 			console.log('############################ dist is ' + dist)
@@ -232,7 +232,7 @@ function animate() {
 				//make_score(2,score[1])
 			};
 		} // end if
-		if (ball.position.z > 200){
+		if (ball.position.z > 200){         // superior limit and rebouncing 
 			zreflection(-1)
 			make_pong()
 		}
