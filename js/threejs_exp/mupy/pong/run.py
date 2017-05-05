@@ -40,6 +40,10 @@ try:
 except:
     print("no serial connection")
 
+@socketio.on('message', namespace='/mupy')
+def receive(message):
+    print("z position is {0} ".format(message))
+
 def accelero(ser):
     l = ser.readline()
     return l
@@ -51,6 +55,7 @@ def background_thread():
         count += 1
         data_accel = str(accelero(ser))[2:-5]
         socketio.emit('accel_data',{'count': count, 'accel': str(data_accel)}, namespace='/mupy')
+
 @app.route('/')
 def index():
     global thread
@@ -62,5 +67,5 @@ def index():
     #return render_template('first_page.html') #
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True, host='0.0.0.0') # port = 5014 
+    socketio.run(app, debug=True, host='0.0.0.0') # port = 5014
     # Biak 192.168.45.40:5000

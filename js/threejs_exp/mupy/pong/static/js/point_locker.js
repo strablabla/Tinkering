@@ -11,8 +11,7 @@ var speed_ball = 180
 var angle_ball = 0
 velocity_ball.z = speed_ball;
 velocity_ball.x = 0;
-
-
+debug = 0
 
 //alert('Helllooo welcome in point_locker.js !!!! ')
 
@@ -29,12 +28,12 @@ THREE.PointerLockControls = function ( camera ) {
 	var PI_2 = Math.PI / 2;
 
 	var onMouseMove = function ( event ) {
-
+		//------------------
 		if ( scope.enabled === false ) return;
-
+		//------------------
 		var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
 		var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
-
+		//------------------
 		yawObject.rotation.y -= movementX * 0.008; //0.002
 		pitchObject.rotation.x -= movementY * 0.008; //0.002
 		pitchObject.rotation.x = Math.max( - PI_2, Math.min( PI_2, pitchObject.rotation.x ) );
@@ -212,15 +211,36 @@ function animate() {
         controls.getObject().translateZ( velocity.z * delta );
 
 		racket1.position.x += velocity_racket1.x * delta
-		console.log('########## the speed is ' + velocity_racket1.x)
+		//console.log('########## the speed is ' + velocity_racket1.x)
+        if (delta<0.1){ 										 // avoiding going out of the pitch at the beginning of the game.
+			ball.position.z += velocity_ball.z * delta           // ball position main axis
+			ball.position.x += velocity_ball.x * delta           // ball position lateral axis
+		}
 
-		ball.position.z += velocity_ball.z * delta           // ball position main axis
-		ball.position.x += velocity_ball.x * delta           // ball position lateral axis
-		list_ball_position.push(ball.position.z)
-		if (ball.position.z < -200){                         // inferior limit and rebouncing                   
+		// list_ball_position.push(ball.position.z)
+		if (debug>0){
+			socket.emit('message',  JSON.stringify(ball.position.z)) // "hellloooooo"
+			socket.emit('message',  JSON.stringify(delta))
+			var geometry = new THREE.CubeGeometry( 2, 2, 2 );
+				var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xff0000 } ) );
+				object.material.ambient = object.material.color;
+				//----------------
+				object.position.x = ball.position.x;
+				object.position.y = ball.position.y ;
+				object.position.z = ball.position.z;
+				//----------------
+				object.castShadow = true;
+				object.receiveShadow = true;
+				//----------------
+				scene.add( object );
+				//alert(object.position.z)
+		}
+
+
+		if (ball.position.z < -200){                         // inferior limit and rebouncing
 			var diff = racket1.position.x-ball.position.x
 			var dist = Math.abs(diff)
-			console.log('############################ dist is ' + dist)
+			// console.log('############################ dist is ' + dist)
 		    if (dist < 30){
 				sign = 1
 				if (velocity_ball.x != 0){
@@ -238,7 +258,7 @@ function animate() {
 				//make_score(2,score[1])
 			};
 		} // end if
-		if (ball.position.z > 200){         // superior limit and rebouncing 
+		if (ball.position.z > 200){         // superior limit and rebouncing
 			zreflection(-1)
 			make_pong()
 		}
