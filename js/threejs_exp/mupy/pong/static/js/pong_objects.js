@@ -97,25 +97,26 @@ function make_pong_ball(){
         return object
 } // end function
 
+
 function make_score(player, numb, zpos){
     alert("make counter")
     // https://www.sonelec-musique.com/electronique_theorie_afficheurs_led.html
     var xpos = -130;
     alert(numb)
     alert(zpos)
-    // if (player == 1){
-    //     zpos = -20
-    // }
-    // else{
-    //     zpos = 20
-    // }
+    if (player == 1){
+        zpos = -20
+    }
+    else{
+        zpos = 20
+    }
     var dic_numb = {
                     0:[1,1,1,1,1,1,0], // A,B,C,D,E,F,G
-                    1:[0,1,1,0,0,0,0],  
+                    1:[0,1,1,0,0,0,0],
                     2:[1,1,0,1,1,0,1],
                     3:[1,1,1,1,0,0,1],
                     4:[0,1,1,0,0,1,1],
-                    5:[1,0,1,1,1,0,1],
+                    5:[1,0,1,1,0,1,1],
                     6:[1,0,1,1,1,1,1],
                     7:[1,1,1,0,0,0,0],
                     8:[1,1,1,1,1,1,1],
@@ -124,7 +125,7 @@ function make_score(player, numb, zpos){
     var cn = dic_numb[numb] // current number
     var col = 0xff0000
     //-----------------
-    var dic_horiz = [cn[0],cn[3],cn[6]] // A,D,G
+    var dic_horiz = [cn[3],cn[6],cn[0]] // A,D,G
     for (i=0; i<3; i++){
         var geometry = new THREE.CubeGeometry(3,3,10);
         //alert(dic_horiz[i])
@@ -137,7 +138,10 @@ function make_score(player, numb, zpos){
         obj.castShadow = true;
         obj.receiveShadow = true;
         //----------------
-        if (dic_horiz[i]==1){scene.add(obj)}
+        if (dic_horiz[i]==1){
+            scene.add(obj)
+            list_score.push(obj)
+        }
     }
 
     var dic_vert = [cn[2],cn[1],cn[4],cn[5]] // C,B,E,F
@@ -153,6 +157,9 @@ function make_score(player, numb, zpos){
         obj.castShadow = true;
         obj.receiveShadow = true;
         //----------------
-        if (dic_vert[i]==1){scene.add(obj)}
+        if (dic_vert[i]==1){
+            scene.add(obj)
+            list_score.push(obj)
+        }
     }
 } // end function make_score

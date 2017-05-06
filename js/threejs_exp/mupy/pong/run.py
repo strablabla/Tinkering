@@ -63,6 +63,8 @@ def index():
         thread = Thread(target=background_thread)
         thread.daemon = True
         thread.start()
+
+    #return render_template('main.html') #
     return render_template('pong.html') #
     #return render_template('first_page.html') #
 

@@ -75,13 +75,25 @@ function init() {
     controls = new THREE.PointerLockControls( camera );
     scene.add( controls.getObject() );
 
+	function onWindowResize() {
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+		renderer.setSize( window.innerWidth, window.innerHeight );
+	}
+
     var onKeyDown = function ( event ) {
 
         switch ( event.keyCode ) {
 
             case 80: // P
-                console.log(list_ball_position)
+			    for (i=0;i<list_score.length;i++){
+					scene.remove(list_score[i])
+				}
                 break;
+
+			// case 77: // M
+			// 	camera.position.set( 0, 50, 120 );
+			// 	controls.update();
 
             case 38: // up
             case 90: // z
@@ -93,7 +105,7 @@ function init() {
 				break;
 
             case 40: // down
-			case 68: // d
+			case 68: // D
                 moveBackward = true;
                 break;
 
@@ -101,11 +113,11 @@ function init() {
                 moveRight = true;
                 break;
 
-			case 65: // a
+			case 65: // A
 				posy += 5;
 				break;
 
-			case 83: // s
+			case 83: // S
 				posy += -5;
 				break;
 
@@ -146,10 +158,16 @@ function init() {
     document.addEventListener( 'keyup', onKeyUp, false );
 
     raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
+	var canvas = document.getElementById('canvas');
     renderer = new THREE.WebGLRenderer();
+	// canvas.width  = canvas.clientWidth;
+	// canvas.height = canvas.clientHeight;
+	// renderer.setViewport(0, 0, canvas.clientWidth, canvas.clientHeight);
+
     renderer.setClearColor( 0xffffff );
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
+	//canvas.appendChild( renderer.domElement );
     document.body.appendChild( renderer.domElement );
     window.addEventListener( 'resize', onWindowResize, false );
 
@@ -174,6 +192,16 @@ function make_pong(){
     url: '/static/sounds/pong.wav'
     });
     mySound.play();
+}
+
+
+function make_new_score(){
+	for (i=0;i<list_score.length;i++){
+		scene.remove(list_score[i])
+	}
+
+	make_score(1,score[1])
+	make_score(2,score[0])
 }
 
 function animate() {
@@ -236,7 +264,6 @@ function animate() {
 				//alert(object.position.z)
 		}
 
-
 		if (ball.position.z < -200){                         // inferior limit and rebouncing
 			var diff = racket1.position.x-ball.position.x
 			var dist = Math.abs(diff)
@@ -246,15 +273,17 @@ function animate() {
 				if (velocity_ball.x != 0){
 					sign = Math.sign(velocity_ball.x)
 				}
+				// Sending back the ball with different angle
 				angle_ball = dist/30* Math.PI/2
 				velocity_ball.x = sign*speed_ball*Math.abs(Math.sin(angle_ball))
 				velocity_ball.z = speed_ball*Math.cos(angle_ball)
+				make_pong()
 			}
 			else{
 				//angle_ball = Math.atan2(velocity_ball.x,velocity_ball.z)
 				zreflection(1)
-				make_pong()
-				//score[0] += 1
+				score[0] += 1
+				make_new_score()
 				//make_score(2,score[1])
 			};
 		} // end if
