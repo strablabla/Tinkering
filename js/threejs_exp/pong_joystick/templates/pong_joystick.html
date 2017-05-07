@@ -4,7 +4,7 @@
 
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-		<title>three.js - gallerie locker v1</title>
+		<title>pong_joystick</title>
 
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
@@ -25,6 +25,7 @@
 		<script type="text/javascript" src="/static/js/graphical_elems.js"></script>
 		<script type="text/javascript" src="/static/js/pong_objects.js"></script>
 		<script type="text/javascript" src="/static/js/gamepad.js"></script>
+		<script type="text/javascript" src="/static/js/pong_gamepad.js"></script>
 
 		<div id="blocker" style="display: -webkit-box;">
 
@@ -82,10 +83,12 @@
 				rack2 = make_racket(200)
 				ball = make_pong_ball()
 
-				socket.on('accel_data', function(msg) {
-					valx = msg.accel.split(',')[0]
-					rack1.position.x = 10*parseInt(valx)
-				  });// end socket.on
+				gamepad_handle_event()
+
+				// socket.on('accel_data', function(msg) {
+				// 	valx = msg.accel.split(',')[0]
+				// 	rack1.position.x = 10*parseInt(valx)
+				//   });// end socket.on
             }; // end generate
 
 		</script>
