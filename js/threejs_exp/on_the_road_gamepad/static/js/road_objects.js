@@ -45,12 +45,13 @@ function make_car(pos_z){
 
 linespace = 10
 function make_line(){
-    //alert("make racket")
-    for (var i=-9; i<road_length/linespace; i++){
+    //alert("make_line")
+    for (var i=-road_length/linespace/2; i<road_length/linespace/2; i++){
 
         var geometry = new THREE.CubeGeometry( 5, 1, 7 );
-
-            var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xffffff } ) );
+        if (i%2==0){color_line = 0xffffff }
+        else{color_line = 0xffff99}
+            var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color:color_line } ) );
             object.material.ambient = object.material.color;
             //----------------
             object.position.x = 0;

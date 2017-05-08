@@ -6,11 +6,8 @@ var moveRight = false;
 var canJump = false;
 var prevTime = performance.now();
 var velocity = new THREE.Vector3();
-// var velocity_ball = new THREE.Vector3();
-// var speed_ball = 180
-// var angle_ball = 0
-// velocity_ball.z = speed_ball;
-// velocity_ball.x = 0;
+var car_velocity = new THREE.Vector3();
+car_velocity.set(0,0,100);
 
 //alert('Helllooo welcome in point_locker.js !!!! ')
 
@@ -150,7 +147,6 @@ function init() {
 
 }
 
-
 function animate() {
 	//alert('Helllooo welcome in animate !!!! ')
     requestAnimationFrame( animate );
@@ -180,6 +176,11 @@ function animate() {
             velocity.y = Math.max( 0, velocity.y );
             canJump = true;
         }
+
+		//if (delta<0.1){ 										 // avoiding going out of the pitch at the beginning of the game.
+			car1.position.z += car_velocity.z * delta           // car position main axis
+			controls.getObject().position.z = car1.position.z
+		//}
 
         controls.getObject().translateX( velocity.x * delta );
         controls.getObject().translateY( velocity.y * delta ); // velocity.y * delta

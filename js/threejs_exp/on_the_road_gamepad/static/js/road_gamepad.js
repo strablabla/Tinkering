@@ -1,4 +1,9 @@
 
+var car_forward = -13
+var car_backward = 13
+var car_left = -13
+var car_right = 13
+
 window.gamepad = new Gamepad();
 
 gamepad.bind(Gamepad.Event.CONNECTED, function(device) {
@@ -14,6 +19,7 @@ gamepad.bind(Gamepad.Event.DISCONNECTED, function(device) {
     }
 });
 
+
 function gamepad_handle_event(){
 
     gamepad.bind(Gamepad.Event.TICK, function(gamepads) {
@@ -27,16 +33,16 @@ function gamepad_handle_event(){
                     if (value!=0){
                         //alert(control + '_' + value)
                         if (control=='LEFT_TOP_SHOULDER'){
-                            car1.position.x += -10
+                            car1.position.x += car_left
                         }
                         if (control=='RIGHT_TOP_SHOULDER'){
-                            car1.position.x += +10
+                            car1.position.x += car_right
                         }
                         if (control=='FACE_1'){
-                            car1.position.z += -10
+                            car_velocity.z += car_forward
                         }
                         if (control=='FACE_3'){
-                            car1.position.z += 10
+                            car_velocity.z += car_backward
                         }
                     }
                 } // end for

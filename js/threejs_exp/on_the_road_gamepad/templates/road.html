@@ -49,7 +49,6 @@
 			var raycaster;
 			var blocker = document.getElementById( 'blocker' );
 			var instructions = document.getElementById( 'instructions' );
-			var ball
 
 			namespace = '/mupy'; // change to an empty string to use the global namespace
 			var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
@@ -81,7 +80,7 @@
 				make_line()
 				car1 = make_car(-200)
 				car2 = make_car(200)
-				
+
 				gamepad_handle_event()
 
             }; // end generate
