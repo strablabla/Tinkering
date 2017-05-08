@@ -57,7 +57,7 @@ def index():
         thread = Thread(target=background_thread)
         thread.daemon = True
         thread.start()
-    return render_template('pong.html') #
+    return render_template('puppets.html') #
     #return render_template('first_page.html') #
 
 if __name__ == '__main__':

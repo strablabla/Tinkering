@@ -23,7 +23,7 @@
         <script type="text/javascript" src="/static/js/point_locker.js"></script>
 		<script type="text/javascript" src="/static/js/landscape.js"></script>
 		<script type="text/javascript" src="/static/js/graphical_elems.js"></script>
-		<script type="text/javascript" src="/static/js/pong_objects.js"></script>
+		<script type="text/javascript" src="/static/js/puppets_objects.js"></script>
 
 		<div id="blocker" style="display: -webkit-box;">
 
@@ -74,15 +74,14 @@
 
             function generate() {
 
-				pitch = make_pitch()
-				rack1 = make_racket(-200)
-				rack2 = make_racket(200)
-				ball = make_pong_ball()
 
-				socket.on('accel_data', function(msg) {
-					valx = msg.accel.split(',')[0]
-					rack1.position.x = 10*parseInt(valx)
-				  });// end socket.on
+			    var p = make_pitch()
+				var pup = make_puppet()
+
+				// socket.on('accel_data', function(msg) {
+				// 	valx = msg.accel.split(',')[0]
+				// 	rack1.position.x = 10*parseInt(valx)
+				//   });// end socket.on
             };
 
 		</script>
