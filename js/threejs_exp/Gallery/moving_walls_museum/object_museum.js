@@ -1,3 +1,4 @@
+disp = 5
 function make_uniform_ground(){
     //alert("in make_board")
     var size_square = 1100;
@@ -48,6 +49,7 @@ function make_wall(){
     object.receiveShadow = true;
     scene.add( object );
     objects.push( object );
+    return object
 
 } // end function
 
@@ -68,8 +70,8 @@ function make_small_seats(){
            }
         var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: square_color } ) );
         object.material.ambient = object.material.color;
-        object.position.x = (i%8-4) * size_square
-        object.position.y = (posy-4) * size_square
+        object.position.x = disp*Math.random() * size_square
+        object.position.y = disp*Math.random() * size_square
         object.position.z = 5
         object.castShadow = true;
         object.receiveShadow = true;
@@ -95,8 +97,8 @@ function make_seat(){
            }
         var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: square_color } ) );
         object.material.ambient = object.material.color;
-        object.position.x = (i%8-4) * size_square
-        object.position.y = (posy-4) * size_square
+        object.position.x = disp*Math.random() * size_square
+        object.position.y = disp*Math.random() * size_square
         object.position.z = 100
         object.rotation.x = -Math.PI/2
         object.castShadow = true;
