@@ -28,7 +28,10 @@ function onDocumentMouseMove( event ) {
     if ( SELECTED ) {
 
         var intersects = raycaster.intersectObject( plane );
-        SELECTED.position.copy( intersects[ 0 ].point.sub( offset ) );
+        var interptsub = intersects[ 0 ].point.sub( offset )
+        interptsub.z += 30
+        SELECTED.position.copy( interptsub );
+    
         return;
 
     }
