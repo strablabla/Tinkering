@@ -30,8 +30,16 @@ function onDocumentMouseMove( event ) {
         var intersects = raycaster.intersectObject( plane );
         var interptsub = intersects[ 0 ].point.sub( offset )
         interptsub.z += 30
+        // var box = SELECTED.boundingBox;
+        // alert(box.max.y)
+        // var box = new THREE.Box3().setFromObject( SELECTED );
+        // alert(box.max.y)
+        // var cube_bbox = new THREE.Box3();
+        // cube_bbox.setFromObject( plane );
+        // cube_height = cube_bbox.max.y - cube_bbox.min.y;
+        // alert(cube_height)
         SELECTED.position.copy( interptsub );
-    
+
         return;
 
     }
