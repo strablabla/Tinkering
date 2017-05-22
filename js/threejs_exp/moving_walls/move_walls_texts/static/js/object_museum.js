@@ -44,7 +44,7 @@ function make_wall(){
     object.material.ambient = object.material.color;
     object.position.x = 0
     object.position.y = 0
-    object.position.z = 0
+    object.position.z = wall_height/2
     object.castShadow = true;
     object.receiveShadow = true;
     scene.add( object );
@@ -72,7 +72,7 @@ function make_small_seats(){
         object.material.ambient = object.material.color;
         object.position.x = disp*Math.random() * size_square
         object.position.y = disp*Math.random() * size_square
-        object.position.z = 5
+        object.position.z = size_pawns/2
         object.castShadow = true;
         object.receiveShadow = true;
         scene.add( object );
@@ -83,8 +83,8 @@ function make_small_seats(){
 function make_seat(){
     //alert("in make_pawns")
     var size_square = 150;
-    var size_towers = 50;
-    var geometry = new THREE.CylinderGeometry( 50, 25, 100);
+    var size_seat = 100;
+    var geometry = new THREE.CylinderGeometry( 50, 25, size_seat);
     var square_color;
     for ( var i = 0; i < 4; i ++ ) {
         if (Math.floor(i/2)%2==0){
@@ -99,7 +99,7 @@ function make_seat(){
         object.material.ambient = object.material.color;
         object.position.x = disp*Math.random() * size_square
         object.position.y = disp*Math.random() * size_square
-        object.position.z = 100
+        object.position.z = size_seat/2
         object.rotation.x = -Math.PI/2
         object.castShadow = true;
         object.receiveShadow = true;
