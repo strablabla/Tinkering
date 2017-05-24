@@ -11,10 +11,27 @@
 				margin: 0px;
 				overflow: hidden;
 			}
+
+
+    div.enter_command {
+        position: fixed;
+        padding-left: 0px;
+        padding-right: 20px;
+        padding-bottom: 20px;
+        box-shadow: 0.5em 0.5em 0.7em;
+        top: 70px;
+        left: 100px;
+        height: 100px;
+        width : 100px;
+        background-color: #FFF;
+        font-size:85%;
+        /*opacity : 0.3;*/
+    }
+
 		</style>
 	</head>
 	<body>
-
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 		<script src="simple_flat/three.js"></script>
 		<script src="simple_flat/TrackballControls.js"></script>
 		<script src="simple_flat/stats.js"></script>
@@ -28,6 +45,17 @@
 			var container, stats;
 			var camera, controls, scene, projector, renderer;
 			var objects = [], plane;
+			var command = $('<div/>').addClass('enter_command').attr('id','comm')
+			command.hide()
+			$('body').append(command)
+
+
+			$(document).keydown(function(event){   
+          
+             if(event.keyCode == 77){ // M
+                   $('#comm').toggle()
+                 } // end if
+             })
 
 			var mouse = new THREE.Vector2(),
 			offset = new THREE.Vector3(),
@@ -37,6 +65,7 @@
 			animate();
 
 			function init() {
+
 
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
