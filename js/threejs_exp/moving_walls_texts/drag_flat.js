@@ -80,7 +80,9 @@ function onDocumentMouseDown( event ) {
 
     }
 
-    if ( INTERSECTED ) INTERSECTED.material.color.setHex( 0x000000 ); // changing color when selected
+    if ( INTERSECTED ){
+        INTERSECTED.material.color.setHex( 0x000000 ); // changing color when selected
+    }
 
 }
 
