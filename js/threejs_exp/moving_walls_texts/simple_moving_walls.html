@@ -21,10 +21,11 @@
         box-shadow: 0.5em 0.5em 0.7em;
         top: 70px;
         left: 100px;
-        height: 100px;
-        width : 100px;
+        height: 200px;
+        width : 200px;
         background-color: #FFF;
         font-size:85%;
+		z-index: 20;
         /*opacity : 0.3;*/
     }
 
@@ -46,12 +47,13 @@
 			var camera, controls, scene, projector, renderer;
 			var objects = [], plane;
 			var command = $('<div/>').addClass('enter_command').attr('id','comm')
+			var inp = $('<input>') //.attr('type', 'text')
+			command.append(inp)
 			command.hide()
 			$('body').append(command)
 
+			$(document).keydown(function(event){
 
-			$(document).keydown(function(event){   
-          
              if(event.keyCode == 77){ // M
                    $('#comm').toggle()
                  } // end if
@@ -65,7 +67,6 @@
 			animate();
 
 			function init() {
-
 
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
@@ -85,7 +86,6 @@
 				controls.dynamicDampingFactor = 0.3;
 
 				scene = new THREE.Scene();
-
 				scene.add( new THREE.AmbientLight( 0x505050 ) );
 
 				var light = new THREE.SpotLight( 0xffffff, 1.5 );
@@ -108,7 +108,7 @@
 				make_uniform_ground() // make the board
 				make_small_seats() // make the pawns
 				make_seat() // make the pawns
-				make_wall()
+				var wall = make_wall()
 				init_drag()
 
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
