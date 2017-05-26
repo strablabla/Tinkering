@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+
+<!-- scripts -->
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script  src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+
+<!-- css -->
+
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.css">
+     <link rel="stylesheet" href="https:////cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/css/bootstrap-select.min.css">
+
+<style>
+
+    div.interact {
+        position: fixed;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 20px;
+        box-shadow: 0.5em 0.5em 0.7em;
+        left: 20px;
+        top: 20px;
+        height: 40px;
+        width:  150px;
+        background-color:#008ae6; 
+        font-size:85%;
+    }
+
+ </style>
+
+<html lang="en">
+
+    <body>
+ 
+ <div class='interact' id='hello'>
+    Helloooo
+ </div>
+
+<script>
+
+	namespace = '/save'; 
+	var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+
+	 $('#hello').draggable()
+	     var keyev = function(key, event){
+	        return (event.keyCode == key.charCodeAt(0)-32 )
+	      } 
+		$(document).keydown(function(event){   
+		//---------------------- Toggle type of plate
+		  if(keyev('t', event)){    //
+		      $('#hello').toggle()
+		    } // end if key code
+
+		  if(keyev('s', event)){    //
+		      socket.emit('pos', "bingoooo"); //$('#hello').offset()
+		    } // end if key code
+
+		})
+
+		$('#hello').on('click', function () { 
+	        // offset = $('#hello').offset(); 
+	        // alert(offset)
+	        //socket.emit('savepos', "bingoooo");
+	        alert("hellllo")
+	        socket.emit('pos', 'ouppsss'); //$('#hello').offset()
+	    });
+
+ </script>
+
+ </body>
+
+
+</html>

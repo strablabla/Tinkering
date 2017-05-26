@@ -1,0 +1,8 @@
+def f(x):
+    w = x**2
+    return w
+x = np.arange(12)
+y = f(x)
+plt.plot(x,y, 'r--')
+plt.show()
+plt.savefig('Interf/static/fig0.html')
