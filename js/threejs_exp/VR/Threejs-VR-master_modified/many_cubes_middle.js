@@ -3,6 +3,8 @@ window.onload = function(event) {
     var camera, scene, renderer;
     var effect, controls;
     var element, container;
+    var dist = 500
+    var size_cube = 20
 
     var clock = new THREE.Clock();
 
@@ -20,8 +22,8 @@ window.onload = function(event) {
       scene = new THREE.Scene();
 
       camera = new THREE.PerspectiveCamera(90, window.innerWidth/window.innerHeight, 0.01, 1000);
-      camera.position.set(-500, 400, -200);
-      //camera.position.set(0, 400, 0);
+      //camera.position.set(-500, 400, -200);
+      camera.position.set(dist/2, dist/2, dist/2);
       scene.add(camera);
 
       controls = new THREE.OrbitControls(camera, element);
@@ -75,11 +77,12 @@ window.onload = function(event) {
       mesh.rotation.x = -Math.PI / 2;
       scene.add(mesh);
       list_cubes = []
-      var dist = 500
+
       for (i=0; i<10; i++){
 
-          cube = new THREE.Mesh( new THREE.CubeGeometry( 200, 200, 200 ), new THREE.MeshNormalMaterial() );
-          cube.position.y = Math.random()*dist;
+          cube = new THREE.Mesh( new THREE.CubeGeometry( size_cube, size_cube, size_cube ), new THREE.MeshNormalMaterial() );
+          //alert(Math.random())
+          cube.position.y = Math.random()*dist; //*Math.power(-1,i);
           cube.position.z = Math.random()*dist;
           cube.position.x = Math.random()*dist;
           list_cubes.push(cube)
@@ -114,9 +117,9 @@ window.onload = function(event) {
 
       for (i in list_cubes){
           var cube = list_cubes[i]
-          cube.rotation.x += 0.02* Math.random();
-          cube.rotation.y += 0.0225* Math.random();
-          cube.rotation.z += 0.0175* Math.random();
+          cube.rotation.x += 0.2* Math.random();
+          cube.rotation.y += 0.225* Math.random();
+          cube.rotation.z += 0.175* Math.random();
       }
 
       effect.render(scene, camera);
