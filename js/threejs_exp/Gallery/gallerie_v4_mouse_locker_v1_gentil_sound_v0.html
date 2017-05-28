@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<!-- pointerlock_controls with json for defining shapes.  -->
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+		<title>three.js - gallerie locker v1</title>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<script src='3d.json'></script>
+		<link rel="stylesheet" type="text/css" href="gallerie.css">
+	</head>
+	<body>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/soundmanager2/2.97a.20150601/script/soundmanager2-jsmin.js"></script>
+        <script type="text/javascript" src="three_with_json/TrackballControls.js"></script>
+        <script type="text/javascript" src="three_with_json/Detector.js"></script>
+        <script type="text/javascript" src="three_with_json/dat.js"></script>
+        <script type="text/javascript" src="../js/point_locker.js"></script>
+		<script type="text/javascript" src="../js/landscape.js"></script>
+		<script type="text/javascript" src="../js/graphical_elems.js"></script>
+
+		<div id="blocker" style="display: -webkit-box;">
+
+			<div id="instructions">
+				<span style="font-size:40px">Click to play</span>
+				<br>
+				(W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
+			</div>
+
+		</div>
+
+		<script>
+
+            var camera, scene, renderer, controls;
+            var FTICR2Dmap_mesh = 0.25;
+            var FTICR2Dmap_detail = 8, FTICR2Dmap_roughness = 0.7;
+            // var dist0 = 1e3;
+            // var dist1 = 1e4;
+            // var dist2 = 1e5;
+            // var dist3 = 1e6;
+            // var dist4 = 1e7;
+            // var dist5 = 1e8;
+
+			var geometry, material, mesh;
+			var objects = [];
+			var raycaster;
+			var blocker = document.getElementById( 'blocker' );
+			var instructions = document.getElementById( 'instructions' );
+
+			// http://www.html5rocks.com/en/tutorials/pointerlock/intro/
+
+			init();
+			generate()
+			animate();
+			ptlock()
+
+			soundManager.setup({
+			  url: '/path/to/swf-files/',
+			  onready: function() {
+			    var mySound = soundManager.createSound({
+			      id: 'aSound',
+			      //url: '/home/lio/Téléchargements/youtube/zic/Oriental/Souad_Massi_Ya Kalbi.mp4'
+			      url: "Musique/thelonious monk - don't blame me.mp4"
+			    });
+			    mySound.play();
+			  },
+			  ontimeout: function() {
+			    // Hrmm, SM2 could not start. Missing SWF? Flash blocked? Show an error, etc.?
+			  }
+			});
+
+			camera.position.set(-100,0,-100)
+
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+
+            function generate() {
+                var FTICR2Dmap = new Visu3d(parseInt(FTICR2Dmap_detail));
+                FTICR2Dmap.generate(FTICR2Dmap_roughness);
+                FTICR2Dmap.addMesh('Decor/mur_crepi.jpg');
+				make_ground_repetitive('Decor/marbre_sol.jpg', 0, 20)
+                size_tab = 100;
+
+				list_paintings = ['bosch-nef-fous.jpg', 'bosch_triptyque_tentation.jpg',
+					  'Conjuror.jpg', 'la_Tentation_de_saint_Antoine.jpg','portement_croix.jpg',
+					  'the-garden-of-earthly-delights-1515.jpg','the_garden_of_earthly_delights_the_exterior_shutters.jpg',
+					  'triptyque_jugt_dernier.jpg', 'Vision_de_Tondal.jpg']
+				var sep_tab = 120
+				for (i=0;i<5;i++){
+                	tableau('Bosch/'+list_paintings[i], size_tab, i*sep_tab , -300, 50, 0);
+					tableau('Bosch/'+list_paintings[i+5], size_tab, i*sep_tab , -600, 50, 0);
+				}
+
+            };
+
+		</script><canvas width="1078" height="575" style="width: 1078px; height: 575px;"></canvas>
+
+</body></html>

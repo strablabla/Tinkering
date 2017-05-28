@@ -148,7 +148,7 @@ function init() {
     document.body.appendChild( renderer.domElement );
     window.addEventListener( 'resize', onWindowResize, false );
 
-}
+} // end init
 
 function animate() {
 
