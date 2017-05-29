@@ -20,6 +20,7 @@ window.onload = function(event) {
       effect = new THREE.StereoEffect(renderer);
 
       scene = new THREE.Scene();
+      scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
 
       camera = new THREE.PerspectiveCamera(90, window.innerWidth/window.innerHeight, 0.01, 1000);
       //camera.position.set(-500, 400, -200);
@@ -53,6 +54,8 @@ window.onload = function(event) {
 
 
       var light = new THREE.HemisphereLight(0x777777, 0x000000, 0.6);
+      //var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
+      //var light = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
       scene.add(light);
 
       var texture = THREE.ImageUtils.loadTexture(
@@ -89,7 +92,6 @@ window.onload = function(event) {
           scene.add(cube);
       }
 
-
       window.addEventListener('resize', resize, false);
       setTimeout(resize, 1);
     }
@@ -100,7 +102,6 @@ window.onload = function(event) {
 
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
-
       renderer.setSize(width, height);
       effect.setSize(width, height);
     }
