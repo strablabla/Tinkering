@@ -3,9 +3,11 @@ window.onload = function(event) {
     var camera, scene, renderer;
     var effect, controls;
     var element, container;
-    var bulbLight, bulbMat
+    var bulbLight, bulbMat, floorMat, hemiLight
     var dist = 500
-    var size_cube = 20
+    var size_cube = 5
+    var size_bulb = 20
+    var param_bulb = 0
 
     // ref for lumens: http://www.power-sure.com/lumens.htm
     var bulbLuminousPowers = {
@@ -37,7 +39,7 @@ window.onload = function(event) {
     var params = {
         shadows: true,
         exposure: 0.68,
-        bulbPower: Object.keys( bulbLuminousPowers )[ 4 ],
+        bulbPower: Object.keys( bulbLuminousPowers )[ 0 ],
         hemiIrradiance: Object.keys( hemiLuminousIrradiances )[0]
     };
 
@@ -94,60 +96,105 @@ window.onload = function(event) {
       window.addEventListener('deviceorientation', setOrientationControls, true);
 
     //   Bulb light
+    list_bulbs = []
+    bulbMat = new THREE.MeshStandardMaterial ( {
+        emissive: 0xffffee,
+        emissiveIntensity: 1,
+        color: 0x000000
+    });
+    for (i=0; i<2; i++){
+          var bulbGeometry = new THREE.SphereGeometry( size_bulb, 16, 8 );
+          bulbLight = new THREE.PointLight( 0xffee88, 1, 100, 2 );
+          bulbLight.add( new THREE.Mesh( bulbGeometry, bulbMat ) );
+          bulbLight.castShadow = true;
+          bulbLight.position.set( Math.random()*300, Math.random()*300, Math.random()*300 );
+          list_bulbs.push(bulbLight)
+          scene.add( bulbLight );
+    }
 
-      var bulbGeometry = new THREE.SphereGeometry( 0.02, 16, 8 );
-      bulbLight = new THREE.PointLight( 0xffee88, 1, 100, 2 );
+    //   var light = new THREE.HemisphereLight(0x777777, 0x000000, 0.6);
+    //   //var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
+    //   //var light = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
+    //   scene.add(light);
 
-      bulbMat = new THREE.MeshStandardMaterial ( {
-          emissive: 0xffffee,
-          emissiveIntensity: 1,
-          color: 0x000000
-      });
-      bulbLight.add( new THREE.Mesh( bulbGeometry, bulbMat ) );
-      // bulbLight.position.set( 1000, 2000, 1000 );
-      bulbLight.castShadow = true;
-      scene.add( bulbLight );
-
-      var light = new THREE.HemisphereLight(0x777777, 0x000000, 0.6);
-      //var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
-      //var light = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
-      scene.add(light);
+    //   hemiLight = new THREE.HemisphereLight( 0xddeeff, 0x0f0e0d, 0.02 );
+    //   scene.add( hemiLight );
+      hemiLight = new THREE.HemisphereLight(0xffffff, 0x000000, 0.6 );
+      scene.add( hemiLight );
 
       // Floor
 
-      var texture = THREE.ImageUtils.loadTexture(
-        'texture/checker.png'
-      );
-      texture.wrapS = THREE.RepeatWrapping;
-      texture.wrapT = THREE.RepeatWrapping;
-      texture.repeat = new THREE.Vector2(50, 50);
-      texture.anisotropy = renderer.getMaxAnisotropy();
-
-      var material = new THREE.MeshPhongMaterial({
-        color: 0xffffff,
-        specular: 0xffffff,
-        shininess: 20,
-        shading: THREE.FlatShading,
-        map: texture
+      floorMat = new THREE.MeshStandardMaterial ( {
+          roughness: 0.8,
+          color: 0xffffff,
+          metalness: 0.2,
+          bumpScale: 0.005
       });
+      var textureLoader = new THREE.TextureLoader();
+      textureLoader.load( "textures/hardwood2_diffuse.jpg", function( map ) {
+          map.wrapS = THREE.RepeatWrapping;
+          map.wrapT = THREE.RepeatWrapping;
+          map.anisotropy = 4;
+          map.repeat.set( 5,10 );
+          floorMat.map = map;
+          floorMat.needsUpdate = true;
+      } );
+      textureLoader.load( "textures/hardwood2_bump.jpg", function( map ) {
+          map.wrapS = THREE.RepeatWrapping;
+          map.wrapT = THREE.RepeatWrapping;
+          map.anisotropy = 4;
+          map.repeat.set( 5,10  );
+          floorMat.bumpMap = map;
+          floorMat.needsUpdate = true;
+      } );
+      textureLoader.load( "textures/hardwood2_roughness.jpg", function( map ) {
+          map.wrapS = THREE.RepeatWrapping;
+          map.wrapT = THREE.RepeatWrapping;
+          map.anisotropy = 4;
+          map.repeat.set( 5,10  );
+          floorMat.roughnessMap = map;
+          floorMat.needsUpdate = true;
+      } );
 
-      var geometry = new THREE.PlaneGeometry(1000, 1000);
+      var floorGeometry = new THREE.PlaneBufferGeometry( 1000,1000 );
+      var floorMesh = new THREE.Mesh( floorGeometry, floorMat );
+      floorMesh.receiveShadow = true;
+      floorMesh.rotation.x = -Math.PI / 2.0;
+      scene.add( floorMesh );
 
-      var mesh = new THREE.Mesh(geometry, material);
-      mesh.rotation.x = -Math.PI / 2;
-      scene.add(mesh);
+    //   var texture = THREE.ImageUtils.loadTexture(
+    //     'texture/checker.png'
+    //   );
+    //   texture.wrapS = THREE.RepeatWrapping;
+    //   texture.wrapT = THREE.RepeatWrapping;
+    //   texture.repeat = new THREE.Vector2(50, 50);
+    //   texture.anisotropy = renderer.getMaxAnisotropy();
+      //
+    //   var material = new THREE.MeshPhongMaterial({
+    //     color: 0xffffff,
+    //     specular: 0xffffff,
+    //     shininess: 20,
+    //     shading: THREE.FlatShading,
+    //     map: texture
+    //   });
+      //
+    //   var geometry = new THREE.PlaneGeometry(1000, 1000);
+      //
+    //   var mesh = new THREE.Mesh(geometry, material);
+    //   mesh.rotation.x = -Math.PI / 2;
+    //   scene.add(mesh);
 
 
       list_cubes = []
 
-      for (i=0; i<3; i++){
+      for (i=0; i<100; i++){
 
           cube = new THREE.Mesh( new THREE.CubeGeometry( size_cube, size_cube, size_cube ), new THREE.MeshNormalMaterial() );
           //alert(Math.random())
           cube.position.y = Math.random()*dist; //*Math.power(-1,i);
           cube.position.z = Math.random()*dist;
           cube.position.x = Math.random()*dist;
-          bulbLight.position.set( cube.position.x+500, cube.position.y+500, cube.position.z+500 );
+
           list_cubes.push(cube)
           scene.add(cube);
       }
@@ -174,6 +221,9 @@ window.onload = function(event) {
       controls.update(dt);
     }
 
+
+    var previousShadowMap = false;
+
     function render(dt) {
 
       for (i in list_cubes){
@@ -183,14 +233,30 @@ window.onload = function(event) {
           cube.rotation.z += 0.175* Math.random();
       }
 
-    //   effect.toneMappingExposure = Math.pow( params.exposure, 5.0 ); // to allow for very bright scenes.
-    //   effect.shadowMap.enabled = params.shadows;
-      bulbLight.castShadow = params.shadows;
-      //
-      bulbLight.power = bulbLuminousPowers[ params.bulbPower ];
+
+      param_bulb += 0.02
+      for (i in list_bulbs){
+          var bulb = list_bulbs[i]
+          bulb.castShadow = params.shadows;
+          bulb.power = bulbLuminousPowers[ params.bulbPower ];
+          bulb.position.y = 200 *(Math.cos( param_bulb ) * 0.75 + 0.75);
+      }
+
+      renderer.toneMappingExposure = Math.pow( params.exposure, 5.0 ); // to allow for very bright scenes.
+      renderer.shadowMap.enabled = params.shadows;
+
+      if( params.shadows !== previousShadowMap ) {
+        //   material.needsUpdate = true;
+          floorMat.needsUpdate = true;
+          previousShadowMap = params.shadows;
+      }
+
+
       bulbMat.emissiveIntensity = bulbLight.intensity / Math.pow( 0.02, 2.0 ); // convert from intensity to irradiance at bulb surface
 
-    //   bulbLight.position.y = 2000 *(Math.cos( dt ) * 0.75 + 1.25);
+      hemiLight.intensity = hemiLuminousIrradiances[ params.hemiIrradiance ];
+
+
 
       effect.render(scene, camera);
     }
