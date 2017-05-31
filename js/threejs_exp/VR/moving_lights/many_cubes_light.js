@@ -3,7 +3,7 @@ window.onload = function(event) {
     var camera, scene, renderer;
     var effect, controls;
     var element, container;
-    var bulbLight
+    var bulbLight, bulbMat
     var dist = 500
     var size_cube = 20
 
@@ -48,6 +48,12 @@ window.onload = function(event) {
 
     function init() {
       renderer = new THREE.WebGLRenderer();
+      //----------------
+      renderer.physicallyCorrectLights = true;
+      renderer.gammaInput = true;
+      renderer.gammaOutput = true;
+      renderer.shadowMap.enabled = true;
+      //-------------
       element = renderer.domElement;
       container = document.getElementById('container');
       container.appendChild(element);
@@ -141,7 +147,7 @@ window.onload = function(event) {
           cube.position.y = Math.random()*dist; //*Math.power(-1,i);
           cube.position.z = Math.random()*dist;
           cube.position.x = Math.random()*dist;
-          bulbLight.position.set( cube.position.x+50, cube.position.y+50, cube.position.z+50 );
+          bulbLight.position.set( cube.position.x+500, cube.position.y+500, cube.position.z+500 );
           list_cubes.push(cube)
           scene.add(cube);
       }
@@ -156,7 +162,7 @@ window.onload = function(event) {
 
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
+      //renderer.setSize(width, height);
       effect.setSize(width, height);
     }
 
@@ -179,7 +185,7 @@ window.onload = function(event) {
 
     //   effect.toneMappingExposure = Math.pow( params.exposure, 5.0 ); // to allow for very bright scenes.
     //   effect.shadowMap.enabled = params.shadows;
-    //   bulbLight.castShadow = params.shadows;
+      bulbLight.castShadow = params.shadows;
       //
       bulbLight.power = bulbLuminousPowers[ params.bulbPower ];
       bulbMat.emissiveIntensity = bulbLight.intensity / Math.pow( 0.02, 2.0 ); // convert from intensity to irradiance at bulb surface
