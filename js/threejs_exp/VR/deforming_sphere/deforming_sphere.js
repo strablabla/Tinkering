@@ -194,7 +194,6 @@ window.onload = function(event) {
           cube.position.y = Math.random()*dist; //*Math.power(-1,i);
           cube.position.z = Math.random()*dist;
           cube.position.x = Math.random()*dist;
-
           list_cubes.push(cube)
           scene.add(cube);
       }
@@ -206,7 +205,6 @@ window.onload = function(event) {
     function resize() {
       var width = container.offsetWidth;
       var height = container.offsetHeight;
-
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       //renderer.setSize(width, height);
@@ -215,17 +213,12 @@ window.onload = function(event) {
 
     function update(dt) {
       resize();
-
       camera.updateProjectionMatrix();
-
       controls.update(dt);
     }
 
-
     var previousShadowMap = false;
-
     function render(dt) {
-
       for (i in list_cubes){
           var cube = list_cubes[i]
           cube.rotation.x += 0.2* Math.random();
@@ -233,16 +226,14 @@ window.onload = function(event) {
           cube.rotation.z += 0.175* Math.random();
       }
 
-
       param_bulb += 0.02
       for (i in list_bulbs){
           var bulb = list_bulbs[i]
           bulb.castShadow = params.shadows;
           bulb.power = bulbLuminousPowers[ params.bulbPower ];
-          //bulb.position.y = 200 *(Math.cos( param_bulb ) * 0.75 + 0.75);
-          var new_geometry = new THREE.SphereGeometry( size_bulb, 16, 8 );
-          new_geometry.applyMatrix( new THREE.Matrix4().makeScale( 1.0, 1+0.5*Math.cos(param_bulb), 1.0) );
-          bulb.setGeometry(new_geometry)
+          bulb.position.y = 200 *(Math.cos( param_bulb ) * 0.75 + 0.75);
+          var scale_lat = 1+0.25*Math.cos(10*param_bulb)
+          bulb.scale.set(scale_lat, 1.0, scale_lat)
       }
 
       renderer.toneMappingExposure = Math.pow( params.exposure, 5.0 ); // to allow for very bright scenes.
@@ -254,11 +245,8 @@ window.onload = function(event) {
           previousShadowMap = params.shadows;
       }
 
-
       bulbMat.emissiveIntensity = bulbLight.intensity / Math.pow( 0.02, 2.0 ); // convert from intensity to irradiance at bulb surface
-
       hemiLight.intensity = hemiLuminousIrradiances[ params.hemiIrradiance ];
-
       effect.render(scene, camera);
     }
 
