@@ -240,6 +240,9 @@ window.onload = function(event) {
           bulb.castShadow = params.shadows;
           bulb.power = bulbLuminousPowers[ params.bulbPower ];
           //bulb.position.y = 200 *(Math.cos( param_bulb ) * 0.75 + 0.75);
+          var new_geometry = new THREE.SphereGeometry( size_bulb, 16, 8 );
+          new_geometry.applyMatrix( new THREE.Matrix4().makeScale( 1.0, 1+0.5*Math.cos(param_bulb), 1.0) );
+          bulb.setGeometry(new_geometry)
       }
 
       renderer.toneMappingExposure = Math.pow( params.exposure, 5.0 ); // to allow for very bright scenes.
@@ -255,8 +258,6 @@ window.onload = function(event) {
       bulbMat.emissiveIntensity = bulbLight.intensity / Math.pow( 0.02, 2.0 ); // convert from intensity to irradiance at bulb surface
 
       hemiLight.intensity = hemiLuminousIrradiances[ params.hemiIrradiance ];
-
-
 
       effect.render(scene, camera);
     }
