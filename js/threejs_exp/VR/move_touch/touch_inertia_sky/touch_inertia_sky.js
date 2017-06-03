@@ -67,7 +67,7 @@ window.onload = function(event) {
       scene = new THREE.Scene();
       scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
 
-      camera = new THREE.PerspectiveCamera(90, window.innerWidth/window.innerHeight, 0.01, 1000);
+      camera = new THREE.PerspectiveCamera(90, window.innerWidth/window.innerHeight, 0.01, 10000);
       //camera.position.set(-500, 400, -200);
       camera.position.set(dist/2, dist/2, dist/2);
       scene.add(camera);
