@@ -32,8 +32,8 @@ function make_ground(pic, level) {
   scene.add(ground);
 }
 
-function make_ground_repetitive(pic, level, size) {
-    halfnb = 10
+function make_ground_repetitive(pic, level, size, number_side) {
+    halfnb = number_side/2 | 10
     for (j=-halfnb; j<halfnb; j++){
           for (i=-halfnb; i<halfnb; i++){
               var geom = new THREE.CubeGeometry( size, 1, size);
