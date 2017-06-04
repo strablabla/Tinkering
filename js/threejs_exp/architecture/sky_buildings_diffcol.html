@@ -142,8 +142,12 @@
 					sy = (1+Math.random()*0.3)*size_house_piece
 					sz = size_house_piece
 					var geom_house_piece = new THREE.CubeGeometry( sx, sy, sz )
-					//var material_house_piece = new THREE.MeshBasicMaterial({ color: 0xff0000 })
-					var material_house_piece = new THREE.MeshBasicMaterial({ map: THREE.ImageUtils.loadTexture("textures/brick_diffuse.jpg") })
+					var material_house_piece = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+					for ( var i = 0; i < geom_house_piece.faces.length; i ++ ) {
+						geom_house_piece.faces[ i ].color.setHex( Math.random() * 0xffffff );
+						}
+
+					var material_house_piece = new THREE.MeshBasicMaterial()
 					house_piece = new THREE.Mesh( geom_house_piece, material_house_piece );
 				  //   house_piece.setColor( 0xffffff );
 					//alert(Math.random())

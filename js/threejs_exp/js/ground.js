@@ -1,7 +1,6 @@
 function make_ground(){
     //alert("in make_objects")
-    var geometry = new THREE.CubeGeometry( 900, 900, 20 );
-
+        var geometry = new THREE.CubeGeometry( 900, 900, 20 );
 
         var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xff6600  } ) ); //Math.random() * 0xffffff
 
@@ -25,6 +24,25 @@ function make_ground(){
         scene.add( object );
         objects.push( object );
 
- 
+} // end function
+
+function make_groundy(){
+    //alert("in make_objects")
+        var geometry = new THREE.CubeGeometry( 1200, 10, 1200 );
+
+        var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0x8cd98c } ) ); //Math.random() * 0xffffff
+
+        object.material.ambient = object.material.color;
+
+        object.position.x = 0;
+        object.position.y = 0;
+        object.position.z = 0 //Math.random() * 800 - 400;
+
+
+        object.castShadow = true;
+        object.receiveShadow = true;
+
+        scene.add( object );
+        objects.push( object );
 
 } // end function
