@@ -8,7 +8,9 @@ var simple_colored_buildings = function(nb_buildings, esp, dist_inter_build){
 	dist_inter_build : distance between each building
 	*/
 
+
 	for ( var j = 0; j < nb_buildings; j ++ ) {
+
 		group = new THREE.Group();
 		scene.add( group );
 
