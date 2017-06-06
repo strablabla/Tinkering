@@ -76,7 +76,7 @@
 		<script type="text/javascript" src="js/sky.js"></script>
 		<script type="text/javascript" src="js/ground_town.js"></script>
 		<script type="text/javascript" src="js/puppets_objects.js"></script>
-		<script type="text/javascript" src="js/animate_town.js"></script>
+		<script type="text/javascript" src="js/animate_town_light.js"></script>
 
 
 		<div id="blocker" style="display: -webkit-box;">
@@ -126,9 +126,8 @@
 
 			init();
 			generate()
-			animate_town();
+			animate_town_light();
 			ptlock()
-
 
 			camera.position.set(-100,0,-100)
 
@@ -179,41 +178,32 @@
 
 				// LIGHTS
 
-				var intensity = 2.5;
+				var intensity = 1000; //2.5;
 				var distance = 100;
 				var decay = 2.0;
 
-				var c1 = 0xff0040, c2 = 0x0040ff, c3 = 0x80ff80, c4 = 0xffaa00, c5 = 0x00ffaa, c6 = 0xff1100;
+				list_col = [0xff0040, 0x0040ff, 0x80ff80, 0xffaa00, 0x00ffaa, 0xff1100]
+				list_lights = []
+				list_lights_initpos = []
+				list_lights_speeds = []
+
 
 				var sphere = new THREE.SphereGeometry( 30, 16, 8 );
 
-				light1 = new THREE.PointLight( c1, intensity, distance, decay );
-				light1.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: c1 } ) ) );
-				scene.add( light1 );
 
-				light2 = new THREE.PointLight( c2, intensity, distance, decay );
-				light2.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: c2 } ) ) );
-				scene.add( light2 );
+				for (i=0; i<list_col.length; i++){
+					var light = new THREE.PointLight( list_col[i], intensity, distance, decay );
+					light.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: list_col[i] } ) ) );
+					scene.add( light );
+					posx = Math.random()*1000;
+					posy = 200-Math.random()*50;
+					posz =  Math.random()*1000;
+					light.position.set(posx, posy, posz)
+					list_lights.push(light)
+					list_lights_initpos.push([posx, posy, posz])
+					list_lights_speeds.push(Math.random())
+				}
 
-				light3 = new THREE.PointLight( c3, intensity, distance, decay );
-				light3.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: c3 } ) ) );
-				scene.add( light3 );
-
-				light4 = new THREE.PointLight( c4, intensity, distance, decay );
-				light4.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: c4 } ) ) );
-				scene.add( light4 );
-
-				light5 = new THREE.PointLight( c5, intensity, distance, decay );
-				light5.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: c5 } ) ) );
-				scene.add( light5 );
-
-				light6 = new THREE.PointLight( c6, intensity, distance, decay );
-				light6.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: c6 } ) ) );
-				scene.add( light6 );
-
-				light6.position.x =  camera.position.x +200
-				light6.position.y =  camera.position.y +200
-				light6.position.z =  camera.position.z +200
 
 				// life
 
