@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<!-- pointerlock_controls with json for defining shapes.  -->
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+		<title>three.js - tree</title>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<script src='3d.json'></script>
+		<link rel="stylesheet" type="text/css" href="gallerie.css">
+	</head>
+	<body>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+        <script type="text/javascript" src="three_with_json/TrackballControls.js"></script>
+        <script type="text/javascript" src="three_with_json/Detector.js"></script>
+        <script type="text/javascript" src="three_with_json/dat.js"></script>
+        <script type="text/javascript" src="../js/point_locker.js"></script>
+		<script type="text/javascript" src="../js/landscape.js"></script>
+		<script type="text/javascript" src="../js/graphical_elems.js"></script>
+
+		<div id="blocker" style="display: -webkit-box;">
+
+			<div id="instructions">
+				<span style="font-size:40px">Click to play</span>
+				<br>
+				(W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
+			</div>
+
+		</div>
+
+		<script>
+
+            var camera, scene, renderer, controls;
+            var FTICR2Dmap_mesh = 0.25;
+            var FTICR2Dmap_detail = 8, FTICR2Dmap_roughness = 0.7;
+
+
+			var geometry, material, mesh;
+			var objects = [];
+			var raycaster;
+			var blocker = document.getElementById( 'blocker' );
+			var instructions = document.getElementById( 'instructions' );
+
+			// http://www.html5rocks.com/en/tutorials/pointerlock/intro/
+
+			init();
+			generate()
+			animate();
+			ptlock()
+
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+
+            function generate() {
+                var FTICR2Dmap = new Visu3d(parseInt(FTICR2Dmap_detail));
+                FTICR2Dmap.generate(FTICR2Dmap_roughness);
+                FTICR2Dmap.addMesh('Decor/mosaique-mur-prestige-decor-mix-noir.jpg');
+
+            };
+
+		</script><canvas width="1078" height="575" style="width: 1078px; height: 575px;"></canvas>
+
+</body></html>

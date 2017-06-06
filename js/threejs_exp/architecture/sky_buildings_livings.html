@@ -129,20 +129,6 @@
 			animate_town();
 			ptlock()
 
-			soundManager.setup({
-			  url: '/path/to/swf-files/',
-			  onready: function() {
-			    var mySound = soundManager.createSound({
-			      id: 'aSound',
-			      //url: '/home/lio/Téléchargements/youtube/zic/Oriental/Souad_Massi_Ya Kalbi.mp4'
-			      url: "musique/thelonious monk - don't blame me.mp4"
-			    });
-			    mySound.play();
-			  },
-			  ontimeout: function() {
-			    // Hrmm, SM2 could not start. Missing SWF? Flash blocked? Show an error, etc.?
-			  }
-			});
 
 			camera.position.set(-100,0,-100)
 
@@ -173,20 +159,38 @@
 
 				// Buildings
 
-				var nb_buildings = 100
+				var nb_buildings = 500
 				var esp = 100
-				var dist_inter_build = 1500
+				var dist_inter_build = 3000
 				simple_colored_buildings(nb_buildings, esp, dist_inter_build)
+
+				// plants
+
+				list_tree = []
+				var tree = make_simple_tree()
+				tree.scale.set(0.1,0.1,0.1)
+
+				for (i=0; i<100; i++){
+					list_tree.push(tree.clone())
+					list_tree[i].position.set(Math.random()*2000, 0, Math.random()*2000)
+					//list_tree[i].green_bowl.material.color.setHex(0x660033)
+					scene.add(list_tree[i])
+				}
 
 				// life
 
-				list_pup = []
-				make_many_puppets()
-				//for (i=0; i<10; i++){
-					// pup = new make_puppet()
-					// pup.scale.set(0.1,0.1,0.1)
-					// list_pup.push(pup)
-				//}
+				// list_pup = []
+				// list_pup_speed = []
+				// pup = make_puppet()
+				// pup.scale.set(0.1,0.1,0.1)
+				//
+				// for (i=0; i<100; i++){
+				// 	list_pup.push(pup.clone())
+				// 	list_pup[i].position.set(Math.random()*100, 0, Math.random()*100)
+				// 	list_pup_speed.push(Math.random()*100)
+				// 	scene.add(list_pup[i])
+				// }
+
 
         };
 

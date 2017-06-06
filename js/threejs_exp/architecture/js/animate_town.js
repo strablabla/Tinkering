@@ -24,13 +24,13 @@ function animate_town() {
         if ( moveRight ) velocity.x += horiz_speed * delta;
 		// if ( moveUp ) velocity.y -= vert_speed * delta;       // moving up
 		// if ( moveDown ) velocity.y += vert_speed * delta;     // moving down
-		for (i=0; i<list_pup.length; i++){
-
-			var pupi = list_pup[i]
-			// pupi.position.x += Math.random()+i//*10
-			// pupi.position.z += Math.random()+i//*10
-
-		}
+		// for (i=0; i<list_pup.length; i++){
+        //
+		// 	var pupi = list_pup[i]
+		// 	pupi.position.x += list_pup_speed[i]* Math.cos(Math.random()*10)* delta
+		// 	pupi.position.z += list_pup_speed[i]* Math.sin(Math.random()*10)* delta
+        //
+		// }
 
         if ( isOnObject === true ) {
             velocity.y = Math.max( 0, velocity.y );

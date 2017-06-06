@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<!-- pointerlock_controls with json for defining shapes.  -->
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+		<title>three.js - Tree</title>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<script src='3d.json'></script>
+		<link rel="stylesheet" type="text/css" href="gallerie.css">
+	</head>
+	<body>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+        <script type="text/javascript" src="three_with_json/TrackballControls.js"></script>
+        <script type="text/javascript" src="three_with_json/Detector.js"></script>
+        <script type="text/javascript" src="three_with_json/dat.js"></script>
+        <script type="text/javascript" src="../js/point_locker.js"></script>
+		<script type="text/javascript" src="../js/landscape.js"></script>
+		<script type="text/javascript" src="../js/graphical_elems.js"></script>
+		<script type="text/javascript" src="THREE.Tree-master/Tree.js"></script>
+		<script type="text/javascript" src="THREE.Tree-master/TreeGeometry.js"></script>
+
+		<div id="blocker" style="display: -webkit-box;">
+
+			<div id="instructions">
+				<span style="font-size:40px">Click to play</span>
+				<br>
+				(W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
+			</div>
+
+		</div>
+
+		<script>
+
+            var camera, scene, renderer, controls;
+            var FTICR2Dmap_mesh = 0.25;
+            var FTICR2Dmap_detail = 8, FTICR2Dmap_roughness = 0.7;
+
+
+			var geometry, material, mesh;
+			var objects = [];
+			var raycaster;
+			var blocker = document.getElementById( 'blocker' );
+			var instructions = document.getElementById( 'instructions' );
+
+			init();
+			generate()
+			animate();
+			ptlock()
+
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+
+            function generate() {
+                var FTICR2Dmap = new Visu3d(parseInt(FTICR2Dmap_detail));
+                FTICR2Dmap.generate(FTICR2Dmap_roughness);
+                FTICR2Dmap.addMesh('Decor/mosaique-mur-prestige-decor-mix-noir.jpg');
+				list_tree_geom = []
+				list_tree = []
+				// for (i=0; i<3; i++){
+				// 	var tree = new THREE.Tree({
+				// 		generations : 10,        // # for branch' hierarchy
+				// 		length      : 30.0,      // length of root branch
+				// 		uvLength    : 16.0,     // uv.v ratio against geometry length (recommended is generations * length)
+				// 		radius      : 0.5,      // radius of root branch
+				// 		radiusSegments : 8,     // # of radius segments for each branch geometry
+				// 		heightSegments : 8      // # of height segments for each branch geometry
+				// 	});
+				//
+				// 	var geometry =  THREE.TreeGeometry.build(tree);
+				//
+				// 	var a_tree = new THREE.Mesh(
+				// 		geometry,
+				// 		new THREE.MeshPhongMaterial({}) // set any material
+				// 	);
+				// 	a_tree.position.set((i+1)*100, 0, (i+1)*100) // Math.random()*200, 0, Math.random()*200
+				// 	scene.add(a_tree);
+				// } // end for
+
+            }; // end generate
+
+		</script><canvas width="1078" height="575" style="width: 1078px; height: 575px;"></canvas>
+
+</body></html>
