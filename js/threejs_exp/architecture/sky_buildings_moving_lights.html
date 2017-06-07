@@ -205,14 +205,16 @@
 				}
 
 				// banks
-				nbbanks = 20
+				scale_bank = 0.5
+				nbbanks = 30
 				var bank = make_bank()
-				bank.scale.set(10,10,10)
+				bank.scale.set(0.2,0.4,0.2)
 				list_banks = []
 				for (i=0; i<nbbanks; i++){
 					var banki = bank.clone()
-					banki.position.set(Math.random()*1000, 0, Math.random()*10000)
+					banki.position.set(Math.random()*2000, 0, Math.random()*2000)
 					list_banks.push(banki)
+					scene.add(banki)
 				}
 
 
