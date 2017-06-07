@@ -90,3 +90,53 @@ function make_simple_tree(){
     scene.add( group_tree );//when done, add the group to the scene
     return group_tree
 } // end function
+
+
+function make_legs_bank(){
+    //alert("make_legs")
+    group_legs = new THREE.Object3D();//create an empty container
+    for (i=0;i<2;i++){
+        var geometry = new THREE.CubeGeometry( 10, 20, 10 );
+        var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xffdd99 } ) );
+        object.material.ambient = object.material.color;
+        //----------------
+        object.position.x = i*20-10;
+        object.position.y = 5 ;
+        object.position.z = 0;
+        //----------------
+        object.castShadow = true;
+        object.receiveShadow = true;
+        group_legs.add( object )
+    }
+    return group_legs
+} // end function
+
+function make_seat_bank(){
+
+    var geometry = new THREE.CubeGeometry( 40, 5, 20 );
+    var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xffdd99 } ) );
+    object.material.ambient = object.material.color;
+    //----------------
+    object.position.x = 0;
+    object.position.y = 20 ;
+    object.position.z = 0;
+    //----------------
+    object.castShadow = true;
+    object.receiveShadow = true;
+       
+   
+    return object
+} // end function
+
+function make_bank(){
+    group_bank = new THREE.Object3D();//create an empty container
+    //-------------------------------
+    var legs = make_legs_bank()
+    var seat = make_seat_bank()
+    group_bank.add( legs );
+    group_bank.add( seat );
+    scene.add( group_bank );//when done, add the group to the scene
+    return group_bank
+} // end function
+
+
