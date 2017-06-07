@@ -204,8 +204,16 @@
 					list_lights_speeds.push(Math.random())
 				}
 
+				// banks
+				nbbanks = 20
 				var bank = make_bank()
-				//bank.scale.set(0.1,0.1,0.1)
+				bank.scale.set(10,10,10)
+				list_banks = []
+				for (i=0; i<nbbanks; i++){
+					var banki = bank.clone()
+					banki.position.set(Math.random()*1000, 0, Math.random()*10000)
+					list_banks.push(banki)
+				}
 
 
 
