@@ -114,6 +114,63 @@ function make_simple_tree(kind){
     return group_tree
 } // end function
 
+function make_flower_foot(){
+    //alert("make racket")
+    var geometry = new THREE.CubeGeometry( 5, 30, 5 );
+
+        var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0x000000 } ) );
+        object.material.ambient = object.material.color;
+        //----------------
+        object.position.x = 0;
+        object.position.y = 130 ;
+        object.position.z = 0;
+        //----------------
+        object.castShadow = true;
+        object.receiveShadow = true;
+        var hex = Math.random() * 0xffffff;
+        object.material.color.setHex( hex );
+        return object
+
+} // end function
+
+function make_flower_bowl(){
+    //alert("make_head")
+    group_flower_head = new THREE.Object3D();
+    var geometry = new THREE.SphereGeometry( 70, 32, 32 );
+    var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0x33cc33 } ) );
+    object.material.ambient = object.material.color;
+    //----------------
+    object.position.x = 0;
+    object.position.y = 200 ;
+    object.position.z = 0;
+    //----------------
+    object.castShadow = true;
+    object.receiveShadow = true;
+    group_flower_head.add(object)
+    nb_petals = 5
+    for (i=0;i<nb_petals;i++){
+        var petal = object.clone()
+        petal.scale.set(0.3,0.1,0.3)
+        petal.position.set(20*Math.cos(Math.Pi/nb_petals*i),200,20*Math.sin(Math.Pi/nb_petals*i))
+        group_flower_head.add(petal)
+    }
+
+
+
+    return object
+} // end function
+
+function make_simple_flower(kind){
+    group_flower = new THREE.Object3D();//create an empty container
+    //-------------------------------
+    var flower_foot = make_flower_foot()
+    var flower_bowl = make_flower_bowl()
+    group_flower.add( flower_bowl);
+    group_flower.add( flower_foot );
+    scene.add( group_tree );//when done, add the group to the scene
+    return group_flower
+} // end function
+
 
 function make_legs_bank(){
     //alert("make_legs")
