@@ -165,15 +165,25 @@
 
 				// plants
 
-				list_tree = []
-				var tree = make_simple_tree()
-				tree.scale.set(0.1,0.1,0.1)
+				list_tree_bowl = []
+				var tree_bowl = make_simple_tree('bowl')
+				tree_bowl.scale.set(0.1,0.1,0.1)
 
 				for (i=0; i<100; i++){
-					list_tree.push(tree.clone())
-					list_tree[i].position.set(Math.random()*2000, 0, Math.random()*2000)
+					list_tree_bowl.push(tree_bowl.clone())
+					list_tree_bowl[i].position.set(Math.random()*2000, 0, Math.random()*2000)
+					scene.add(list_tree_bowl[i])
+				}
+
+				list_tree_cone = []
+				var tree_cone = make_simple_tree('cone')
+				tree_cone.scale.set(0.1,0.1,0.1)
+
+				for (i=0; i<100; i++){
+					list_tree_cone.push(tree_cone.clone())
+					list_tree_cone[i].position.set(Math.random()*2000, 0, Math.random()*2000)
 					//list_tree[i].green_bowl.material.color.setHex(0x660033)
-					scene.add(list_tree[i])
+					scene.add(list_tree_cone[i])
 				}
 
 				// LIGHTS

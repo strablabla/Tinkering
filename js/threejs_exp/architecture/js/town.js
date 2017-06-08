@@ -67,25 +67,48 @@ function make_trunk(){
 function make_green_bowl(){
     //alert("make_head")
     var geometry = new THREE.SphereGeometry( 70, 32, 32 );
-        var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0x33cc33 } ) );
-        object.material.ambient = object.material.color;
-        //----------------
-        object.position.x = 0;
-        object.position.y = 200 ;
-        object.position.z = 0;
-        //----------------
-        object.castShadow = true;
-        object.receiveShadow = true;
-        return object
+    var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0x33cc33 } ) );
+    object.material.ambient = object.material.color;
+    //----------------
+    object.position.x = 0;
+    object.position.y = 200 ;
+    object.position.z = 0;
+    //----------------
+    object.castShadow = true;
+    object.receiveShadow = true;
+    return object
+} // end function
+
+function make_green_cone(){
+    //alert("make_head")
+    var geometry = new THREE.ConeGeometry( 60, 200, 32 );
+    var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0x33cc33 } ) );
+    object.material.ambient = object.material.color;
+    //----------------
+    object.position.x = 0;
+    object.position.y = 200 ;
+    object.position.z = 0;
+    //----------------
+    object.castShadow = true;
+    object.receiveShadow = true;
+    return object
 } // end function
 
 
-function make_simple_tree(){
+function make_simple_tree(kind){
     group_tree = new THREE.Object3D();//create an empty container
     //-------------------------------
-    var green_bowl = make_green_bowl()
+    var kind = kind || 'bowl';
     var trunk = make_trunk()
-    group_tree.add( green_bowl );
+    if (kind == 'bowl'){
+        var green_bowl = make_green_bowl()
+        group_tree.add( green_bowl );
+    }
+    else if (kind == 'cone'){
+        var green_cone = make_green_cone()
+        group_tree.add( green_cone );
+    }
+    
     group_tree.add( trunk );
     scene.add( group_tree );//when done, add the group to the scene
     return group_tree
