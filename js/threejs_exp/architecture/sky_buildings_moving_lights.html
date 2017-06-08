@@ -227,23 +227,14 @@
 					scene.add(banki)
 				}
 
-
-
-
-				// life
-
-				// list_pup = []
-				// list_pup_speed = []
-				// pup = make_puppet()
-				// pup.scale.set(0.1,0.1,0.1)
-				//
-				// for (i=0; i<100; i++){
-				// 	list_pup.push(pup.clone())
-				// 	list_pup[i].position.set(Math.random()*100, 0, Math.random()*100)
-				// 	list_pup_speed.push(Math.random()*100)
-				// 	scene.add(list_pup[i])
-				// }
-
+				// flowers
+				var flower = make_simple_flower()
+				flower.scale.set(0.03, 0.03, 0.03)
+				for (i=0; i<300; i++){
+					var floweri = flower.clone()
+					floweri.position.set(Math.random()*2000, 0, Math.random()*2000)
+					scene.add(floweri)
+				}
 
         };
 

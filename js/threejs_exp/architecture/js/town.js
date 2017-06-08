@@ -108,7 +108,7 @@ function make_simple_tree(kind){
         var green_cone = make_green_cone()
         group_tree.add( green_cone );
     }
-    
+
     group_tree.add( trunk );
     scene.add( group_tree );//when done, add the group to the scene
     return group_tree
@@ -116,7 +116,7 @@ function make_simple_tree(kind){
 
 function make_flower_foot(){
     //alert("make racket")
-    var geometry = new THREE.CubeGeometry( 5, 30, 5 );
+    var geometry = new THREE.CubeGeometry( 5, 100, 5 );
 
         var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0x000000 } ) );
         object.material.ambient = object.material.color;
@@ -136,7 +136,7 @@ function make_flower_foot(){
 function make_flower_bowl(){
     //alert("make_head")
     group_flower_head = new THREE.Object3D();
-    var geometry = new THREE.SphereGeometry( 70, 32, 32 );
+    var geometry = new THREE.SphereGeometry( 10, 32, 32 );
     var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0x33cc33 } ) );
     object.material.ambient = object.material.color;
     //----------------
@@ -147,27 +147,31 @@ function make_flower_bowl(){
     object.castShadow = true;
     object.receiveShadow = true;
     group_flower_head.add(object)
-    nb_petals = 5
-    for (i=0;i<nb_petals;i++){
+    var nb_petals = 5
+	dist_petal = 20
+    for (i=0; i<nb_petals; i++){
         var petal = object.clone()
-        petal.scale.set(0.3,0.1,0.3)
-        petal.position.set(20*Math.cos(Math.Pi/nb_petals*i),200,20*Math.sin(Math.Pi/nb_petals*i))
+        petal.scale.set(2,0.1,2)
+		//var hex = Math.random() * 0xffffff;
+		petal.material.color.setHex(0xffffff)
+		var angle = 2*Math.PI/nb_petals*i
+        petal.position.set(dist_petal*Math.cos(angle), 200, dist_petal*Math.sin(angle))
         group_flower_head.add(petal)
     }
-
-
-
-    return object
+    return group_flower_head
 } // end function
 
-function make_simple_flower(kind){
+function make_simple_flower(){
     group_flower = new THREE.Object3D();//create an empty container
     //-------------------------------
     var flower_foot = make_flower_foot()
     var flower_bowl = make_flower_bowl()
+	//flower_bowl.rotation.set(Math.random(), 0, Math.random())
+	//flower_bowl.rotation.set(Math.PI/3, Math.random(), 0)
     group_flower.add( flower_bowl);
     group_flower.add( flower_foot );
-    scene.add( group_tree );//when done, add the group to the scene
+	//group_flower.position.set(100,100,100)
+    scene.add( group_flower );//when done, add the group to the scene
     return group_flower
 } // end function
 
@@ -181,7 +185,7 @@ function make_legs_bank(){
         object.material.ambient = object.material.color;
         //----------------
         object.position.x = i*20-10;
-        object.position.y = 5 ;
+        object.position.y = 10 ;
         object.position.z = 0;
         //----------------
         object.castShadow = true;
@@ -193,7 +197,7 @@ function make_legs_bank(){
 
 function make_seat_bank(){
 
-    var geometry = new THREE.CubeGeometry( 40, 5, 20 );
+    var geometry = new THREE.CubeGeometry( 40, 1, 20 );
     var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xffdd99 } ) );
     object.material.ambient = object.material.color;
     //----------------
@@ -203,8 +207,8 @@ function make_seat_bank(){
     //----------------
     object.castShadow = true;
     object.receiveShadow = true;
-       
-   
+
+
     return object
 } // end function
 
@@ -218,5 +222,3 @@ function make_bank(){
     scene.add( group_bank );//when done, add the group to the scene
     return group_bank
 } // end function
-
-
