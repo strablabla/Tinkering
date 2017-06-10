@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>VideoJS Demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/85/three.min.js"></script>
+    <script src="https://vjs.zencdn.net/5.19.2/video.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.4.1/videojs-contrib-hls.js"></script>
+  </head>
+
+  <body>
+    <div id="ThreeJS" style="position: absolute; left:0px; top:0px"></div>
+
+    <video id="example-video" width=960 height=540 style="display:none">
+      <!-- <source src="https://d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8" type="application/x-mpegURL"> -->
+	  <source src="Shadoks_intro.mp4">
+	</video>
+
+    <script>
+
+      var container, scene, camera, renderer;
+      var video, videoImage, videoImageContext, videoTexture;
+      init();
+      animate();
+
+      function init()
+      {
+        // SCENE
+        scene = new THREE.Scene();
+        // CAMERA
+        var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+        var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+        camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+        scene.add(camera);
+        camera.position.set(0,150,400);
+        camera.lookAt(scene.position);
+        // RENDERER
+        renderer = new THREE.WebGLRenderer( {antialias:true} );
+
+        renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        container = document.getElementById( 'ThreeJS' );
+        container.appendChild( renderer.domElement );
+
+        video = document.getElementById( 'example-video' );
+        var player = videojs('example-video');
+        player.play();
+
+        videoImage = document.createElement( 'canvas' );
+        videoImage.width = 960;
+        videoImage.height = 540;
+        videoImageContext = videoImage.getContext( '2d' );
+        // background color if no video present
+        videoImageContext.fillStyle = '#000000';
+        videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
+        videoTexture = new THREE.Texture( videoImage );
+        videoTexture.minFilter = THREE.LinearFilter;
+        videoTexture.magFilter = THREE.LinearFilter;
+
+        var movieMaterial = new THREE.MeshBasicMaterial( { map: videoTexture, overdraw: true, side:THREE.DoubleSide } );
+        // the geometry on which the movie will be displayed;
+        //    movie image will be scaled to fit these dimensions.
+        var movieGeometry = new THREE.PlaneGeometry( 240, 100, 4, 4 );
+        var movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
+        movieScreen.position.set(0,50,0);
+        scene.add(movieScreen);
+
+        camera.position.set(0,150,300);
+        camera.lookAt(movieScreen.position);
+      }
+
+      function animate()
+      {
+        requestAnimationFrame( animate );
+        render();
+      }
+
+      function render()
+      {
+        if ( video.readyState === video.HAVE_ENOUGH_DATA )
+        {
+          videoImageContext.drawImage( video, 0, 0 );
+          if ( videoTexture )
+            videoTexture.needsUpdate = true;
+        }
+        renderer.render( scene, camera );
+      }
+    </script>
+
+    </body>
+</html>
