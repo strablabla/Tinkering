@@ -4,7 +4,7 @@
 
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-		<title>three.js - gallerie locker v1</title>
+		<title>three.js - nature morte</title>
 
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
@@ -19,6 +19,7 @@
         <script type="text/javascript" src="../js/point_locker.js"></script>
 		<script type="text/javascript" src="../js/landscape.js"></script>
 		<script type="text/javascript" src="../js/graphical_elems.js"></script>
+		<script src="https://cdn.rawgit.com/mrdoob/three.js/r69/examples/js/loaders/ColladaLoader.js"></script>
 
 		<div id="blocker" style="display: -webkit-box;">
 
@@ -35,12 +36,7 @@
             var camera, scene, renderer, controls;
             var FTICR2Dmap_mesh = 0.25;
             var FTICR2Dmap_detail = 8, FTICR2Dmap_roughness = 0.7;
-            var dist0 = 1e3;
-            var dist1 = 1e4;
-            var dist2 = 1e5;
-            var dist3 = 1e6;
-            var dist4 = 1e7;
-            var dist5 = 1e8;
+
 
 			var geometry, material, mesh;
 			var objects = [];
@@ -62,16 +58,14 @@
 			}
 
             function generate() {
-                var FTICR2Dmap = new Visu3d(parseInt(FTICR2Dmap_detail));
-                FTICR2Dmap.generate(FTICR2Dmap_roughness);
-                FTICR2Dmap.addMesh('Decor/mur_crepi.jpg');
-				make_ground_repetitive('Decor/marbre_sol.jpg', 0, 20)
+                // var FTICR2Dmap = new Visu3d(parseInt(FTICR2Dmap_detail));
+                // FTICR2Dmap.generate(FTICR2Dmap_roughness);
+                // FTICR2Dmap.addMesh('Decor/mur_crepi.jpg');
+				make_ground_repetitive('Decor/mosaique_sol.jpg', 0, 5)
                 size_tab = 100;
-                tableau('Photographes/Bettina-Rheims.jpg', size_tab, 0, 0, 120, 0.7);
-                tableau('Photographes/bettina_rheims_rose_c_est_paris.jpg', size_tab, 200, 0, 100, 0);
-                tableau('Photographes/Doisneau-Anita.jpg', size_tab, 500, 0, 150, -1);
-                tableau('Photographes/rouge.jpg', size_tab, -200, 0, 100, 0);
-                tableau('Photographes/russian_flight_attendants_61.jpg', size_tab, -500, 0, 150, 1);
+				var pihalf = Math.PI/2
+				import_collada('dae/Plate/Plate.dae', [0.5,0.5,0.5], [0,0,100], [-pihalf,0,0])
+
             };
 
 		</script><canvas width="1078" height="575" style="width: 1078px; height: 575px;"></canvas>
