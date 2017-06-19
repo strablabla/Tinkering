@@ -40,7 +40,10 @@ def index():
 
 @socketio.on('message', namespace='/save')
 def savepos(message):
-    print('######## position is {0} !!!!!! '.format(message))
+    print('######## position is {0} from client {1} !!!!!! '.format(message, request.sid))
+    socketio.emit('received',
+              {'data': 1},
+              namespace='/save')
     
 if __name__ == '__main__':
     import threading, webbrowser

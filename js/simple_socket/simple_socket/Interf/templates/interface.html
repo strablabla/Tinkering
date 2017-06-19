@@ -42,14 +42,19 @@
  $(document).ready(function(){
 	namespace = '/save'; 
 	var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+    $('#hello').draggable()
 	socket.emit('message', 'ouppsss'); 
-
-	$('#hello').draggable()
-
-    $('#hello').click(function(){
-    	alert('binggg')
-    	socket.emit('pos', 'saying hello to everybody !!'); 
+    socket.on('received', function(msg) {
+        // socket.emit('message', 'hiphiphip hourra');
+        $('#hello').click(function(){
+            socket.emit('pos', 'saying hello to everybody !!'); 
+            })
     })
+    
+
+	
+
+
   }) // end document.ready
 
  </script>

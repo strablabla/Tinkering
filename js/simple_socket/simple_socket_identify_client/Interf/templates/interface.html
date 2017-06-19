@@ -39,17 +39,16 @@
  </div>
 
 <script>
+    alert(clientID)
+    alert(Date.now())
  $(document).ready(function(){
 	namespace = '/save'; 
 	var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
-	socket.emit('message', 'ouppsss'); 
 
-	$('#hello').draggable()
+    var msg = {msg: 'ouppsss', id: clientID, date: Date.now()}
+	socket.emit(JSON.stringify(msg)); 
+    
 
-    $('#hello').click(function(){
-    	alert('binggg')
-    	socket.emit('pos', 'saying hello to everybody !!'); 
-    })
   }) // end document.ready
 
  </script>

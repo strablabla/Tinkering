@@ -36,11 +36,13 @@ def index():
     '''
     Interface first page.
     '''
+  
     return render_template('interface.html')  
 
 @socketio.on('message', namespace='/save')
 def savepos(message):
-    print('######## position is {0} !!!!!! '.format(message))
+    print('######## infos are {0}, {1}, {2} !!!!!! '.format(message.id, message.date, message.msg))
+    #print('######## position is {0} !!!!!! '.format(message))
     
 if __name__ == '__main__':
     import threading, webbrowser
