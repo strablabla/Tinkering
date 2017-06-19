@@ -6,7 +6,7 @@
     <script  src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/js/bootstrap-select.min.js"></script>
-    
+
 <!-- css -->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.css">
@@ -24,7 +24,7 @@
         top: 20px;
         height: 40px;
         width:  150px;
-        background-color:#008ae6; 
+        background-color:#008ae6;
         font-size:85%;
     }
 
@@ -33,21 +33,28 @@
 <html lang="en">
 
     <body>
- 
+
  <div class='interact' id='hello'>
     Helloooo
  </div>
 
 <script>
-    alert(clientID)
-    alert(Date.now())
  $(document).ready(function(){
-	namespace = '/save'; 
+	namespace = '/save';
 	var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+    $('#hello').draggable()
+	socket.emit('message', 'ouppsss');
+    socket.on('received', function(msg) {
+        //socket.emit('message', 'hiphiphip hourra');
+        $('#hello').click(function(){
+            alert('houblablabla')
+            socket.emit('pos', 'saying hello to everybody !!');
+            })
+    })
 
-    var msg = {msg: 'ouppsss', id: clientID, date: Date.now()}
-	socket.emit(JSON.stringify(msg)); 
-    
+
+
+
 
   }) // end document.ready
 
