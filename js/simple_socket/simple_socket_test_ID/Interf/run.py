@@ -59,11 +59,11 @@ def tellpos(pos):
               {'id': dic_connex[request.sid]},
               namespace='/save')
     if dic_connex[request.sid] == 1:
+        print("dict is ", pos)
         socketio.emit('info_move',
-          {'id': dic_connex[request.sid]},
+          {'id': dic_connex[request.sid], 'pl':pos['pl'], 'pt':pos['pt']},
           namespace='/save', broadcast=True, include_self=False)
         
-
 
 if __name__ == '__main__':
     import threading, webbrowser

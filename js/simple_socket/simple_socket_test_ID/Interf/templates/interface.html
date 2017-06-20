@@ -48,19 +48,22 @@
 	socket.emit('message', 'ouppsss');
     socket.on('received', function(msg) {
         //socket.emit('message', 'hiphiphip hourra');
-        $('#hello').click(function(){
+        $('#hello').mousemove(function(){
             //alert('houblablabla')
-            socket.emit('pos', 'saying hello to everybody !!');
+            socket.emit('pos', {mess:'hello everybody', pl:$('#hello').position().left, pt:$('#hello').position().top});
             })
     socket.on('server_id_choice', function(msg) {
             // alert('server gave the id ' + msg.id)
-            if (myID == 0){myID = msg.id}
+            if (myID == 0){myID = msg.id} // Set ID
             
             })
     socket.on('info_move', function(msg) {
         //alert(myID)
-        alert("myID is " + myID + " mess is " + msg.id)
-        if (msg.id != myID) {alert('1 moved !!!!! ')}
+        //alert("myID is " + myID + " mess is " + msg.id)
+        if (msg.id != myID) {
+            //alert('1 moved !!!!! ')
+            $('#hello').css({'left':msg.pl, 'top':msg.pt})
+           }
         })
     })
 
