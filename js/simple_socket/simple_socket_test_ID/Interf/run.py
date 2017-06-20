@@ -55,13 +55,14 @@ def tellpos(pos):
         dic_connex[request.sid]  = num_connex
         num_connex += 1
     print(dic_connex[request.sid])
-    # socketio.emit('received',
-    #           {'data': 1},
-    #           namespace='/save')
+    socketio.emit('server_id_choice',
+              {'id': dic_connex[request.sid]},
+              namespace='/save')
 
 if __name__ == '__main__':
     import threading, webbrowser
     port = 5017
-    url = "http://127.0.0.1:{0}".format(port)
+    # url = "http://127.0.0.1:{0}".format(port)
+    url = "http://0.0.0.0:{0}".format(port)
     threading.Timer(1.25, lambda: webbrowser.open(url, new=1)).start() # open a page in the browser.
     socketio.run(app, port = port, debug = Debug)

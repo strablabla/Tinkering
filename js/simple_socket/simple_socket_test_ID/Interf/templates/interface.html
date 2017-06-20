@@ -39,6 +39,8 @@
  </div>
 
 <script>
+
+
  $(document).ready(function(){
 	namespace = '/save';
 	var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
@@ -47,8 +49,11 @@
     socket.on('received', function(msg) {
         //socket.emit('message', 'hiphiphip hourra');
         $('#hello').click(function(){
-            alert('houblablabla')
+            //alert('houblablabla')
             socket.emit('pos', 'saying hello to everybody !!');
+            })
+    socket.on('server_id_choice', function(msg) {
+            alert('server gave the id ' + msg.id)
             })
     })
 
