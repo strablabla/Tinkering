@@ -40,7 +40,7 @@
 
 <script>
 
-
+ myID = 0
  $(document).ready(function(){
 	namespace = '/save';
 	var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
@@ -53,8 +53,15 @@
             socket.emit('pos', 'saying hello to everybody !!');
             })
     socket.on('server_id_choice', function(msg) {
-            alert('server gave the id ' + msg.id)
+            // alert('server gave the id ' + msg.id)
+            if (myID == 0){myID = msg.id}
+            
             })
+    socket.on('info_move', function(msg) {
+        //alert(myID)
+        alert("myID is " + myID + " mess is " + msg.id)
+        if (msg.id != myID) {alert('1 moved !!!!! ')}
+        })
     })
 
 

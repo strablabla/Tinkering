@@ -58,6 +58,12 @@ def tellpos(pos):
     socketio.emit('server_id_choice',
               {'id': dic_connex[request.sid]},
               namespace='/save')
+    if dic_connex[request.sid] == 1:
+        socketio.emit('info_move',
+          {'id': dic_connex[request.sid]},
+          namespace='/save', broadcast=True, include_self=False)
+        
+
 
 if __name__ == '__main__':
     import threading, webbrowser
