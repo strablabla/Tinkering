@@ -42,7 +42,7 @@
 
  myID = 0
  $(document).ready(function(){
-	namespace = '/save';
+	namespace = '/synchro';
 	var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
     $('#hello').draggable()
 	socket.emit('message', 'beginning the connection');

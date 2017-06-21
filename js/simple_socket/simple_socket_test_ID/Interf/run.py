@@ -29,8 +29,8 @@ app.config['SECRET_KEY'] = 'F34TF$($e34D';
 socketio = SocketIO(app) # Flask websocket
 
 ####
-dic_connex = {}
-num_connex = 1
+dic_connex = {}   # Dictionary linking client to an index
+num_connex = 1    #
 Debug = False
 
 @app.route('/')
@@ -40,15 +40,19 @@ def index():
     '''
     return render_template('interface.html')
 
-@socketio.on('message', namespace='/save')
-def savepos(message):
+@socketio.on('message', namespace='/synchro')
+def init_connexion(message):
+    '''
+    Sending first message to clients
+    '''
     print('######## position is {0} from client {1} !!!!!! '.format(message, request.sid))
-    socketio.emit('received',
-              {'data': 1},
-              namespace='/save')
+    socketio.emit('received', namespace='/synchro') # , {'data': 1}
 
-@socketio.on('pos', namespace='/save')
-def tellpos(pos):
+@socketio.on('pos', namespace='/synchro')
+def sending_position(pos):
+    '''
+    Coordinating
+    '''
     global num_connex
     print('######## position is {0} from client {1} !!!!!! '.format(pos, request.sid))
     if not request.sid in dic_connex:
@@ -57,18 +61,16 @@ def tellpos(pos):
     print(dic_connex[request.sid])
     socketio.emit('server_id_choice',
               {'id': dic_connex[request.sid]},
-              namespace='/save')
+              namespace='/synchro')
     if dic_connex[request.sid] == 1:
         print("dict is ", pos)
         socketio.emit('info_move',
           {'id': dic_connex[request.sid], 'pl':pos['pl'], 'pt':pos['pt']},
-          namespace='/save', broadcast=True, include_self=False)
+          namespace='/synchro', broadcast=True, include_self=False)
         
-
 if __name__ == '__main__':
     import threading, webbrowser
     port = 5017
-    # url = "http://127.0.0.1:{0}".format(port)
     url = "http://0.0.0.0:{0}".format(port)
     threading.Timer(1.25, lambda: webbrowser.open(url, new=1)).start() # open a page in the browser.
     socketio.run(app, port = port, debug = Debug)
