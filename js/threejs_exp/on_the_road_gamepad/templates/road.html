@@ -26,6 +26,7 @@
 		<script type="text/javascript" src="/static/js/road_objects.js"></script>
 		<script type="text/javascript" src="/static/js/gamepad.js"></script>
 		<script type="text/javascript" src="/static/js/road_gamepad.js"></script>
+		<script type="text/javascript" src="/static/js/town.js"></script>
 
 		<div id="blocker" style="display: -webkit-box;">
 
@@ -77,6 +78,7 @@
             function generate() {
 
 				pitch = make_pitch()
+				simple_colored_buildings(20)
 				make_line()
 				car1 = make_car(-200)
 				car2 = make_car(200)
