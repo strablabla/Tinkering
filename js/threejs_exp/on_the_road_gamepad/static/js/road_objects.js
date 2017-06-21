@@ -118,7 +118,7 @@ var simple_colored_buildings = function(esp){
 
     for ( var j = 0; j < nb_buildings; j ++ ) {
         group = new THREE.Group();
-        scene.add( group );
+        
 
         // Cube
 
@@ -143,12 +143,21 @@ var simple_colored_buildings = function(esp){
             cube.position.z = Math.random() * esp;
             cube.scale.multiplyScalar( Math.random() + 0.5 );
             group.add( cube );
-            group.position.y = 50/2; //*Math.power(-1,i);
-            group.position.z =  dist_build*j ;
-            group.position.x = Math.random()*dist_build;
 
         } // end for
-    }
+
+        group.position.y = 50/2; //*Math.power(-1,i);
+        group.position.z =  dist_build*j ;
+        if (j%2==0){
+            group.position.x = 600 //+(500+Math.random()*dist_build); // Math.power(-1,j)*
+        }
+        else{
+            group.position.x = -600 
+        }
+        scene.add( group );
+        
+
+    } // end for  nb_buildings
 
 }
 
