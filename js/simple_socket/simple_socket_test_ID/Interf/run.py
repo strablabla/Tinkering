@@ -12,7 +12,7 @@ eventlet.monkey_patch()
 
 #########
 
-import sys, os, shutil, time, json
+import sys, os
 import os.path as op
 sys.path.append('Interf')
 from threading import Thread
@@ -22,7 +22,6 @@ from flask import Flask, render_template, request,\
 ## Flask Socket io
 from flask_socketio import SocketIO
 from flask_socketio import send, emit
-
 
 ### Instantiate and configure Flask
 
