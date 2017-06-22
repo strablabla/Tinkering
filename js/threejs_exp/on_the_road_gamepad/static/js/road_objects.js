@@ -115,6 +115,7 @@ var simple_colored_buildings = function(esp){
     var size_cubes = 50;
     var dist_build = size_cubes*5
     var nb_buildings = road_length/dist_build
+    var dist_side = 200;
 
     for ( var j = 0; j < nb_buildings; j ++ ) {
         group = new THREE.Group();
@@ -149,10 +150,10 @@ var simple_colored_buildings = function(esp){
         group.position.y = 50/2; //*Math.power(-1,i);
         group.position.z =  dist_build*j ;
         if (j%2==0){
-            group.position.x = 600 //+(500+Math.random()*dist_build); // Math.power(-1,j)*
+            group.position.x = dist_side //+(500+Math.random()*dist_build); // Math.power(-1,j)*
         }
         else{
-            group.position.x = -600 
+            group.position.x = -dist_side
         }
         scene.add( group );
         
