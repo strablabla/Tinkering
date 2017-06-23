@@ -23,16 +23,15 @@ function make_pitch(){
 
 posx = 0
 
-
-function cockpit(pos_z){
+function cockpit(pos_z){ // cockpit for car
     //alert("make ball")
         var geometry = new THREE.SphereGeometry( 8, 16, 16 );
-        // var blueMaterial = new THREE.MeshBasicMaterial( { color: 0x0000ff, transparent: true, opacity: 0.5 } );
-        var blueMaterial = new THREE.MeshLambertMaterial( { color: 0x0000ff, transparent: true, opacity: 0.5 } );
+        var blueMaterial = new THREE.MeshBasicMaterial( { color: 0x0000ff, transparent: true, opacity: 0.5 } );   // Transp Simple
+        //var blueMaterial = new THREE.MeshLambertMaterial( { color: 0x0000ff, transparent: true, opacity: 0.5 } );  // Transp with Lambert
+        // var mirrorMaterial = new THREE.MeshPhongMaterial( { emissive: 0x111111, envMap: mirrorCamera.renderTarget } );
 
-
-        //var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xffdd99 } ) );
-        var object = new THREE.Mesh( geometry, blueMaterial );
+        var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xffdd99 } ) );
+        // var object = new THREE.Mesh( geometry, mirrorMaterial );
         object.material.ambient = object.material.color;
         //----------------
         object.position.x = posx;
@@ -42,7 +41,9 @@ function cockpit(pos_z){
         object.castShadow = true;
         object.receiveShadow = true;
         //----------------
+        
     return object
+
 } // end function
 
 function make_car(pos_z){
