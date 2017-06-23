@@ -23,8 +23,41 @@ function make_pitch(){
 
 posx = 0
 
+function car_cockpit(){
+    // view-source:https://stemkoski.github.io/Three.js/Bubble.html
+    this.refractSphereCamera = new THREE.CubeCamera( 0.1, 5000, 512 );
+    scene.add( refractSphereCamera );
+
+    var fShader = THREE.FresnelShader;
+    
+    var fresnelUniforms = 
+    {
+        "mRefractionRatio": { type: "f", value: 1.02 },
+        "mFresnelBias":     { type: "f", value: 0.1 },
+        "mFresnelPower":    { type: "f", value: 2.0 },
+        "mFresnelScale":    { type: "f", value: 1.0 },
+        "tCube":            { type: "t", value: refractSphereCamera.renderTarget } //  textureCube }
+    };
+    
+    // create custom material for the shader
+    var customMaterial = new THREE.ShaderMaterial( 
+    {
+        uniforms:       fresnelUniforms,
+        vertexShader:   fShader.vertexShader,
+        fragmentShader: fShader.fragmentShader
+    }   );
+    
+    var sphereGeometry = new THREE.SphereGeometry( 100, 64, 32 );
+    this.sphere = new THREE.Mesh( sphereGeometry, customMaterial );
+    sphere.position.set(0, 50, 100);
+    scene.add(sphere);
+    
+    refractSphereCamera.position = sphere.position;
+}
+
 function make_car(pos_z){
     //alert("make racket")
+    group_car = new THREE.Object3D();//create an empty container
     var geometry = new THREE.CubeGeometry( 20, 20, 50 );
 
         var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xffffff } ) );
