@@ -191,9 +191,15 @@ function animate() {
             controls.getObject().position.y = posy;
             canJump = true;
         }
-        prevTime = time;
+
+		onRenderFcts.forEach(function(updateFn){
+				updateFn(delta, time)
+			})
+		prevTime = time;
     }
-    renderer.render( scene, camera );
+
+
+	renderer.render( scene, camera );
 }
 
 function ptlock() {

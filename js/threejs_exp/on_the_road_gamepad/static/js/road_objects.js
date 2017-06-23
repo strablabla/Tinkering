@@ -23,7 +23,31 @@ function make_pitch(){
 
 posx = 0
 
-function cockpit(pos_z){ // cockpit for car
+function cockpit(pos_z){
+
+	geometry_cockpit	= new THREE.SphereGeometry(10, 32, 16)
+	material_cockpit	= new THREE.MeshBasicMaterial({
+		// color	: 'gold'
+	})
+	mesh_cockpit = new THREE.Mesh(geometry_cockpit, material_cockpit)
+    mesh_cockpit.position.x = posx;
+    mesh_cockpit.position.y = 40;
+    mesh_cockpit.position.z = pos_z;
+	//scene.add( mesh )
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		create the mirror ball						//
+	//////////////////////////////////////////////////////////////////////////////////
+	var cubeCamera = new THREEx.CubeCamera(mesh_cockpit)
+	scene.add(cubeCamera.object3d)
+	onRenderFcts.push(function(delta, time){
+		cubeCamera.update(renderer, scene)
+	})
+	material_cockpit.envMap	= cubeCamera.textureCube
+    return mesh_cockpit
+}
+
+function cockpit0(pos_z){ // cockpit for car
     //alert("make ball")
         var geometry = new THREE.SphereGeometry( 8, 16, 16 );
         var blueMaterial = new THREE.MeshBasicMaterial( { color: 0x0000ff, transparent: true, opacity: 0.5 } );   // Transp Simple
@@ -41,7 +65,7 @@ function cockpit(pos_z){ // cockpit for car
         object.castShadow = true;
         object.receiveShadow = true;
         //----------------
-        
+
     return object
 
 } // end function
@@ -149,7 +173,7 @@ var simple_colored_buildings = function(esp){
 
     for ( var j = 0; j < nb_buildings; j ++ ) {
         group = new THREE.Group();
-        
+
 
         // Cube
 
@@ -186,7 +210,7 @@ var simple_colored_buildings = function(esp){
             group.position.x = -dist_side
         }
         scene.add( group );
-        
+
 
     } // end for  nb_buildings
 
@@ -369,4 +393,3 @@ function make_bank(){
     scene.add( group_bank );//when done, add the group to the scene
     return group_bank
 } // end function
-

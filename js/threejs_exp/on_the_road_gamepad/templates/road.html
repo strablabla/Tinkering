@@ -26,7 +26,8 @@
 		<script type="text/javascript" src="/static/js/road_objects.js"></script>
 		<script type="text/javascript" src="/static/js/gamepad.js"></script>
 		<script type="text/javascript" src="/static/js/road_gamepad.js"></script>
-	
+		<script type="text/javascript" src='/static/js/threex.cubecamera.js'></script>
+
 
 		<div id="blocker" style="display: -webkit-box;">
 
@@ -50,6 +51,8 @@
 			var raycaster;
 			var blocker = document.getElementById( 'blocker' );
 			var instructions = document.getElementById( 'instructions' );
+			var onRenderFcts = [];
+			var geometry_cockpit, material_cockpit, mesh_cockpit; //, cubeCamera
 
 			namespace = '/mupy'; // change to an empty string to use the global namespace
 			var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
