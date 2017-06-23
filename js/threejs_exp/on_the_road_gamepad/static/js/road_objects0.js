@@ -23,8 +23,30 @@ function make_pitch(){
 
 posx = 0
 
+// function car_cockpit(){
+//         //////////////////////////////////////////////////////////////////////////////////
+//     //      create a texture Cube                       //
+//     //////////////////////////////////////////////////////////////////////////////////
+//     var path    = "/static/Decor/Park2/"
+//     var format  = '.jpg'
+//     var urls    = [
+//         path + 'posx' + format, path + 'negx' + format,
+//         path + 'posy' + format, path + 'negy' + format,
+//         path + 'posz' + format, path + 'negz' + format
+//     ]
+//     var textureCube = THREE.ImageUtils.loadTextureCube(urls)
+//     textureCube.format = THREE.RGBFormat
+
+//     //-------
+
+//     var bubble   = new THREEx.BubbleMesh(textureCube)
+//     return bubble
+
+// }
+
 function make_car(pos_z){
     //alert("make racket")
+    //group_car = new THREE.Object3D();//create an empty container
     var geometry = new THREE.CubeGeometry( 20, 20, 50 );
 
         var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xffffff } ) );
@@ -37,9 +59,20 @@ function make_car(pos_z){
         object.castShadow = true;
         object.receiveShadow = true;
         //----------------
-        scene.add( object );
-        objects.push( object );
-        return object
+
+
+    //group_car.add(object)
+    //----
+    // var cockp = car_cockpit()
+    // group_car.add(cockp)
+
+    // scene.add( group_car );
+    // objects.push( group_car );
+    // return group_car
+    //----
+    scene.add( object );
+    objects.push( object );
+    return object
 
 } // end function
 
