@@ -23,8 +23,32 @@ function make_pitch(){
 
 posx = 0
 
+
+function cockpit(pos_z){
+    //alert("make ball")
+        var geometry = new THREE.SphereGeometry( 8, 16, 16 );
+        // var blueMaterial = new THREE.MeshBasicMaterial( { color: 0x0000ff, transparent: true, opacity: 0.5 } );
+        var blueMaterial = new THREE.MeshLambertMaterial( { color: 0x0000ff, transparent: true, opacity: 0.5 } );
+
+
+        //var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xffdd99 } ) );
+        var object = new THREE.Mesh( geometry, blueMaterial );
+        object.material.ambient = object.material.color;
+        //----------------
+        object.position.x = posx;
+        object.position.y = 40 ;
+        object.position.z = pos_z;
+        //----------------
+        object.castShadow = true;
+        object.receiveShadow = true;
+        //----------------
+    return object
+} // end function
+
 function make_car(pos_z){
     //alert("make racket")
+    group_car = new THREE.Object3D();//create an empty container
+    var cockp = cockpit(pos_z)
     var geometry = new THREE.CubeGeometry( 20, 20, 50 );
 
         var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xffffff } ) );
@@ -36,10 +60,15 @@ function make_car(pos_z){
         //----------------
         object.castShadow = true;
         object.receiveShadow = true;
+    group_car.add(object)
+    group_car.add(cockp)
+    scene.add( group_car );
+    objects.push( group_car );
+    return group_car
         //----------------
-        scene.add( object );
-        objects.push( object );
-        return object
+        // scene.add( object );
+        // objects.push( object );
+        // return object
 
 } // end function
 
