@@ -51,10 +51,7 @@
 			var blocker = document.getElementById( 'blocker' );
 			var instructions = document.getElementById( 'instructions' );
 			var onRenderFcts = [];
-			var geometry_cockpit, material_cockpit, mesh_cockpit;
-			var cubeCamera, material_cockpit, mesh_ball, cubeCamera_ball; //, cubeCamera
-			var sphere;
-			var count = 0
+			var cubeCamera1, sphere, material; //, cubeCamera
 
 			namespace = '/mupy'; // change to an empty string to use the global namespace
 			var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
@@ -87,50 +84,7 @@
 				make_line()
 				car1 = make_car(-200)
 				//car2 = make_car(200)
-
-				cubeCamera1 = new THREE.CubeCamera( 1, 1000, 256 );
-				cubeCamera1.renderTarget.texture.minFilter = THREE.LinearMipMapLinearFilter;
-				scene.add( cubeCamera1 );
-
-				cubeCamera2 = new THREE.CubeCamera( 1, 1000, 256 );
-				cubeCamera2.renderTarget.texture.minFilter = THREE.LinearMipMapLinearFilter;
-				scene.add( cubeCamera2 );
-
-
-				material = new THREE.MeshBasicMaterial( {
-					envMap: cubeCamera2.renderTarget.texture
-				} );
-				sphere = new THREE.Mesh( new THREE.IcosahedronBufferGeometry( 10, 3 ), material );
-				scene.add( sphere );
-
-				//
-				// var geometry_ball	= new THREE.SphereGeometry(10, 32, 16)
-				// var material_ball	= new THREE.MeshBasicMaterial({
-				// 	// color	: 'gold'
-				// })
-				// var mesh_ball	= new THREE.Mesh(geometry_ball, material_ball)
-				// scene.add( mesh_ball )
-				//
-				// //onRenderFcts.push(function(delta, now){
-				// 	// var angle	= Math.PI*2*now * 0.01;
-				// 	// var radius = 40
-				// 	mesh_ball.position.x	= car1.position.x //radius*Math.cos(angle)*1
-				// 	mesh_ball.position.z	= car1.position.z //radius*Math.sin(angle)*1 //car1.position.z
-				// 	mesh_ball.position.y = 40;
-				// //})
-				//
-				// //////////////////////////////////////////////////////////////////////////////////
-				// //		create the mirror ball						//
-				// //////////////////////////////////////////////////////////////////////////////////
-				// cubeCamera_ball	= new THREEx.CubeCamera(mesh_ball)
-				// scene.add(cubeCamera_ball.object3d)
-				//
-				// // onRenderFcts.push(function(delta, now){
-				// // 	cubeCamera_ball.update(renderer, scene)
-				// // })
-				//
-				// material_ball.envMap = cubeCamera_ball.textureCube
-
+				cockpit(car1)
 				gamepad_handle_event()
 
             }; // end generate

@@ -22,53 +22,58 @@ function make_pitch(){
 
 
 posx = 0
+function cockpit(car){
 
-function cockpit(pos_z){
+    cubeCamera1 = new THREE.CubeCamera( 1, 1000, 256 );
+    cubeCamera1.renderTarget.texture.minFilter = THREE.LinearMipMapLinearFilter;
+    scene.add( cubeCamera1 );
 
-	geometry_cockpit	= new THREE.SphereGeometry(10, 32, 16)
-	material_cockpit	= new THREE.MeshBasicMaterial({
-		// color	: 'gold'
-	})
-	mesh_cockpit = new THREE.Mesh(geometry_cockpit, material_cockpit)
-    mesh_cockpit.position.x = posx;
-    mesh_cockpit.position.y = 40;
-    mesh_cockpit.position.z = pos_z;
-	//scene.add( mesh )
+    material = new THREE.MeshBasicMaterial( {
+        envMap: cubeCamera1.renderTarget.texture
+    } );
+    sphere = new THREE.Mesh( new THREE.IcosahedronBufferGeometry( 10, 3 ), material );
 
-	//////////////////////////////////////////////////////////////////////////////////
-	//		create the mirror ball						//
-	//////////////////////////////////////////////////////////////////////////////////
-	cubeCamera = new THREEx.CubeCamera(mesh_cockpit)
-    scene.add(cubeCamera.object3d)
-	// onRenderFcts.push(function(delta, time){
-	// 	cubeCamera.update(renderer, scene)
-	// })
-	material_cockpit.envMap	= cubeCamera.textureCube
-    return mesh_cockpit
+    scene.add( sphere );
+
+    onRenderFcts.push(function(){
+        sphere.position.x	= car.position.x
+        sphere.position.z	= car.position.z-190
+        sphere.position.y = 30;
+        sphere.visible = false;
+        material.envMap = cubeCamera1.renderTarget.texture;
+        cubeCamera1.position.copy( sphere.position )
+        cubeCamera1.updateCubeMap( renderer, scene );
+        sphere.visible = true;
+    })
+
 }
 
-function cockpit0(pos_z){ // cockpit for car
-    //alert("make ball")
-        var geometry = new THREE.SphereGeometry( 8, 16, 16 );
-        var blueMaterial = new THREE.MeshBasicMaterial( { color: 0x0000ff, transparent: true, opacity: 0.5 } );   // Transp Simple
-        //var blueMaterial = new THREE.MeshLambertMaterial( { color: 0x0000ff, transparent: true, opacity: 0.5 } );  // Transp with Lambert
-        // var mirrorMaterial = new THREE.MeshPhongMaterial( { emissive: 0x111111, envMap: mirrorCamera.renderTarget } );
+// function cockpit(pos_z){
+//
+//     cubeCamera1 = new THREE.CubeCamera( 1, 1000, 256 );
+//     cubeCamera1.renderTarget.texture.minFilter = THREE.LinearMipMapLinearFilter;
+//     scene.add( cubeCamera1 );
+//
+//     material = new THREE.MeshBasicMaterial( {
+//         envMap: cubeCamera1.renderTarget.texture
+//     } );
+//     sphere = new THREE.Mesh( new THREE.IcosahedronBufferGeometry( 10, 3 ), material );
+//     sphere.position.x	= 0
+//     sphere.position.z	= 0
+//     sphere.position.y = 40;
+//     scene.add( sphere );
+//
+//     onRenderFcts.push(function(){
+//         sphere.visible = false;
+//         material.envMap = cubeCamera1.renderTarget.texture;
+//         cubeCamera1.position.copy( sphere.position )
+//         cubeCamera1.updateCubeMap( renderer, scene );
+//         sphere.visible = true;
+//     })
+//
+//     return sphere
+// }
 
-        var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xffdd99 } ) );
-        // var object = new THREE.Mesh( geometry, mirrorMaterial );
-        object.material.ambient = object.material.color;
-        //----------------
-        object.position.x = posx;
-        object.position.y = 40 ;
-        object.position.z = pos_z;
-        //----------------
-        object.castShadow = true;
-        object.receiveShadow = true;
-        //----------------
-
-    return object
-
-} // end function
 
 function make_car(pos_z){
     //alert("make racket")
@@ -89,12 +94,9 @@ function make_car(pos_z){
     group_car.add(object)
     //group_car.add(cockp)
     scene.add( group_car );
+
     objects.push( group_car );
     return group_car
-        //----------------
-        // scene.add( object );
-        // objects.push( object );
-        // return object
 
 } // end function
 
