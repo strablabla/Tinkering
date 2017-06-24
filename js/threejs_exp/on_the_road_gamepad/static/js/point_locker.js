@@ -7,7 +7,8 @@ var canJump = false;
 var prevTime = performance.now();
 var velocity = new THREE.Vector3();
 var car_velocity = new THREE.Vector3();
-car_velocity.set(0,0,100);
+//car_velocity.set(0,0,100);
+car_velocity.set(0,0,11);
 
 //alert('Helllooo welcome in point_locker.js !!!! ')
 
@@ -191,13 +192,113 @@ function animate() {
             controls.getObject().position.y = posy;
             canJump = true;
         }
+        // try{scene.remove(mesh_ball)}
+		// catch(err){console.log("can't remove mesh_ball")}
 
-		onRenderFcts.forEach(function(updateFn){
-				updateFn(delta, time)
-			})
+
+		// var geometry_ball	= new THREE.SphereGeometry(10, 32, 16)
+		// var material_ball	= new THREE.MeshBasicMaterial({
+		// 	// color	: 'gold'
+		// })
+		// var mesh_ball	= new THREE.Mesh(geometry_ball, material_ball)
+		// scene.add( mesh_ball )
+		//
+		// //onRenderFcts.push(function(delta, now){
+		// 	// var angle	= Math.PI*2*now * 0.01;
+		// 	// var radius = 40
+		// 	mesh_ball.position.x	= car1.position.x //radius*Math.cos(angle)*1
+		// 	mesh_ball.position.z	= car1.position.z //radius*Math.sin(angle)*1 //car1.position.z
+		// 	mesh_ball.position.y = 40;
+		// //})
+		//
+		// //////////////////////////////////////////////////////////////////////////////////
+		// //		create the mirror ball						//
+		// //////////////////////////////////////////////////////////////////////////////////
+		// var cubeCamera_ball	= new THREEx.CubeCamera(mesh_ball)
+		// scene.add(cubeCamera_ball.object3d)
+		//
+		// // onRenderFcts.push(function(delta, now){
+
+		sphere.position.x	= car1.position.x //radius*Math.cos(angle)*1
+		sphere.position.z	= car1.position.z-400 //radius*Math.sin(angle)*1 //car1.position.z
+		sphere.position.y = 40;
+
+		sphere.visible = false;
+		// pingpong
+		if ( count % 2 === 0 ) {
+	material.envMap = cubeCamera1.renderTarget.texture;
+	cubeCamera2.position.copy( sphere.position )
+	cubeCamera2.updateCubeMap( renderer, scene );
+} else {
+	material.envMap = cubeCamera2.renderTarget.texture;
+	cubeCamera1.position.copy( sphere.position )
+	cubeCamera1.updateCubeMap( renderer, scene );
+}
+		count ++;
+		sphere.visible = true;
+
+
+		   //
+		   //
+        //    try{
+		// 	   mesh_ball.material.dispose();
+		// 	   mesh_ball.geometry.dispose();
+		// 	   scene.remove(mesh_ball);
+		//    }
+		//    catch(err){console.log('hip')}
+		//    try{
+		// 	   cubeCamera_ball.material.dispose();
+		// 	   cubeCamera_ball.geometry.dispose();
+		// 	   scene.remove(cubeCamera_ball)
+		//    }
+		//    catch(err){console.log('hop')}
+		   //
+		   //
+		   //
+		// 				var geometry_ball	= new THREE.SphereGeometry(10, 32, 16)
+		// 				var material_ball	= new THREE.MeshBasicMaterial({
+		// 					// color	: 'gold'
+		// 				})
+		// 				var mesh_ball	= new THREE.Mesh(geometry_ball, material_ball)
+		// 				scene.add( mesh_ball )
+		   //
+		// 				//onRenderFcts.push(function(delta, now){
+		// 					// var angle	= Math.PI*2*now * 0.01;
+		// 					// var radius = 40
+		// 					mesh_ball.position.x	= car1.position.x //radius*Math.cos(angle)*1
+		// 					mesh_ball.position.z	= car1.position.z //radius*Math.sin(angle)*1 //car1.position.z
+		// 					mesh_ball.position.y = 40;
+		// 				//})
+		   //
+		// 				//////////////////////////////////////////////////////////////////////////////////
+		// 				//		create the mirror ball						//
+		// 				//////////////////////////////////////////////////////////////////////////////////
+		// 				cubeCamera_ball	= new THREEx.CubeCamera(mesh_ball)
+		// 				scene.add(cubeCamera_ball.object3d)
+		   //
+		// 				// onRenderFcts.push(function(delta, now){
+		// 				// 	cubeCamera_ball.update(renderer, scene)
+		// 				// })
+		   //
+		// 				material_ball.envMap = cubeCamera_ball.textureCube
+		   //
+		   //
+		// 	cubeCamera_ball.update(renderer, scene)
+		// // })
+		//
+		// material_ball.envMap = cubeCamera_ball.textureCube
+		//
+		//
+		// // onRenderFcts.forEach(function(updateFn){
+		// // 		updateFn(delta, time)
+		// // 	})
+		// // cubeCamera = new THREEx.CubeCamera(mesh_cockpit)
+		// // scene.add(cubeCamera.object3d)
+		//
+		// //cubeCamera.update(renderer, scene)
+		// //material_cockpit.envMap	= cubeCamera.textureCube
 		prevTime = time;
     }
-
 
 	renderer.render( scene, camera );
 }

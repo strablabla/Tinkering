@@ -38,11 +38,11 @@ function cockpit(pos_z){
 	//////////////////////////////////////////////////////////////////////////////////
 	//		create the mirror ball						//
 	//////////////////////////////////////////////////////////////////////////////////
-	var cubeCamera = new THREEx.CubeCamera(mesh_cockpit)
-	scene.add(cubeCamera.object3d)
-	onRenderFcts.push(function(delta, time){
-		cubeCamera.update(renderer, scene)
-	})
+	cubeCamera = new THREEx.CubeCamera(mesh_cockpit)
+    scene.add(cubeCamera.object3d)
+	// onRenderFcts.push(function(delta, time){
+	// 	cubeCamera.update(renderer, scene)
+	// })
 	material_cockpit.envMap	= cubeCamera.textureCube
     return mesh_cockpit
 }
@@ -73,7 +73,8 @@ function cockpit0(pos_z){ // cockpit for car
 function make_car(pos_z){
     //alert("make racket")
     group_car = new THREE.Object3D();//create an empty container
-    var cockp = cockpit(pos_z)
+    //var cockp = cockpit(pos_z)
+
     var geometry = new THREE.CubeGeometry( 20, 20, 50 );
 
         var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xffffff } ) );
@@ -86,7 +87,7 @@ function make_car(pos_z){
         object.castShadow = true;
         object.receiveShadow = true;
     group_car.add(object)
-    group_car.add(cockp)
+    //group_car.add(cockp)
     scene.add( group_car );
     objects.push( group_car );
     return group_car
