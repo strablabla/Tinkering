@@ -39,48 +39,45 @@ function cockpit(car){
         sphere.position.x	= car.position.x
         sphere.position.z	= car.position.z-190
         sphere.position.y = 30;
-        sphere.visible = false;
-        material.envMap = cubeCamera1.renderTarget.texture;
-        cubeCamera1.position.copy( sphere.position )
-        cubeCamera1.updateCubeMap( renderer, scene );
-        sphere.visible = true;
+        if (count%100 == 0){
+            sphere.visible = false;
+            material.envMap = cubeCamera1.renderTarget.texture;
+            cubeCamera1.position.copy( sphere.position )
+            cubeCamera1.updateCubeMap( renderer, scene );
+            sphere.visible = true;
+        }
+
     })
 
 }
 
-// function cockpit(pos_z){
-//
-//     cubeCamera1 = new THREE.CubeCamera( 1, 1000, 256 );
-//     cubeCamera1.renderTarget.texture.minFilter = THREE.LinearMipMapLinearFilter;
-//     scene.add( cubeCamera1 );
-//
-//     material = new THREE.MeshBasicMaterial( {
-//         envMap: cubeCamera1.renderTarget.texture
-//     } );
-//     sphere = new THREE.Mesh( new THREE.IcosahedronBufferGeometry( 10, 3 ), material );
-//     sphere.position.x	= 0
-//     sphere.position.z	= 0
-//     sphere.position.y = 40;
-//     scene.add( sphere );
-//
-//     onRenderFcts.push(function(){
-//         sphere.visible = false;
-//         material.envMap = cubeCamera1.renderTarget.texture;
-//         cubeCamera1.position.copy( sphere.position )
-//         cubeCamera1.updateCubeMap( renderer, scene );
-//         sphere.visible = true;
-//     })
-//
-//     return sphere
-// }
+function car_wheels(pos_z){
+    group_wheels = new THREE.Object3D()
+    var geometry = new THREE.CylinderGeometry( 5, 5, 20, 32 );
+    //var material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+    var material = new THREE.MeshPhongMaterial( { color: 0xffff00, overdraw: 0.5, roughness: 0.5, metalness: 1.0 } )
+    var cylinder = new THREE.Mesh( geometry, material );
+    cylinder.rotation.set(Math.PI/2,0,0)
+    cyl1 = cylinder.clone()
+    cyl2 = cylinder.clone()
+    cyl1.position.set(-20,10,pos_z)
+    cyl2.position.set(20,10,pos_z)
+    group_wheels.add( cyl1 );
+    group_wheels.add( cyl2 );
+    return group_wheels
 
+}
 
 function make_car(pos_z){
     //alert("make racket")
     group_car = new THREE.Object3D();//create an empty container
     //var cockp = cockpit(pos_z)
+    var wheels = car_wheels(pos_z)
 
-    var geometry = new THREE.CubeGeometry( 20, 20, 50 );
+    var geometry = new THREE.SphereGeometry( 10, 16, 12 );
+    geometry.applyMatrix( new THREE.Matrix4().makeScale( 1.0, 1.2, 3.5 ) );
+
+    //var geometry = new THREE.CubeGeometry( 20, 20, 50 );
 
         var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xffffff } ) );
         object.material.ambient = object.material.color;
@@ -92,6 +89,7 @@ function make_car(pos_z){
         object.castShadow = true;
         object.receiveShadow = true;
     group_car.add(object)
+    group_car.add(wheels)
     //group_car.add(cockp)
     scene.add( group_car );
 
@@ -170,7 +168,7 @@ var simple_colored_buildings = function(esp){
     */
 
     var size_cubes = 50;
-    var dist_build = size_cubes*5
+    var dist_build = size_cubes*2
     var nb_buildings = road_length/dist_build
     var dist_side = 200;
 
@@ -190,8 +188,6 @@ var simple_colored_buildings = function(esp){
 
         }
         var material = new THREE.MeshPhongMaterial( { vertexColors: THREE.FaceColors, overdraw: 0.5, roughness: 0.5, metalness: 1.0 } );
-
-
 
         for ( var i = 0; i < 7; i ++ ) {
 

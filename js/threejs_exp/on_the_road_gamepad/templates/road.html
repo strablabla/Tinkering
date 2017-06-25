@@ -52,6 +52,7 @@
 			var instructions = document.getElementById( 'instructions' );
 			var onRenderFcts = [];
 			var cubeCamera1, sphere, material; //, cubeCamera
+			var count = 0;
 
 			namespace = '/mupy'; // change to an empty string to use the global namespace
 			var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
@@ -80,7 +81,7 @@
             function generate() {
 
 				pitch = make_pitch()
-				simple_colored_buildings(20)
+				simple_colored_buildings(50)
 				make_line()
 				car1 = make_car(-200)
 				//car2 = make_car(200)

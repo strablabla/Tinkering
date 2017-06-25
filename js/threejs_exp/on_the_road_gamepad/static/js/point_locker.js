@@ -8,7 +8,7 @@ var prevTime = performance.now();
 var velocity = new THREE.Vector3();
 var car_velocity = new THREE.Vector3();
 //car_velocity.set(0,0,100);
-car_velocity.set(0,0,11);
+car_velocity.set(0,0,30);
 
 //alert('Helllooo welcome in point_locker.js !!!! ')
 
