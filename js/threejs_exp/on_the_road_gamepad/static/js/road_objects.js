@@ -79,7 +79,7 @@ function make_car(pos_z){
 
     //var geometry = new THREE.CubeGeometry( 20, 20, 50 );
 
-        var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xffffff } ) );
+        var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xffffff , specular : 0xffffff} ) );
         object.material.ambient = object.material.color;
         //----------------
         object.position.x = posx;
