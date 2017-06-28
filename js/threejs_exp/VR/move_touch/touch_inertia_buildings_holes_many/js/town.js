@@ -24,13 +24,33 @@ var hollow_cube = function(size, col){
 }
 
 var pyramid_hollow = function(side){
+	/*
+	pyramid with hollow cubes
+	*/
+	var size_hc = 50
+	var hc = hollow_cube(size_hc, 'blue')
+	for ( var i = 0; i < side; i ++ ) {
+		for (var j = i; j < side-i; j ++){
+			for (var k = i; k < side-i; k ++){
+				var new_hc = hc.clone()
+				new_hc.position.set(600+size_hc*j,size_hc*i,size_hc*k)
+				scene.add( new_hc );
+				}
+		}
+	}
+} // end pyramid
+
+var pyramid_hollow_flat = function(side){
+	/*
+	pyramid with hollow cubes
+	*/
 	var size_hc = 50
 	var hc = hollow_cube(size_hc, 'blue')
 	for ( var i = 0; i < side; i ++ ) {
 		for (var j = 0; j < side-i; j ++){
 			for (var k = 0; k < side-i; k ++){
 				var new_hc = hc.clone()
-				new_hc.position.set(size_hc*j,size_hc*i,size_hc*k)
+				new_hc.position.set(600+size_hc*j,size_hc*i,size_hc*k)
 				scene.add( new_hc );
 				}
 		}
