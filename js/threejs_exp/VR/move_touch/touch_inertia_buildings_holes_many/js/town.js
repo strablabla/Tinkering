@@ -1,3 +1,42 @@
+var hollow_cube = function(size, col){
+    var color = col || 'white'
+	size_hollow_cube = size
+	size_sphere_cube = size_hollow_cube/5*3
+
+		var cube_geometry = new THREE.CubeGeometry( size_hollow_cube, size_hollow_cube, size_hollow_cube );
+		var cube_mesh = new THREE.Mesh( cube_geometry );
+		cube_mesh.position.x = -7;
+		var cube_bsp = new ThreeBSP( cube_mesh );
+		var sphere_geometry = new THREE.SphereGeometry( size_sphere_cube, 32, 32 );
+		var sphere_mesh = new THREE.Mesh( sphere_geometry );
+		sphere_mesh.position.x = -7;
+		var sphere_bsp = new ThreeBSP( sphere_mesh );
+
+		var subtract_bsp = cube_bsp.subtract( sphere_bsp );
+		var result = subtract_bsp.toMesh( new THREE.MeshLambertMaterial({
+			shading: THREE.SmoothShading,
+			//map: new THREE.TextureLoader().load('texture.png')
+			color: color
+		}));
+
+		result.geometry.computeVertexNormals();
+	return result
+}
+
+var pyramid_hollow = function(side){
+	var size_hc = 50
+	var hc = hollow_cube(size_hc, 'blue')
+	for ( var i = 0; i < side; i ++ ) {
+		for (var j = 0; j < side-i; j ++){
+			for (var k = 0; k < side-i; k ++){
+				var new_hc = hc.clone()
+				new_hc.position.set(size_hc*j,size_hc*i,size_hc*k)
+				scene.add( new_hc );
+				}
+		}
+	}
+} // end pyramid
+
 
 var simple_colored_buildings = function(nb_buildings, esp, dist_inter_build){
 

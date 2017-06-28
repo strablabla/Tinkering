@@ -74,35 +74,19 @@ window.onload = function(event) {
 
       // Buildings
 
-      var nb_buildings = 100
+      var nb_buildings = 10
       var esp = 100
       var dist_inter_build = 1500
       // simple_colored_buildings(nb_buildings, esp, dist_inter_build)
+      //simple_colored_hollow_buildings(nb_buildings, esp, dist_inter_build)
+      pyramid_hollow(10)
 
+     var hc = hollow_cube(100, 'blue')
 
-      size_hollow_cube = 100
-      size_sphere_cube = size_hollow_cube/5*3
-
-          var cube_geometry = new THREE.CubeGeometry( size_hollow_cube, size_hollow_cube, size_hollow_cube );
-          var cube_mesh = new THREE.Mesh( cube_geometry );
-          cube_mesh.position.x = -7;
-          var cube_bsp = new ThreeBSP( cube_mesh );
-          var sphere_geometry = new THREE.SphereGeometry( size_sphere_cube, 32, 32 );
-          var sphere_mesh = new THREE.Mesh( sphere_geometry );
-          sphere_mesh.position.x = -7;
-          var sphere_bsp = new ThreeBSP( sphere_mesh );
-
-          var subtract_bsp = cube_bsp.subtract( sphere_bsp );
-          var result = subtract_bsp.toMesh( new THREE.MeshLambertMaterial({
-              shading: THREE.SmoothShading,
-              //map: new THREE.TextureLoader().load('texture.png')
-          }));
-
-          result.geometry.computeVertexNormals();
-          scene.add( result );
+          scene.add( hc );
     dist_hc = 400
     for (i=0; i<20; i++){
-        var new_hc = result.clone()
+        var new_hc = hc.clone()
         new_hc.position.set(Math.random()*dist_hc, 0, Math.random()*dist_hc)
         scene.add( new_hc )
     }
