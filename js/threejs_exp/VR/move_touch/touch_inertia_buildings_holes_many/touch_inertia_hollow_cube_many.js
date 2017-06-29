@@ -81,16 +81,15 @@ window.onload = function(event) {
       //simple_colored_hollow_buildings(nb_buildings, esp, dist_inter_build)
       pyramid_hollow(10)
 
-     var hc = hollow_cube(100, 'blue')
+     var hc = hollow_by_cube(100, 'blue', 'sphere', 0.4)
 
-          scene.add( hc );
-    dist_hc = 400
-    for (i=0; i<20; i++){
+     scene.add( hc );
+     dist_hc = 400
+     for (i=0; i<20; i++){
         var new_hc = hc.clone()
         new_hc.position.set(Math.random()*dist_hc, 0, Math.random()*dist_hc)
         scene.add( new_hc )
-    }
-
+     }
 
       // plants
 
