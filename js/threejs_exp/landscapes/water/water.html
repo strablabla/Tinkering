@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<head>
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style>
+
+body {
+				color: #000;
+				font-family:Monospace;
+				font-size:13px;
+				text-align:center;
+				font-weight: bold;
+
+				background-color: #fff;
+				margin: 0px;
+				overflow: hidden;
+				text
+			}
+
+			#info {
+				color:#ccc;
+				text-shadow: 1px 1px rgba(0,0,0,0.25);
+				position: absolute;
+				top: 0px; width: 100%;
+				padding: 5px;
+
+			}
+
+			a {
+				color: #fff;
+			}
+
+</style>
+
+</head>
+
+	<body>		
+
+<script src="https://threejs.org/build/three.min.js"></script>
+
+		<!--<script src="js/controls/OrbitControls.js"></script>-->
+		
+		<script src="https://threejs.org/examples/js/Mirror.js"></script>
+		<script src="https://threejs.org/examples/js/WaterShader.js"></script>
+		<script src="https://threejs.org/examples/js/SkyShader.js"></script>
+
+		<script src="https://threejs.org/examples/js/Detector.js"></script>
+		<!--<script src="https://threejs.org/examples/js/libs/dat.gui.min.js"></script>-->
+
+<script>
+
+
+	if ( ! Detector.webgl ) {
+
+		Detector.addGetWebGLMessage();
+		document.getElementById( 'container' ).innerHTML = "";
+
+	}
+
+	//General Variables
+	var container;
+
+	var camera, scene, renderer;
+	//Obsolete vars controls,
+
+	//Sky Variables
+	var sky, sunSphere;
+	
+	//Water Variables
+	var parameters = {
+		width: 2000,
+		height: 2000,
+		widthSegments: 250,
+		heightSegments: 250,
+		depth: 1500,
+		param: 4,
+		filterparam: 1
+	};
+
+	var waterNormals;
+	
+	//Cube Variables
+	var count = 0;
+	
+  //This code is from the example linked I think I need to use it but I dont want to load a texture I wante to reflect the shader I'm using
+	/*var textureLoader = new THREE.TextureLoader();
+	textureLoader.load( 'textures/texture.jpg', function ( texture ) {
+	
+		texture.mapping = THREE.UVMapping;
+    
+		init( texture );
+		animate();
+	} );*/
+  
+	init();
+	animate();
+
+	var cubeMirror;
+
+	//Create sky function
+	function initSky() {
+
+		// Add Sky Mesh
+		sky = new THREE.Sky();
+		scene.add( sky.mesh );
+
+		// Add Sun Helper
+		sunSphere = new THREE.Mesh(
+					new THREE.SphereBufferGeometry( 10000, 16, 8 ),
+					new THREE.MeshBasicMaterial( { color: 0xffffff } )
+		);
+					
+			sunSphere.position.y = - 700000;
+			//sunSphere.visible = false;
+			sunSphere.visible = true;
+			scene.add( sunSphere );
+				
+			var uniforms = sky.uniforms;
+				
+			uniforms.turbidity.value = 9;
+			//uniforms.reileigh.value = 1.9;
+			uniforms.luminance.value = 1.1;
+			uniforms.mieCoefficient.value = .0043;
+			uniforms.mieDirectionalG.value = .83;
+				
+			var distance = 400000;
+				
+			var theta = Math.PI * ( 0.49 - 0.5 );
+			var phi = 2 * Math.PI * ( 0.25 - 0.5 );
+			//var phi = 2 * Math.PI * ( .75 - 0.5 );
+				
+			sunSphere.position.x = distance * Math.cos( phi );
+			sunSphere.position.y = distance * Math.sin( phi ) * Math.sin( theta );
+			sunSphere.position.z = distance * Math.sin( phi ) * Math.cos( theta );
+				
+			sky.uniforms.sunPosition.value.copy( sunSphere.position );
+	}
+
+	//Initialize Function
+	function init( texture ) {
+
+		//Define Camera
+		camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 100, 2000000 );
+		camera.position.set( 0, 100, 2000 );
+
+		//camera.setLens(20);
+
+		//Create renderer
+		renderer = new THREE.WebGLRenderer();
+		renderer.setPixelRatio( window.devicePixelRatio );
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		document.body.appendChild( renderer.domElement );
+		
+		//Create Scene
+		scene = new THREE.Scene();
+		
+		//Water Stuff
+		scene.add( new THREE.AmbientLight( 0x444444 ) );
+		
+		var light = new THREE.DirectionalLight( 0xffffbb, 1 );
+		light.position.set( 0, 0, 0 );
+		scene.add( light );
+		
+		/*waterNormals = new THREE.TextureLoader().load( 'https://bgfons.com/upload/water_texture851.jpg' );
+		waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;*/
+    
+    var loader = new THREE.TextureLoader(); loader.crossOrigin = ''; 
+  	var waterNormals = loader.load( 'https://threejs.org/examples/textures/waternormals.jpg' );
+		
+    
+		water = new THREE.Water( renderer, camera, scene, {
+			textureWidth: 512,
+			textureHeight: 512,
+			waterNormals: waterNormals,
+			alpha: 	1.0,
+			sunDirection: light.position.clone().normalize(),
+			sunColor: 0xffffff,
+			waterColor: 0x001e0f,
+			distortionScale: 50.0,
+		} );
+		
+		mirrorMesh = new THREE.Mesh(
+			new THREE.PlaneBufferGeometry( parameters.width * 500, parameters.height * 500 ),
+			water.material
+		);
+
+		mirrorMesh.add( water );
+		mirrorMesh.rotation.x = - Math.PI * 0.5;
+		scene.add( mirrorMesh );
+
+		initSky();
+
+		//This is the mesh created for the commented out texture above
+		/*var mesh = new THREE.Mesh( new THREE.SphereGeometry( 500, 32, 16 ), new THREE.MeshBasicMaterial( { map: texture } ) );
+		mesh.scale.x = -1;
+		scene.add( mesh );*/
+		
+    //As I've been looking at the linked example I think I need two cube cameras
+		cubeCamera = new THREE.CubeCamera( 1, 1000000, 256 );
+		cubeCamera.renderTarget.texture.minFilter = THREE.LinearMipMapLinearFilter;
+		scene.add( cubeCamera );
+	
+		cubeMaterial = new THREE.MeshBasicMaterial( {
+			envMap: cubeCamera.renderTarget.texture
+		} );
+	
+		var cubeGeometry = new THREE.BoxGeometry(90, 90, 90);
+		cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+	
+		scene.add(cube);
+	
+		//Rotate the cube
+		cube.rotation.x += 1;
+		cube.rotation.y += .75;
+		cube.transparent = true;
+		cube.reflectivity = 1
+
+		cube.updateMatrix();
+		
+		//This resets the objects axis orientation
+		cube.geometry.applyMatrix( cube.matrix );
+
+		cube.position.set( 0, 150, 1000 );
+		cube.rotation.set( 0, 0, 0 );
+		cube.scale.set( 1, 1, 1 );
+		cube.updateMatrix();
+
+		window.addEventListener( 'resize', onWindowResize, false );
+
+	}
+
+	
+	function onWindowResize() {
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+		renderer.setSize( window.innerWidth, window.innerHeight );
+	}
+	
+	//Animate Function
+	function animate() {
+
+		requestAnimationFrame( animate );
+		
+		cube.rotateY(.01);
+		render();
+
+	}
+
+	//Render Function
+	function render() {
+		
+		//Water Stuff
+		var time = performance.now() * 0.001;
+
+		water.material.uniforms.time.value += 1.0 / 60.0;
+		water.render();
+		
+		//Cube Stuff
+		cube.visible = false; // *cough*
+		
+		if ( count % 2 === 0 )  {
+
+			cubeMaterial.envMap = cubeCamera.renderTarget.texture;
+			cubeCamera.updateCubeMap( renderer, scene );
+
+		}
+		
+		count ++;
+
+		cube.visible = true; // *cough*
+		
+		//General Render
+		renderer.render( scene, camera );
+
+	}
+
+</script>
+
+</body>
+
+
+
+
+
+

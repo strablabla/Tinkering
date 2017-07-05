@@ -130,25 +130,49 @@ class Three_json(object):
         Produces a 2D numpy dataset object Z[i,j]
         '''
         N = 500
-        sub = 10
+        sub = 20
         self.Nx = N
         self.Ny = N
-        nbpts = 20
+        nbpts = 4
         low = 2*sub
         up = N-2*sub
         Z = np.empty((self.Nx, self.Ny))
         pos = [100, 100]
         step = 2
         for n in range(nbpts):
-            self.ampl = 3 # *np.random.randn()
+            self.ampl = 7 # *np.random.randn()
             ri = np.random.randint(low,up)
             rj = np.random.randint(low,up)
-            pos[0]+=step
-            pos[1]+=step
-            for i in range(sub):
-                for j in range(sub):
-                    Z[i+pos[0],j+pos[1]] = np.abs(self.ampl*(np.sin(2*i*np.pi/sub) + np.sin(2*j*np.pi/sub)))
+
+            for i in range(sub+1):
+                for j in range(sub+1):
+                    Z[ri+i, rj+j] = np.abs(self.ampl*(np.sin(2*i*np.pi/sub) + np.sin(2*j*np.pi/sub)))
         return Z
+
+    # def example_6pt1(self):
+    #     '''
+    #     Produces a 2D numpy dataset object Z[i,j]
+    #     '''
+    #     N = 3000
+    #     sub = 10
+    #     self.Nx = N
+    #     self.Ny = N
+    #     nbpts = 200
+    #     low = 2*sub
+    #     up = N-2*sub
+    #     Z = np.empty((self.Nx, self.Ny))
+    #     pos = [100, 100]
+    #     step = 2
+    #     for n in range(nbpts):
+    #         self.ampl = 3 # *np.random.randn()
+    #         ri = np.random.randint(low,up)
+    #         rj = np.random.randint(low,up)
+    #         pos[0]+=step
+    #         pos[1]+=step
+    #         for i in range(sub):
+    #             for j in range(sub):
+    #                 Z[ri,rj] = np.abs(self.ampl*(np.sin(2*i*np.pi/sub) + np.sin(2*j*np.pi/sub)))
+    #     return Z
 
     def example_7(self):
         '''
@@ -252,4 +276,6 @@ class Three_json(object):
 
 if __name__=='__main__':
     tj = Three_json()
-    tj.plot_shape_3d(tj.example_8(nbwalls= 100))
+    #tj.plot_shape_3d(tj.example_8(nbwalls= 100))
+    tj.plot_shape_3d(tj.example_6())
+    #tj.plot_shape_3d(tj.example_6pt1())
