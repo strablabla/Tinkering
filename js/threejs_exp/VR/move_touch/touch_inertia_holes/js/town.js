@@ -75,20 +75,21 @@ var hollow_cube_sphere = function(size, col){
 	return result
 }
 
-var pyramid_hollow = function(side, position, kind){
+var pyramid_hollow = function(side, position, kind, col){
 	/*
 	pyramid with hollow cubes
 	*/
+    var color = col || 'blue';
 	var kind = kind || 'cube';
 	var pos = position || [0,0,0];
 	var size_hc = 50
     if (kind == 'cube'){
-    	var shape = hollow_by_cube(size_hc, 'blue', kind, 0.4)
+    	var shape = hollow_by_cube(size_hc, color, kind, 0.4)
        }
     else if (kind == 'sphere'){
-    	var shape = hollow_by_cube(size_hc, 'blue', kind, 0.4)
+    	var shape = hollow_by_cube(size_hc, color, kind, 0.4)
        }
-	
+
 	for ( var i = 0; i < side; i ++ ) {
 		for (var j = i; j < side-i; j ++){
 			for (var k = i; k < side-i; k ++){

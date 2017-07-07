@@ -32,7 +32,7 @@ window.onload = function(event) {
       effect = new THREE.StereoEffect(renderer);
 
       scene = new THREE.Scene();
-      scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
+      scene.fog = new THREE.Fog( 0xffffff, 0, 1000 );
       hemiLight = new THREE.HemisphereLight(0xffffff, 0x000000, 0.6);
       scene.add( hemiLight );
 
@@ -83,9 +83,8 @@ window.onload = function(event) {
       for (numpyr=0; numpyr<10; numpyr++){
          var l = 200*numpyr
          pos_pyr = [l*Math.random(), 0, l*Math.random()]
-         pyramid_hollow(10,  pos_pyr, 'cube') // [0,0,0]
+         pyramid_hollow(10,  pos_pyr, 'cube', 'red') // [0,0,0]
       }
-      
 
      var hc = hollow_by_cube(100, 'blue', 'sphere', 0.4)
 
@@ -137,15 +136,12 @@ window.onload = function(event) {
     }
 
     var previousShadowMap = false;
-
     function render(dt) {
-
       if (moving){
           var direction = camera.getWorldDirection();
           distance = 2;
           camera.position.add( direction.multiplyScalar(distance) );
       }
-
 
       effect.render(scene, camera);
     }
