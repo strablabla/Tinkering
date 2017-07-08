@@ -63,9 +63,9 @@ var posy = 150
 
 function init() {
 
-    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
+    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
     scene = new THREE.Scene();
-    scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
+    scene.fog = new THREE.Fog( 0xffffff, 0, 20000 );
     var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
     light.position.set( 0.5, 1, 0.75 );
     scene.add( light );
