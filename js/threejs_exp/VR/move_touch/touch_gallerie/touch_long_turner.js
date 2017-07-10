@@ -123,10 +123,10 @@ window.onload = function(event) {
 
     size_tab = 500;
     var sep_tab = 500;
-    list_tabl = ['chapeau_bleu', 'madone', 'jacqueline', 'rêve', 'beret_rouge', 'sofa', 'étude', 'dessin']
+    list_tabl = [1, 2 , 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
     all_tabl = []
     for (i=0; i<list_tabl.length; i++){
-        all_tabl.push(tableau('paintings/Picasso/' + list_tabl[i] + '.jpg', size_tab, 500 , -600*i, 250, -Math.PI/2.0));
+        all_tabl.push(tableau('paintings/Turner/turner' + list_tabl[i] + '.jpg', size_tab, 500 , -600*i, 250, -Math.PI/2.0));
         scene.add(all_tabl[i])
     }
 
