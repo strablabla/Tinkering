@@ -105,12 +105,12 @@ window.onload = function(event) {
         emissiveIntensity: 10000,
         color: 0x000000
     });
-    for (i=0; i<2; i++){
+    for (i=0; i<10; i++){
           var bulbGeometry = new THREE.SphereGeometry( size_bulb, 16, 8 );
-          bulbLight = new THREE.PointLight( 0xffee88, 100, 2000); //, 500
+          bulbLight = new THREE.PointLight( 0xffee88, 100, 4000); //, 500
           bulbLight.add( new THREE.Mesh( bulbGeometry, bulbMat ) );
           bulbLight.castShadow = true;
-          bulbLight.position.set( -400, 150, 300*Math.pow(-1,i) );
+          bulbLight.position.set( -400, 150, -300*2*i ); //Math.pow(-1,i)
           list_bulbs.push(bulbLight)
           scene.add( bulbLight );
     }
@@ -121,7 +121,7 @@ window.onload = function(event) {
     hc.castShadow = true;
     hc.receiveShadow = false;
 
-    size_tab = 500;
+    size_tab = 300;
     var sep_tab = 500;
     list_tabl = [1, 2 , 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
     all_tabl = []
@@ -192,13 +192,23 @@ window.onload = function(event) {
     //   });
       //
 
-      var ceiling = new THREE.Mesh(new THREE.PlaneBufferGeometry(300, 300), new THREE.MeshPhongMaterial({specular: '#fff',fog: false, opacity: 0.3, color: '#ff9a00',shininess: 10 }));
+      var ceiling = new THREE.Mesh(new THREE.PlaneBufferGeometry(300, 2000), new THREE.MeshPhongMaterial({specular: '#fff',fog: false, opacity: 0.3, color: '#ff9a00',shininess: 10 }));
 
       ceiling.rotation.x = Math.PI/2
-      ceiling.position.set(0,400,0)
+      ceiling.position.set(0,400,-1000)
       ceiling.material.color.setHex( 0xffffff );
 
       scene.add(ceiling);
+
+      var bord = new THREE.Mesh(new THREE.CubeGeometry(20, 4000, 20), new THREE.MeshPhongMaterial({specular: '#fff',fog: false, opacity: 0.3, color: '#ff9a00',shininess: 10 }));
+
+      bord.rotation.x = Math.PI/2
+      bord.position.set(500, 10,-1800)
+      bord.material.color.setHex( 0xffffff );
+
+      scene.add(bord);
+
+      //import_collada('dae/DropChair.DAE', [10,10,10], [0,0,0], [-Math.PI/2.0,0,0])
 
       window.addEventListener('resize', resize, false);
       setTimeout(resize, 1);
