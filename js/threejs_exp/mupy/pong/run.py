@@ -32,7 +32,7 @@ thread = None
 
 try:
     if platf == 'Darwin':
-        ser = serial.Serial('/dev/tty.usbmodem5D12', 115200, timeout=1)    # Establish serial connection.
+        ser = serial.Serial('/dev/tty.usbmodem3A22', 115200, timeout=1)    # Establish serial connection.
         # 5D12, 3A22
     else:
         ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)             # Establish serial connection.

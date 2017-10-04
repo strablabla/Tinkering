@@ -99,11 +99,11 @@ function make_pong_ball(){
 
 
 function make_score(player, numb, zpos){
-    alert("make counter")
+    //alert("make counter")
     // https://www.sonelec-musique.com/electronique_theorie_afficheurs_led.html
     var xpos = -130;
-    alert(numb)
-    alert(zpos)
+    // alert(numb)
+    // alert(zpos)
     if (player == 1){
         zpos = -20
     }
