@@ -24,8 +24,6 @@
 		<script type="text/javascript" src="/static/js/landscape.js"></script>
 		<script type="text/javascript" src="/static/js/graphical_elems.js"></script>
 		<script type="text/javascript" src="/static/js/pong_objects.js"></script>
-		<script type="text/javascript" src="/static/js/gamepad.js"></script>
-		<script type="text/javascript" src="/static/js/pong_gamepad.js"></script>
 
 		<div id="blocker" style="display: -webkit-box;">
 
@@ -50,6 +48,12 @@
 			var blocker = document.getElementById( 'blocker' );
 			var instructions = document.getElementById( 'instructions' );
 			var ball
+			var speed_ball = 180
+			var angle_ball = 0
+			var velocity_ball = new THREE.Vector3();
+			velocity_ball.z = speed_ball;
+			velocity_ball.x = 0;
+
 
 			ptlock()
 			init();
@@ -85,8 +89,7 @@
 
 				   socket.emit('message', 'beginning the connection');
 				   socket.on('received', function(msg) {
-					   alert("begin communication")
-
+					   // alert("begin communication")
 					   $(document).keydown(function(event){
 						   if (event.keyCode == "l".charCodeAt(0)-32 ){   // go right
 							   rack1.position.x += 10;
@@ -94,19 +97,32 @@
 						   if (event.keyCode == "m".charCodeAt(0)-32 ){  // go left
 							   rack1.position.x += -10;
 						   }
-						   socket.emit('pos', {mess:'hello everybody', posrack1:rack1.position.x});
+						   if (event.keyCode == "o".charCodeAt(0)-32 ){   // go right
+							   rack2.position.x += 10;
+						   }
+						   if (event.keyCode == "p".charCodeAt(0)-32 ){  // go left
+							   rack2.position.x += -10;
+						   }
+						   socket.emit('pos', {mess:'position racket',
+						    		posrack1: rack1.position.x,
+									posrack2: rack2.position.x
+									// posball1: ball.position,
+									// velball1: velocity_ball
+								});
 					   })
 
 					   socket.on('server_id_choice', function(msg) {
 							   if (myID == 0){myID = msg.id} // Set ID of the client from server information msg.id
 							   })
+
 					   socket.on('info_move', function(msg) {
-						   		rack1.position.x = msg.posrack1;
+						   		if (myID == 1){rack2.position.x = msg.posrack2}
+								if (myID == 2){rack1.position.x = msg.posrack1}
+								// ball.position = msg.posball1;
+								// velocity_ball = msg.velball1;
 						   })
 					 }) // end socket.on('received')
-
 				 }) // end document.ready
-
             }; // end generate
 
 		</script>

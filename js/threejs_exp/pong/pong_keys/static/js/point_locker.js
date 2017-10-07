@@ -6,11 +6,7 @@ var moveRight = false;
 var canJump = false;
 var prevTime = performance.now();
 var velocity = new THREE.Vector3();
-var velocity_ball = new THREE.Vector3();
-var speed_ball = 180
-var angle_ball = 0
-velocity_ball.z = speed_ball;
-velocity_ball.x = 0;
+
 
 //alert('Helllooo welcome in point_locker.js !!!! ')
 

@@ -62,11 +62,17 @@ def sending_position(pos):
     socketio.emit('server_id_choice',
                   {'id': dic_connex[request.sid]},
                   namespace='/synchro')
-    if dic_connex[request.sid] == 1:
-        print("dict is ", pos)
-        socketio.emit('info_move',
-          {'id': dic_connex[request.sid], 'posrack1':pos['posrack1']},
-          namespace='/synchro', broadcast=True, include_self=False)  # sending information to all the client except the sender
+    numplayer = str(dic_connex[request.sid])
+    # if dic_connex[request.sid] == 1:
+    print("dict is ", pos)
+    socketio.emit('info_move',
+      {'id': numplayer,
+                'posrack1':pos['posrack1'],
+                'posrack2':pos['posrack2']
+                # 'posball1':pos['posball1'],
+                # 'velball1':pos['velball1']
+                },
+      namespace='/synchro', broadcast=True, include_self=False)  # sending information to all the client except the sender
 
 if __name__ == '__main__':
     import threading, webbrowser
