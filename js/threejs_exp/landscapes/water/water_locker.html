@@ -3,6 +3,7 @@
 <head>
 
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 <style>
 
 body {
@@ -46,9 +47,7 @@ body {
 		<script src="https://threejs.org/examples/js/SkyShader.js"></script>
 
 		<script type="text/javascript" src="../three_with_json/TrackballControls.js"></script>
-
         <script type="text/javascript" src="../three_with_json/dat.js"></script>
-
 		<script src="https://threejs.org/examples/js/Detector.js"></script>
 		<script type="text/javascript" src="js/point_locker.js"></script>
 		<!--<script src="https://threejs.org/examples/js/libs/dat.gui.min.js"></script>-->
@@ -62,6 +61,8 @@ body {
 			</div>
 
 		</div>
+
+		<canvas  width="1078" height="575" style="width: 1078px; height: 575px;"></canvas>
 
 <script>
 
@@ -114,6 +115,8 @@ body {
 	init();
 	animate();
 	ptlock();
+
+
 
 	var cubeMirror;
 
@@ -180,8 +183,6 @@ body {
 		var light = new THREE.DirectionalLight( 0xffffbb, 1 );
 		light.position.set( 0, 0, 0 );
 		scene.add( light );
-
-
 
 		controls = new THREE.PointerLockControls( camera );
 		scene.add( controls.getObject() );
@@ -255,13 +256,12 @@ body {
 		document.addEventListener( 'keyup', onKeyUp, false );
 
 		raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
-		renderer = new THREE.WebGLRenderer();
-		renderer.setClearColor( 0xffffff );
-		renderer.setPixelRatio( window.devicePixelRatio );
-		renderer.setSize( window.innerWidth, window.innerHeight );
-		document.body.appendChild( renderer.domElement );
-		window.addEventListener( 'resize', onWindowResize, false );
-
+		// renderer = new THREE.WebGLRenderer();
+		// renderer.setClearColor( 0xffffff );
+		// renderer.setPixelRatio( window.devicePixelRatio );
+		// renderer.setSize( window.innerWidth, window.innerHeight );
+		// document.body.appendChild( renderer.domElement );
+		// window.addEventListener( 'resize', onWindowResize, false );
 
 		/*waterNormals = new THREE.TextureLoader().load( 'https://bgfons.com/upload/water_texture851.jpg' );
 		waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;*/
@@ -356,8 +356,8 @@ body {
 			// velocity.y = 0;
 			velocity.y -= 9.8 * 10.0 * delta; // 100.0 = mass   // velocity y  taking in account the gravity.
 
-			var horiz_speed = 120.0 // Horizontal speed
-			var vert_speed = 40.0 // Vertical speed
+			var horiz_speed = 1200.0 // Horizontal speed
+			var vert_speed = 400.0 // Vertical speed
 			if ( moveForward ) velocity.z -= horiz_speed * delta;
 			if ( moveBackward ) velocity.z += horiz_speed * delta;
 			if ( moveLeft ) velocity.x -= horiz_speed * delta;
@@ -411,6 +411,7 @@ body {
 		cube.visible = true; // *cough*
 
 		//General Render
+		//renderer.setSize( window.innerWidth, window.innerHeight );
 		renderer.render( scene, camera );
 
 	}

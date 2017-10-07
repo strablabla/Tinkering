@@ -4,7 +4,7 @@
 
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-		<title>pong_joystick</title>
+		<title>pong_keyboard</title>
 
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
@@ -51,11 +51,6 @@
 			var instructions = document.getElementById( 'instructions' );
 			var ball
 
-			namespace = '/mupy'; // change to an empty string to use the global namespace
-			var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
-			// http://www.html5rocks.com/en/tutorials/pointerlock/intro/
-			//$('#instructions').click()
-
 			ptlock()
 			init();
 			generate()
@@ -83,14 +78,34 @@
 				rack2 = make_racket(200)
 				ball = make_pong_ball()
 
-			    $(document).keydown(function(event){
-			        if (event.keyCode == "l".charCodeAt(0)-32 ){   // go right
-			            rack1.position.x += 10;
-					}
-					if (event.keyCode == "m".charCodeAt(0)-32 ){  // go left
-						rack1.position.x += -10;
-					}
-			    })
+				myID = 0
+				$(document).ready(function(){
+				   namespace = '/synchro';
+				   var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+
+				   socket.emit('message', 'beginning the connection');
+				   socket.on('received', function(msg) {
+					   alert("begin communication")
+
+					   $(document).keydown(function(event){
+						   if (event.keyCode == "l".charCodeAt(0)-32 ){   // go right
+							   rack1.position.x += 10;
+						   }
+						   if (event.keyCode == "m".charCodeAt(0)-32 ){  // go left
+							   rack1.position.x += -10;
+						   }
+						   socket.emit('pos', {mess:'hello everybody', posrack1:rack1.position.x});
+					   })
+
+					   socket.on('server_id_choice', function(msg) {
+							   if (myID == 0){myID = msg.id} // Set ID of the client from server information msg.id
+							   })
+					   socket.on('info_move', function(msg) {
+						   		rack1.position.x = msg.posrack1;
+						   })
+					 }) // end socket.on('received')
+
+				 }) // end document.ready
 
             }; // end generate
 

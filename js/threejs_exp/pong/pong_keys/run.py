@@ -21,7 +21,6 @@ import flask
 from flask import Flask, render_template, session, request
 from flask_socketio import SocketIO, emit
 from time import sleep
-import serial
 import platform
 platf = platform.system()
 
@@ -30,35 +29,48 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app) #, async_mode=async_mode
 thread = None
 
-try:
-    if platf == 'Darwin':
-        ser = serial.Serial('/dev/tty.usbmodem3A22', 115200, timeout=1)    # Establish serial connection.
-    else:
-        ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)             # Establish serial connection.
-        print('serial connection established !! ')
-except:
-    print("no serial connection")
+####
+dic_connex = {}   # Dictionary linking client to an index
+num_connex = 1    #
+Debug = False
 
-def accelero(ser):
-    l = ser.readline()
-    return l
-
-def background_thread():
-    """Example of how to send server generated events to clients."""
-    count = 0
-    while True:
-        count += 1
-        data_accel = str(accelero(ser))[2:-5]
-        socketio.emit('accel_data',{'count': count, 'accel': str(data_accel)}, namespace='/mupy')
 @app.route('/')
 def index():
-    global thread
-    if thread is None:
-        thread = Thread(target=background_thread)
-        thread.daemon = True
-        thread.start()
-    return render_template('pong_joystick.html') #
+
+    return render_template('pong_keys.html') #
     #return render_template('first_page.html') #
 
+@socketio.on('message', namespace='/synchro')
+def init_connexion(message):
+    '''
+    Sending first message to clients
+    '''
+    print('######## position is {0} from client {1} !!!!!! '.format(message, request.sid))
+    socketio.emit('received', namespace='/synchro') #
+
+@socketio.on('pos', namespace='/synchro')
+def sending_position(pos):
+    '''
+    Synchronizing
+    '''
+    global num_connex
+    print('######## position is {0} from client {1} !!!!!! '.format(pos, request.sid))
+    if not request.sid in dic_connex:
+        dic_connex[request.sid]  = num_connex   # Linking client to index
+        num_connex += 1
+    print(dic_connex[request.sid])
+    socketio.emit('server_id_choice',
+                  {'id': dic_connex[request.sid]},
+                  namespace='/synchro')
+    if dic_connex[request.sid] == 1:
+        print("dict is ", pos)
+        socketio.emit('info_move',
+          {'id': dic_connex[request.sid], 'posrack1':pos['posrack1']},
+          namespace='/synchro', broadcast=True, include_self=False)  # sending information to all the client except the sender
+
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    import threading, webbrowser
+    port = 5017
+    url = "http://0.0.0.0:{0}".format(port)
+    threading.Timer(1.25, lambda: webbrowser.open(url, new=1)).start() # open a page in the browser.
+    socketio.run(app, port = port, debug = Debug)

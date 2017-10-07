@@ -62,9 +62,6 @@ THREE.PointerLockControls = function ( camera ) {
 var posy = 150
 
 
-
-
-
 function ptlock() {
 
 		var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
@@ -76,6 +73,9 @@ function ptlock() {
 					controlsEnabled = true;
 					controls.enabled = true;
 					blocker.style.display = 'none';
+					//instructions.style.display = 'none';
+					//$('#instructions').css({'height':'0px'})
+					//blocker.style.height = '0px';
 
 				} else {
 
@@ -98,10 +98,15 @@ function ptlock() {
 			document.addEventListener( 'pointerlockerror', pointerlockerror, false );
 			document.addEventListener( 'mozpointerlockerror', pointerlockerror, false );
 			document.addEventListener( 'webkitpointerlockerror', pointerlockerror, false );
+			element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
+			element.requestPointerLock();
 
+
+		
 			instructions.addEventListener( 'click', function ( event ) {
 				instructions.style.display = 'none';
-				// Ask the browser to lock the pointer
+				//blocker.style.height = '10px';
+				//Ask the browser to lock the pointer
 				element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
 
 				if ( /Firefox/i.test( navigator.userAgent ) ) {
