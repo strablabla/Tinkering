@@ -69,10 +69,14 @@ def sending_position(pos):
       {'id': numplayer,
                 'posrack1':pos['posrack1'],
                 'posrack2':pos['posrack2']
-                # 'posball1':pos['posball1'],
-                # 'velball1':pos['velball1']
                 },
       namespace='/synchro', broadcast=True, include_self=False)  # sending information to all the client except the sender
+
+# @socketio.on('ball', namespace='/synchro')
+# def ball_position(pos):
+#     print("receiving posball")
+#     socketio.emit('ball',{'posball':pos['posball']},
+#             namespace='/synchro', broadcast=True, include_self=False)  # sending information to all the client except the sender
 
 if __name__ == '__main__':
     import threading, webbrowser

@@ -160,11 +160,14 @@ function xreflection(xsign){
 	velocity_ball.z = sign*speed_ball*Math.cos(angle_ball)
 }
 
+var nbiter = 0;
+
 function animate() {
-	//alert('Helllooo welcome in animate !!!! ')
+	console.log('Helllooo welcome in animate !!!! ')
     requestAnimationFrame( animate );
 
     if ( controlsEnabled ) {
+		nbiter+= 1;
         raycaster.ray.origin.copy( controls.getObject().position );
         raycaster.ray.origin.y -= 10;
 
@@ -196,8 +199,10 @@ function animate() {
 
 		ball.position.z += velocity_ball.z * delta
 		ball.position.x += velocity_ball.x * delta
+
+		//alert(ball.position.z)
 		if (ball.position.z<-200){
-			var diff = rack1.position.x-ball.position.x
+			var diff = rack1.position.x-ball.position.x // distance between racket and ball.
 			var dist = Math.abs(diff)
 			console.log('############################ dist is ' + dist)
 		    if (dist<30){
@@ -218,14 +223,23 @@ function animate() {
 			zreflection(-1)
 		}
 		if (ball.position.x>100){
-			  //velocity_ball.x *= -1;
 			  xreflection(-1)
 			}
 
 		if (ball.position.x<-100){
-			  //velocity_ball.x *= -1;
 			  xreflection(1)
 			}
+		//console.log("##### hereeeeeee")
+		// $(document).ready(function(){
+		// 	   namespace = '/synchro';
+		// 	   var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+		// 	if (myID == 1 & (nbiter%100 == 0)){
+		// 		console.log("##### posball: ball.position")
+		// 		socket.emit('ball', {mess:'position ball',
+		// 				 posball: ball.position
+		// 			 });
+		// 		}
+		// 	})
 
         if ( controls.getObject().position.y < posy ) {
             velocity.y = 0;

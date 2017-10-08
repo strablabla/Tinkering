@@ -53,6 +53,7 @@
 			var velocity_ball = new THREE.Vector3();
 			velocity_ball.z = speed_ball;
 			velocity_ball.x = 0;
+			myID = 0;
 
 
 			ptlock()
@@ -82,7 +83,7 @@
 				rack2 = make_racket(200)
 				ball = make_pong_ball()
 
-				myID = 0
+
 				$(document).ready(function(){
 				   namespace = '/synchro';
 				   var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
@@ -106,8 +107,6 @@
 						   socket.emit('pos', {mess:'position racket',
 						    		posrack1: rack1.position.x,
 									posrack2: rack2.position.x
-									// posball1: ball.position,
-									// velball1: velocity_ball
 								});
 					   })
 
@@ -118,9 +117,17 @@
 					   socket.on('info_move', function(msg) {
 						   		if (myID == 1){rack2.position.x = msg.posrack2}
 								if (myID == 2){rack1.position.x = msg.posrack1}
-								// ball.position = msg.posball1;
-								// velocity_ball = msg.velball1;
-						   })
+						       })
+					//    socket.on('ball', function(msg) { // synchro ball
+					// 	        // console.log("synchro ball")
+					// 			alert("synchro ball")
+					// 			if (myID == 2){
+					// 					ball.position = msg.posball;
+					// 					console.log("helllo from 2");
+					// 				}
+					// 			//if (myID == 2){console.log("helllo from 2")}
+					// 	       })
+
 					 }) // end socket.on('received')
 				 }) // end document.ready
             }; // end generate
