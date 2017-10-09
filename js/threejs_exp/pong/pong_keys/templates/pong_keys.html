@@ -58,8 +58,12 @@
 
 			ptlock()
 			init();
-			generate()
-			animate();
+			//$(document).ready(function(){
+			   namespace = '/synchro';
+			   var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+				generate();
+				animate();
+			 //}) // end document.ready
 
 			if (annyang) {
 			  alert('in annyang')
@@ -82,11 +86,6 @@
 				rack1 = make_racket(-200)
 				rack2 = make_racket(200)
 				ball = make_pong_ball()
-
-
-				$(document).ready(function(){
-				   namespace = '/synchro';
-				   var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
 
 				   socket.emit('message', 'beginning the connection');
 				   socket.on('received', function(msg) {
@@ -118,18 +117,19 @@
 						   		if (myID == 1){rack2.position.x = msg.posrack2}
 								if (myID == 2){rack1.position.x = msg.posrack1}
 						       })
-					//    socket.on('ball', function(msg) { // synchro ball
-					// 	        // console.log("synchro ball")
-					// 			alert("synchro ball")
-					// 			if (myID == 2){
-					// 					ball.position = msg.posball;
-					// 					console.log("helllo from 2");
-					// 				}
-					// 			//if (myID == 2){console.log("helllo from 2")}
-					// 	       })
-
+					   socket.on('ball', function(msg) { // synchro ball
+						        // console.log("synchro ball")
+								// console.log(msg.posball)
+								// alert("synchro ball")
+								rack2.position.x = msg.posball.x;
+								if (myID == 2){
+										ball.position = msg.posball;
+										console.log("######### helllo from 2");
+									}
+								//if (myID == 2){console.log("helllo from 2")}
+							}) // end socket.on('ball')
 					 }) // end socket.on('received')
-				 }) // end document.ready
+
             }; // end generate
 
 		</script>

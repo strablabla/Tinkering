@@ -200,8 +200,15 @@ function animate() {
 		ball.position.z += velocity_ball.z * delta
 		ball.position.x += velocity_ball.x * delta
 
+		if (myID == 1 ){ // & (nbiter%100 == 0)
+			console.log("##### posball: ball.position")
+			socket.emit('ball', {mess:'position ball',
+					 posball: ball.position
+				 }); // end socket emit
+			} // end if
+
 		//alert(ball.position.z)
-		if (ball.position.z<-200){
+		if (ball.position.z <- 200){
 			var diff = rack1.position.x-ball.position.x // distance between racket and ball.
 			var dist = Math.abs(diff)
 			console.log('############################ dist is ' + dist)
@@ -229,17 +236,6 @@ function animate() {
 		if (ball.position.x<-100){
 			  xreflection(1)
 			}
-		//console.log("##### hereeeeeee")
-		// $(document).ready(function(){
-		// 	   namespace = '/synchro';
-		// 	   var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
-		// 	if (myID == 1 & (nbiter%100 == 0)){
-		// 		console.log("##### posball: ball.position")
-		// 		socket.emit('ball', {mess:'position ball',
-		// 				 posball: ball.position
-		// 			 });
-		// 		}
-		// 	})
 
         if ( controls.getObject().position.y < posy ) {
             velocity.y = 0;
@@ -247,7 +243,7 @@ function animate() {
             canJump = true;
         }
         prevTime = time;
-    }
+    } // end if if (ball.position.z <- 200)
     renderer.render( scene, camera );
 }
 
