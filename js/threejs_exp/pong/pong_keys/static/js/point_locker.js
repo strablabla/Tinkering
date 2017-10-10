@@ -163,6 +163,9 @@ function xreflection(xsign){
 var nbiter = 0;
 
 function reb_rack1(){
+	/*
+	interaction with racket 1
+	*/
 	var diff = rack1.position.x-ball.position.x // distance between racket and ball.
 	var dist = Math.abs(diff)
 	console.log('############################ dist is ' + dist)
@@ -182,6 +185,10 @@ function reb_rack1(){
 }
 
 function reb_rack2(){
+	/*
+	interaction with racket 2
+	*/
+
 	var diff = rack2.position.x-ball.position.x // distance between racket and ball.
 	var dist = Math.abs(diff)
 	console.log('############################ dist is ' + dist)
@@ -200,7 +207,10 @@ function reb_rack2(){
 	};
 }
 
-function send_position(){
+function send_ball_position(){
+	/*
+	Sending ball position
+	*/
 	if (myID == 1 ){ // & (nbiter%100 == 0)
 	console.log("##### posball: ball.position")
 	socket.emit('ball', {mess:'position ball',
@@ -210,6 +220,9 @@ function send_position(){
 }
 
 function ball_interaction(){
+	/*
+	Ball interaction with rackets and walls.
+	*/
 	if (ball.position.z <- 200){
 		reb_rack1()
 	} // end if
@@ -227,6 +240,9 @@ function ball_interaction(){
 }
 
 function animate() {
+	/*
+	Animate the scene
+	*/
 	console.log('Helllooo welcome in animate !!!! ')
     requestAnimationFrame( animate );
 
@@ -264,7 +280,7 @@ function animate() {
 		ball.position.z += velocity_ball.z * delta
 		ball.position.x += velocity_ball.x * delta
 
-		send_position()
+		send_ball_position()  // sendin
 
 		ball_interaction()
 
