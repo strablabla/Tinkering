@@ -200,6 +200,32 @@ function reb_rack2(){
 	};
 }
 
+function send_position(){
+	if (myID == 1 ){ // & (nbiter%100 == 0)
+	console.log("##### posball: ball.position")
+	socket.emit('ball', {mess:'position ball',
+			 posball: ball.position
+		 }); // end socket emit
+	} // end if
+}
+
+function ball_interaction(){
+	if (ball.position.z <- 200){
+		reb_rack1()
+	} // end if
+	if (ball.position.z > 200){
+		reb_rack2()
+		// zreflection(-1)
+	}
+	if (ball.position.x > 100){
+		  xreflection(-1)
+		}
+
+	if (ball.position.x < -100){
+		  xreflection(1)
+		}
+}
+
 function animate() {
 	console.log('Helllooo welcome in animate !!!! ')
     requestAnimationFrame( animate );
@@ -238,28 +264,9 @@ function animate() {
 		ball.position.z += velocity_ball.z * delta
 		ball.position.x += velocity_ball.x * delta
 
-		if (myID == 1 ){ // & (nbiter%100 == 0)
-			console.log("##### posball: ball.position")
-			socket.emit('ball', {mess:'position ball',
-					 posball: ball.position
-				 }); // end socket emit
-			} // end if
+		send_position()
 
-		//alert(ball.position.z)
-		if (ball.position.z <- 200){
-			reb_rack1()
-		} // end if
-		if (ball.position.z > 200){
-			reb_rack2()
-			// zreflection(-1)
-		}
-		if (ball.position.x > 100){
-			  xreflection(-1)
-			}
-
-		if (ball.position.x < -100){
-			  xreflection(1)
-			}
+		ball_interaction()
 
         if ( controls.getObject().position.y < posy ) {
             velocity.y = 0;
