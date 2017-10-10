@@ -162,6 +162,44 @@ function xreflection(xsign){
 
 var nbiter = 0;
 
+function reb_rack1(){
+	var diff = rack1.position.x-ball.position.x // distance between racket and ball.
+	var dist = Math.abs(diff)
+	console.log('############################ dist is ' + dist)
+    if (dist<30){
+		sign = 1
+		if (velocity_ball.x != 0){
+			sign = Math.sign(velocity_ball.x)
+		}
+		angle_ball = dist/30* Math.PI/2
+		velocity_ball.x = sign*speed_ball*Math.abs(Math.sin(angle_ball))
+		velocity_ball.z = speed_ball*Math.cos(angle_ball)
+	}
+	else{
+		//angle_ball = Math.atan2(velocity_ball.x,velocity_ball.z)
+		zreflection(1)
+	};
+}
+
+function reb_rack2(){
+	var diff = rack2.position.x-ball.position.x // distance between racket and ball.
+	var dist = Math.abs(diff)
+	console.log('############################ dist is ' + dist)
+    if (dist<30){
+		sign = 1
+		if (velocity_ball.x != 0){
+			sign = Math.sign(velocity_ball.x)
+		}
+		angle_ball = dist/30* Math.PI/2
+		velocity_ball.x = sign*speed_ball*Math.abs(Math.sin(angle_ball))
+		velocity_ball.z = -speed_ball*Math.cos(angle_ball)
+	}
+	else{
+		//angle_ball = Math.atan2(velocity_ball.x,velocity_ball.z)
+		zreflection(-1)
+	};
+}
+
 function animate() {
 	console.log('Helllooo welcome in animate !!!! ')
     requestAnimationFrame( animate );
@@ -209,31 +247,17 @@ function animate() {
 
 		//alert(ball.position.z)
 		if (ball.position.z <- 200){
-			var diff = rack1.position.x-ball.position.x // distance between racket and ball.
-			var dist = Math.abs(diff)
-			console.log('############################ dist is ' + dist)
-		    if (dist<30){
-				sign = 1
-				if (velocity_ball.x != 0){
-					sign = Math.sign(velocity_ball.x)
-				}
-				angle_ball = dist/30* Math.PI/2
-				velocity_ball.x = sign*speed_ball*Math.abs(Math.sin(angle_ball))
-				velocity_ball.z = speed_ball*Math.cos(angle_ball)
-			}
-			else{
-				//angle_ball = Math.atan2(velocity_ball.x,velocity_ball.z)
-				zreflection(1)
-			};
+			reb_rack1()
 		} // end if
-		if (ball.position.z>200){
-			zreflection(-1)
+		if (ball.position.z > 200){
+			reb_rack2()
+			// zreflection(-1)
 		}
-		if (ball.position.x>100){
+		if (ball.position.x > 100){
 			  xreflection(-1)
 			}
 
-		if (ball.position.x<-100){
+		if (ball.position.x < -100){
 			  xreflection(1)
 			}
 
