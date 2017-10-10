@@ -118,14 +118,16 @@
 								if (myID == 2){rack1.position.x = msg.posrack1}
 						       })
 					   socket.on('ball', function(msg) { // synchro ball
-						        // console.log("synchro ball")
-								// console.log(msg.posball)
-								// alert("synchro ball")
-								rack2.position.x = msg.posball.x;
-								if (myID == 2){
-										ball.position = msg.posball;
-										console.log("######### helllo from 2");
-									}
+
+								ball.position.x = msg.posball.x;
+								ball.position.y = msg.posball.y;
+								ball.position.z = msg.posball.z;
+								// if (myID == 2){
+								// 		ball.position.x = msg.posball.x;
+								// 		ball.position.y = msg.posball.y;
+								// 		ball.position.z = msg.posball.z;
+										
+								// 	}
 								//if (myID == 2){console.log("helllo from 2")}
 							}) // end socket.on('ball')
 					 }) // end socket.on('received')
