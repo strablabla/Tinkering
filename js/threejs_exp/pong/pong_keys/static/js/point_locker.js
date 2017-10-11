@@ -198,6 +198,7 @@ function reb_rack(rack, reb){
 		angle_ball = dist/100* Math.PI/2
 		velocity_ball.x = -Math.sign(diff)*speed_ball*Math.abs(Math.sin(angle_ball))
 		velocity_ball.z = reb*speed_ball*Math.cos(angle_ball)
+		make_pong()
 	}
 	else{
 		//angle_ball = Math.atan2(velocity_ball.x,velocity_ball.z)
@@ -205,6 +206,7 @@ function reb_rack(rack, reb){
 		if (reb==1){score[0] += 1}
 		else if (reb==-1){score[1] += 1}
 		make_new_score()
+		make_pong()
 	};
 }
 
@@ -226,11 +228,11 @@ function ball_interaction(){
 	*/
 	if (ball.position.z <- 200){
 		reb_rack(rack1, 1)
-		make_pong()
+
 	} // end if
 	if (ball.position.z > 200){
 		reb_rack(rack2, -1)
-		make_pong()
+
 	}
 	if (ball.position.x > 100){
 		  xreflection(-1)
