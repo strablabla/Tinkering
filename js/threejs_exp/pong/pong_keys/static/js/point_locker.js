@@ -166,11 +166,26 @@ function xreflection(xsign){
 	velocity_ball.z = sign*speed_ball*Math.cos(angle_ball)
 }
 
+function make_pong(){
+	var mySound = soundManager.createSound({
+    url: '/static/sounds/pong.wav'
+    });
+    mySound.play();
+}
+
+function make_new_score(){
+	for (i=0;i<list_score.length;i++){
+		scene.remove(list_score[i])
+	}
+	make_score(1,score[1])
+	make_score(2,score[0])
+}
+
 var nbiter = 0;
 
 function reb_rack(rack, reb){
 	/*
-	interaction with racket 
+	interaction with racket
 	*/
 	var diff = rack.position.x-ball.position.x // distance between racket and ball.
 	var dist = Math.abs(diff)
@@ -187,6 +202,9 @@ function reb_rack(rack, reb){
 	else{
 		//angle_ball = Math.atan2(velocity_ball.x,velocity_ball.z)
 		zreflection(reb)
+		if (reb==1){score[0] += 1}
+		else if (reb==-1){score[1] += 1}
+		make_new_score()
 	};
 }
 
@@ -208,9 +226,11 @@ function ball_interaction(){
 	*/
 	if (ball.position.z <- 200){
 		reb_rack(rack1, 1)
+		make_pong()
 	} // end if
 	if (ball.position.z > 200){
 		reb_rack(rack2, -1)
+		make_pong()
 	}
 	if (ball.position.x > 100){
 		  xreflection(-1)
