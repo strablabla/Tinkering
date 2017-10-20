@@ -40,9 +40,9 @@
 
 		<script>
 
-            var camera, scene, renderer, controls;
-            var map_mesh = 0.25;
-            var map_detail = 8, map_roughness = 0.7;
+      var camera, scene, renderer, controls;
+      var map_mesh = 0.25;
+      var map_detail = 8, map_roughness = 0.7;
 			var geometry, material, mesh;
 			var objects = [];
 			var raycaster;
@@ -61,26 +61,26 @@
 			ptlock()
 			init();
 
-		    namespace = '/synchro';
-		    var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+	    namespace = '/synchro';
+	    var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
 			generate();
 			animate();
 
 			if (annyang) {
-			  alert('in annyang')
-			  var test=function(){alert('helllloooo')}
-			  var commands = {'open car': test}; // 'music': zic,
-			  annyang.addCommands(commands);
-			  annyang.start();
+				  alert('in annyang')
+				  var test=function(){alert('helllloooo')}
+				  var commands = {'open car': test}; // 'music': zic,
+				  annyang.addCommands(commands);
+				  annyang.start();
 			}
 
 			function onWindowResize() {
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
-				renderer.setSize( window.innerWidth, window.innerHeight );
+					camera.aspect = window.innerWidth / window.innerHeight;
+					camera.updateProjectionMatrix();
+					renderer.setSize( window.innerWidth, window.innerHeight );
 			}
 
-            function generate() {
+      function generate() {
 
 				pitch = make_pitch()
 				make_net()

@@ -57,7 +57,7 @@ THREE.PointerLockControls = function ( camera ) {
 	}();
 };
 
-var posy = 150
+var posy = 450
 
 function init() {
     //alert('Helllooo welcome in init !!!! ')
