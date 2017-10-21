@@ -97,16 +97,16 @@
 					   $(document).keydown(function(event){
 						//    if (myID == 1){ rack = rack1 }
 						//    else if (myID == 2){ rack = rack2 }
-						   if (event.keyCode == "l".charCodeAt(0)-32 ){   // go right
+						   if (event.keyCode == "p".charCodeAt(0)-32 ){   // go right
 							   rack1.position.x += 10;
 						   }
-						   if (event.keyCode == "m".charCodeAt(0)-32 ){  // go left
+						   if (event.keyCode == "l".charCodeAt(0)-32 ){  // go left
 							   rack1.position.x += -10;
 						   }
 						   if (event.keyCode == "o".charCodeAt(0)-32 ){   // go right
 							   rack2.position.x += 10;
 						   }
-						   if (event.keyCode == "p".charCodeAt(0)-32 ){  // go left
+						   if (event.keyCode == "k".charCodeAt(0)-32 ){  // go left
 							   rack2.position.x += -10;
 						   }
 						   socket.emit('pos', {mess:'position racket',

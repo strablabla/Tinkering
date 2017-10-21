@@ -98,8 +98,11 @@ function make_pong_ball(){
 } // end function
 
 function make_score(player, numb){
-    //alert("make counter")
+    /*
+    Show the score for one player
+    */
     // https://www.sonelec-musique.com/electronique_theorie_afficheurs_led.html
+    group_led = new THREE.Object3D();//create an empty container
     var xpos = -130;
     // alert(numb)
     // alert(zpos)
@@ -138,8 +141,7 @@ function make_score(player, numb){
         obj.receiveShadow = true;
         //----------------
         if (dic_horiz[i]==1){
-            scene.add(obj)
-            list_score.push(obj)
+            group_led.add(obj)
         }
     }
 
@@ -157,8 +159,14 @@ function make_score(player, numb){
         obj.receiveShadow = true;
         //----------------
         if (dic_vert[i]==1){
-            scene.add(obj)
-            list_score.push(obj)
+            group_led.add(obj)
         }
     }
+    group_led.rotation.set(0, 0, 90)
+    group_led.position.y = 200
+    group_led.position.x = 100
+    scene.add(group_led)
+    list_score.push(group_led)
+
+
 } // end function make_score
