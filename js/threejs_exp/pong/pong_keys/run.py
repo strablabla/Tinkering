@@ -73,9 +73,10 @@ def sending_position(pos):
       namespace='/synchro', broadcast=True, include_self=False)  # sending information to all the client except the sender
 
 @socketio.on('ball', namespace='/synchro')
-def ball_position(pos):
-    print("receiving posball")
-    print("pos['posball'] ", pos['posball'])
+def ball_position(pos, debug=False):
+    if debug:
+        print("receiving posball")
+        print("pos['posball'] ", pos['posball'])
     socketio.emit('ball',{'posball': pos['posball']},
             namespace='/synchro', broadcast=True, include_self=False)  # sending information to all the client except the sender
 

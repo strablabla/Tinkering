@@ -63,7 +63,7 @@ function init() {
     //alert('Helllooo welcome in init !!!! ')
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
     scene = new THREE.Scene();
-    scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
+    scene.fog = new THREE.Fog( 0xffffff, 0, 2000 );
     var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
     light.position.set( 0.5, 1, 0.75 );
     scene.add( light );
@@ -174,7 +174,7 @@ function make_pong(){
 }
 
 function make_new_score(){
-	for (i=0;i<list_score.length;i++){
+	for (i=0; i<list_score.length; i++){
 		scene.remove(list_score[i])
 	}
 	make_score(1,score[1])
