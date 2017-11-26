@@ -16,10 +16,6 @@ syntax : lem
 
 class lemonde_straptoc(object):
     def __init__(self):
-        # try:
-        #     self.prefix = raw_input("prefix? (folder containing all the files and folders) ")
-        # except:
-        #     self.prefix = input("prefix? (folder containing all the files and folders) ")
         self.prefix = os.getcwd()
         self.dic_categ = {}                    # list of the folders
         self.first = True
@@ -41,7 +37,7 @@ class lemonde_straptoc(object):
                 newdir = fzip[:-4]
                 if debug>0:  print(newdir)
                 dirname = opd(newdir)
-                above_dirname = opd(opd(newdir))
+                above_dirname = opd(opd(newdir))     # address above the directory above the directory containing the zipfiles.
                 basename = opb(newdir)
                 namedate = basename.split('_')[2]
                 y, m, d = self.extract_ymd(namedate)
@@ -58,7 +54,7 @@ class lemonde_straptoc(object):
 
     def extract_ymd(self, name, debug=0):
         '''
-        Extract year, month, day
+        Extract year, month, day form name taken from zip file.
         '''
         y = name[:4]
         m = self.dic_month[int(name[4:6])]
@@ -67,6 +63,7 @@ class lemonde_straptoc(object):
 
     def save_pdf(self, filename, fullpath, y, m, d, debug=0):
         '''
+        Save pdf informations in the dictionary  self.dict_pdfs with year, month and day information.
         '''
         kind = '_' + filename[-3:]
         strpdf = '[{0} §§]({1}.pdf)'.format(d + kind, fullpath) # straptoc syntax for pdf files
@@ -84,7 +81,7 @@ class lemonde_straptoc(object):
         print(y, m, d)
         fullpath = opj(y, m, 'Le_Monde_' + filename[:8], filename)
         try:
-            if debug>0 : print('wwwwwwwww*----' + str(self.dict_pdfs))
+            if debug>0 : print('**** in prepare_straptoc_pdf ' + str(self.dict_pdfs))
             if len(self.dict_pdfs[y][m][d]) >= 0:
                 self.save_pdf(filename, fullpath, y, m, d)
         except:
@@ -99,7 +96,6 @@ class lemonde_straptoc(object):
         list_years = [i for i in range(2014, 2018)]
         for y in list_years:
             print('## '+ str(y))
-            #print("########### self.dict_pdfs ", self.dict_pdfs)
             for mth in range(1,13):
                 m = self.dic_month[mth]
                 if debug>0 : print(m)
@@ -111,7 +107,7 @@ class lemonde_straptoc(object):
                 except:
                     pass
                 if debug>0 : print(self.dict_pdfs[str(y)])
-                dtot = ''
+                dtot = ''                               # string with days and pdf infos
                 for d in range(1,32): # Read each day
                     d_str = ''           # string for day and straptoc code
                     dpdfs_str = ''       # string for pdfs
@@ -126,22 +122,17 @@ class lemonde_straptoc(object):
                             dpdfs_str += '        ' + p + '\n'
                         if dpdfs_str != '':
                             dtot += d_str + dpdfs_str
-
                     except:
                         pass
                 if dtot != '':
                     print(m_str)
-                    dtot = dtot[:-2]
+                    dtot = dtot[:-2] # removing \n
                     print(dtot)
 
-    def list_corr(self, arg):
+    def prepare_dic(self, arg='corr'):
         '''
-        Makes correction on the names.
+        Prepare the dictionary for making the straptoc code.
         Launches once all the zips are dezipped.
-        Parameters:
-            * arg : if it equal to "corr", then make corrections
-                * remove empty space etc..
-
         '''
         for path, dirs, files in os.walk('.'):
             for f in files:
@@ -161,10 +152,6 @@ class lemonde_straptoc(object):
 
 if __name__=='__main__':
     ls = lemonde_straptoc()
-    try:
-        arg = sys.argv[1]
-    except:
-        arg = False
     ls.unzipfiles()      # unzip all the files
-    ls.list_corr(arg)    # if corr
+    ls.prepare_dic()    #
     ls.show_straptoc_pdf()
