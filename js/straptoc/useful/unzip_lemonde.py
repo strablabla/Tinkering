@@ -7,7 +7,6 @@ opj = os.path.join
 opd= os.path.dirname
 opb = os.path.basename
 
-
 '''
 Program for extracting the Lemonde pdf from zipfile and building
  the code to be inserted in the straptoc document.
@@ -95,7 +94,7 @@ class lemonde_straptoc(object):
         print("************ show_straptoc_pdf ***************")
         list_years = [i for i in range(2014, 2018)]
         for y in list_years:
-            print('## '+ str(y))
+            print('\n## '+ str(y))
             for mth in range(1,13):
                 m = self.dic_month[mth]
                 if debug>0 : print(m)
@@ -126,7 +125,7 @@ class lemonde_straptoc(object):
                         pass
                 if dtot != '':
                     print(m_str)
-                    dtot = dtot[:-2] # removing \n
+                    dtot = dtot[:-1] # removing \n
                     print(dtot)
 
     def prepare_dic(self, arg='corr'):
