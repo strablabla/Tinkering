@@ -11,7 +11,7 @@ opb = os.path.basename
 '''
 Program for extracting the Lemonde pdf from zipfile and building
  the code to be inserted in the straptoc document.
-syntax : lem corr
+syntax : lem
 '''
 
 class lemonde_straptoc(object):
@@ -37,7 +37,6 @@ class lemonde_straptoc(object):
         for path, dirs, files in os.walk('.'):
             pathzip = os.path.join(path,'*.zip')
             if debug>0: print(pathzip)
-
             for fzip in glob.glob(pathzip):
                 newdir = fzip[:-4]
                 if debug>0:  print(newdir)
@@ -57,7 +56,7 @@ class lemonde_straptoc(object):
                 z.extractall(fullpath)
                 z.close()
 
-    def extract_ymd(self, name):
+    def extract_ymd(self, name, debug=0):
         '''
         Extract year, month, day
         '''
@@ -66,23 +65,31 @@ class lemonde_straptoc(object):
         d = name[6:8]
         return y, m, d
 
-    def prepare_straptoc_pdf(self):
+    def save_pdf(self, filename, fullpath, y, m, d, debug=0):
+        '''
+        '''
+        kind = '_' + filename[-3:]
+        strpdf = '[{0} §§]({1}.pdf)'.format(d + kind, fullpath) # straptoc syntax for pdf files
+        if debug>0 : print(strpdf)
+        self.dict_pdfs[y][m][d].append(strpdf)
+        if debug>0 : print('*********------*******---***----' + str(self.dict_pdfs))
+
+    def prepare_straptoc_pdf(self, debug=0):
         '''
         Prepare the dic for inserting the pdf into straptoc files.
         '''
-        print("************ prepare_straptoc_pdf ***************")
+        if debug>0 : print("************ prepare_straptoc_pdf ***************")
         filename = os.path.basename(self.newpath[2:])[:-4]
         y, m, d = self.extract_ymd(filename)
         print(y, m, d)
         fullpath = opj(y, m, 'Le_Monde_' + filename[:8], filename)
         try:
+            if debug>0 : print('wwwwwwwww*----' + str(self.dict_pdfs))
             if len(self.dict_pdfs[y][m][d]) >= 0:
-                kind = '_' + filename[-3:]
-                strpdf = '[{0} §§]({1}.pdf)'.format(d + kind, fullpath) # straptoc syntax for pdf files
-                self.dict_pdfs[y][m][d].append(strpdf)
-                print(self.dict_pdfs)
+                self.save_pdf(filename, fullpath, y, m, d)
         except:
             self.dict_pdfs[y][m][d] = []
+            self.save_pdf(filename, fullpath, y, m, d)
 
     def show_straptoc_pdf(self, debug=0):
         '''
@@ -92,36 +99,40 @@ class lemonde_straptoc(object):
         list_years = [i for i in range(2014, 2018)]
         for y in list_years:
             print('## '+ str(y))
-
+            #print("########### self.dict_pdfs ", self.dict_pdfs)
             for mth in range(1,13):
                 m = self.dic_month[mth]
+                if debug>0 : print(m)
+                if debug>0 : print("########### self.dict_pdfs[str(y)][m] ", self.dict_pdfs[str(y)][m])
                 m_str = ''
                 try:
-                    test_exist = self.dict_pdfs[str(y)][m]  # test if the month exists
+                    if debug>0 : test_exist = self.dict_pdfs[str(y)][m]  # test if the month exists
                     m_str += '* ' + m + '::'
-                    # m_str += '    * $pdf \n    +++ ../../../../..{0} '.format(self.prefix)
                 except:
                     pass
                 if debug>0 : print(self.dict_pdfs[str(y)])
-
                 dtot = ''
                 for d in range(1,32): # Read each day
-                    d_str = ''
-                    dpdfs_str = ''
+                    d_str = ''           # string for day and straptoc code
+                    dpdfs_str = ''       # string for pdfs
+                    strd = str(d)
+                    if len(strd) == 1: strd = '0' + strd    # transforms x in 0x
                     try:
-                        list_pdfs = self.dict_pdfs[str(y)][m][str(d)]
-                        d_str += '    * ' + str(d) + '::\n'
+                        list_pdfs = self.dict_pdfs[str(y)][m][strd]
+                        if debug>0 : print(list_pdfs)
+                        d_str += '    * ' + strd + '::\n'
                         d_str += '        * $pdf \n        +++ ../../../../..{0}\n'.format(self.prefix)
                         for p in list_pdfs:
                             dpdfs_str += '        ' + p + '\n'
                         if dpdfs_str != '':
                             dtot += d_str + dpdfs_str
+
                     except:
                         pass
                 if dtot != '':
                     print(m_str)
+                    dtot = dtot[:-2]
                     print(dtot)
-
 
     def list_corr(self, arg):
         '''
@@ -132,7 +143,6 @@ class lemonde_straptoc(object):
                 * remove empty space etc..
 
         '''
-
         for path, dirs, files in os.walk('.'):
             for f in files:
                 fold = f
