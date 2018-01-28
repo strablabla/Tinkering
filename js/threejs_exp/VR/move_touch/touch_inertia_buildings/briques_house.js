@@ -10,13 +10,8 @@ var size_bulb = 5
 var param_bulb = 0
 var moving = false
 
-var geometry, material, mesh;
-var objects = [];
-var raycaster;
-
-
-
 window.onload = function(event) {
+
 
     // ref for lumens: http://www.power-sure.com/lumens.htm
     var bulbLuminousPowers = {
@@ -102,26 +97,46 @@ window.onload = function(event) {
 
     } // end init
 
-
    window.addEventListener('deviceorientation', setOrientationControls, true);
 
-      // Bulb light
+   //   Bulb light
 
-    list_bulbs = []
-    bulbMat = new THREE.MeshStandardMaterial ( {
-        emissive: 0xffffee,
-        emissiveIntensity: 1,
-        color: 0x000000
-       });
-    for (i=0; i<10; i++){
-          var bulbGeometry = new THREE.SphereGeometry( size_bulb, 16, 8 );
-          bulbLight = new THREE.PointLight( 0xffee88, 1, 100, 2 );
-          bulbLight.add( new THREE.Mesh( bulbGeometry, bulbMat ) );
-          bulbLight.castShadow = true;
-          bulbLight.position.set( Math.random()*300, Math.random()*300, 100 );
-          list_bulbs.push(bulbLight)
-          scene.add( bulbLight );
-    }
+   // list_bulbs = []
+   // bulbMat = new THREE.MeshStandardMaterial ( {
+   //     emissive: 0xffffee,
+   //     emissiveIntensity: 1,
+   //     color: 0x000000
+   //    });
+   // for (i=0; i<10; i++){
+   //       var bulbGeometry = new THREE.SphereGeometry( size_bulb, 16, 8 );
+   //       bulbLight = new THREE.PointLight( 0xffee88, 1, 100, 2 );
+   //       bulbLight.add( new THREE.Mesh( bulbGeometry, bulbMat ) );
+   //       bulbLight.castShadow = true;
+   //       bulbLight.position.set( Math.random()*300, Math.random()*300, 100 );
+   //       list_bulbs.push(bulbLight)
+   //       scene.add( bulbLight );
+   // }
+
+   //   Bulb light
+   bulbMat = new THREE.MeshStandardMaterial ( {
+       emissive: 0xffffee,
+       emissiveIntensity: 1,
+       color: 0x000000
+      });
+
+     var bulbGeometry = new THREE.SphereGeometry( size_bulb, 16, 8 );
+     bulbLight = new THREE.PointLight( 0xffee88, 1, 100, 2 );
+     bulbLight.add( new THREE.Mesh( bulbGeometry, bulbMat ) );
+     bulbLight.castShadow = true;
+     bulbLight.position.set(  60, 50, -60  ); // 60, 50, -60
+     scene.add( bulbLight );
+
+     var bulbGeometry = new THREE.SphereGeometry( size_bulb, 16, 8 );
+     bulbLight = new THREE.PointLight( 0xffee88, 1, 100, 2 );
+     bulbLight.add( new THREE.Mesh( bulbGeometry, bulbMat ) );
+     bulbLight.castShadow = true;
+     bulbLight.position.set(  200, 50, -60  ); // 60, 50, -60
+     scene.add( bulbLight );
 
     // Sky
 
@@ -130,26 +145,10 @@ window.onload = function(event) {
 
       // Buildings
 
-      list_house_pieces = []
-
-      for (i = 0; i<15; i++){
-        //make_groundy()
-        //make_ground_repetitive('Decor/photo-oriental-mosaic-decoration-in-doha.jpg', 0, 30, 16)
-        sx = size_house_piece
-        sy = (1+Math.random()*0.3)*size_house_piece
-        sz = size_house_piece
-        var geom_house_piece = new THREE.CubeGeometry( sx, sy, sz )
-        //var material_house_piece = new THREE.MeshBasicMaterial({ color: 0xff0000 })
-        var material_house_piece = new THREE.MeshBasicMaterial({ map: THREE.ImageUtils.loadTexture("textures/brick_diffuse.jpg") })
-        house_piece = new THREE.Mesh( geom_house_piece, material_house_piece );
-        //   house_piece.setColor( 0xffffff );
-        //alert(Math.random())
-        house_piece.position.y = sy/2; //*Math.power(-1,i);
-        house_piece.position.z = Math.random()*dist;
-        house_piece.position.x = Math.random()*dist;
-        list_house_pieces.push(house_piece)
-        scene.add(house_piece);
-      }
+      var nb_buildings = 100
+      var esp = 100
+      var dist_inter_build = 1500
+      building1()
 
       make_ground(3000)
 
