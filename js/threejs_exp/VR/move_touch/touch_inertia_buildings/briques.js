@@ -10,18 +10,35 @@ var size_bulb = 5
 var param_bulb = 0
 var moving = false
 
-
-var geometry, material, mesh;
-var objects = [];
-var raycaster;
-
-var instructions = document.getElementById( 'instructions' );
-var size_house_piece = 50
-var dist = 500
-
 window.onload = function(event) {
 
 
+    // ref for lumens: http://www.power-sure.com/lumens.htm
+    var bulbLuminousPowers = {
+        "110000 lm (1000W)": 110000,
+        "3500 lm (300W)": 3500,
+        "1700 lm (100W)": 1700,
+        "800 lm (60W)": 800,
+        "400 lm (40W)": 400,
+        "180 lm (25W)": 180,
+        "20 lm (4W)": 20,
+        "Off": 0
+    };
+
+    // ref for solar irradiances: https://en.wikipedia.org/wiki/Lux
+    var hemiLuminousIrradiances = {
+        "0.0001 lx (Moonless Night)": 0.0001,
+        "0.002 lx (Night Airglow)": 0.002,
+        "0.5 lx (Full Moon)": 0.5,
+        "3.4 lx (City Twilight)": 3.4,
+        "50 lx (Living Room)": 50,
+        "100 lx (Very Overcast)": 100,
+        "350 lx (Office Room)": 350,
+        "400 lx (Sunrise/Sunset)": 400,
+        "1000 lx (Overcast)": 1000,
+        "18000 lx (Daylight)": 18000,
+        "50000 lx (Direct Sun)": 50000
+    };
 
     var params = {
         shadows: true,
@@ -31,8 +48,6 @@ window.onload = function(event) {
     };
 
     var clock = new THREE.Clock();
-
-
 
     function init() {
 
@@ -110,11 +125,13 @@ window.onload = function(event) {
 
       // Buildings
 
+      var nb_buildings = 100
+      var esp = 100
+      var dist_inter_build = 1500
+      //simple_colored_buildings(nb_buildings, esp, dist_inter_build)
       list_house_pieces = []
 
       for (i = 0; i<15; i++){
-        //make_groundy()
-        //make_ground_repetitive('Decor/photo-oriental-mosaic-decoration-in-doha.jpg', 0, 30, 16)
         sx = size_house_piece
         sy = (1+Math.random()*0.3)*size_house_piece
         sz = size_house_piece
@@ -122,16 +139,12 @@ window.onload = function(event) {
         //var material_house_piece = new THREE.MeshBasicMaterial({ color: 0xff0000 })
         var material_house_piece = new THREE.MeshBasicMaterial({ map: THREE.ImageUtils.loadTexture("textures/brick_diffuse.jpg") })
         house_piece = new THREE.Mesh( geom_house_piece, material_house_piece );
-        //   house_piece.setColor( 0xffffff );
-        //alert(Math.random())
         house_piece.position.y = sy/2; //*Math.power(-1,i);
         house_piece.position.z = Math.random()*dist;
         house_piece.position.x = Math.random()*dist;
         list_house_pieces.push(house_piece)
         scene.add(house_piece);
       }
-
-          };
 
       make_ground(3000)
 
