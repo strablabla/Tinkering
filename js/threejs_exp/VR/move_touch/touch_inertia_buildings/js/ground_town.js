@@ -15,5 +15,4 @@ function make_ground(dim_floor){
     floorMesh.rotation.x = -Math.PI / 2.0;
     scene.add( floorMesh );
 
-
 } // end function

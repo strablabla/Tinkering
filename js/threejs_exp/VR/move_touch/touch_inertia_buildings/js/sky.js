@@ -12,8 +12,10 @@ var make_sky = function(size_sphere){
 	var vertexShader = document.getElementById( 'vertexShader' ).textContent;
 	var fragmentShader = document.getElementById( 'fragmentShader' ).textContent;
 	var uniforms = {
+		// topColor:    { value: new THREE.Color( 0x0077ff ) },
+		// bottomColor: { value: new THREE.Color( 0xffffff ) },
 		topColor:    { value: new THREE.Color( 0x0077ff ) },
-		bottomColor: { value: new THREE.Color( 0xffffff ) },
+		bottomColor: { value: new THREE.Color( 0xb3e7ff ) },
 		offset:      { value: 33 },
 		exponent:    { value: 0.6 }
 	};
