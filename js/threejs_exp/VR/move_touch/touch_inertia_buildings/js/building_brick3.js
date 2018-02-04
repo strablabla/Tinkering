@@ -12,23 +12,23 @@ function import_collada(addr, scale, position, rotation){ // import collada file
 }// end import_collada
 
 function persians(txt, size,  x, y, z, angle){
-    //------ wooden board
+    //------  board
+    var group_persian = new THREE.Group();
     var geom_board = new THREE.CubeGeometry( 50, 7, 3 )
     var material_board = new THREE.MeshBasicMaterial({ map: THREE.ImageUtils.loadTexture(txt) }) // "texture/latte0.jpg"
     simple_board0 = new THREE.Mesh( geom_board, material_board )
     dic_board = {}
     scale_board = size
     dic_board[0] = simple_board0.clone()
-    dic_board[0].position.set(x, y, z)  // 180,180,-10
     dic_board[0].rotation.set(-Math.PI/3,angle,0)
+    dic_board[0].position.set(x, y, z)  // 180,180,-10
     dic_board[0].scale.set(scale_board,scale_board*0.1,scale_board)
-    // dic_board[1] = simple_board0.clone()
-    // dic_board[0] = simple_board0.clone()*
     for (i=1; i<20; i++){
       dic_board[i] = dic_board[0].clone()
       dic_board[i].position.y = dic_board[0].position.y-2*i
-      group.add( dic_board[i] )
+      group_persian.add( dic_board[i] )
     }
+    return group_persian
 }
 
 function tapestry(txt, size,  x, y, z, angle){
@@ -37,7 +37,8 @@ function tapestry(txt, size,  x, y, z, angle){
       var cube = new THREE.Mesh( geom_cube, material_cube )
       cube.position.set(x, y, z)
       cube.rotation.set(0, Math.PI/180*angle, 0)
-      scene.add(cube)
+      return cube
+
 }
 
 function column_torsed(txt, size,  x, y, z, nbcubes){
@@ -72,7 +73,6 @@ function some_cube(txt, size,  x, z, y, roty){
     cube.rotation.y += roty;
     cube.position.y = y; //hauteur
     return cube
-
 }
 
 function tableau(txt, size,  x, z, y, roty){
@@ -87,7 +87,6 @@ function tableau(txt, size,  x, z, y, roty){
     tabl.rotation.y += roty;
     tabl.position.y = y; //hauteur
     return tabl
-    //scene.add(tabl);
 }
 
 var bulblight = function(x,y,z){
@@ -350,8 +349,10 @@ var building3 = function(){
 
 		size_tab = 20;
 		var sep_tab = 50;
+    // liste des tableaux
 		list_tabl = [0, 1, 2 , 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
 		all_tabl = []
+    level_floor = 20
 
     for (i=0; i<40;i++){
   			wall_corr0 = wall0.clone()
@@ -360,35 +361,49 @@ var building3 = function(){
   			floor_corr1 = floor_wood0.clone()
   			wall_corr0.position.set(sz, sz/2 , -3*sz-i*sz);
   			wall_corr1.position.set(2*sz, sz , -3*sz-i*sz);
-  			floor_corr0.position.set(3*sz/2, 11 , -3*sz-i*sz);
-  			floor_corr1.position.set(5*sz/2, 11 , -3*sz-i*sz);
+  			floor_corr0.position.set(3*sz/2, level_floor , -3*sz-i*sz);
+  			floor_corr1.position.set(5*sz/2, level_floor , -3*sz-i*sz);
   			group.add( wall_corr0 );
   			group.add( wall_corr1 );
   			group.add( floor_corr0 );
 		}
+
+    // Tableaux impressionistes
 
 	    for (i=0; i<list_tabl.length; i++){
 	        all_tabl.push(tableau('paintings/impressionnistes/' + list_tabl[i] + '.jpg', size_tab, 2*sz-10 , -3*sz-i*sz, 50, -Math.PI/2.0));
 	        scene.add(all_tabl[i])
 	    }
 
+      // Other floors
+        level_floor_inside = 20
+        dict_floors = {}
+        for (i=0; i<4; i++){
+            for (j=0; j<3; j++){
+              dict_floors[j+3*i] = floor_wood0.clone()
+              dict_floors[j+3*i].position.set(100+50*i, level_floor_inside, -50*j)
+            }
+        }
+        for (i=0; i<Object.keys(dict_floors).length+1; i++){
+          group.add( dict_floors[i] )
+        }
+
         //----- Cubes
 
-        cube1 = cube0.clone()
-        cube1.position.set(0,80,-150);
-        cube2 = cube0.clone()
-        cube2.position.set(50,140,-150);
-        cube3 = cube0.clone()
-        cube3.position.set(100,140,-170);
-        cube4 = cube0.clone()
-        cube4.position.set(20,140,-50);
-        group.add( cube1 );
-        group.add( cube2 );
-        group.add( cube3 );
-        group.add( cube4 );
-        var pihalf = Math.PI/2
+        dict_cubes = {}
+        dict_cubes[1] = cube0.clone()
+        dict_cubes[1].position.set(0,80,-150);
+        dict_cubes[2] = cube0.clone()
+        dict_cubes[2].position.set(50,140,-150);
+        dict_cubes[3] = cube0.clone()
+        dict_cubes[3].position.set(100,140,-170);
+        dict_cubes[4] = cube0.clone()
+        dict_cubes[4].position.set(20,140,-50);
+        for (i=1; i<Object.keys(dict_cubes).length+1; i++){
+          group.add( dict_cubes[i] )
+        }
 
-        //import_collada('dae/vase4.dae', [20,20,20], [0,0,100], [-pihalf,0,0])
+        //----- Columns
         column_dic = {}
         column_dic[0] = column_torsed("texture/adesivo-de-parede-azulejos-05-cozinha.jpg", 5, 45,0,29, 16) // door
         column_dic[1] = column_dic[0].clone()
@@ -397,7 +412,7 @@ var building3 = function(){
         column_dic[2].position.set(75,0,0)
         column_dic[3] = column_dic[0].clone()
         column_dic[3].position.set(130,0,0)
-        column_dic[4] = column_torsed("texture/adesivo-de-parede-azulejos-05-cozinha.jpg", 5, 10,70,-170, 13)
+        column_dic[4] = column_torsed("texture/adesivo-de-parede-azulejos-05-cozinha.jpg", 5, 10,70,-170, 12)
         column_dic[5] = column_dic[4].clone()
         column_dic[5].position.set(130,0,0)
         column_dic[6] = column_dic[4].clone()
@@ -415,15 +430,58 @@ var building3 = function(){
         column_dic[11].position.set(20,60,150)
         column_dic[12] = column_dic[4].clone()
         column_dic[12].position.set(50,60,80)
-        for (i=0; i<13; i++){
+        for (i=0; i<Object.keys(column_dic).length+1; i++){
           group.add( column_dic[i] )
         }
 
         //-------------- Persians
 
-        persians("texture/latte0.jpg", 0.5, 180,180,-10, 0)
+        dict_pers = {}
+        pers0 = persians("texture/latte0.jpg", 0.5, 0,0,0, 0)
+        dict_pers[1] = pers0.clone()
+        dict_pers[1].position.set(170,180,0)
+        dict_pers[2] = pers0.clone()
+        dict_pers[2].rotation.set(0,Math.PI/2,0)
+        dict_pers[2].position.set(200,180,-30)
+        dict_pers[3] = pers0.clone()
+        dict_pers[3].rotation.set(0,Math.PI/2,0)
+        dict_pers[3].position.set(200,130,-50)
+        for (i=1; i<Object.keys(dict_pers).length+1; i++){
+             scene.add( dict_pers[i] )
+        }
 
-        tapestry("texture/tapis.jpg", 20,  50, 75, -150, 0)
+        //-------------- Tapestries
+
+        dict_taps = {}
+        tap0 = tapestry("texture/tapis.jpg", 20,  0,0,0, 0)
+        dict_taps[1] = tap0.clone()
+        dict_taps[1].position.set(50,75,-150)
+        dict_taps[2] = tap0.clone()
+        dict_taps[2].position.set(120,140,-140)
+        for (i=1; i<Object.keys(dict_taps).length+1; i++){
+             scene.add( dict_taps[i] )
+        }
+
+        // Tableaux à l'intérieur
+        dict_tabl_inside = {}
+        dict_tabl_inside[1] = tableau("paintings/Botero/Athenaeum.jpeg",50, 140,-115,50, 0)
+        dict_tabl_inside[2] = tableau("paintings/Botero/Fernando-Botero-painter.jpg",50, 110,-70,50, Math.PI/2)
+        dict_tabl_inside[3] = tableau("paintings/Botero/picnic.jpg",50, 265,-90,50, 3*Math.PI/2)
+        //dict_tabl_inside[4] = tableau("paintings/Botero/allant_au_lit.jpg",50, 265,-50,50, 3*Math.PI/2)
+        dict_tabl_inside[4] = tableau("paintings/Botero/family-scene.jpg",50, 265,-30,50, 3*Math.PI/2)
+        //dict_tabl_inside[5] = tableau("paintings/Botero/allant_au_lit.jpg",25, 110,-25,50, Math.PI/2)
+        dict_tabl_inside[5] = tableau("paintings/Botero/flamenco_rouge.jpg",25, 110,-20,50, Math.PI/2)
+        dict_tabl_inside[6] = tableau("paintings/Botero/orch.jpg",30, 240,15,50, Math.PI)
+        dict_tabl_inside[7] = tableau("paintings/Botero/in_street.jpg",30, 200,15,50, Math.PI)
+        dict_tabl_inside[8] = tableau("paintings/Botero/allant_au_lit.jpg",20, 115,15,50, Math.PI)
+        dict_tabl_inside[9] = tableau("paintings/Botero/circus_flower-Fernando-Botero.jpg",30, 240,-115,50, 0)
+        dict_tabl_inside[10] = tableau("paintings/Botero/self-portrait-with-sofia.jpg",20, 180,-115,50, 0)
+
+        //family-scene-ii-fernando-botero-canvas-paintings
+        for (i=1; i<Object.keys(dict_tabl_inside).length+1; i++){
+             scene.add( dict_tabl_inside[i] )
+        }
+
 
 
 } // end group building
