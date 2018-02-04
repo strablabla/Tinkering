@@ -11,10 +11,42 @@ function import_collada(addr, scale, position, rotation){ // import collada file
     })
 }// end import_collada
 
+function persians(txt, size,  x, y, z, angle){
+    //------ wooden board
+    var geom_board = new THREE.CubeGeometry( 50, 7, 3 )
+    var material_board = new THREE.MeshBasicMaterial({ map: THREE.ImageUtils.loadTexture(txt) }) // "texture/latte0.jpg"
+    simple_board0 = new THREE.Mesh( geom_board, material_board )
+    dic_board = {}
+    scale_board = size
+    dic_board[0] = simple_board0.clone()
+    dic_board[0].position.set(x, y, z)  // 180,180,-10
+    dic_board[0].rotation.set(-Math.PI/3,angle,0)
+    dic_board[0].scale.set(scale_board,scale_board*0.1,scale_board)
+    // dic_board[1] = simple_board0.clone()
+    // dic_board[0] = simple_board0.clone()*
+    for (i=1; i<20; i++){
+      dic_board[i] = dic_board[0].clone()
+      dic_board[i].position.y = dic_board[0].position.y-2*i
+      group.add( dic_board[i] )
+    }
+}
+
+function tapestry(txt, size,  x, y, z, angle){
+      var geom_cube = new THREE.CubeGeometry( 2*size, 0.3, size )
+      var material_cube = new THREE.MeshBasicMaterial({ map: THREE.ImageUtils.loadTexture(txt) })
+      var cube = new THREE.Mesh( geom_cube, material_cube )
+      cube.position.set(x, y, z)
+      cube.rotation.set(0, Math.PI/180*angle, 0)
+      scene.add(cube)
+}
 
 function column_torsed(txt, size,  x, y, z, nbcubes){
+      var group_column = new THREE.Group();
+      scene.add( group_column );
       var geom_cube = new THREE.CubeGeometry( size, size, size )
       var material_cube = new THREE.MeshBasicMaterial({ map: THREE.ImageUtils.loadTexture(txt) })
+      //var material_cube = new THREE.MeshBasicMaterial({ color: 0xffff00})
+      //var material_cube = new THREE.MeshBasicMaterial({ color: 0xffffff})
       cube = new THREE.Mesh( geom_cube, material_cube )
       cube.position.set(x, y, z)
 
@@ -22,8 +54,10 @@ function column_torsed(txt, size,  x, y, z, nbcubes){
         newcube = cube.clone()
         newcube.rotation.set(0, Math.PI/10*i, 0)
         newcube.position.y = y+i*size
-        scene.add(newcube)
+        group_column.add(newcube)
+        //scene.add(newcube)
       }
+      return group_column
 }
 
 function some_cube(txt, size,  x, z, y, roty){
@@ -319,20 +353,19 @@ var building3 = function(){
 		list_tabl = [0, 1, 2 , 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
 		all_tabl = []
 
-        for (i=0; i<40;i++){
-			wall_corr0 = wall0.clone()
-			wall_corr1 = wall0.clone()
-			floor_corr0 = floor_wood0.clone()
-			floor_corr1 = floor_wood0.clone()
-			wall_corr0.position.set(sz, sz , -3*sz-i*sz);
-			wall_corr1.position.set(2*sz, sz , -3*sz-i*sz);
-			floor_corr0.position.set(3*sz/2, 7 , -3*sz-i*sz);
-			floor_corr1.position.set(5*sz/2, 7 , -3*sz-i*sz);
-			group.add( wall_corr0 );
-			group.add( wall_corr1 );
-			group.add( floor_corr0 );
+    for (i=0; i<40;i++){
+  			wall_corr0 = wall0.clone()
+  			wall_corr1 = wall0.clone()
+  			floor_corr0 = floor_wood0.clone()
+  			floor_corr1 = floor_wood0.clone()
+  			wall_corr0.position.set(sz, sz/2 , -3*sz-i*sz);
+  			wall_corr1.position.set(2*sz, sz , -3*sz-i*sz);
+  			floor_corr0.position.set(3*sz/2, 11 , -3*sz-i*sz);
+  			floor_corr1.position.set(5*sz/2, 11 , -3*sz-i*sz);
+  			group.add( wall_corr0 );
+  			group.add( wall_corr1 );
+  			group.add( floor_corr0 );
 		}
-
 
 	    for (i=0; i<list_tabl.length; i++){
 	        all_tabl.push(tableau('paintings/impressionnistes/' + list_tabl[i] + '.jpg', size_tab, 2*sz-10 , -3*sz-i*sz, 50, -Math.PI/2.0));
@@ -356,11 +389,41 @@ var building3 = function(){
         var pihalf = Math.PI/2
 
         //import_collada('dae/vase4.dae', [20,20,20], [0,0,100], [-pihalf,0,0])
+        column_dic = {}
+        column_dic[0] = column_torsed("texture/adesivo-de-parede-azulejos-05-cozinha.jpg", 5, 45,0,29, 16) // door
+        column_dic[1] = column_dic[0].clone()
+        column_dic[1].position.set(30,0,0)
+        column_dic[2] = column_dic[0].clone()
+        column_dic[2].position.set(75,0,0)
+        column_dic[3] = column_dic[0].clone()
+        column_dic[3].position.set(130,0,0)
+        column_dic[4] = column_torsed("texture/adesivo-de-parede-azulejos-05-cozinha.jpg", 5, 10,70,-170, 13)
+        column_dic[5] = column_dic[4].clone()
+        column_dic[5].position.set(130,0,0)
+        column_dic[6] = column_dic[4].clone()
+        column_dic[6].position.set(30,60,-10)
+        column_dic[7] = column_dic[4].clone()
+        column_dic[7].position.set(120,60,-10)
+        column_dic[8] = column_dic[4].clone()
+        column_dic[8].position.set(170,60,150)
+        column_dic[9] = column_dic[4].clone()
+        column_dic[9].position.set(30,0,150)
+        column_dic[10] = column_dic[4].clone()
+        column_dic[10].position.set(150,0,130)
+        //---
+        column_dic[11] = column_dic[4].clone()
+        column_dic[11].position.set(20,60,150)
+        column_dic[12] = column_dic[4].clone()
+        column_dic[12].position.set(50,60,80)
+        for (i=0; i<13; i++){
+          group.add( column_dic[i] )
+        }
 
-        column_torsed("texture/adesivo-de-parede-azulejos-05-cozinha.jpg", 5, 0,0,30, 20)
-        column_torsed("texture/adesivo-de-parede-azulejos-05-cozinha.jpg", 5, 20,0,30, 20)
+        //-------------- Persians
+
+        persians("texture/latte0.jpg", 0.5, 180,180,-10, 0)
+
+        tapestry("texture/tapis.jpg", 20,  50, 75, -150, 0)
 
 
-
-
-}
+} // end group building
