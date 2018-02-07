@@ -422,19 +422,37 @@ var building3 = function(){
 
       // Other floors, floor Botero, parquet
 
-        level_floor_inside = 25
-        dict_floors = {}
-        scale_floor = 0.25
+        level_floor_inside0 = 25
+        dict_floors0 = {}
+        scale_floor0 = 0.25
         var repi = 15
-        for (i=0; i<repi; i++){
-            for (j=0; j<15; j++){
-              dict_floors[j+repi*i] = floor_wood0.clone()
-              dict_floors[j+repi*i].scale.set(scale_floor,scale_floor,scale_floor)
-              dict_floors[j+repi*i].position.set(100+50*i*scale_floor, level_floor_inside, 30-50*j*scale_floor)
+        for (i=0; i<15; i++){
+            for (j=0; j<repi; j++){
+              dict_floors0[j+repi*i] = floor_wood0.clone()
+              dict_floors0[j+repi*i].scale.set(scale_floor0,scale_floor0,scale_floor0)
+              dict_floors0[j+repi*i].position.set(100+50*i*scale_floor0, level_floor_inside0, 30-50*j*scale_floor0)
             }
         }
-        for (i=0; i<Object.keys(dict_floors).length+1; i++){
-               group.add( dict_floors[i] )
+        for (i=0; i<Object.keys(dict_floors0).length+1; i++){
+               group.add( dict_floors0[i] )
+        }
+
+
+      // Other floors
+
+        level_floor_inside1 = 25
+        dict_floors1 = {}
+        scale_floor1 = 0.25
+        var repi = 15
+        for (i=0; i<8; i++){
+            for (j=0; j<repi; j++){
+              dict_floors1[j+repi*i] = floor_wood0.clone()
+              dict_floors1[j+repi*i].scale.set(scale_floor1,scale_floor1,scale_floor1)
+              dict_floors1[j+repi*i].position.set(10+50*i*scale_floor1, level_floor_inside1, 30-50*j*scale_floor1)
+            }
+        }
+        for (i=0; i<Object.keys(dict_floors1).length+1; i++){
+               group.add( dict_floors1[i] )
         }
 
         //----- Cubes
@@ -452,9 +470,10 @@ var building3 = function(){
           group.add( dict_cubes[i] )
         }
 
-        //----- Columns
+        //----- Columns, pillars
+
         column_dic = {}
-        column_dic[0] = column_torsed("texture/adesivo-de-parede-azulejos-05-cozinha.jpg", 5, 45,0,29, 16) // door
+        column_dic[0] = column_torsed("texture/adesivo-de-parede-azulejos-05-cozinha.jpg", 5, 45,27,29, 10) // door
         column_dic[1] = column_dic[0].clone()
         column_dic[1].position.set(30,0,0)
         column_dic[2] = column_dic[0].clone()
@@ -564,7 +583,7 @@ var building3 = function(){
               scene.add( dict_bulb[i] )
         }
 
-        // Other floors, floor outside with checkers
+        // Other floors, floor outside with checkers, outside Botero
 
         size_pav = 50
         pav_elem0 = pavage("texture/166280_2322900.jpg", size_pav,  0,0,0, 0)
@@ -583,6 +602,8 @@ var building3 = function(){
         for (i=0; i<Object.keys(dict_pav0).length+1; i++){
                group.add( dict_pav0[i] )
         }
+
+
 
 
 
