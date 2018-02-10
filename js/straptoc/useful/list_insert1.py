@@ -52,6 +52,7 @@ class LIST_INSERT(object):
             self.prefix  =  root + self.prefix.split(root)[1]  # '../../' +
         else:
             self.prefix  =  root + path  # '../../' +
+        self.prefix  = '../../' + self.prefix
         dic_categ = {}                                                # list categories
         dict_lines = {}
         for path, dirs, files in os.walk('.'):                        # Go through the folders
