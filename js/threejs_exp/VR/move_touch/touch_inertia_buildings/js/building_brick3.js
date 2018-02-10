@@ -11,6 +11,23 @@ function import_collada(addr, scale, position, rotation){ // import collada file
     })
 }// end import_collada
 
+function do_floor(txt, size_pav, level_pav, scale_pav, sizez, sizex, posx, posz){
+          pav_elem = pavage(txt, size_pav,  0,0,0, 0)
+          dict_pav = {}
+          for (i=0; i<sizex; i++){
+              for (j=0; j<sizez; j++){
+                dict_pav[j + sizez*i] = pav_elem.clone()
+                dict_pav[j + sizez*i].scale.set(scale_pav, scale_pav, scale_pav)
+                dict_pav[j + sizez*i].position.set(posx+size_pav*i*scale_pav, level_pav, posz-size_pav*j*scale_pav)
+              }
+          }
+          for (i=0; i<Object.keys(dict_pav).length+1; i++){
+                 group.add( dict_pav[i] )
+          }
+    }
+
+
+
 var make_bulb = function(posx, posy, posz){
     /*
     Lamps
@@ -37,6 +54,53 @@ var make_bulb = function(posx, posy, posz){
     group_bulb.add(bulbLight)
 
     return group_bulb
+}
+
+localPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 200 );
+// var globalPlane = new THREE.Plane( new THREE.Vector3( 1, 0, 0 ), 1 );
+// renderer.clippingPlanes = [ globalPlane ];
+// renderer.localClippingEnabled = true;
+// var material = new THREE.MeshPhongMaterial( {
+//     clippingPlanes: [ localPlane ],
+//     clipShadows: true
+// } );
+
+function treillis(txt, size,  x, y, z, angle){
+    /*
+    Treillis
+    */
+    var group_treillis = new THREE.Group();
+    var geom_treillis = new THREE.CubeGeometry( 50, 7, 3 )
+    var material_treillis = new THREE.MeshBasicMaterial({ map: THREE.ImageUtils.loadTexture(txt),
+                        clippingPlanes: [ localPlane ]
+                       }) // "texture/latte0.jpg"
+    simple_board0 = new THREE.Mesh( geom_treillis, material_treillis )
+    dic_treillis = {}
+    scale_treillis = size
+    dic_treillis[0] = simple_board0.clone()
+    dic_treillis[1] = simple_board0.clone()
+    //dic_treillis[0].rotation.set(Math.PI/2,angle,Math.PI/3)
+    dic_treillis[0].rotation.set(0,0,Math.PI/3)
+    dic_treillis[0].position.set(x, y, z)  // 180,180,-10
+    dic_treillis[0].scale.set(scale_treillis,scale_treillis*0.1,scale_treillis*0.1)
+    dic_treillis[1].rotation.set(0,0,-Math.PI/3)
+    dic_treillis[1].position.set(x, y, z)  // 180,180,-10
+    dic_treillis[1].scale.set(scale_treillis,scale_treillis*0.1,scale_treillis*0.1)
+    fact_treill = 30
+    for (i=1; i<20; i++){
+          dic_treillis[2*i] = dic_treillis[0].clone()
+          dic_treillis[2*i].position.y = dic_treillis[0].position.y-2*i
+          dic_treillis[2*i+1] = dic_treillis[1].clone()
+          dic_treillis[2*i+1].position.y = dic_treillis[1].position.y-2*i
+          if (i<10){
+                dim0 = scale_treillis+(i-10)/fact_treill
+                dic_treillis[2*i+1].scale.set(dim0,dim0*0.1,scale_treillis*0.1)
+                dic_treillis[2*i].scale.set(dim0,dim0*0.1,scale_treillis*0.1)
+          }
+          group_treillis.add( dic_treillis[2*i] )
+          group_treillis.add( dic_treillis[2*i+1] )
+    }
+    return group_treillis
 }
 
 function persians(txt, size,  x, y, z, angle){
@@ -518,6 +582,16 @@ var building3 = function(){
              scene.add( dict_pers[i] )
         }
 
+        //-------------- Treillis
+
+        // dict_treill = {}
+        // treill0 = treillis("texture/latte0.jpg", 0.5, 0,0,0, 0)
+        // dict_treill[1] = treill0.clone()
+        // dict_treill[1].position.set(170,60,50)
+        // for (i=1; i<Object.keys(dict_treill).length+1; i++){
+        //      scene.add( dict_treill[i] )
+        // }
+
         //-------------- Tapestries
 
         dict_taps = {}
@@ -585,27 +659,9 @@ var building3 = function(){
 
         // Other floors, floor outside with checkers, outside Botero
 
-        size_pav = 50
-        pav_elem0 = pavage("texture/166280_2322900.jpg", size_pav,  0,0,0, 0)
-
-        level_pav0 = 25
-        dict_pav0 = {}
-        scale_pav0 = 0.5
-        var repi = 20 // z axis
-        for (i=0; i<7; i++){
-            for (j=0; j<repi; j++){
-              dict_pav0[j+repi*i] = pav_elem0.clone()
-              dict_pav0[j+repi*i].scale.set(scale_pav0, scale_pav0, scale_pav0)
-              dict_pav0[j+repi*i].position.set(110+size_pav*i*scale_pav0, level_pav0, -140-size_pav*j*scale_pav0)
-            }
-        }
-        for (i=0; i<Object.keys(dict_pav0).length+1; i++){
-               group.add( dict_pav0[i] )
-        }
-
-
-
-
+        do_floor("texture/166280_2322900.jpg", 50, 25, 0.5, 20, 7, 110, -140)
+        do_floor("texture/166280_2322900.jpg", 75, 135, 0.5, 2,1, 125, -20)
+        do_floor("texture/489842808.jpg", 40, 75, 0.5, 5,2, 65, -10)
 
 
 
