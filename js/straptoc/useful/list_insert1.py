@@ -1,5 +1,6 @@
 # coding: utf8
 import sys, os
+import collections
 
 '''
 Build the straptoc code for inserting images, pdf etc in a straptoc document.
@@ -52,6 +53,7 @@ class LIST_INSERT(object):
         else:
             self.prefix  =  root + path  # '../../' +
         dic_categ = {}                                                # list categories
+        dict_lines = {}
         for path, dirs, files in os.walk('.'):                        # Go through the folders
             for f in files:                                           # considering files
                 oldpath = os.path.join(path, f)
@@ -71,7 +73,21 @@ class LIST_INSERT(object):
                 else:
                     newpath = intermpath                              # no empty spaces detected
                 root,ext = os.path.splitext(newpath)
-                self.folder_subfolder(newpath, dic_categ)
+                strline, newcat = self.folder_subfolder(newpath, dic_categ)
+
+                if newcat:
+                    dict_lines[newcat] = strline + '\n'
+                    currcat = newcat
+                else:
+                    try:
+                        dict_lines[currcat] += strline + '\n'
+                    except:
+                        pass
+        newd = collections.OrderedDict(sorted(dict_lines.items()))
+        for k, v in reversed(newd.items()):
+            print(v.strip())
+
+        # print(dict_lines)
 
     def folder_subfolder(self, newpath, dic_categ):
         '''
@@ -85,27 +101,35 @@ class LIST_INSERT(object):
                      }
         nwps = newpath[2:].split('/')
         #print("-------nwps is ", nwps)
+
         if len(nwps) <= 2:
-            if len(nwps) == 2:                             # subfolders (2nd level)
-                if nwps[0] not in dic_categ :
-                    dic_categ[nwps[0]] = 1                # initialize
-                    cat0 = '* {0} :: \n    * '.format(nwps[0])
+            newcat = None
+            if len(nwps) == 2:
+                                                   # subfolders (2nd level)
+                if nwps[0] not in dic_categ :                     # new category
+                    dic_categ[nwps[0]] = 1                        # initialize
+                    cat0 = '* {0} :: \n    * '.format(nwps[0])    # category num 1
                     cat1 = strap[self.kind]
                     cat2 = ' \n     +++ {1}/{0} \n'.format(nwps[0], self.prefix)
                     #print("-----cat2 is ", cat2)
                     category = cat0 + cat1 + cat2
+                    newcat = int(nwps[0])
                 else:
-                    dic_categ[nwps[0]] += 1 # increment
+                    dic_categ[nwps[0]] += 1                       # increment
                     category = '    '       #
-            else:                                         # first occurrence
+            else:                                                 # first occurrence
                 if self.first:
                     cat0 = ' \n     +++ {0} \n'.format(self.prefix)
                     category = '* '+ strap[self.kind] + cat0
                     self.first = False
                 else:
-                    category = ''                         # First Level..
+                    category = ''                                # First Level..
             strline = category + strapline[self.kind]
-            print(strline)
+            #print(strline)
+            # if newcat:
+            #     print("#######" + newcat)
+
+        return strline, newcat
 
 if __name__=='__main__':
     help = '''
