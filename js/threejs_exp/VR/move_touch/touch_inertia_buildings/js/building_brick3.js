@@ -11,6 +11,30 @@ function import_collada(addr, scale, position, rotation){ // import collada file
     })
 }// end import_collada
 
+function ceiling_white(sizex, sizey, posx, posy, posz){
+  /*
+  ceiling
+  */
+
+  var geom_ceiling = new THREE.CubeGeometry( sizex, 1, sizey )
+  var mat_ceiling = new THREE.MeshBasicMaterial({ color: 0xffffff }) // "texture/latte0.jpg"
+  var ceiling = new THREE.Mesh( geom_ceiling, mat_ceiling );
+  ceiling.position.set(posx, posy, posz)
+  return ceiling
+
+}
+
+function ball(txt, size, posx, posy, posz){
+      /*
+      ball
+      */
+      var geometry = new THREE.SphereGeometry( size, 32, 32 );
+      var material = new THREE.MeshBasicMaterial( {map: THREE.ImageUtils.loadTexture(txt)} );
+      var ball = new THREE.Mesh( geometry, material );
+      ball.position.set(posx, posy, posz)
+      return ball
+}
+
 function do_floor(txt, size_pav, level_pav, scale_pav, sizez, sizex, posx, posz){
           pav_elem = pavage(txt, size_pav,  0,0,0, 0)
           dict_pav = {}
@@ -141,7 +165,7 @@ function column_torsed(txt, size,  x, y, z, nbcubes){
       Torsed column
       */
       var group_column = new THREE.Group();
-      scene.add( group_column );
+      //scene.add( group_column );
       var geom_cube = new THREE.CubeGeometry( size, size, size )
       var material_cube = new THREE.MeshBasicMaterial({ map: THREE.ImageUtils.loadTexture(txt) })
       cube = new THREE.Mesh( geom_cube, material_cube )
@@ -691,6 +715,38 @@ var building3 = function(){
         for (i=1; i<Object.keys(dict_tabl_ff).length+1; i++){
              scene.add( dict_tabl_ff[i] )
         }
+        //----- The four columns, pillars
+
+        var column_tower_dic = {}
+
+        var space_col = 20
+        height_tow = 20
+        var column_tower_base = column_torsed("texture/azulejos_portugal.jpg", 15, 0,0,0, height_tow) // door
+        for (i=0;i<4; i++){
+          column_tower_dic[2*i] = column_tower_base.clone()
+          column_tower_dic[2*i].position.set(45,10,80+space_col*i)
+          column_tower_dic[2*i+1] = column_tower_base.clone()
+          column_tower_dic[2*i+1].position.set(80,10,80+space_col*i)
+        }
+
+        for (i=0; i<Object.keys(column_tower_dic).length+1; i++){
+          group.add( column_tower_dic[i] )
+        }
+
+        //--------- ball
+        posz_ball = -10
+        size_ball = 2
+        ball_dic = {}
+        ball_dic[0] = ball("texture/verre-souffle-bariole-bar014.jpg", size_ball, 50,30, posz_ball-5)
+        ball_dic[1] = ball("texture/bariolé_clair.jpeg", size_ball, 40,30, posz_ball+5)
+        ball_dic[2] = ball("texture/verre-souffle-bariole-bar233.jpg", size_ball, 30,30, posz_ball-3)
+        for (i=0; i<Object.keys(ball_dic).length+1; i++){
+          group.add( ball_dic[i] )
+        }
+
+        //---------------
+        ceil = ceiling_white(90,90, 50,66.5,-20)
+        group.add( ceil )
 
 
 
