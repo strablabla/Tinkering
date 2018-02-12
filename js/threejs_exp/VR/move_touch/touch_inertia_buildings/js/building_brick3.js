@@ -10,6 +10,114 @@ function import_collada(addr, scale, position, rotation){ // import collada file
       scene.add(collada.scene)
     })
 }// end import_collada
+//
+
+
+
+// function road_white(sizex, sizey, posx, posy, posz){
+//   /*
+//   road
+//   */
+//   // Create a sine-like wave
+// var curve = new THREE.SplineCurve( [
+// 	new THREE.Vector2( -10, 0 ),
+// 	new THREE.Vector2( -5, 5 ),
+// 	new THREE.Vector2( 0, 0 ),
+// 	new THREE.Vector2( 5, -5 ),
+// 	new THREE.Vector2( 10, 0 )
+// ] );
+//
+// var points = curve.getPoints( 500 );
+// var geometry = new THREE.BufferGeometry().setFromPoints( points );
+//
+// var material = new THREE.LineBasicMaterial( { color : 0xff0000 } );
+//
+// // Create the final object to add to the scene
+// var splineObject = new THREE.Line( geometry, material );
+// splineObject.scale.set(400)
+// splineObject.position.set(100,200,200)
+//
+// scene.add( splineObject );
+//
+// }
+
+function tube_text(txt, sizex, sizey, posx, posy, posz){
+  /*
+  road
+  */
+
+          function CustomSinCurve( scale ) {
+
+        	THREE.Curve.call( this );
+
+        	this.scale = ( scale === undefined ) ? 1 : scale;
+
+        }
+
+        CustomSinCurve.prototype = Object.create( THREE.Curve.prototype );
+        CustomSinCurve.prototype.constructor = CustomSinCurve;
+
+        CustomSinCurve.prototype.getPoint = function ( t ) {
+
+        	var tx = t * 3 - 1.5;
+        	var ty = Math.sin( 2 * Math.PI * t );
+        	var tz = 0;
+
+        	return new THREE.Vector3( tx, ty, tz ).multiplyScalar( this.scale );
+
+        };
+
+        var path = new CustomSinCurve( 20 );
+        var geometry = new THREE.TubeGeometry( path, 200, 2, 8, false );
+        //var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+        var material = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture("texture/im-4-stickers-deco-Mosaiques-12x12cm-style-Azulejos-yellow.jpg")} );
+
+        var mesh = new THREE.Mesh( geometry, material );
+        mesh.position.set(0,100,100)
+        scene.add( mesh );
+
+}
+
+
+function road_white(sizex, sizey, posx, posy, posz){
+  /*
+  road
+  */
+
+          function CustomSinCurve( scale ) {
+
+        	THREE.Curve.call( this );
+
+        	this.scale = ( scale === undefined ) ? 1 : scale;
+
+        }
+
+        CustomSinCurve.prototype = Object.create( THREE.Curve.prototype );
+        CustomSinCurve.prototype.constructor = CustomSinCurve;
+
+        CustomSinCurve.prototype.getPoint = function ( t ) {
+
+        	var tx = t * 10 - 1.5;
+        	var ty = 0;
+        	var tz = Math.sin( 10 * Math.PI * t );
+
+        	return new THREE.Vector3( tx, ty, tz ).multiplyScalar( this.scale );
+
+        };
+
+        var path = new CustomSinCurve( 20 );
+        var geometry = new THREE.TubeGeometry( path, 200, 2, 20, false );
+        var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+        //var material = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture("texture/im-4-stickers-deco-Mosaiques-12x12cm-style-Azulejos-yellow.jpg")} );
+
+        var mesh = new THREE.Mesh( geometry, material );
+        mesh.position.set(0,100,10)
+        mesh.scale.set(1,0.1,1)
+
+        scene.add( mesh );
+
+}
+
 
 function ceiling_white(sizex, sizey, posx, posy, posz){
   /*
@@ -55,6 +163,9 @@ var make_bulb = function(posx, posy, posz){
     /*
     Lamps
     */
+
+    // rings
+
     var group_bulb = new THREE.Group();
     var geom_ring = new THREE.TorusGeometry( 10, 3, 16, 100 );
     var mat_ring = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
@@ -68,6 +179,15 @@ var make_bulb = function(posx, posy, posz){
       ring_bulb.position.y = 5+posz+1.5*i;
       group_bulb.add(ring_bulb)
     }
+
+    // cone
+    var scale_cone = 1.2
+    var geom_cone_bulb = new THREE.ConeGeometry( 10, 7, 32 );
+    var mat_cone_bulb = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+    var cone_bulb = new THREE.Mesh( geom_cone_bulb, mat_cone_bulb );
+    cone_bulb.position.set(  posx, posy+2, posz  );
+    cone_bulb.scale.set(  scale_cone, scale_cone, scale_cone  );
+    group_bulb.add(cone_bulb)
 
     var bulbGeometry = new THREE.SphereGeometry( size_bulb, 16, 8 );
     bulbLight = new THREE.PointLight( 0xffee88, 1, 100, 2 );
@@ -709,8 +829,7 @@ var building3 = function(){
         dict_tabl_ff[1] = tableau("images/Shadok/connerie_intelligence.jpg",40, 7,-30, level1_ff, Math.PI/2)
         dict_tabl_ff[2] = tableau("images/Shadok/solutions.jpg",40, 90,-30, level1_ff, 3*Math.PI/2)
         dict_tabl_ff[3] = tableau("images/Shadok/bien_mal.jpg",30, 30,-65, level1_ff, 0)
-        dict_tabl_ff[4] = tableau("images/Shadok/précaution.jpg",35, 25,10, 50, Math.PI)
-
+        dict_tabl_ff[4] = tableau("images/Shadok/précaution.jpg",30, 30,18,47, Math.PI)
 
         for (i=1; i<Object.keys(dict_tabl_ff).length+1; i++){
              scene.add( dict_tabl_ff[i] )
@@ -747,6 +866,10 @@ var building3 = function(){
         //---------------
         ceil = ceiling_white(90,90, 50,66.5,-20)
         group.add( ceil )
+
+        //------------- Road
+
+        road_white(10, 5, 0, 40, 100)
 
 
 
