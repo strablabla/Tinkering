@@ -14,32 +14,6 @@ function import_collada(addr, scale, position, rotation){ // import collada file
 
 
 
-// function road_white(sizex, sizey, posx, posy, posz){
-//   /*
-//   road
-//   */
-//   // Create a sine-like wave
-// var curve = new THREE.SplineCurve( [
-// 	new THREE.Vector2( -10, 0 ),
-// 	new THREE.Vector2( -5, 5 ),
-// 	new THREE.Vector2( 0, 0 ),
-// 	new THREE.Vector2( 5, -5 ),
-// 	new THREE.Vector2( 10, 0 )
-// ] );
-//
-// var points = curve.getPoints( 500 );
-// var geometry = new THREE.BufferGeometry().setFromPoints( points );
-//
-// var material = new THREE.LineBasicMaterial( { color : 0xff0000 } );
-//
-// // Create the final object to add to the scene
-// var splineObject = new THREE.Line( geometry, material );
-// splineObject.scale.set(400)
-// splineObject.position.set(100,200,200)
-//
-// scene.add( splineObject );
-//
-// }
 
 function tube_text(txt, sizex, sizey, posx, posy, posz){
   /*
@@ -102,6 +76,7 @@ function meander(txt, sizex, sizey, posx, posy, posz, nbmeand, length,  nbseg, a
         var geometry = new THREE.TubeGeometry( path, nbseg, sizex, sizey, false );
         //var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
         var material = new THREE.MeshBasicMaterial( { map: texture} );
+        //var material = new THREE.MeshBasicMaterial( { color: 0xcceeff } ); // 4dc3ff
         var mesh = new THREE.Mesh( geometry, material );
         //mesh.rotation.set(ang)
         mesh.position.set(posx, posy, posz)
@@ -387,9 +362,48 @@ var bulblight = function(x,y,z){
 	  return bulbLight
 }
 
+function tube_scale(txt, sizex, sizey, posx, posy, posz){
+  /*
+  rambarde
+  */
+
+          function CustomSinCurve( scale ) {
+
+          THREE.Curve.call( this );
+
+          this.scale = ( scale === undefined ) ? 1 : scale;
+
+        }
+
+        CustomSinCurve.prototype = Object.create( THREE.Curve.prototype );
+        CustomSinCurve.prototype.constructor = CustomSinCurve;
+
+        CustomSinCurve.prototype.getPoint = function ( t ) {
+          var length = 5
+          var tx =  0;
+          var ty =  t * length+ 0.1*Math.sin( 12 * Math.PI * t );
+          var tz = 1.9 *  t * length;
+
+          return new THREE.Vector3( tx, ty, tz ).multiplyScalar( this.scale );
+
+        };
+
+        var path = new CustomSinCurve( 20 );
+        var geometry = new THREE.TubeGeometry( path, 200, sizex, sizey, false );
+        //var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+        var texture = new THREE.TextureLoader().load( txt );
+        var material = new THREE.MeshBasicMaterial( {color: 0x000000} ); // { map: texture}
+
+        var mesh = new THREE.Mesh( geometry, material );
+        mesh.position.set(posx, posy, posz)
+        return mesh
+
+
+}
+
 function scale(txt, rot, posx, posy, posz, heighty, nbscales){
     	/*
-      Scale
+      Scale, escaliers
     	*/
     	hstep = 5
     	lstep = 10
@@ -400,7 +414,8 @@ function scale(txt, rot, posx, posy, posz, heighty, nbscales){
     	group_scale = new THREE.Group();
     	scene.add( group_scale );
     	var geom_step = new THREE.CubeGeometry( wstep, hstep, lstep )
-    	var material_step = new THREE.MeshBasicMaterial({ map: THREE.ImageUtils.loadTexture(txt) })
+      var texture = new THREE.TextureLoader().load( txt );
+    	var material_step = new THREE.MeshBasicMaterial({ map: texture })
     	step0 = new THREE.Mesh( geom_step, material_step )
     	step0.position.set(sx,sy,sz);
     	for ( i=0; i<nbscales; i++){
@@ -410,6 +425,15 @@ function scale(txt, rot, posx, posy, posz, heighty, nbscales){
     	}
     	group_scale.rotation.y = rot; // 3*Math.PI / 2;
     	group_scale.position.set(posx, posy, posz); //420,0,0
+
+      ztube = -10
+
+      ramb0 = tube_scale(txt, 1,2, 20,ztube,-40)
+      ramb1 = tube_scale(txt, 1,2, -20,ztube,-40)
+
+
+      group_scale.add( ramb1 );
+      group_scale.add( ramb0 );
 }
 
 var building3 = function(){
@@ -905,7 +929,7 @@ var building3 = function(){
 
         // Meander
 
-        meander("texture/water_water.jpg", 5,700, -1000,22,50, 80, 500, 1000, 0)
+        // meander("texture/water_water.jpg", 5,700, -1000,22,50, 80, 500, 400, 0)
 
 
 
