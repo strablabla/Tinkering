@@ -78,7 +78,7 @@ function tube_text(txt, sizex, sizey, posx, posy, posz){
 
 }
 
-function meander(txt, sizex, sizey, posx, posy, posz, ang){
+function meander(txt, sizex, sizey, posx, posy, posz, nbmeand, length,  nbseg, ang){
     /*
     meander
     */
@@ -91,15 +91,15 @@ function meander(txt, sizex, sizey, posx, posy, posz, ang){
           CustomSinCurve.prototype = Object.create( THREE.Curve.prototype );
           CustomSinCurve.prototype.constructor = CustomSinCurve;
           CustomSinCurve.prototype.getPoint = function ( t ) {
-        	var tx = t * 30;
+        	var tx = t * length;
         	var ty = 0;
-        	var tz = Math.sin( 5 * Math.PI * t );
+        	var tz = Math.sin( nbmeand * Math.PI * t );
         	return new THREE.Vector3( tx, ty, tz ).multiplyScalar( this.scale );
 
         };
         var texture = new THREE.TextureLoader().load( txt );
         var path = new CustomSinCurve( 20 );
-        var geometry = new THREE.TubeGeometry( path, 200, sizex, sizey, false );
+        var geometry = new THREE.TubeGeometry( path, nbseg, sizex, sizey, false );
         //var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
         var material = new THREE.MeshBasicMaterial( { map: texture} );
         var mesh = new THREE.Mesh( geometry, material );
@@ -905,7 +905,7 @@ var building3 = function(){
 
         // Meander
 
-        meander("texture/water_water.jpg", 5,300, -700,40,50, 0)
+        meander("texture/water_water.jpg", 5,700, -1000,22,50, 80, 500, 1000, 0)
 
 
 
