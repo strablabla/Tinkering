@@ -13,17 +13,13 @@ function import_collada(addr, scale, position, rotation){ // import collada file
 //
 
 
-
-
 function tube_text(txt, sizex, sizey, posx, posy, posz){
   /*
   road
   */
 
           function CustomSinCurve( scale ) {
-
         	THREE.Curve.call( this );
-
         	this.scale = ( scale === undefined ) ? 1 : scale;
 
         }
@@ -85,6 +81,53 @@ function meander(txt, sizex, sizey, posx, posy, posz, nbmeand, length,  nbseg, a
 
 }
 
+function wavy_grid(sizex, sizey, posx, posy, posz){
+      /*
+      Wavy Grid
+      */
+
+      var group_grid = new THREE.Group();
+
+      function CustomSinCurve( scale ) {
+          THREE.Curve.call( this );
+          this.scale = ( scale === undefined ) ? 1 : scale;
+        }
+
+          CustomSinCurve.prototype = Object.create( THREE.Curve.prototype );
+          CustomSinCurve.prototype.constructor = CustomSinCurve;
+          CustomSinCurve.prototype.getPoint = function ( t ) {
+
+          var tx = t * 5 - 1.5;
+          var ty = 0.1*Math.sin( 10 * Math.PI * t );
+          var tz = 0;
+
+          return new THREE.Vector3( tx, ty, tz ).multiplyScalar( this.scale );
+
+        };
+
+        var path = new CustomSinCurve( 20 );
+        var geometry = new THREE.TubeGeometry( path, 200, 2, 20, false );
+        var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+        //var material = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture("texture/im-4-stickers-deco-Mosaiques-12x12cm-style-Azulejos-yellow.jpg")} );
+        
+
+        var grid0 = new THREE.Mesh( geometry, material );
+        grid0.position.set(posx, posy, posz)
+        size_grid = 1
+        grid0.scale.set(size_grid,size_grid,size_grid)
+
+        for (i=0;i<5;i++){
+           newgrid = grid0.clone()
+           newgrid.position.y = 50+i*10
+           group_grid.add( newgrid );
+
+
+        }
+
+        
+        return group_grid
+
+}
 
 function road_white(sizex, sizey, posx, posy, posz){
   /*
@@ -96,9 +139,9 @@ function road_white(sizex, sizey, posx, posy, posz){
         	this.scale = ( scale === undefined ) ? 1 : scale;
         }
 
-        CustomSinCurve.prototype = Object.create( THREE.Curve.prototype );
-        CustomSinCurve.prototype.constructor = CustomSinCurve;
-        CustomSinCurve.prototype.getPoint = function ( t ) {
+          CustomSinCurve.prototype = Object.create( THREE.Curve.prototype );
+          CustomSinCurve.prototype.constructor = CustomSinCurve;
+          CustomSinCurve.prototype.getPoint = function ( t ) {
 
         	var tx = t * 10 - 1.5;
         	var ty = 0;
@@ -161,7 +204,6 @@ function do_floor(txt, size_pav, level_pav, scale_pav, sizez, sizex, posx, posz)
                  group.add( dict_pav[i] )
           }
     }
-
 
 var make_bulb = function(posx, posy, posz){
     /*
@@ -930,6 +972,9 @@ var building3 = function(){
         // Meander
 
         // meander("texture/water_water.jpg", 5,700, -1000,22,50, 80, 500, 400, 0)
+
+        grid0 = wavy_grid(2,2, -200, 40, 200)
+        group.add( grid0 )
 
 
 
