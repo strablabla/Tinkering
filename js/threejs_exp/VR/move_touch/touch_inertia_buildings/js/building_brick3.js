@@ -109,22 +109,37 @@ function wavy_grid(sizex, sizey, posx, posy, posz){
         var geometry = new THREE.TubeGeometry( path, 200, 2, 20, false );
         var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
         //var material = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture("texture/im-4-stickers-deco-Mosaiques-12x12cm-style-Azulejos-yellow.jpg")} );
-        
+
 
         var grid0 = new THREE.Mesh( geometry, material );
-        grid0.position.set(posx, posy, posz)
-        size_grid = 1
-        grid0.scale.set(size_grid,size_grid,size_grid)
 
-        for (i=0;i<5;i++){
+        size_grid = 0.3
+        grid0.scale.set(size_grid,size_grid,size_grid)
+        space_grid = 3
+
+        for (i=0;i<10;i++){          // horiz
            newgrid = grid0.clone()
-           newgrid.position.y = 50+i*10
+           newgrid.position.y = 50+i*space_grid
+           newgrid.scale.x = 0.5
            group_grid.add( newgrid );
 
+        }
+        for (i=0;i<15;i++){               // vertic
+           newgrid = grid0.clone()
+
+           newgrid.rotation.set(0,0,Math.PI/2)
+           //newgrid.scale.y = 2
+
+           newgrid.position.x = i*space_grid-10
+           newgrid.position.y = 57
+           group_grid.add( newgrid );
 
         }
 
-        
+
+        group_grid.position.set(posx, posy, posz)
+        group_grid.scale.set(0.3,0.3,0.3)
+
         return group_grid
 
 }
@@ -973,9 +988,35 @@ var building3 = function(){
 
         // meander("texture/water_water.jpg", 5,700, -1000,22,50, 80, 500, 400, 0)
 
-        grid0 = wavy_grid(2,2, -200, 40, 200)
-        group.add( grid0 )
+        var dic_grille = {}
+        height_grid = 63
+        height_grid1 = 120
+        // for (i=0; i<5; i++){
+        //     dic_grille[i] = wavy_grid(2,2, 0,height_grid,-85+i*13)
+        //     dic_grille[i].rotation.set(0,Math.PI/2,0)
+        // }
+        dic_grille[0] = wavy_grid(2,2, 0,height_grid,-85)
+        dic_grille[0].rotation.set(0,Math.PI/2,0)
+        dic_grille[1] = wavy_grid(2,2, 0,height_grid,-72)
+        dic_grille[1].rotation.set(0,Math.PI/2,0)
+        dic_grille[2] = wavy_grid(2,2, 0,height_grid,-59)
+        dic_grille[2].rotation.set(0,Math.PI/2,0)
+        dic_grille[3] = wavy_grid(2,2, 0,height_grid,-46)
+        dic_grille[3].rotation.set(0,Math.PI/2,0)
+        dic_grille[4] = wavy_grid(2,2, 0,height_grid,-33)
+        dic_grille[4].rotation.set(0,Math.PI/2,0)
+        dic_grille[5] = wavy_grid(2,2, 0,height_grid,-20)
+        dic_grille[5].rotation.set(0,Math.PI/2,0)
+        dic_grille[6] = wavy_grid(2,2, 33,height_grid,0)
+        dic_grille[7] = wavy_grid(2,2, 20,height_grid,0)
+        grid_up_z = 0
+        dic_grille[8] = wavy_grid(2,2, 69,height_grid1,grid_up_z)
+        dic_grille[9] = wavy_grid(2,2, 82,height_grid1,grid_up_z)
+        dic_grille[10] = wavy_grid(2,2, 56,height_grid1,grid_up_z)
 
+        for (i=0; i < Object.keys(dic_grille).length+1; i++){
+              group.add( dic_grille[i] )
+              }
 
 
 } // end group building
