@@ -115,11 +115,46 @@ function simple_grid(posx, posy, posz){
 
       }
         group_simple_grid.position.set(posx, posy, posz)
-        //group_simple_grid.scale.set(0.3,0.3,0.3)
+        group_simple_grid.scale.set(0.3,1,1)
 
         return group_simple_grid
 
 }
+
+function cage(posx, posy, posz){
+    /*
+    Cage
+    */
+    var geom_cube = new THREE.CubeGeometry( 5, 0.3, 5 )
+    var texture = new THREE.TextureLoader().load( "textures/hardwood2_diffuse.jpg" );
+    var material_cube = new THREE.MeshBasicMaterial({ map: texture })
+    var ground_cage0 = new THREE.Mesh( geom_cube, material_cube )
+    ground_cage0.position.set(2.5,0,2.5)
+    var ground_cage1 = ground_cage0.clone()
+    ground_cage1.position.y = 20
+    //----------
+    var group_cage = new THREE.Group();
+    sgrid0 = simple_grid(0,0,0) //-100,30,70
+    sgrid1 = sgrid0.clone()
+    sgrid2 = sgrid0.clone()
+    sgrid2.rotation.set(0,Math.PI/2,0)
+    sgrid2.position.z = 5
+    sgrid3 = sgrid2.clone()
+    sgrid3.position.x = 5
+    //sgrid3.position.set(-100,30,110)
+    sgrid4 = sgrid1.clone()
+    sgrid4.position.set(0,0,5)
+    group_cage.add(sgrid1)
+    group_cage.add(sgrid2)
+    group_cage.add(sgrid3)
+    group_cage.add(sgrid4)
+    group_cage.add(ground_cage0)
+    group_cage.add(ground_cage1)
+    group_cage.position.set(posx, posy, posz)
+    group_cage.scale.set(1.5,1,1.5)
+    return group_cage
+
+    }
 
 function wavy_grid(sizex, sizey, posx, posy, posz){
       /*
@@ -149,10 +184,7 @@ function wavy_grid(sizex, sizey, posx, posy, posz){
         var geometry = new THREE.TubeGeometry( path, 200, 2, 20, false );
         var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
         //var material = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture("texture/im-4-stickers-deco-Mosaiques-12x12cm-style-Azulejos-yellow.jpg")} );
-
-
         var grid0 = new THREE.Mesh( geometry, material );
-
         size_grid = 0.3
         grid0.scale.set(size_grid,size_grid,size_grid)
         space_grid = 3
@@ -166,16 +198,12 @@ function wavy_grid(sizex, sizey, posx, posy, posz){
         }
         for (i=0;i<15;i++){               // vertic
            newgrid = grid0.clone()
-
            newgrid.rotation.set(0,0,Math.PI/2)
-           //newgrid.scale.y = 2
-
            newgrid.position.x = i*space_grid-10
            newgrid.position.y = 57
            group_grid.add( newgrid );
 
         }
-
 
         group_grid.position.set(posx, posy, posz)
         group_grid.scale.set(0.3,0.3,0.3)
@@ -185,9 +213,9 @@ function wavy_grid(sizex, sizey, posx, posy, posz){
 }
 
 function road_white(sizex, sizey, posx, posy, posz){
-  /*
-  road
-  */
+      /*
+      road
+      */
 
       function CustomSinCurve( scale ) {
         	THREE.Curve.call( this );
@@ -210,7 +238,6 @@ function road_white(sizex, sizey, posx, posy, posz){
         var geometry = new THREE.TubeGeometry( path, 200, 2, 20, false );
         var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
         //var material = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture("texture/im-4-stickers-deco-Mosaiques-12x12cm-style-Azulejos-yellow.jpg")} );
-
         var mesh = new THREE.Mesh( geometry, material );
         mesh.position.set(0,100,10)
         mesh.scale.set(1,0.1,1)
@@ -219,17 +246,16 @@ function road_white(sizex, sizey, posx, posy, posz){
 
 }
 
-
 function ceiling_white(sizex, sizey, posx, posy, posz){
-  /*
-  ceiling
-  */
+      /*
+      ceiling
+      */
 
-  var geom_ceiling = new THREE.CubeGeometry( sizex, 1, sizey )
-  var mat_ceiling = new THREE.MeshBasicMaterial({ color: 0xffffff }) // "texture/latte0.jpg"
-  var ceiling = new THREE.Mesh( geom_ceiling, mat_ceiling );
-  ceiling.position.set(posx, posy, posz)
-  return ceiling
+      var geom_ceiling = new THREE.CubeGeometry( sizex, 1, sizey )
+      var mat_ceiling = new THREE.MeshBasicMaterial({ color: 0xffffff }) // "texture/latte0.jpg"
+      var ceiling = new THREE.Mesh( geom_ceiling, mat_ceiling );
+      ceiling.position.set(posx, posy, posz)
+      return ceiling
 
 }
 
@@ -298,54 +324,6 @@ var make_bulb = function(posx, posy, posz){
     group_bulb.add(bulbLight)
 
     return group_bulb
-}
-
-localPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 200 );
-// var globalPlane = new THREE.Plane( new THREE.Vector3( 1, 0, 0 ), 1 );
-// renderer.clippingPlanes = [ globalPlane ];
-// renderer.localClippingEnabled = true;
-// var material = new THREE.MeshPhongMaterial( {
-//     clippingPlanes: [ localPlane ],
-//     clipShadows: true
-// } );
-
-function treillis(txt, size,  x, y, z, angle){
-    /*
-    Treillis
-    */
-    var group_treillis = new THREE.Group();
-    var geom_treillis = new THREE.CubeGeometry( 50, 7, 3 )
-    var texture = new THREE.TextureLoader().load( txt );
-    var material_treillis = new THREE.MeshBasicMaterial({ map:texture,
-                        clippingPlanes: [ localPlane ]
-                       }) // "texture/latte0.jpg"
-    simple_board0 = new THREE.Mesh( geom_treillis, material_treillis )
-    dic_treillis = {}
-    scale_treillis = size
-    dic_treillis[0] = simple_board0.clone()
-    dic_treillis[1] = simple_board0.clone()
-    //dic_treillis[0].rotation.set(Math.PI/2,angle,Math.PI/3)
-    dic_treillis[0].rotation.set(0,0,Math.PI/3)
-    dic_treillis[0].position.set(x, y, z)  // 180,180,-10
-    dic_treillis[0].scale.set(scale_treillis,scale_treillis*0.1,scale_treillis*0.1)
-    dic_treillis[1].rotation.set(0,0,-Math.PI/3)
-    dic_treillis[1].position.set(x, y, z)  // 180,180,-10
-    dic_treillis[1].scale.set(scale_treillis,scale_treillis*0.1,scale_treillis*0.1)
-    fact_treill = 30
-    for (i=1; i<20; i++){
-          dic_treillis[2*i] = dic_treillis[0].clone()
-          dic_treillis[2*i].position.y = dic_treillis[0].position.y-2*i
-          dic_treillis[2*i+1] = dic_treillis[1].clone()
-          dic_treillis[2*i+1].position.y = dic_treillis[1].position.y-2*i
-          if (i<10){
-                dim0 = scale_treillis+(i-10)/fact_treill
-                dic_treillis[2*i+1].scale.set(dim0,dim0*0.1,scale_treillis*0.1)
-                dic_treillis[2*i].scale.set(dim0,dim0*0.1,scale_treillis*0.1)
-          }
-          group_treillis.add( dic_treillis[2*i] )
-          group_treillis.add( dic_treillis[2*i+1] )
-    }
-    return group_treillis
 }
 
 function persians(txt, size,  x, y, z, angle){
@@ -1057,8 +1035,15 @@ var building3 = function(){
         for (i=0; i < Object.keys(dic_grille).length+1; i++){
               group.add( dic_grille[i] )
               }
-        sgrid = simple_grid(-100,40,100)
-        group.add( sgrid )
+        // sgrid = simple_grid(-100,30,70)
+        // group.add( sgrid )
+
+        //----------- Cages
+        cage0 = cage(-100,30,70)
+        group.add( cage0 )
+
+        cage1 = cage(60,80,90)
+        group.add( cage1 )
 
 
 } // end group building
