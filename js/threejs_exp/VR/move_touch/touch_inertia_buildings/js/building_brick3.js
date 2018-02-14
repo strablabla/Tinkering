@@ -81,6 +81,46 @@ function meander(txt, sizex, sizey, posx, posy, posz, nbmeand, length,  nbseg, a
 
 }
 
+function simple_grid(posx, posy, posz){
+      /*
+      Simple Grid
+      */
+
+      var group_simple_grid = new THREE.Group();
+
+      var geometry = new THREE.CylinderGeometry( 0.2,0.2, 20, 32 );
+      var material = new THREE.MeshBasicMaterial( {color: 0x000000} );
+      var cylinder0 = new THREE.Mesh( geometry, material );
+      //var material = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture("texture/im-4-stickers-deco-Mosaiques-12x12cm-style-Azulejos-yellow.jpg")} );
+
+      size_grid = 0.3
+      space_grid = 3
+      nbbar = 7
+
+      for (i=0;i<nbbar;i++){          // vertic
+         newgrid = cylinder0.clone()
+         newgrid.position.y = 10
+         newgrid.position.x = i*space_grid
+         //newgrid.scale.x = 0.5
+         group_simple_grid.add( newgrid );
+
+      }
+      for (i=0;i<nbbar;i++){               // horiz
+         newgrid = cylinder0.clone()
+         newgrid.rotation.set(0,0,Math.PI/2)
+         newgrid.position.y = 1+i*space_grid
+         newgrid.position.x = 9
+
+         group_simple_grid.add( newgrid );
+
+      }
+        group_simple_grid.position.set(posx, posy, posz)
+        //group_simple_grid.scale.set(0.3,0.3,0.3)
+
+        return group_simple_grid
+
+}
+
 function wavy_grid(sizex, sizey, posx, posy, posz){
       /*
       Wavy Grid
@@ -1017,6 +1057,8 @@ var building3 = function(){
         for (i=0; i < Object.keys(dic_grille).length+1; i++){
               group.add( dic_grille[i] )
               }
+        sgrid = simple_grid(-100,40,100)
+        group.add( sgrid )
 
 
 } // end group building
