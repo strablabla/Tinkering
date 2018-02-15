@@ -13,41 +13,6 @@ function import_collada(addr, scale, position, rotation){ // import collada file
 //
 
 
-function tube_text(txt, sizex, sizey, posx, posy, posz){
-  /*
-  road
-  */
-
-          function CustomSinCurve( scale ) {
-        	THREE.Curve.call( this );
-        	this.scale = ( scale === undefined ) ? 1 : scale;
-
-        }
-
-        CustomSinCurve.prototype = Object.create( THREE.Curve.prototype );
-        CustomSinCurve.prototype.constructor = CustomSinCurve;
-
-        CustomSinCurve.prototype.getPoint = function ( t ) {
-
-        	var tx = t * 3 - 1.5;
-        	var ty = Math.sin( 2 * Math.PI * t );
-        	var tz = 0;
-
-        	return new THREE.Vector3( tx, ty, tz ).multiplyScalar( this.scale );
-
-        };
-
-        var path = new CustomSinCurve( 20 );
-        var geometry = new THREE.TubeGeometry( path, 200, 2, 8, false );
-        //var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-        var material = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture("texture/im-4-stickers-deco-Mosaiques-12x12cm-style-Azulejos-yellow.jpg")} );
-
-        var mesh = new THREE.Mesh( geometry, material );
-        mesh.position.set(0,100,100)
-        scene.add( mesh );
-
-}
-
 function meander(txt, sizex, sizey, posx, posy, posz, nbmeand, length,  nbseg, ang){
     /*
     meander
@@ -1046,8 +1011,13 @@ var building3 = function(){
         cage0 = cage(-100,30,70)
         group.add( cage0 )
 
-        cage1 = cage(60,80,90) // Ascenseur au milieu des tours..
-        group.add( cage1 )
+        dic_cage[1] = cage(60,80,90) // Ascenseur au milieu des tours..
+        dic_cage[2] = cage(60,130,150) // Ascenseur au milieu des tours..
+        dic_cage[3] = cage(60,180,210) // Ascenseur au milieu des tours..
+        for (i=1; i < Object.keys(dic_cage).length+1; i++){
+              dic_cage_speed[i] = 5 + Math.random()*3
+              scene.add( dic_cage[i] )
+              }
 
 
 } // end group building
