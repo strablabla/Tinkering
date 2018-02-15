@@ -775,7 +775,6 @@ var building3 = function(){
                group.add( dict_floors0[i] )
         }
 
-
       // Other floors
 
         level_floor_inside1 = 25
@@ -878,7 +877,7 @@ var building3 = function(){
              scene.add( dict_taps[i] )
         }
 
-        // Tableaux à l'intérieur, botero
+        // Tableaux à l'intérieur, Botero
 
         dict_tabl_inside = {}
         big_tabl_size = 35
@@ -901,7 +900,7 @@ var building3 = function(){
              scene.add( dict_tabl_inside[i] )
         }
 
-        //   Bulb light
+        //   Bulb light avec cône
 
         bulbMat = new THREE.MeshStandardMaterial ( {
             emissive: 0xffffee,
@@ -937,7 +936,7 @@ var building3 = function(){
         do_floor("texture/166280_2322900.jpg", 75, 135, 0.5, 2,1, 125, -20)  // second floor
         do_floor("texture/489842808.jpg", 40, 75, 0.5, 5,2, 65, -10) // first floor
 
-        // Tableaux rez de chaussée
+        // Tableaux rez de chaussée Shadoks
 
         dict_tabl_ff = {}
         big_tabl_size_ff = 8
@@ -965,7 +964,7 @@ var building3 = function(){
         for (i=1; i<Object.keys(dict_tabl_ff).length+1; i++){
              scene.add( dict_tabl_ff[i] )
         }
-        //----- The four columns, pillars
+        //----- The four columns, pillars, grandes tours en porcelaine
 
         var column_tower_dic = {}
 
@@ -973,17 +972,18 @@ var building3 = function(){
         height_tow = 20
         var column_tower_base = column_torsed("texture/azulejos_portugal.jpg", 15, 0,0,0, height_tow) // door
         for (i=0;i<4; i++){
-          column_tower_dic[2*i] = column_tower_base.clone()
-          column_tower_dic[2*i].position.set(45,10,80+space_col*i)
-          column_tower_dic[2*i+1] = column_tower_base.clone()
-          column_tower_dic[2*i+1].position.set(80,10,80+space_col*i)
+            column_tower_dic[2*i] = column_tower_base.clone()
+            column_tower_dic[2*i].position.set(45,10,80+space_col*i)
+            column_tower_dic[2*i+1] = column_tower_base.clone()
+            column_tower_dic[2*i+1].position.set(80,10,80+space_col*i)
         }
 
         for (i=0; i<Object.keys(column_tower_dic).length+1; i++){
           group.add( column_tower_dic[i] )
         }
 
-        //--------- ball
+        //--------- Ball
+
         posz_ball = -10
         size_ball = 2
         ball_dic = {}
@@ -1005,6 +1005,8 @@ var building3 = function(){
         // Meander
 
         // meander("texture/water_water.jpg", 5,700, -1000,22,50, 80, 500, 400, 0)
+
+        // Grille ondulant dans les deux sens
 
         var dic_grille = {}
         height_grid = 63
@@ -1042,7 +1044,7 @@ var building3 = function(){
         cage0 = cage(-100,30,70)
         group.add( cage0 )
 
-        cage1 = cage(60,80,90)
+        cage1 = cage(60,80,90) // Ascenseur au milieu des tours..
         group.add( cage1 )
 
 
