@@ -807,7 +807,7 @@ var building3 = function(){
           group.add( dict_cubes[i] )
         }
 
-        //----- Columns, pillars
+        //----- Columns, pillars dans maison principale
 
         column_dic = {}
         column_dic[0] = column_torsed("texture/adesivo-de-parede-azulejos-05-cozinha.jpg", 5, 45,27,29, 10) // door
@@ -930,11 +930,13 @@ var building3 = function(){
               scene.add( dict_bulb[i] )
         }
 
-        // Other floors, floor outside with checkers, outside Botero
+        // Other floors, floor outside with checkers, outside Botero, sol, damiers
 
-        do_floor("texture/166280_2322900.jpg", 50, 25, 0.5, 20, 7, 110, -140)
+        do_floor("texture/166280_2322900.jpg", 50, 25, 0.5, 20, 7, 110, -140)  // Damiers après BOtero
         do_floor("texture/166280_2322900.jpg", 75, 135, 0.5, 2,1, 125, -20)  // second floor
         do_floor("texture/489842808.jpg", 40, 75, 0.5, 5,2, 65, -10) // first floor
+        do_floor("texture/im-4-stickers-deco-Mosaiques-12x12cm-style-AzulejosCarreaux-de-ciment-Vert.jpg", 50, 25, 0.5, 10,4, 30, 200) // Sol pour les tours
+         // azulejos-oscuro.jpg // 166280_2322900.jpg / im-4-stickers-deco-Mosaiques-12x12cm-style-AzulejosCarreaux-de-ciment-Vert.jpg
 
         // Tableaux rez de chaussée Shadoks
 
