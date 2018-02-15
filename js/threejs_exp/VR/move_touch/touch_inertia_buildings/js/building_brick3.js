@@ -1,4 +1,3 @@
-
 function import_collada(addr, scale, position, rotation){ // import collada files
     loader = new THREE.ColladaLoader();
     loader.load(addr, function(collada) {
@@ -46,15 +45,18 @@ function meander(txt, sizex, sizey, posx, posy, posz, nbmeand, length,  nbseg, a
 
 }
 
-function simple_grid(posx, posy, posz){
+function simple_grid(posx, posy, posz, txt){
       /*
       Simple Grid
       */
 
+      dic_simple_grid = {map:new THREE.TextureLoader().load( txt )} || {color: 0x000000}
+      // "textures/hardwood2_diffuse.jpg"
+
       var group_simple_grid = new THREE.Group();
 
       var geometry = new THREE.CylinderGeometry( 0.2,0.2, 20, 32 );
-      var material = new THREE.MeshBasicMaterial( {color: 0x000000} );
+      var material = new THREE.MeshBasicMaterial( dic_simple_grid );
       var cylinder0 = new THREE.Mesh( geometry, material );
       //var material = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture("texture/im-4-stickers-deco-Mosaiques-12x12cm-style-Azulejos-yellow.jpg")} );
 
@@ -367,10 +369,6 @@ function pavage(txt, size,  x, z, y, roty){
       /*
       Pavage
       */
-      // var geom = new THREE.PlaneGeometry( size, size, size);
-      // var texture = new THREE.TextureLoader().load( txt );
-      // var mat= new THREE.MeshBasicMaterial( { map: texture, overdraw: true } );
-      // var pav = new THREE.Mesh( geom, mat); // , new THREE.SphericalReflectionMapping()
 
       var texture = new THREE.TextureLoader().load( txt );
       var geom_pav = new THREE.CubeGeometry( size, size, 3 )
@@ -437,7 +435,6 @@ function tube_scale(txt, sizex, sizey, posx, posy, posz){
         var mesh = new THREE.Mesh( geometry, material );
         mesh.position.set(posx, posy, posz)
         return mesh
-
 
 }
 
@@ -898,10 +895,16 @@ var building3 = function(){
         // Other floors, floor outside with checkers, outside Botero, sol, damiers
 
         do_floor("texture/166280_2322900.jpg", 50, 25, 0.5, 20, 7, 110, -140)  // Damiers après BOtero
-        do_floor("texture/166280_2322900.jpg", 75, 135, 0.5, 2,1, 125, -20)  // second floor
+        do_floor("texture/166280_2322900.jpg", 75, 135, 0.5, 2,1, 125, -20)  // second floor Damier
         do_floor("texture/489842808.jpg", 40, 75, 0.5, 5,2, 65, -10) // first floor
         do_floor("texture/im-4-stickers-deco-Mosaiques-12x12cm-style-AzulejosCarreaux-de-ciment-Vert.jpg", 50, 25, 0.5, 10,4, 30, 200) // Sol pour les tours
          // azulejos-oscuro.jpg // 166280_2322900.jpg / im-4-stickers-deco-Mosaiques-12x12cm-style-AzulejosCarreaux-de-ciment-Vert.jpg
+         // do_floor("texture/Mosaique-pate-de-verre-CY29-VERT-TURQUOISE-zoom.jpg", 75, 135, 0.5, 2,1, 175, -20) //
+         // do_floor("texture/Mosaique-pate-de-verre-CY08-ROSE-PARME-zoom.jpg", 75, 75, 0.5, 2,1, 175, -20) //
+         do_floor("texture/azulejos-oscuro.jpg", 75, 135, 0.5, 1,1, 175, -22) // second floor
+         do_floor("texture/azulejos-oscuro.jpg", 75, 75, 0.5, 2,3, 100, -40) // first floor white
+         do_floor("texture/166280_2322900.jpg", 74, 135, 0.5, 1,2, 140, -75) // second floor
+         // mosaique-emaux-blanc-pur-103-pas-zoom.jpg
 
         // Tableaux rez de chaussée Shadoks
 
@@ -1008,8 +1011,8 @@ var building3 = function(){
         // group.add( sgrid )
 
         //----------- Cages
-        cage0 = cage(-100,30,70)
-        group.add( cage0 )
+        // cage0 = cage(-100,30,70)
+        // group.add( cage0 )
 
         dic_cage[1] = cage(60,80,90) // Ascenseur au milieu des tours..
         dic_cage[2] = cage(60,130,150) // Ascenseur au milieu des tours..
@@ -1018,6 +1021,9 @@ var building3 = function(){
               dic_cage_speed[i] = 5 + Math.random()*3
               scene.add( dic_cage[i] )
               }
+        sg_up0 = simple_grid(140,75,-20, "textures/hardwood2_diffuse.jpg")
+        sg_up0.scale.set(2.5,2.5,2.5)
+        group.add( sg_up0 )
 
 
 } // end group building

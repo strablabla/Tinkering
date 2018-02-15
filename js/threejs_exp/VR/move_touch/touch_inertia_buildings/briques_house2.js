@@ -77,7 +77,7 @@ window.onload = function(event) {
       camera = new THREE.PerspectiveCamera(90, window.innerWidth/window.innerHeight, 0.01, 10000);
       //camera.position.set(-500, 400, -200);
       // camera.position.set(dist/2, dist/2, dist/2);
-      camera.position.set(60,130,60);
+      camera.position.set(250,190,-50);
       scene.add(camera);
 
       controls = new THREE.OrbitControls(camera, element);
@@ -175,6 +175,8 @@ window.onload = function(event) {
           previousShadowMap = params.shadows;
       }
 
+      // Moving cages up and down
+
       for (i=1; i < Object.keys(dic_cage).length+1; i++){
               if (dic_cage[i].position.y < 400){
                   dic_cage_speed[i] *= 1;
@@ -187,8 +189,6 @@ window.onload = function(event) {
               }
               dic_cage[i].position.y += dic_cage_speed[i]*0.1
             }
-
-
 
 
       bulbMat.emissiveIntensity = bulbLight.intensity / Math.pow( 0.02, 2.0 ); // convert from intensity to irradiance at bulb surface
