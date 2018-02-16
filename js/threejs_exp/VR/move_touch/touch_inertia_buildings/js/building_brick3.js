@@ -11,7 +11,6 @@ function import_collada(addr, scale, position, rotation){ // import collada file
 }// end import_collada
 //
 
-
 function meander(txt, sizex, sizey, posx, posy, posz, nbmeand, length,  nbseg, ang){
     /*
     meander
@@ -77,7 +76,6 @@ function simple_grid(posx, posy, posz, txt){
          newgrid.rotation.set(0,0,Math.PI/2)
          newgrid.position.y = 1+i*space_grid
          newgrid.position.x = 9
-
          group_simple_grid.add( newgrid );
 
       }
@@ -179,6 +177,59 @@ function wavy_grid(sizex, sizey, posx, posy, posz){
 
 }
 
+
+function puppet(posx, posy, posz, ang){
+       var group_puppet = new THREE.Group()
+       var geom_body = new THREE.CylinderBufferGeometry( 5, 5, 20, 32 );
+       var mat_body = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+       var body = new THREE.Mesh( geom_body, mat_body );
+       bodyscale = 10
+       body.scale.set( bodyscale, bodyscale, bodyscale )
+       body.position.set(-50,0,0)
+       group_puppet.add(body)
+       //-------------------
+       var hand1 = body.clone()
+       //hand1.material.color = 0xff99cc
+       hand1.rotation.set(Math.PI/2, 0,0)
+       hand1.scale.set(2,4,1)
+       hand1.position.set(0,50,70)
+       hand2 = hand1.clone()
+       hand2.position.set(0,50,-70)
+       group_puppet.add(hand1)
+       group_puppet.add(hand2)
+       //-----------
+       levleg = -60
+       leg1 = hand1.clone()
+       leg1.rotation.z = 3*Math.PI/2
+       leg1.position.set(70,levleg,20)
+       leg2 = leg1.clone()
+       leg2.position.set(70,levleg,-20)
+       // leg1.position.y = 0
+       // leg1.position.z = 20
+       group_puppet.add(leg1)
+       group_puppet.add(leg2)
+       //------------------
+       // var geometry = new THREE.SphereGeometry( size, 32, 32 );
+       // var texture = new THREE.TextureLoader().load( txt );
+       // var material = new THREE.MeshBasicMaterial( {map: texture} );
+       // var balloon = new THREE.Mesh( geometry, material );
+
+       var geometry = new THREE.SphereGeometry( 40, 32, 32 );
+       //var texture = new THREE.TextureLoader().load( txt );
+       var material = new THREE.MeshBasicMaterial( {color : 0x000000} ); // #ff99cc //  0x000000
+       var head = new THREE.Mesh( geometry, material );
+       head.position.set(-30,150,0)
+       group_puppet.add(head)
+       group_puppet.position.set(posx, posy+250, posz)
+       pupscale = 0.03
+       group_puppet.scale.set(pupscale, pupscale, pupscale)
+       group_puppet.position.set(posx, posy, posz)
+
+       return group_puppet
+}
+
+//puppet(0,0,0,0)
+
 function road_white(sizex, sizey, posx, posy, posz){
       /*
       road
@@ -267,7 +318,7 @@ var make_bulb = function(posx, posy, posz){
     mesh_ring.position.set(  posx, posy, posz  );
     mesh_ring.rotation.set(  Math.PI/2,0, 0  );
     var scale_ring = 0.1
-    for (i=0;i<5;i++){
+    for (i=0; i<5; i++){
       ring_bulb = mesh_ring.clone()
       ring_bulb.scale.set(scale_ring, scale_ring, scale_ring)
       ring_bulb.position.y = 5+posz+1.5*i;
@@ -340,7 +391,7 @@ function column_torsed(txt, size,  x, y, z, nbcubes){
       cube = new THREE.Mesh( geom_cube, material_cube )
       cube.position.set(x, y, z)
 
-      for (i=0;i<nbcubes;i++){
+      for (i=0; i<nbcubes; i++){
         newcube = cube.clone()
         newcube.rotation.set(0, Math.PI/10*i, 0)
         newcube.position.y = y+i*size
@@ -395,35 +446,29 @@ var bulblight = function(x,y,z){
 	  bulbLight = new THREE.PointLight( 0xffee88, 1, 100, 2 );
 	  bulbLight.add( new THREE.Mesh( bulbGeometry, bulbMat ) );
 	  bulbLight.castShadow = true;
-	  bulbLight.position.set( x,y,z  ); // 60, 50, -60
+	  bulbLight.position.set( x,y,z ); // 60, 50, -60
 
 	  return bulbLight
 }
 
 function tube_scale(txt, sizex, sizey, posx, posy, posz){
-  /*
-  rambarde
-  */
-
+          /*
+          rambarde
+          */
           function CustomSinCurve( scale ) {
-
           THREE.Curve.call( this );
-
           this.scale = ( scale === undefined ) ? 1 : scale;
 
         }
 
         CustomSinCurve.prototype = Object.create( THREE.Curve.prototype );
         CustomSinCurve.prototype.constructor = CustomSinCurve;
-
         CustomSinCurve.prototype.getPoint = function ( t ) {
           var length = 5
           var tx =  0;
           var ty =  t * length+ 0.1*Math.sin( 12 * Math.PI * t );
           var tz = 1.9 *  t * length;
-
           return new THREE.Vector3( tx, ty, tz ).multiplyScalar( this.scale );
-
         };
 
         var path = new CustomSinCurve( 20 );
@@ -431,7 +476,6 @@ function tube_scale(txt, sizex, sizey, posx, posy, posz){
         //var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
         var texture = new THREE.TextureLoader().load( txt );
         var material = new THREE.MeshBasicMaterial( {color: 0x000000} ); // { map: texture}
-
         var mesh = new THREE.Mesh( geometry, material );
         mesh.position.set(posx, posy, posz)
         return mesh
@@ -464,10 +508,8 @@ function scale(txt, rot, posx, posy, posz, heighty, nbscales){
     	group_scale.position.set(posx, posy, posz); //420,0,0
 
       ztube = -10
-
       ramb0 = tube_scale(txt, 1,2, 20,ztube,-40)
       ramb1 = tube_scale(txt, 1,2, -20,ztube,-40)
-
 
       group_scale.add( ramb1 );
       group_scale.add( ramb0 );
@@ -671,7 +713,7 @@ var building3 = function(){
 		group.add( wall31 );
 		group.add( wall32 );
 
-		//------ Ceil third stage
+		//------ Ceil third stage, toit, dalle troisième étage
 
 		c3y = 180;
 		ceil10 = ceil0.clone()
@@ -690,10 +732,20 @@ var building3 = function(){
 		group.add( ceil12 );
 		group.add( ceil13 );
 
+    //-------------
+
+     do_floor("texture/im-4-stickers-deco-Mosaiques-12x12cm-style-AzulejosCarreaux-de-ciment-Mint.jpg", 80, 185, 0.5, 5,5, 20, -20) // toit
+     ball_roof0 = ball("texture/free-vector-marble-texture.jpg", 30, 100, 180, -100)
+     group.add( ball_roof0 );
+     // azulejos_portugal
+     // im-4-stickers-deco-Mosaiques-12x12cm-style-AzulejosCarreaux-de-ciment-Mint
+    //-------------
+
 		size_tab = 20;
 		var sep_tab = 50;
     // liste des tableaux
-		list_tabl = [0, 1, 2 , 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+		//list_tabl = [0, 1, 2 , 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+    list_tabl = [ 5, 6, 8, 11, 12, 13, 14, 15, 19]
 		all_tabl = []
 
     // floor impressionists, parquet
@@ -902,7 +954,7 @@ var building3 = function(){
          // do_floor("texture/Mosaique-pate-de-verre-CY29-VERT-TURQUOISE-zoom.jpg", 75, 135, 0.5, 2,1, 175, -20) //
          // do_floor("texture/Mosaique-pate-de-verre-CY08-ROSE-PARME-zoom.jpg", 75, 75, 0.5, 2,1, 175, -20) //
          do_floor("texture/azulejos-oscuro.jpg", 75, 135, 0.5, 1,1, 175, -22) // second floor
-         do_floor("texture/azulejos-oscuro.jpg", 75, 75, 0.5, 2,3, 100, -40) // first floor white
+         do_floor("texture/azulejos-oscuro.jpg", 75, 75, 0.5, 2,3, 120, -40) // first floor
          do_floor("texture/166280_2322900.jpg", 78, 135, 0.5, 1,4, 60, -75) // second floor
          // mosaique-emaux-blanc-pur-103-pas-zoom.jpg
 
@@ -1022,8 +1074,23 @@ var building3 = function(){
               scene.add( dic_cage[i] )
               }
         sg_up0 = simple_grid(140,75,-20, "textures/hardwood2_diffuse.jpg")
-        sg_up0.scale.set(2.5,2.5,2.5)
+        scale_simple_grid = 2.5
+        sg_up0.scale.set(scale_simple_grid, scale_simple_grid, scale_simple_grid)
         group.add( sg_up0 )
+
+        //---------- Puppet
+
+        pup0 = puppet(40,30,-20,0)
+        pup0.rotation.y = 3*Math.PI/2
+        scene.add( pup0 )
+
+
+        // var geometry = new THREE.CylinderBufferGeometry( 100, 100, 300, 32 );
+        // var material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+        // var cylinder = new THREE.Mesh( geometry, material );
+        // scene.add( cylinder );
+
+
 
 
 } // end group building
