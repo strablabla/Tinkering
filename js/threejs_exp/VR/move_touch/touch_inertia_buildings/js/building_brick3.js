@@ -179,27 +179,39 @@ function wavy_grid(sizex, sizey, posx, posy, posz){
 
 
 function puppet(posx, posy, posz, ang){
+       /*
+       Puppet
+       */
        var group_puppet = new THREE.Group()
-       var geom_body = new THREE.CylinderBufferGeometry( 5, 5, 20, 32 );
+       var geom_body = new THREE.CylinderBufferGeometry( 5, 5, 15, 32 );
        var mat_body = new THREE.MeshBasicMaterial( {color: 0xffff00} );
        var body = new THREE.Mesh( geom_body, mat_body );
+       //---
+       var geom_arm = new THREE.CylinderBufferGeometry( 5, 5, 20, 32 );
+       var mat_arm = new THREE.MeshBasicMaterial( {color: 0xff99cc} );
+       var arm = new THREE.Mesh( geom_arm, mat_arm );
+       //---
+       var geom_leg = new THREE.CylinderBufferGeometry( 8,8, 120, 32 );
+       var mat_leg = new THREE.MeshBasicMaterial( {color: 0xff0000} );
+       var leg = new THREE.Mesh( geom_leg, mat_leg );
+       //---
        bodyscale = 10
        body.scale.set( bodyscale, bodyscale, bodyscale )
-       body.position.set(-50,0,0)
+       body.position.set(-50,5,40)
        group_puppet.add(body)
        //-------------------
-       var hand1 = body.clone()
-       //hand1.material.color = 0xff99cc
+       var hand1 = arm.clone()
+       poshand = -30
        hand1.rotation.set(Math.PI/2, 0,0)
        hand1.scale.set(2,4,1)
-       hand1.position.set(0,50,70)
+       hand1.position.set(poshand,50,70)
        hand2 = hand1.clone()
-       hand2.position.set(0,50,-70)
+       hand2.position.set(poshand,50,-70)
        group_puppet.add(hand1)
        group_puppet.add(hand2)
        //-----------
        levleg = -60
-       leg1 = hand1.clone()
+       leg1 = leg.clone()
        leg1.rotation.z = 3*Math.PI/2
        leg1.position.set(70,levleg,20)
        leg2 = leg1.clone()
@@ -214,12 +226,24 @@ function puppet(posx, posy, posz, ang){
        // var material = new THREE.MeshBasicMaterial( {map: texture} );
        // var balloon = new THREE.Mesh( geometry, material );
 
+       //---- Head
+
        var geometry = new THREE.SphereGeometry( 40, 32, 32 );
        //var texture = new THREE.TextureLoader().load( txt );
-       var material = new THREE.MeshBasicMaterial( {color : 0x000000} ); // #ff99cc //  0x000000
+       var material = new THREE.MeshBasicMaterial( {color : 0xffffff} ); // #ff99cc //  0x000000
        var head = new THREE.Mesh( geometry, material );
        head.position.set(-30,150,0)
        group_puppet.add(head)
+
+       //----- Hat
+       var geom_hat = new THREE.ConeGeometry( 40, 63, 32 );
+       //var texture = new THREE.TextureLoader().load( txt );
+       var mat_hat = new THREE.MeshBasicMaterial( {color : 0xff00ff} ); // #ff99cc //  0x000000
+       var hat = new THREE.Mesh( geom_hat, mat_hat );
+       hat.position.set(-30,210,0)
+       group_puppet.add(hat)
+
+       //----
        group_puppet.position.set(posx, posy+250, posz)
        pupscale = 0.03
        group_puppet.scale.set(pupscale, pupscale, pupscale)
@@ -229,6 +253,19 @@ function puppet(posx, posy, posz, ang){
 }
 
 //puppet(0,0,0,0)
+
+function cheminey(posx, posy, posz){
+
+  //var geom_chem = new THREE.CylinderBufferGeometry( 10,10, 70, 32 );
+  var geom_chem = new THREE.CubeGeometry( 10,70,10 )
+  var mat_chem = new THREE.MeshBasicMaterial( {color: 0xffffff} );
+  var chem = new THREE.Mesh( geom_chem, mat_chem );
+  chem.position.set(posx, posy, posz)
+
+
+  return chem
+
+}
 
 function road_white(sizex, sizey, posx, posy, posz){
       /*
@@ -739,7 +776,10 @@ var building3 = function(){
      group.add( ball_roof0 );
      // azulejos_portugal
      // im-4-stickers-deco-Mosaiques-12x12cm-style-AzulejosCarreaux-de-ciment-Mint
-    //-------------
+
+
+
+    //------------- Tableaux
 
 		size_tab = 20;
 		var sep_tab = 50;
@@ -1085,10 +1125,32 @@ var building3 = function(){
         scene.add( pup0 )
 
 
-        // var geometry = new THREE.CylinderBufferGeometry( 100, 100, 300, 32 );
-        // var material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
-        // var cylinder = new THREE.Mesh( geometry, material );
-        // scene.add( cylinder );
+        var chemi = cheminey(190, 200, -190)
+        //chemi.scale.set(20,20,20)
+        scene.add( chemi );
+        //-------smoke
+
+        elarg = 2
+        for (i=1; i<10; i++){
+            var geom_smoke = new THREE.TorusGeometry( 10, 1, 5, 100 );
+            var mat_smoke = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+            dic_smoke[i] = new THREE.Mesh( geom_smoke, mat_smoke );
+            dic_smoke[i].rotation.x = Math.PI/2
+            dic_smoke[i].position.set(190, 200+40+15*i, -190)
+            dic_smoke_speed[i] = 1
+            scene.add(dic_smoke[i])
+        }
+
+        // elarg = 2
+        //
+        //     var geom_smoke = new THREE.TorusGeometry( 10, 1+elarg, 5+0.5*elarg, 100 );
+        //     var mat_smoke = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+        //     dic_smoke[1] = new THREE.Mesh( geom_smoke, mat_smoke );
+        //     dic_smoke[1].rotation.x = Math.PI/2
+        //     dic_smoke[1].position.set(190, 200+40+15, -190)
+        //     //dic_smoke[1].scale.set(20,20,20)
+        //     scene.add(dic_smoke[1])
+
 
 
 
