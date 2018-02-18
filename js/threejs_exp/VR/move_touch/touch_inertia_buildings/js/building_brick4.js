@@ -191,26 +191,27 @@ function gift(txt, size, posx, posy, posz, ang){
       return gift0
 }
 
-function bouq0(posx, posy, posz){
+function bouq0(posx, posy, posz, nbf){
         /*
         Bouquet
         */
 
         var group_bouq0 = new THREE.Group();
-
+        nbflowers = nbf || 9;
         dic_flow = {}
         flow0 = flower0(posx, posy, posz, -Math.PI/3)
         flow1 = flower0(posx, posy, posz, -Math.PI/2)
-        for (i=0;i<9;i++){
+        divfact = 2
+        for (i=0;i<nbflowers;i++){
             //dic_flow[i] = flower0(20,30,41, -Math.PI/(Math.random())) //+ Math.random()*0.1
             dic_flow[2*i] = flow0.clone()
             dic_flow[2*i].position.x += 5*Math.random()
             dic_flow[2*i].position.z += 5*Math.random()
-            dic_flow[2*i].rotation.z += Math.PI/(5*Math.random())
+            dic_flow[2*i].rotation.z = Math.PI/2 * (0.5-Math.random())
             dic_flow[2*i+1] = flow1.clone()
             dic_flow[2*i+1].position.x += 5*Math.random()
             dic_flow[2*i+1].position.z += 5*Math.random()
-            dic_flow[2*i+1].rotation.z += Math.PI/(5*Math.random())
+            dic_flow[2*i+1].rotation.z = Math.PI/2 * (0.5-Math.random())
             group_bouq0.add(dic_flow[2*i])
             group_bouq0.add(dic_flow[2*i+1])
         }
@@ -1221,12 +1222,8 @@ var building3 = function(){
         for (i=0; i < Object.keys(dic_grille).length+1; i++){
               group.add( dic_grille[i] )
               }
-        // sgrid = simple_grid(-100,30,70)
-        // group.add( sgrid )
 
-        //----------- Cages
-        // cage0 = cage(-100,30,70)
-        // group.add( cage0 )
+        // Cages, tours, towers, faïence
 
         dic_cage[1] = cage(60,80,90) // Ascenseur au milieu des tours..
         dic_cage[2] = cage(60,130,150) // Ascenseur au milieu des tours..
@@ -1249,31 +1246,39 @@ var building3 = function(){
         gift0 = gift("texture/gift-boxes.jpg", 5, 37,30,-10, Math.PI/3)
         scene.add( gift0 )
 
-        var chemi = cheminey(190, 200, -190)
+        var chemi = cheminey(190, 210, -190)
         //chemi.scale.set(20,20,20)
         scene.add( chemi );
 
         //-------smoke from cheminey
 
         elarg = 2
-        for (i=1; i<10; i++){
+        for (i=1; i<30; i++){
             var geom_smoke = new THREE.TorusGeometry( 10, 1, 5, 100 );
             var mat_smoke = new THREE.MeshBasicMaterial( { color: 0xffffff } );
             dic_smoke[i] = new THREE.Mesh( geom_smoke, mat_smoke );
             dic_smoke[i].rotation.x = Math.PI/2
             dic_smoke[i].position.set(190, 200+40+15*i, -190)
-            dic_smoke_speed[i] = 1
+            dic_smoke_speed[i] = 5
             scene.add(dic_smoke[i])
         }
 
       bouquet0 = bouq0(20,30,41)
+      bouquet1 = bouq0(160,30,-170,6) // 170,40,-170
+      var bouquet2 = bouq0(95,75,-220,4)
+      //dic_bouq = {}
+      for (i=1; i<40; i++){
+        var bouq = bouquet2.clone()
+        bouq.position.set(0,0,-i*10*Math.random())
+        scene.add(bouq)
+        // var bouquet = bouq0(95,75,-220-i*10,4) // 170,40,-170
+        // scene.add(bouquet)
+        //bouquet3 = bouq0(95,75,-250,4) // 170,40,-170
+      }
+
 
       scene.add(bouquet0)
-
-
-
-
-
+      scene.add(bouquet1)
 
 
 

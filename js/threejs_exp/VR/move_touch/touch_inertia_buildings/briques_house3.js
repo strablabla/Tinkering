@@ -78,7 +78,7 @@ window.onload = function(event) {
       camera = new THREE.PerspectiveCamera(90, window.innerWidth/window.innerHeight, 0.01, 10000);
       //camera.position.set(-500, 400, -200);
       // camera.position.set(dist/2, dist/2, dist/2);
-      camera.position.set(40,40,60);
+      camera.position.set(40,80,-260);
       scene.add(camera);
 
       controls = new THREE.OrbitControls(camera, element);
@@ -191,7 +191,8 @@ window.onload = function(event) {
 
       // Moving smoke
 
-      maxlev_smoke = 330
+      //maxlev_smoke = 330
+      maxlev_smoke = 550
       for (i=1; i < Object.keys(dic_smoke).length+1; i++){
               if (dic_smoke[i].position.y < maxlev_smoke){
                   dic_smoke_speed[i] *= 1;
