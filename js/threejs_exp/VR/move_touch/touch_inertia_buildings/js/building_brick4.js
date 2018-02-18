@@ -191,6 +191,114 @@ function gift(txt, size, posx, posy, posz, ang){
       return gift0
 }
 
+function bouq0(posx, posy, posz){
+        /*
+        Bouquet
+        */
+
+        var group_bouq0 = new THREE.Group();
+
+        dic_flow = {}
+        flow0 = flower0(posx, posy, posz, -Math.PI/3)
+        flow1 = flower0(posx, posy, posz, -Math.PI/2)
+        for (i=0;i<9;i++){
+            //dic_flow[i] = flower0(20,30,41, -Math.PI/(Math.random())) //+ Math.random()*0.1
+            dic_flow[2*i] = flow0.clone()
+            dic_flow[2*i].position.x += 5*Math.random()
+            dic_flow[2*i].position.z += 5*Math.random()
+            dic_flow[2*i].rotation.z += Math.PI/(5*Math.random())
+            dic_flow[2*i+1] = flow1.clone()
+            dic_flow[2*i+1].position.x += 5*Math.random()
+            dic_flow[2*i+1].position.z += 5*Math.random()
+            dic_flow[2*i+1].rotation.z += Math.PI/(5*Math.random())
+            group_bouq0.add(dic_flow[2*i])
+            group_bouq0.add(dic_flow[2*i+1])
+        }
+        return group_bouq0
+
+}
+
+function flower0(posx, posy, posz, ang){
+      /*
+      Flowers
+      */
+      return flower(posx, posy, posz, ang, 0xffffff, 0x336600, 0xffff99)
+
+}
+
+function flower(posx, posy, posz, ang, colpet, coltige, colcenter){
+      /*
+      Flowers
+      */
+      var group_flower = new THREE.Group();
+
+      function CustomSinCurve( scale ) {
+          THREE.Curve.call( this );
+          this.scale = ( scale === undefined ) ? 1 : scale;
+        }
+
+          CustomSinCurve.prototype = Object.create( THREE.Curve.prototype );
+          CustomSinCurve.prototype.constructor = CustomSinCurve;
+          CustomSinCurve.prototype.getPoint = function ( t ) {
+          rflow = 0.2
+          nbturns = 5
+          var tx = rflow*Math.sin( nbturns * Math.PI * t );
+          var ty = 2*t;
+          var tz = rflow*Math.cos( nbturns * Math.PI * t );
+
+          return new THREE.Vector3( tx, ty, tz ).multiplyScalar( this.scale );
+
+        };
+
+        //--- Tige
+
+        var path = new CustomSinCurve( 20 );
+        var geometry = new THREE.TubeGeometry( path, 200, 2, 20, false );
+        var material = new THREE.MeshBasicMaterial( { color: coltige  } ); //
+        var tige = new THREE.Mesh( geometry, material );
+        tige.scale.set(0.1,0.2,0.1)
+        group_flower.add(tige)
+
+        //------ Head
+
+        var group_headpet = new THREE.Group();
+        var geometry = new THREE.SphereGeometry( 1, 32, 32 );
+        var material = new THREE.MeshBasicMaterial( {color : colcenter } ); // #ff99cc //  0x000000
+        var head = new THREE.Mesh( geometry, material );
+        head.position.set(0,1,0.7)
+        size_head = 0.8
+        group_headpet.add(head)
+
+        //------ Petals
+
+        dic_pet = {}
+        var geometry = new THREE.SphereGeometry( 1, 32, 32 );
+        var material = new THREE.MeshBasicMaterial( {color : colpet } ); // #ff99cc //  0x000000
+        var pet0 = new THREE.Mesh( geometry, material );
+        pet0.position.set(0,0,0)
+        nbpets = 7                               // number petals
+        radpet = 2*Math.PI/nbpets
+        pet0.scale.set(1,1,0.3)
+        distpet = 1.3
+        for (i=0; i<nbpets; i++){
+            dic_pet[i] = pet0.clone()
+            dic_pet[i].position.set(distpet*Math.sin(radpet*i), 1+ distpet*Math.cos(radpet*i), 0)
+            group_headpet.add(dic_pet[i])
+        }
+
+        group_headpet.rotation.set(ang,0,0)
+        group_headpet.position.set(0,8,1)
+
+        //-----
+        group_flower.add(group_headpet)
+        group_flower.position.set(posx, posy, posz)
+        scale_flow = 0.5
+        group_flower.scale.set(scale_flow, scale_flow, scale_flow)
+
+        return group_flower
+
+}
+
 function puppet(posx, posy, posz, ang, colbody, colhead, colarm, colleg){
        /*
        Puppet
@@ -271,7 +379,7 @@ function puppet(posx, posy, posz, ang, colbody, colhead, colarm, colleg){
 function cheminey(posx, posy, posz){
 
   //var geom_chem = new THREE.CylinderBufferGeometry( 10,10, 70, 32 );
-  var geom_chem = new THREE.CubeGeometry( 10,70,10 )
+  var geom_chem = new THREE.CubeGeometry( 10,60,10 )
   var mat_chem = new THREE.MeshBasicMaterial( {color: 0xffffff} );
   var chem = new THREE.Mesh( geom_chem, mat_chem );
   chem.position.set(posx, posy, posz)
@@ -1144,7 +1252,8 @@ var building3 = function(){
         var chemi = cheminey(190, 200, -190)
         //chemi.scale.set(20,20,20)
         scene.add( chemi );
-        //-------smoke
+
+        //-------smoke from cheminey
 
         elarg = 2
         for (i=1; i<10; i++){
@@ -1156,6 +1265,11 @@ var building3 = function(){
             dic_smoke_speed[i] = 1
             scene.add(dic_smoke[i])
         }
+
+      bouquet0 = bouq0(20,30,41)
+
+      scene.add(bouquet0)
+
 
 
 
