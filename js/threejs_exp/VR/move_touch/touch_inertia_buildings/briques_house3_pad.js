@@ -130,6 +130,20 @@ window.onload = function(event) {
       ground.rotation.x = Math.PI/2;
       scene.add( ground );
 
+      $(document).keydown(function(event){
+
+          if (event.keyCode == "y".charCodeAt(0)-32){
+                var direction = camera.getWorldDirection();
+                distance = -2;
+                camera.position.add( direction.multiplyScalar(distance) );
+            } // end if key code
+            if (event.keyCode == "t".charCodeAt(0)-32){
+                  var direction = camera.getWorldDirection();
+                  distance = 2;
+                  camera.position.add( direction.multiplyScalar(distance) );
+              } // end if key code
+      })
+
       window.addEventListener('resize', resize, false);
       setTimeout(resize, 1);
 
@@ -163,6 +177,8 @@ window.onload = function(event) {
           distance = 2;
           camera.position.add( direction.multiplyScalar(distance) );
       }
+
+
 
       renderer.toneMappingExposure = Math.pow( params.exposure, 5.0 ); // to allow for very bright scenes.
       renderer.shadowMap.enabled = params.shadows;
