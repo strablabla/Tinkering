@@ -1,4 +1,4 @@
-function import_collada(addr, scale, position, rotation){ // import collada files
+function import_collada(addr, scale, position, rotation){     // import collada files
     loader = new THREE.ColladaLoader();
     loader.load(addr, function(collada) {
       collada.scene.scale.set(scale[0],scale[1],scale[2]);
@@ -1276,10 +1276,7 @@ var building3 = function(){
         //bouquet3 = bouq0(95,75,-250,4) // 170,40,-170
       }
 
-
       scene.add(bouquet0)
       scene.add(bouquet1)
-
-
 
 } // end group building
