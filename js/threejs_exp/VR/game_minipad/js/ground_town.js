@@ -3,7 +3,8 @@ function make_ground(dim_floor){
 
     floorMat = new THREE.MeshStandardMaterial ( {
         roughness: 0.8,
-        color: 0xffffff,
+        //color: 0xffffff,
+        color: 0xffff00,
         metalness: 0.2,
         bumpScale: 0.005,
         transparence: 0.5

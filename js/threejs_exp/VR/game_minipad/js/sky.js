@@ -6,7 +6,6 @@ var make_sky = function(size_sphere){
 	size_sphere : size of the sky
 	*/
 
-
 	// SKYDOME
 
 	var vertexShader = document.getElementById( 'vertexShader' ).textContent;

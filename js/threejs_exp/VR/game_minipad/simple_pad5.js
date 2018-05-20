@@ -15,9 +15,29 @@ moving_front = false
 direct_front = 'foreward'
 var shoot = false
 listballs = make_balls()
+listballs_speeds = []
+for ( i=1; i < listballs.length; i++ ){
+  listballs_speeds.push(Math.abs(Math.random()))
+}
+list_expl = []
+list_expl_speed = []
+speed_explo = 0.6
+explo = false
+
+var expl=function(obj){
+  var geometry = new THREE.SphereGeometry( 2, 32, 32 );
+  //var texture = new THREE.TextureLoader().load( "texture/azulejos_portugal.jpg" );
+   var texture = new THREE.TextureLoader().load( "textures/hardwood2_diffuse.jpg" );
+  var material = new THREE.MeshBasicMaterial( { map: texture } );
+  var balloon = new THREE.Mesh( geometry, material );
+  //----------------
+
+  balloon.position.set(obj.position.x, obj.position.y, obj.position.z)
+  //scene.add(balloon)
+  return balloon
+}
 
 window.onload = function(event) {
-
 
     // ref for lumens: http://www.power-sure.com/lumens.htm
     var bulbLuminousPowers = {
@@ -182,7 +202,7 @@ window.onload = function(event) {
 
       //----------------------------------  Objects to shoot..
 
-      for (i=1;i<listballs.length+1;i++){
+      for ( i=1; i < listballs.length+1; i++ ){
         scene.add( listballs[i] )
       }
 
@@ -202,33 +222,18 @@ window.onload = function(event) {
         u: right
       */
 
-      var forwardstep = 3                                         // speed for forward movement
+      var forwardstep = 1                                            // speed for forward movement
       $(document).keydown(function(event){
 
-            // if (event.keyCode == "z".charCodeAt(0)-32){           // move backward
-            //       var direction = camera.getWorldDirection();
-            //       distance = -forwardstep;
-            //       direct = direction.multiplyScalar(distance)
-            //       camera.position.add( direct );
-            //       //alert(direct.x + '__' + direct.y + '__' + direct.z )
-            //   } // end if key code
-            // if (event.keyCode == "w".charCodeAt(0)-32){           // move foreward
-            //         var direction = camera.getWorldDirection();
-            //         distance = forwardstep;
-            //         direct = direction.multiplyScalar(distance)
-            //         camera.position.add( direct );
-            //     } // end if key code
-
-            if (event.keyCode == "z".charCodeAt(0)-32){           // move backward
+            if (event.keyCode == "z".charCodeAt(0)-32){              // move backward
                   var direction = camera.getWorldDirection();
                   moving_front = !moving_front
                   direct_front = 'backward'
                   distance = -forwardstep;
                   direct = direction.multiplyScalar(distance)
-
-                  //alert(direct.x + '__' + direct.y + '__' + direct.z )
               } // end if key code
-            if (event.keyCode == "w".charCodeAt(0)-32){           // move foreward
+
+            if (event.keyCode == "w".charCodeAt(0)-32){               // move foreward
                     var direction = camera.getWorldDirection();
                     moving_front = !moving_front
                     direct_front = 'foreward'
@@ -236,19 +241,42 @@ window.onload = function(event) {
                     direct = direction.multiplyScalar(distance)
 
                 } // end if key code
-            if (event.keyCode == "d".charCodeAt(0)-32){           // move right
+            if (event.keyCode == "d".charCodeAt(0)-32){               // move right
                     var direction = camera.getWorldDirection();
                     perp0 = new THREE.Vector3( -direction.z, 0, direction.x )
                     moving_side = !moving_side
                     direct_side = 'right'
                   } // end if key code
-            if (event.keyCode == "a".charCodeAt(0)-32){            // move left
+
+            if (event.keyCode == "a".charCodeAt(0)-32){               // move left
                     var direction = camera.getWorldDirection();
                     perp1 = new THREE.Vector3( direction.z,0 , -direction.x )
                     moving_side = !moving_side
                     direct_side = 'left'
                 } // end if key code
-            if (event.keyCode == "j".charCodeAt(0)-32){             // shoot
+
+                if (event.keyCode == "u".charCodeAt(0)-32){           // increase speed (button right)
+
+                        if (moving_side){
+                          perp0.multiplyScalar(2)
+                          perp1.multiplyScalar(2)
+                        }
+                        if (moving_front){
+                          direct.multiplyScalar(2)
+                        }
+
+                      } // end if key code
+                if (event.keyCode == "y".charCodeAt(0)-32){            // decrease speed (button left)
+                        if (moving_side){
+                          perp0.multiplyScalar(0.5)
+                          perp1.multiplyScalar(0.5)
+                        }
+                        if (moving_front){
+                          direct.multiplyScalar(0.5)
+                        }
+                    } // end if key code
+
+            if (event.keyCode == "j".charCodeAt(0)-32){             // shoot (button up)
                    direct_shoot = camera.getWorldDirection();
                    direct_shoot.multiplyScalar(10)
                    shoot = !shoot
@@ -288,7 +316,7 @@ window.onload = function(event) {
           distance = 2;
           camera.position.add( direction.multiplyScalar(distance) );
       }
-      if (moving_side){                           // move on the side (right or left)
+      if (moving_side){                                      // move on the side (right or left)
           if (direct_side == 'right'){
               camera.position.add( perp0 );
           }
@@ -297,19 +325,24 @@ window.onload = function(event) {
           }
       }
       //
-      if (moving_front){                           // move backward of foreward
-          if (direct_front == 'foreward'){         // moving foreward
+      if (moving_front){                                      // move backward of foreward
+          if (direct_front == 'foreward'){                    // moving foreward
 
             camera.position.add( direct );
           }
-          else{                                     // moving backward
+          else{                                               // moving backward
 
             camera.position.add( direct );
           }
       }
 
-
       var direction = camera.getWorldDirection();
+      for ( i=1; i < listballs.length; i++ ){
+        listballs[i].position.y += listballs_speeds[i];          // Math.random()
+        if ( listballs[i].position.y > 300 || listballs[i].position.y < 10){
+          listballs_speeds[i] *=-1;                           // reversing the speed
+        }
+      }
 
       if (shoot){                                             // shooting case
          bulletLight.position.add(direct_shoot)               // bullet progression
@@ -318,8 +351,21 @@ window.onload = function(event) {
            var point2 = listballs[i].position.clone();        // object to shoot
            var distance = point1.distanceTo( point2 );        // distance between bullet and objects to shoot
            if (distance < sizeball){                          // check if collision
+               // bullet touched
                listballs[i].material.color.setHex(0x111111)   // if collision change the color
-               scene.remove( listballs[i] );                  // bullet touched
+               shoot = !shoot
+
+               scene.remove( listballs[i] );                  // remove the ball from the scene
+
+               ball = expl( listballs[i] )
+
+               for ( i=1; i < 7; i++ ){
+                  var newball = ball.clone()
+                  list_expl.push(newball)
+                  scene.add(newball)
+               }
+
+               explo = true
 
               }
          }
@@ -329,13 +375,28 @@ window.onload = function(event) {
         bulletLight.position.set( camera.position.x + direction.x,
                                   camera.position.y + direction.y,
                                   camera.position.z + direction.z )
-        var factgun = 2
+        var factgun = 2                                                // correcting gun position
         gun.position.set( camera.position.x + direction.x/factgun,
                           camera.position.y + direction.y/factgun,
                           camera.position.z + direction.z/factgun )
-        gun.lookAt(camera.position);
+        gun.lookAt(camera.position);                                  // orienting gun
+        if (explo){
 
-      }
+          list_expl[0].position.y += speed_explo
+          list_expl[1].position.y += -speed_explo
+          list_expl[2].position.x += speed_explo
+          list_expl[3].position.x += -speed_explo
+          list_expl[4].position.z += speed_explo
+          list_expl[5].position.z += -speed_explo
+          //ball.position.y += -1
+          //list_expl[i].position.y += -1
+            // for ( i=1; i < list_expl.length; i++ ){
+            //   list_expl[i].position.add(list_expl_speed[i])
+            // }
+        }
+
+      } // end else
+
 
       renderer.toneMappingExposure = Math.pow( params.exposure, 5.0 ); // to allow for very bright scenes.
       renderer.shadowMap.enabled = params.shadows;
