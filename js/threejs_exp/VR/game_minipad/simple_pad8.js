@@ -193,7 +193,7 @@ window.onload = function(event) {
       var column_tower_base = column_torsed("texture/azulejos_portugal.jpg", 15, 0,0,0, height_tow) // door
       column_tower_base.castShadow = true;
 
-      for (i=0;i<20; i++){
+      for (i=0; i<20; i++){
           column_tower_dic[2*i] = column_tower_base.clone()
           column_tower_dic[2*i].position.set(45,10,80 + space_col*i)
           column_tower_dic[2*i+1] = column_tower_base.clone()
@@ -224,7 +224,7 @@ window.onload = function(event) {
 
       //----------------------------------  Objects to shoot..
 
-      for ( i=1; i < listballs.length + 1; i++ ){
+      for ( i=0; i < listballs.length + 1; i++ ){
         scene.add( listballs[i] )
       }
 
@@ -346,7 +346,7 @@ window.onload = function(event) {
       }
 
       var direction = camera.getWorldDirection();
-      for ( i=1; i < listballs.length; i++ ){
+      for ( i=0; i < listballs.length; i++ ){
               listballs[i].position.y += listballs_speeds[i];                                    // changing position vertically with speed
               if ( listballs[i].position.y > ball_up || listballs[i].position.y < ball_down){    // reached limit sup or inf
                     listballs_speeds[i] *=-1;                                                    // reversing the speed
@@ -394,7 +394,7 @@ window.onload = function(event) {
 
       if (shoot){                                             // shooting case
          bulletLight.position.add(direct_shoot)               // bullet progression
-         for ( i=1; i < listballs.length; i++ ){
+         for ( i=0; i < listballs.length; i++ ){
                var point1 = bulletLight.position.clone();
                var point2 = listballs[i].position.clone();        // object to shoot
                var distance = point1.distanceTo( point2 );        // distance between bullet and objects to shoot
@@ -413,6 +413,7 @@ window.onload = function(event) {
 
                        for ( i=1; i < 7; i++ ){
                           var newball = ball.clone()                   // clone ball for explosion
+                          //newball.set.scale((3,3,3))
                           list_expl.push(newball)                      // balls for explosion in a list
                           scene.add(newball)
                        }

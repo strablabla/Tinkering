@@ -359,9 +359,13 @@ window.onload = function(event) {
           if (direct_front == 'foreward'){                    // moving foreward
                   camera.position.add( direct );
               }
-          else{                                               // moving backward
-            camera.position.add( direct );
+          else{
+            camera.position.add( direct );   // moving backward
             }
+      }
+
+      if (camera.position.y < 10){  // stay above the ground
+        camera.position.y = 15
       }
 
       var direction = camera.getWorldDirection();
