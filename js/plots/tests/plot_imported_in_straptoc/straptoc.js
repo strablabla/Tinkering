@@ -21,7 +21,7 @@ var maketoc = function(){
     // "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js",
     // "https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.1.1/jquery.contextMenu.js",
     // "https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js", 
-    // "https://cdn.rawgit.com/alertifyjs/alertify.js/v1.0.6/dist/js/alertify.js", 
+    // "https://cdn.jsdelivr.net/gh/alertifyjs/alertify.js@v1.0.6/dist/js/alertify.js", 
     // "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
     // // "https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.11/js/min/perfect-scrollbar.min.js"
     // ].forEach(
