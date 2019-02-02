@@ -11,7 +11,7 @@
 	<script src="js/StereoEffect.js"></script>
 	<script src="js/DeviceOrientationControls.js"></script>
 	<script src="js/OrbitControls.js"></script>
-	<script src="js/gyronorm.js"></script>
+
 
 
 	// src="paintings.js"
@@ -62,21 +62,22 @@
       controls.noZoom = true;
       controls.noPan = true;
 
-var gn = new GyroNorm();
-var args = {
-  //other settings here
-  screenAdjusted:true
-};
-gn.init(args).then(function(){
-  gn.start(function(data){
-    //Set the device orientation control values here
-    scope.deviceOrientation.alpha = data.do.alpha;
-    scope.deviceOrientation.beta = data.do.beta;
-    scope.deviceOrientation.gamma = data.do.gamma;
-  });
-}).catch(function(e){
-  // Catch if the DeviceOrientation or DeviceMotion is not supported by the browser or device
-});
+// var gn = new GyroNorm();
+// var args = {
+//   //other settings here
+//   screenAdjusted:true
+// };
+// gn.init(args).then(function(){
+//   gn.start(function(data){
+//     //Set the device orientation control values here
+//     scope.deviceOrientation.alpha = data.do.alpha;
+//     scope.deviceOrientation.beta = data.do.beta;
+//     scope.deviceOrientation.gamma = data.do.gamma;
+//   });
+//
+// }).catch(function(e){
+//   // Catch if the DeviceOrientation or DeviceMotion is not supported by the browser or device
+// });
 
     //   function setOrientationControls(e) {
     //     if (!e.alpha) {
