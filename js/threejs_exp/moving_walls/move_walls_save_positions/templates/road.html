@@ -4,7 +4,7 @@
 
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-		<title>Pong Game</title>
+		<title>On the road</title>
 
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
@@ -16,7 +16,6 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/1.6.0/annyang.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/soundmanager2/2.97a.20150601/script/soundmanager2-jsmin.js"></script>
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
         <script type="text/javascript" src="/static/js/TrackballControls.js"></script>
         <script type="text/javascript" src="/static/js/Detector.js"></script>
@@ -24,7 +23,9 @@
         <script type="text/javascript" src="/static/js/point_locker.js"></script>
 		<script type="text/javascript" src="/static/js/landscape.js"></script>
 		<script type="text/javascript" src="/static/js/graphical_elems.js"></script>
-		<script type="text/javascript" src="/static/js/pong_objects.js"></script>
+		<script type="text/javascript" src="/static/js/road_objects.js"></script>
+		<script type="text/javascript" src="/static/js/gamepad.js"></script>
+		<script type="text/javascript" src="/static/js/road_gamepad.js"></script>
 
 		<div id="blocker" style="display: -webkit-box;">
 
@@ -36,37 +37,23 @@
 
 		</div>
 
-		<!-- <h1 style='color:white'>Resizeable Canvas</h1>
-              <canvas id="canvas"></canvas> -->
-
 		<div id="log"></div>
 
 		<script>
 
-      var camera, scene, renderer, controls;
-      var map_mesh = 0.25;
-      var map_detail = 8, map_roughness = 0.7;
+            var camera, scene, renderer, controls;
+            var map_mesh = 0.25;
+            var map_detail = 8, map_roughness = 0.7;
 			var geometry, material, mesh;
 			var objects = [];
 			var raycaster;
 			var blocker = document.getElementById( 'blocker' );
 			var instructions = document.getElementById( 'instructions' );
-			var ball
-			var score = [0,0]
-			var list_ball_position = []
-			list_score = []
 
 			namespace = '/mupy'; // change to an empty string to use the global namespace
 			var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
 			// http://www.html5rocks.com/en/tutorials/pointerlock/intro/
 			//$('#instructions').click()
-
-			//------
-			var velocity_racket1 = new THREE.Vector3();
-			var speed_racket1 = 10;
-			velocity_racket1.x = speed_racket1;
-			velocity_racket1.z = speed_racket1;
-			//------
 
 			ptlock()
 			init();
@@ -81,24 +68,25 @@
 			  annyang.start();
 			}
 
-    function generate() {
-				pitch = make_pitch()             // make the pong pitch
-				make_net()                       // make the pong net..
-				racket1 = make_racket(-200)
-				racket2 = make_racket(200)
-				ball = make_pong_ball()
-				make_score(1,0)
-				make_score(2,0)
-				socket.on('accel_data', function(msg) {
-							valx = parseInt(msg.accel.split(',')[0])
-							valz = parseInt(msg.accel.split(',')[2])
-							velocity_racket1.x = valx*10-racket1.position.x
-							velocity_racket1.z = valz*10-racket1.position.z
-						  });// end socket.on
-      }; // end generate
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+
+            function generate() {
+
+				pitch = make_pitch()
+				make_line()
+				car1 = make_car(-200)
+				car2 = make_car(200)
+
+				gamepad_handle_event()
+
+            }; // end generate
 
 		</script>
 
-		<!-- <canvas width="1078" height="575" style="width: 1078px; height: 575px;"></canvas> -->
+		<canvas width="1078" height="575" style="width: 1078px; height: 575px;"></canvas>
 
 </body></html>
