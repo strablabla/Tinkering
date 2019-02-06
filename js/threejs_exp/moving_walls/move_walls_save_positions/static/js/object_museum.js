@@ -1,8 +1,8 @@
 disp = 5
 function make_uniform_ground(){
     //alert("in make_board")
-    var size_square = 2000;
-    var geometry = new THREE.CubeGeometry( size_square, size_square, 2 );
+    var size_square = 5000;
+    var geometry = new THREE.CubeGeometry( size_square, size_square, 5 );
     var square_color = 0xffffff
     var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: square_color } ) );
     object.material.ambient = object.material.color;
@@ -11,6 +11,7 @@ function make_uniform_ground(){
     object.position.z = 0
     object.castShadow = true;
     object.receiveShadow = true;
+    object.opacity = 0.4;
     scene.add( object );
 } // end function
 function make_ground_chess(){

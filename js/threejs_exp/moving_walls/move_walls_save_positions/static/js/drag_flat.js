@@ -1,7 +1,7 @@
 function init_drag(){
 
     projector = new THREE.Projector();
-    var size_plane = 1000
+    var size_plane = 10000
     plane = new THREE.Mesh( new THREE.PlaneGeometry( size_plane, size_plane, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0x000000, opacity: 0.25, transparent: true, wireframe: true } ) );
     plane.visible = true;
     scene.add( plane );
@@ -80,9 +80,7 @@ function onDocumentMouseDown( event ) {
         container.style.cursor = 'move';
 
     }
-
-    //if ( INTERSECTED ) INTERSECTED.material.color.setHex( 0x000000 ); // changing color when selected
-    if ( INTERSECTED ) INTERSECTED.material.color.setHex( 0x66ff33 ); // changing color when selected
+    if ( INTERSECTED ) INTERSECTED.material.color.setHex( 0x66ff33 ); // changing color in green when selected
 
 }
 
