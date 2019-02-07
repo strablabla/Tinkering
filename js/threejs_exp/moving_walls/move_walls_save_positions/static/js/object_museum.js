@@ -34,7 +34,7 @@ function make_ground_chess(){
     }
 } // end function
 
-function make_wall(name,p){
+function make_wall(name,p,r){
     //alert("in make_wall")
     //alert( "Stringify " + JSON.stringify(obj))
     //alert(JSON.stringify(dicpos))
@@ -49,6 +49,9 @@ function make_wall(name,p){
     object.position.x = p.x //obj.x //dicpos.x
     object.position.y = p.y //obj.y //dicpos.y
     object.position.z = wall_height/2
+    object.rotation.x = r.x //
+    object.rotation.y = r.y //
+    object.rotation.z = r.z
     object.castShadow = true;
     object.receiveShadow = true;
     object.name = name;

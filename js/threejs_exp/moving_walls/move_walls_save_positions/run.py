@@ -53,8 +53,6 @@ def receive(begin):
     print("position x is {0} ".format(begin))
     with open('static/pos.json','r') as f:
         data = json.load(f)
-    #print(type(data))
-    #socketio.emit('server_pos',{'count': 2, 'accel': "33"}, namespace='/pos')
     socketio.emit('server_pos', data, namespace='/pos')
 
 def accelero(ser):
@@ -64,17 +62,15 @@ def accelero(ser):
 def background_thread():
     """Example of how to send server generated events to clients."""
     count = 0
-    while True:
-        #count += 1
-        #data_accel = str(accelero(ser))[2:-5]
-        #socketio.emit('accel_data',{'count': count, 'accel': str(data_accel)}, namespace='/mupy')
-        socketio.emit('server_pos',{'count': 2, 'accel': "33"}, namespace='/pos')
+    # while True:
+    #     #count += 1
+    #     #data_accel = str(accelero(ser))[2:-5]
+    #     #socketio.emit('accel_data',{'count': count, 'accel': str(data_accel)}, namespace='/mupy')
+    #     socketio.emit('server_pos',{'count': 2, 'accel': "33"}, namespace='/pos')
 
 @app.route('/')
 def index():
     global thread
-    #socketio.emit('server_pos',[["oo",{"x":"123"}]], namespace='/pos')
-    socketio.emit('server_pos',{'count': 2, 'accel': "33"}, namespace='/pos')
     # if thread is None:
     #     thread = Thread(target=background_thread)
     #     thread.daemon = True
