@@ -52,6 +52,10 @@
 
 		}
 
+		/*
+		Panel object
+		*/
+
 		.panel {
 			font-family: 'Playfair Display';
 			font-size: 0.85em;
@@ -67,6 +71,7 @@
 			background-color:grey;
 			z-index: 9999;
 			opacity: 0.8;
+			visibility: hidden;
 		}
 
 		.titlepanel {
@@ -75,6 +80,26 @@
 			letter-spacing: 0.1em;
 			text-align: center;
 
+		}
+
+		/*
+		Panel menu
+		*/
+		.panel_menu1 {
+			font-family: 'Playfair Display';
+			font-size: 0.85em;
+			letter-spacing: 0.2em;
+			position: absolute;
+			top: 50px;
+			left:200px;
+			margin-left:5px;
+			padding-left: 10px;
+			padding-top: 20px;
+			width: 200px;
+			height: 200px;
+			background-color:grey;
+			z-index: 9999;
+			opacity: 0.8;
 		}
 
 
@@ -100,29 +125,6 @@
 		<script src="/static/js/drag_flat.js"></script>
 
 		<script>
-		// Object.prototype.removeItem = function (key, value) {
-		// 		    if (value == undefined)
-		// 		        return;
-		//
-		// 		    for (var i in this) {
-		// 		        if (this[i][key] == value) {
-		// 		            this.splice(i, 1);
-		// 		        }
-		// 		    }
-		// 		};
-
-				// Array.prototype.remove = function(key)
-				// 	 {
-				// 			 for(var i = 0; i < this.length; ++i)
-				// 			 {
-				// 					 if(this[i] == key)
-				// 					 {
-				// 							 this.splice(i, 1);
-				// 							 return;
-				// 					 }
-				// 			 }
-				// 	 }
-
 
 			var container, stats;
 			var camera, controls, scene, projector, renderer;
@@ -190,7 +192,7 @@
 							for (i=0; i < Object.keys(msg).length; i++){ // Create the objects at the beginning
 									var k = Object.keys(msg)[i]  // k is the objects name, wall, seat etc..
 									//alert(k)
-									make_wall(k, msg[k]['pos'], msg[k]['rot'])
+									make_wall(k, msg[k]['pos'], msg[k]['rot'], 0x800000)
 							}
 
 					  });// end socket.on
@@ -208,6 +210,10 @@
 				renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
 				renderer.domElement.addEventListener( 'mouseup', onDocumentMouseUp, false );
 
+				//-------------------------- Menu
+
+
+
 				//-------------------------- Infos
 
 				function give_infos(){
@@ -217,25 +223,25 @@
 										var x = document.getElementsByClassName("panel");
 										var i;
 										for (i = 0; i < x.length; i++) {
+											x[i].style.visibility = "visible";
 											x[i].style.backgroundColor = "grey";
-											//x[i].style.left = "300px";
-											x[i].style.left = event.pageX + "px";
-											x[i].style.top = event.pageY + "px";
-										}
+											x[i].style.left = event.pageX + "px";  // mouse x
+											x[i].style.top = event.pageY + "px";   // mouse y
 
+										}
 							}
 							else{
 
 								//$('#pan').css('color','red')
-
 								var x = document.getElementsByClassName("panel");
 								var i;
 								for (i = 0; i < x.length; i++) {
-									x[i].style.backgroundColor = "grey";
-									x[i].style.left = "10px";
-									x[i].style.top = "10px";
-
+											//x[i].style.backgroundColor = "red";
+											x[i].style.left = "10px";
+											x[i].style.top = "10px";
+											x[i].style.visibility = "hidden";
 								}
+
 							}
 						}
 				renderer.domElement.addEventListener( 'mouseup', give_infos, false );
@@ -254,14 +260,29 @@
 							} // end if key code
 							if(keyev('c', event)){    // Clone
 										if ( INTERSECTED ){
-											  // clone = INTERSECTED.clone();
-												// clone.name = INTERSECTED.name + '_clone';
-												// clone.position.x += 20;
-												// scene.add(clone)
-												// objects.push(clone)
-											  make_wall(INTERSECTED.name + '_clone',
-												    INTERSECTED.position,
-													  INTERSECTED.rotation)
+											  clone = INTERSECTED.clone();
+												clone.name = INTERSECTED.name + "_" + INTERSECTED.numclone;
+												//-----------
+												INTERSECTED.numclone += 1;
+												INTERSECTED.cloned = true;
+												clone.numclone = 0;
+												clone.cloned = false;
+												clone.origclone = INTERSECTED.name;
+												//-----------
+												clone.position.x += 100;
+												clone.material.color.setHex( 0xffffff );
+												scene.add(clone)
+												objects.push(clone)
+												// var newname = INTERSECTED.name + '_clone'; // 0x800000
+											  // make_wall(newname,
+												//     INTERSECTED.position,
+												// 	  INTERSECTED.rotation,0xffffff)
+												// for (i in objects){
+												// 			if (objects[i].name == newname){
+												// 					objects[i].material.color.setHex( 0xffffff );
+												// 			}
+												// 	}
+
 										}
 								} // end if key code
 								if(keyev('d', event)){    // Delete
@@ -283,7 +304,15 @@
 				function emitpos(){          // emits the positions toward the server to save them
 						var listpos = {}         // list of all the positions
 						for (i in objects){
-									var infos_obj = {"pos": objects[i].position, "rot": objects[i].rotation};
+									var dicclone = {}
+									dicclone["numclone"] = objects[i].numclone
+									dicclone["cloned"] = objects[i].cloned
+									dicclone["origclone"] = objects[i].origclone
+									var infos_obj = {"pos": objects[i].position,
+									 								 "rot": objects[i].rotation,
+																	 "clone": dicclone };
+									 // var infos_obj = {"pos": objects[i].position,
+									 // 				"rot": objects[i].rotation}
 									listpos[objects[i].name] = infos_obj;   // add position to listpos
 									}
 						socket.emit( 'message', JSON.stringify(listpos));
@@ -311,15 +340,17 @@
 
     <div class="navig">
 				<div class="menu" style='left:70px'> Home </div>
-				<div class="menu" style='left:200px'> Object </div>
+				<div class="menu" style='left:200px' id="menu" > Object </div>
 				<div class="menu" style='left: 90%'> Help</div>
+
+				<!-- onclick="showmenu()" -->
 
 		</div>
 
 		<div style="cursor: auto;">
 			<!-- <canvas style="width: 1007px; height: 804px;" height="804" width="1007"></canvas> -->
 
-			<div class="panel" id="pan">
+			<div class="panel" id="pan" >
 
 						<div class="titlepanel" >
 									Parameters
@@ -341,7 +372,8 @@
 
 		</div>
 
+		<div class="panel_menu1" id="menu1" hidden>  </div>
 
 
-
-</body></html>
+		</body>
+</html>

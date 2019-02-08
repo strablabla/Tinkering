@@ -40,26 +40,29 @@ function obj_basics(object, p, r, name){
   Position, rotation, shadow, name
   */
   object.material.ambient = object.material.color;
-  object.position.x = p.x //obj.x //dicpos.x
-  object.position.y = p.y //obj.y //dicpos.y
-  object.position.z = p.z
-  object.rotation.x = r.x //
-  object.rotation.y = r.y //
-  object.rotation.z = r.z
+  object.position.x = p.x     // pos x
+  object.position.y = p.y     // pos y
+  object.position.z = p.z     // pos z
+  object.rotation.x = r.x     // rot x
+  object.rotation.y = r.y     // rot y
+  object.rotation.z = r.z     // rot z
   object.castShadow = true;
   object.receiveShadow = true;
   object.name = name;
+  object.cloned = false;
+  object.origclone = "";
+  object.numclone = 0;
   return object;
 }
 
-function make_wall(name,p,r){
+function make_wall(name,p,r,col){
     /*
     Wall
     name: name of the object
     p: position of the object
     r: rotation of the object
     */
-    wall_color = 0x800000
+    wall_color = col;
     var wall_length = 150;
     var wall_width = 5;
     var wall_height = 300;
