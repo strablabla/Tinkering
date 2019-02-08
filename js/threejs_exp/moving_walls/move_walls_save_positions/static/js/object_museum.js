@@ -34,28 +34,39 @@ function make_ground_chess(){
     }
 } // end function
 
+
+function obj_basics(object, p, r, name){
+  /*
+  Position, rotation, shadow, name
+  */
+  object.material.ambient = object.material.color;
+  object.position.x = p.x //obj.x //dicpos.x
+  object.position.y = p.y //obj.y //dicpos.y
+  object.position.z = p.z
+  object.rotation.x = r.x //
+  object.rotation.y = r.y //
+  object.rotation.z = r.z
+  object.castShadow = true;
+  object.receiveShadow = true;
+  object.name = name;
+  return object;
+}
+
 function make_wall(name,p,r){
-    //alert("in make_wall")
-    //alert( "Stringify " + JSON.stringify(obj))
-    //alert(JSON.stringify(dicpos))
-    //console.log('Heeeeeeeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrrrrreeee')
+    /*
+    Wall
+    name: name of the object
+    p: position of the object
+    r: rotation of the object
+    */
     wall_color = 0x800000
     var wall_length = 150;
     var wall_width = 5;
     var wall_height = 300;
+    p.z = wall_height/2;
     var geometry = new THREE.CubeGeometry( wall_width, wall_length, wall_height );
     var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: wall_color } ) );
-    object.material.ambient = object.material.color;
-    object.position.x = p.x //obj.x //dicpos.x
-    object.position.y = p.y //obj.y //dicpos.y
-    object.position.z = wall_height/2
-    object.rotation.x = r.x //
-    object.rotation.y = r.y //
-    object.rotation.z = r.z
-    object.castShadow = true;
-    object.receiveShadow = true;
-    object.name = name;
-
+    object = obj_basics(object,p,r,name)
     scene.add( object );
     objects.push(object)
 

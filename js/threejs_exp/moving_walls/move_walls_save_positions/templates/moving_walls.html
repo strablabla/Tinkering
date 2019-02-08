@@ -99,8 +99,30 @@
 		<script src="/static/js/make_objects.js"></script>
 		<script src="/static/js/drag_flat.js"></script>
 
-
 		<script>
+		// Object.prototype.removeItem = function (key, value) {
+		// 		    if (value == undefined)
+		// 		        return;
+		//
+		// 		    for (var i in this) {
+		// 		        if (this[i][key] == value) {
+		// 		            this.splice(i, 1);
+		// 		        }
+		// 		    }
+		// 		};
+
+				// Array.prototype.remove = function(key)
+				// 	 {
+				// 			 for(var i = 0; i < this.length; ++i)
+				// 			 {
+				// 					 if(this[i] == key)
+				// 					 {
+				// 							 this.splice(i, 1);
+				// 							 return;
+				// 					 }
+				// 			 }
+				// 	 }
+
 
 			var container, stats;
 			var camera, controls, scene, projector, renderer;
@@ -166,7 +188,7 @@
 							// alert(Object.keys(msg))
 
 							for (i=0; i < Object.keys(msg).length; i++){ // Create the objects at the beginning
-									var k = Object.keys(msg)[i]  // objects, wall, seat etc.. 
+									var k = Object.keys(msg)[i]  // k is the objects name, wall, seat etc..
 									//alert(k)
 									make_wall(k, msg[k]['pos'], msg[k]['rot'])
 							}
@@ -225,15 +247,34 @@
 						}
 
 				function keyDownTextField(event){
-						if(keyev('r', event)){    //
-
+						if(keyev('r', event)){    // Rotation
 									if ( INTERSECTED ){
-
 										INTERSECTED.rotation.z += -Math.PI/2;
 									}
-
 							} // end if key code
-					}
+							if(keyev('c', event)){    // Clone
+										if ( INTERSECTED ){
+											  // clone = INTERSECTED.clone();
+												// clone.name = INTERSECTED.name + '_clone';
+												// clone.position.x += 20;
+												// scene.add(clone)
+												// objects.push(clone)
+											  make_wall(INTERSECTED.name + '_clone',
+												    INTERSECTED.position,
+													  INTERSECTED.rotation)
+										}
+								} // end if key code
+								if(keyev('d', event)){    // Delete
+											if ( INTERSECTED ){
+													for (i in objects){
+																if (objects[i].name == INTERSECTED.name){
+																	  delete objects[i];
+																}
+														}
+													scene.remove( INTERSECTED )
+											}
+									} // end if key code
+					} // end keyDownTextField
 
 					document.addEventListener("keydown", keyDownTextField, false);
 
