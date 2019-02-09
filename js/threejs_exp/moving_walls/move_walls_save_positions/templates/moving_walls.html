@@ -189,72 +189,22 @@
 							// alert('Hello from socket.on !!! ')
 							// alert(Object.keys(msg))
 
-							// var listorig = {}
-							// for (i=0; i < Object.keys(msg).length; i++){ // Create the objects at the beginning
-							// 				var k = Object.keys(msg)[i]  // k is the objects name, wall, seat etc..
-							// 				//alert(k)
-							// 				//if (msg[k]['clone']['cloned'] == false){
-							// 					 listorig[k] = make_wall(k, msg[k]['pos'], msg[k]['rot'], 0x800000)
-							// 					 try {
-							// 								 listorig[k]['numclone'] = msg[k]['clone']['numclone']
-							// 								 listorig[k]ject['cloned'] = msg[k]['clone']['cloned']
-							// 								 listorig[k]['origclone'] = msg[k]['clone']['origclone']
-							// 						}
-							// 						catch(error) {
-							// 						  		//console.error(error);
-							// 						}
-							// 				// } // if
-							// 		}
-
 							var listorig = {}
-
-
 
 							for (i=0; i < Object.keys(msg).length; i++){ // Create the objects at the beginning
 											var k = Object.keys(msg)[i]  // k is the objects name, wall, seat etc..
 											//alert(k)
 											//if (msg[k]['clone']['cloned'] == false){
-											// if (msg[k]['type'] == "wall"){
-											// 	 listorig[k] = make_wall(k, msg[k]['pos'], msg[k]['rot'], 0x800000)
-											//  }
+											if (msg[k]['type'] == "wall"){
+												 listorig[k] = make_wall(k, msg[k]['pos'], msg[k]['rot'], 0x800000)
+											 }
 
-											 make_wall(k, msg[k]['pos'], msg[k]['rot'], 0x800000)
+				 								 listorig[k]['numclone'] = msg[k]['clone']['numclone']
+				 								 listorig[k]['cloned'] = msg[k]['clone']['cloned']
+				 								 listorig[k]['origclone'] = msg[k]['clone']['origclone']
 
-												 //listorig[k]['numclone'] = msg[k]['clone']['numclone']
-				 								 // listorig[k]['numclone'] = msg[k]['clone']['numclone']
-				 								 // listorig[k]ject['cloned'] = msg[k]['clone']['cloned']
-				 								 // listorig[k]['origclone'] = msg[k]['clone']['origclone']
-
-											//}
 									} // end for
 							//
-						  // // clone
-							//
-							// for (i=0; i < Object.keys(msg).length; i++){ // Create the objects at the beginning
-							// 				var k = Object.keys(msg)[i]  // k is the objects name, wall, seat etc..
-							// 				//alert(k)
-							// 				if (msg[k]['clone']['cloned'] == true){
-							//
-							// 							for (i in objects){
-							// 								 if (objects[i].name == msg[k]['clone']['origclone']){
-							//
-							// 												//make_wall(k, msg[k]['pos'], msg[k]['rot'], 0x800000)
-							// 												//object = listorig[msg[k]['clone']['origclone']].clone()
-							// 												object = objects[i].clone()
-							// 												object['name'] = k;
-							// 												object['position'] = msg[k]['pos']
-							// 												object['rotation'] = msg[k]['rot']
-							// 												//---------
-							// 												object['cloned'] = msg[k]['clone']['cloned']
-							// 												object['origclone'] = msg[k]['clone']['origclone']
-							// 												object['numclone'] = msg[k]['clone']['numclone']
-							// 												scene.add(object)
-							// 												objects.push(object)
-							// 												//console.log("length of objects is " + object.length)
-							// 								 }
-							// 							}
-							// 				} // end if clone
-							// 		} // end for for clone..
 
 					  });// end socket.on
 
@@ -272,7 +222,6 @@
 				renderer.domElement.addEventListener( 'mouseup', onDocumentMouseUp, false );
 
 				//-------------------------- Menu
-
 
 
 				//-------------------------- Infos
@@ -293,7 +242,6 @@
 							}
 							else{
 
-								//$('#pan').css('color','red')
 								var x = document.getElementsByClassName("panel");
 								var i;
 								for (i = 0; i < x.length; i++) {
@@ -325,7 +273,6 @@
 												clone.name = INTERSECTED.name + "_" + INTERSECTED.numclone;
 												//-----------
 												INTERSECTED.numclone += 1;
-												//INTERSECTED.cloned = true;
 												clone.numclone = 0;
 												clone.cloned = true;
 												clone.origclone = INTERSECTED.name;
@@ -334,16 +281,6 @@
 												clone.material.color.setHex( 0xffffff );
 												scene.add(clone)
 												objects.push(clone)
-												// var newname = INTERSECTED.name + '_clone'; // 0x800000
-											  // make_wall(newname,
-												//     INTERSECTED.position,
-												// 	  INTERSECTED.rotation,0xffffff)
-												// for (i in objects){
-												// 			if (objects[i].name == newname){
-												// 					objects[i].material.color.setHex( 0xffffff );
-												// 			}
-												// 	}
-
 										}
 								} // end if key code
 								if(keyev('d', event)){    // Delete
@@ -436,7 +373,6 @@
 		</div>
 
 		<div class="panel_menu1" id="menu1" hidden>  </div>
-
 
 		</body>
 </html>
