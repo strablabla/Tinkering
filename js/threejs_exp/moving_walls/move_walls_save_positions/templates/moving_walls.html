@@ -85,6 +85,7 @@
 		/*
 		Panel menu
 		*/
+
 		.panel_menu1 {
 			font-family: 'Playfair Display';
 			font-size: 0.85em;
@@ -97,6 +98,27 @@
 			padding-top: 20px;
 			width: 200px;
 			height: 200px;
+			background-color:grey;
+			z-index: 9999;
+			opacity: 0.8;
+		}
+
+		/*
+		Panel objects
+		*/
+
+		.panel_objects {
+			font-family: 'Playfair Display';
+			font-size: 0.85em;
+			letter-spacing: 0.2em;
+			position: absolute;
+			top: 50px;
+			right:10px;
+			margin-left:5px;
+			padding-left: 10px;
+			padding-top: 20px;
+			width: 200px;
+			height: 600px;
 			background-color:grey;
 			z-index: 9999;
 			opacity: 0.8;
@@ -129,6 +151,7 @@
 			var container, stats;
 			var camera, controls, scene, projector, renderer;
 			var objects = [], plane;
+			var create_new_obj = false;
 
 			var mouse = new THREE.Vector2(),
 			offset = new THREE.Vector3(),
@@ -204,8 +227,6 @@
 				 								 listorig[k]['origclone'] = msg[k]['clone']['origclone']
 
 									} // end for
-							//
-
 					  });// end socket.on
 
 				init_drag()
@@ -221,8 +242,31 @@
 				renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
 				renderer.domElement.addEventListener( 'mouseup', onDocumentMouseUp, false );
 
-				//-------------------------- Menu
+				//-------------------------- Create object
 
+				renderer.domElement.addEventListener( 'click', create_object, false );
+				function mousepos(){
+
+					event.preventDefault();
+					mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+					mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+					var vector = new THREE.Vector3( mouse.x, mouse.y, 0.5 );
+					projector.unprojectVector( vector, camera );
+					var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+
+					var intersects = raycaster.intersectObject( plane );
+					var interptsub = intersects[ 0 ].point.sub( offset )
+					return interptsub
+
+				}
+				function create_object(){
+						if (create_new_obj){
+									var newname = Math.random().toString(36).substring(2, 15) ; // + Math.random().toString(36).substring(2, 15)
+									interptsub = mousepos()
+									var creobj = make_wall(newname, interptsub, {"x":0, "y":0, "z":0}, 0xffffff)
+						}
+				}
 
 				//-------------------------- Infos
 
@@ -293,6 +337,13 @@
 													scene.remove( INTERSECTED )
 											}
 									} // end if key code
+
+								if(keyev('n', event)){    // Delete
+									   create_new_obj = !create_new_obj
+
+									} // end if key code
+
+
 					} // end keyDownTextField
 
 					document.addEventListener("keydown", keyDownTextField, false);
@@ -311,8 +362,6 @@
 																	 "clone": dicclone,
 																	 "type": objects[i].type
 																  };
-									 // var infos_obj = {"pos": objects[i].position,
-									 // 				"rot": objects[i].rotation}
 									listpos[objects[i].name] = infos_obj;   // add position to listpos
 									}
 						socket.emit( 'message', JSON.stringify(listpos));
@@ -373,6 +422,8 @@
 		</div>
 
 		<div class="panel_menu1" id="menu1" hidden>  </div>
+
+		<div class="panel_objects" id="pobj" >  </div>
 
 		</body>
 </html>
