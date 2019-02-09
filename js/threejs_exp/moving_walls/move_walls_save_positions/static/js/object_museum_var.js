@@ -40,15 +40,15 @@ function obj_basics(object, p, r, name){
   Position, rotation, shadow, name
   */
   object.material.ambient = object.material.color;
-  // object.position = p;
-  // object.rotation = r;
+  object.position = p;
+  object.rotation = r;
   //----------
-  object.position.x = p.x     // pos x
-  object.position.y = p.y     // pos y
-  object.position.z = p.z     // pos z
-  object.rotation.x = r.x     // rot x
-  object.rotation.y = r.y     // rot y
-  object.rotation.z = r.z     // rot z
+  // object.position.x = p.x     // pos x
+  // object.position.y = p.y     // pos y
+  // object.position.z = p.z     // pos z
+  // object.rotation.x = r.x     // rot x
+  // object.rotation.y = r.y     // rot y
+  // object.rotation.z = r.z     // rot z
   object.castShadow = true;
   object.receiveShadow = true;
   object.name = name;
@@ -73,7 +73,7 @@ function make_wall(name,p,r,col){
     var geometry = new THREE.CubeGeometry( wall_width, wall_length, wall_height );
     var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: wall_color } ) );
     object = obj_basics(object,p,r,name)
-    object.type = "wall"
+    //object.type = "wall"
     scene.add( object );
     objects.push( object )
 
