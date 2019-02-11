@@ -152,6 +152,8 @@
 			var camera, controls, scene, projector, renderer;
 			var objects = [], plane;
 			var create_new_obj = false;
+			var select_obj = false;
+			var selpos = [];
 
 			var mouse = new THREE.Vector2(),
 			offset = new THREE.Vector3(),
@@ -206,27 +208,30 @@
 				//make_small_seats()     // make the seats
 				//make_seat()            // make the seat
 				listwalls = {}
+				function load_scene(msg){
+					/*
+					Loading the scene
+					*/
+					var listorig = {}
+
+					for (i=0; i < Object.keys(msg).length; i++){ // Create the objects at the beginning
+									var k = Object.keys(msg)[i]  // k is the objects name, wall, seat etc..
+									//alert(k)
+									//if (msg[k]['clone']['cloned'] == false){
+									if (msg[k]['type'] == "wall"){
+										 listorig[k] = make_wall(k, msg[k]['pos'], msg[k]['rot'], 0x800000)
+									 }
+
+										 listorig[k]['numclone'] = msg[k]['clone']['numclone']
+										 listorig[k]['cloned'] = msg[k]['clone']['cloned']
+										 listorig[k]['origclone'] = msg[k]['clone']['origclone']
+
+							} // end for
+
+				}
 				socket.emit( 'begin',  "hello from client"); // send mess to server for ping pong..
 				socket.on('server_pos', function(msg) {
-
-							// alert('Hello from socket.on !!! ')
-							// alert(Object.keys(msg))
-
-							var listorig = {}
-
-							for (i=0; i < Object.keys(msg).length; i++){ // Create the objects at the beginning
-											var k = Object.keys(msg)[i]  // k is the objects name, wall, seat etc..
-											//alert(k)
-											//if (msg[k]['clone']['cloned'] == false){
-											if (msg[k]['type'] == "wall"){
-												 listorig[k] = make_wall(k, msg[k]['pos'], msg[k]['rot'], 0x800000)
-											 }
-
-				 								 listorig[k]['numclone'] = msg[k]['clone']['numclone']
-				 								 listorig[k]['cloned'] = msg[k]['clone']['cloned']
-				 								 listorig[k]['origclone'] = msg[k]['clone']['origclone']
-
-									} // end for
+							load_scene(msg)
 					  });// end socket.on
 
 				init_drag()
@@ -244,36 +249,58 @@
 
 				//-------------------------- Create object
 
-				renderer.domElement.addEventListener( 'click', create_object, false );
+				renderer.domElement.addEventListener( 'click', mouse_create_object, false );
 				function mousepos(){
+							/*
+							Return the mouse coordinates in the plane
+							*/
 
-					event.preventDefault();
-					mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-					mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+							event.preventDefault();
+							mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+							mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
-					var vector = new THREE.Vector3( mouse.x, mouse.y, 0.5 );
-					projector.unprojectVector( vector, camera );
-					var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+							var vector = new THREE.Vector3( mouse.x, mouse.y, 0.5 );
+							projector.unprojectVector( vector, camera );
+							var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
 
-					var intersects = raycaster.intersectObject( plane );
-					var interptsub = intersects[ 0 ].point.sub( offset )
-					return interptsub
+							var intersects = raycaster.intersectObject( plane );
+							var interptsub = intersects[ 0 ].point.sub( offset )
+							return interptsub
 
 				}
-				function create_object(){
+				function mouse_create_object(){
+						/*
+						Create an object where the mouse is located in the plane.
+						*/
 						if (create_new_obj){
 									var newname = Math.random().toString(36).substring(2, 15) ; // + Math.random().toString(36).substring(2, 15)
 									interptsub = mousepos()
 									var creobj = make_wall(newname, interptsub, {"x":0, "y":0, "z":0}, 0xffffff)
+						}
+
+
+						//------------------------- Mouse select area..
+
+						if (select_obj | (selpos.length == 1)){
+								//make_mark()
+								var newname = Math.random().toString(36).substring(2, 15) ; // + Math.random().toString(36).substring(2, 15)
+								interptsub = mousepos()
+								var creobj = make_mark(newname, interptsub, {"x":0, "y":0, "z":0}, 0xffffff)
+								selpos.push(interptsub)
+						}
+						else{
+							 make_area(selpos)
+							 selpos = []
 						}
 				}
 
 				//-------------------------- Infos
 
 				function give_infos(){
-
+							/*
+							Give infos about the seected object.
+							*/
 							if ( INTERSECTED ){
-
 										var x = document.getElementsByClassName("panel");
 										var i;
 										for (i = 0; i < x.length; i++) {
@@ -281,7 +308,6 @@
 											x[i].style.backgroundColor = "grey";
 											x[i].style.left = event.pageX + "px";  // mouse x
 											x[i].style.top = event.pageY + "px";   // mouse y
-
 										}
 							}
 							else{
@@ -290,44 +316,51 @@
 								var i;
 								for (i = 0; i < x.length; i++) {
 											//x[i].style.backgroundColor = "red";
-											x[i].style.left = "10px";
+											x[i].style.left = "10px";                // upper left position
 											x[i].style.top = "10px";
 											x[i].style.visibility = "hidden";
-								}
-
+								  }
 							}
 						}
 				renderer.domElement.addEventListener( 'mouseup', give_infos, false );
 
-				//------------------------- rotation
+
+
+				//------------------------- Keys actions
 
 				var keyev = function(key, event){
 							return (event.keyCode == key.charCodeAt(0)-32 )
 						}
 
 				function keyDownTextField(event){
+						/*
+						r : rotate
+						c : clone
+						d : delete
+						n : new piece with mouse
+						*/
 						if(keyev('r', event)){    // Rotation
 									if ( INTERSECTED ){
-										INTERSECTED.rotation.z += -Math.PI/2;
+										INTERSECTED.rotation.z += -Math.PI/2; // Pi/2 rotation
 									}
 							} // end if key code
-							if(keyev('c', event)){    // Clone
+							if(keyev('c', event)){    // Clone the selected object
 										if ( INTERSECTED ){
 											  clone = INTERSECTED.clone();
 												clone.name = INTERSECTED.name + "_" + INTERSECTED.numclone;
 												//-----------
 												INTERSECTED.numclone += 1;
-												clone.numclone = 0;
-												clone.cloned = true;
-												clone.origclone = INTERSECTED.name;
+												clone.numclone = 0;                   // number of clones from this object
+												clone.cloned = true;                  // object is a clone
+												clone.origclone = INTERSECTED.name;   // save the link to the original shape
 												//-----------
-												clone.position.x += 100;
-												clone.material.color.setHex( 0xffffff );
+												clone.position.x += 100;                // shift position in relation with the original piece
+												clone.material.color.setHex( 0xffffff ); // change color
 												scene.add(clone)
 												objects.push(clone)
 										}
 								} // end if key code
-								if(keyev('d', event)){    // Delete
+								if(keyev('d', event)){    // Delete object selected
 											if ( INTERSECTED ){
 													for (i in objects){
 																if (objects[i].name == INTERSECTED.name){
@@ -338,8 +371,12 @@
 											}
 									} // end if key code
 
-								if(keyev('n', event)){    // Delete
+								if(keyev('n', event)){             // create or not a new object with the mouse..
 									   create_new_obj = !create_new_obj
+									} // end if key code
+
+								if(keyev('s', event)){             // select area..
+										 select_obj = !select_obj
 
 									} // end if key code
 
@@ -350,7 +387,10 @@
 
 				//------------------------- Emit the positions of all the objects..
 
-				function emitpos(){          // emits the positions toward the server to save them
+				function emit_infos_scene(){          // emits the positions toward the server to save them
+						/*
+						Send the informations to the server..
+						*/
 						var listpos = {}         // list of all the positions
 						for (i in objects){
 									var dicclone = {}
@@ -366,7 +406,7 @@
 									}
 						socket.emit( 'message', JSON.stringify(listpos));
 						}
-				renderer.domElement.addEventListener( 'mouseup', emitpos, false );
+				renderer.domElement.addEventListener( 'mouseup', emit_infos_scene, false );
 
 				//---------------------------
 

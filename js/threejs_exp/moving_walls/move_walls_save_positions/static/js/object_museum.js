@@ -1,4 +1,51 @@
 disp = 5
+
+function make_mark(name,p,r,col){
+    /*
+    Wall
+    name : name of the object
+    p : position of the object
+    r : rotation of the object
+    col : color of the object
+    */
+    var size_pawns = 50;
+    square_color = col;
+    p.z = size_pawns/2;
+
+    var geometry = new THREE.CubeGeometry( size_pawns, size_pawns, size_pawns );
+    var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: square_color } ) );
+
+    object = obj_basics(object,p,r,name)
+    object.type = "pawn"
+    scene.add( object );
+    objects.push( object )
+
+    return object
+
+} // end function
+
+
+
+function make_area(selpos){
+    //alert("in make_board")
+    //var size_square = 5000;
+    var side1 = Math.abs(selpos[0].x - selpos[1].x)
+    var side2 = Math.abs(selpos[0].y - selpos[1].y)
+    var geometry = new THREE.CubeGeometry( side1, side2, 5 );
+    var square_color = 0xffffff
+    var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: square_color } ) );
+    object.material.ambient = object.material.color;
+    object.position.x = (selpos[0].x + selpos[1].x)/2
+    object.position.y = (selpos[0].y + selpos[1].y)/2
+    object.position.z = 160
+    object.castShadow = true;
+    object.receiveShadow = true;
+    object.opacity = 0.4;
+    scene.add( object );
+    objects.push( object )
+
+} // end function
+
 function make_uniform_ground(){
     //alert("in make_board")
     var size_square = 5000;
@@ -14,6 +61,7 @@ function make_uniform_ground(){
     object.opacity = 0.4;
     scene.add( object );
 } // end function
+
 function make_ground_chess(){
     //alert("in make_board")
     var size_square = 150;
@@ -61,9 +109,10 @@ function obj_basics(object, p, r, name){
 function make_wall(name,p,r,col){
     /*
     Wall
-    name: name of the object
-    p: position of the object
-    r: rotation of the object
+    name : name of the object
+    p : position of the object
+    r : rotation of the object
+    col : color of the object
     */
     wall_color = col;
     var wall_length = 150;
@@ -98,8 +147,8 @@ function make_small_seats(){
            }
         var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: square_color } ) );
         object.material.ambient = object.material.color;
-        object.position.x = disp*Math.random() * size_square
-        object.position.y = disp*Math.random() * size_square
+        object.position.x = disp * Math.random() * size_square
+        object.position.y = disp * Math.random() * size_square
         object.position.z = size_pawns/2
         object.castShadow = true;
         object.receiveShadow = true;
