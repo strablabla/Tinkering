@@ -1,8 +1,31 @@
 disp = 5
 
+function obj_basics(object, p, r, name){
+  /*
+  Generic function for rotation, shadow, name, cloning etc..
+  */
+  object.material.ambient = object.material.color;
+  // object.position = p;
+  // object.rotation = r;
+  //----------
+  object.position.x = p.x     // pos x
+  object.position.y = p.y     // pos y
+  object.position.z = p.z     // pos z
+  object.rotation.x = r.x     // rot x
+  object.rotation.y = r.y     // rot y
+  object.rotation.z = r.z     // rot z
+  object.castShadow = true;
+  object.receiveShadow = true;
+  object.name = name;
+  object.cloned = false;
+  object.origclone = "";
+  object.numclone = 0;
+  return object;
+}
+
 function make_mark(name,p,r,col){
     /*
-    Wall
+    Marks for delimiting the area for selecting the pieces.
     name : name of the object
     p : position of the object
     r : rotation of the object
@@ -25,8 +48,10 @@ function make_mark(name,p,r,col){
 } // end function
 
 
-
 function make_area(selpos){
+    /*
+    Area for selectnig the pieces
+    */
     //alert("in make_board")
     //var size_square = 5000;
     var side1 = Math.abs(selpos[0].x - selpos[1].x)
@@ -47,7 +72,9 @@ function make_area(selpos){
 } // end function
 
 function make_uniform_ground(){
-    //alert("in make_board")
+    /*
+    Principal ground
+    */
     var size_square = 5000;
     var geometry = new THREE.CubeGeometry( size_square, size_square, 5 );
     var square_color = 0xffffff
@@ -63,6 +90,9 @@ function make_uniform_ground(){
 } // end function
 
 function make_ground_chess(){
+    /*
+    Ground with cases of different color, chess game etc..
+    */
     //alert("in make_board")
     var size_square = 150;
     var geometry = new THREE.CubeGeometry( size_square, size_square, 5 );
@@ -82,29 +112,6 @@ function make_ground_chess(){
     }
 } // end function
 
-
-function obj_basics(object, p, r, name){
-  /*
-  Position, rotation, shadow, name
-  */
-  object.material.ambient = object.material.color;
-  // object.position = p;
-  // object.rotation = r;
-  //----------
-  object.position.x = p.x     // pos x
-  object.position.y = p.y     // pos y
-  object.position.z = p.z     // pos z
-  object.rotation.x = r.x     // rot x
-  object.rotation.y = r.y     // rot y
-  object.rotation.z = r.z     // rot z
-  object.castShadow = true;
-  object.receiveShadow = true;
-  object.name = name;
-  object.cloned = false;
-  object.origclone = "";
-  object.numclone = 0;
-  return object;
-}
 
 function make_wall(name,p,r,col){
     /*
@@ -131,6 +138,9 @@ function make_wall(name,p,r,col){
 } // end function
 
 function make_small_seats(){
+    /*
+    make small seats..
+    */
     //alert("in make_small_seats")
     var size_square = 150;
     var size_pawns = 50;
@@ -159,6 +169,9 @@ function make_small_seats(){
 } // end function
 
 function make_seat(){
+    /*
+    function to make seat. 
+    */
     //alert("in make_pawns")
     var size_square = 150;
     var size_seat = 100;

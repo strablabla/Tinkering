@@ -204,9 +204,9 @@
 				scene.add( light );
 
 				//make_objects_onflat()
-				make_uniform_ground()  // make the board
-				//make_small_seats()     // make the seats
-				//make_seat()            // make the seat
+				make_uniform_ground()  			// make the board
+				//make_small_seats()     		// make the seats
+				//make_seat()            		// make the seat
 				listwalls = {}
 				function load_scene(msg){
 					/*
@@ -214,8 +214,8 @@
 					*/
 					var listorig = {}
 
-					for (i=0; i < Object.keys(msg).length; i++){ // Create the objects at the beginning
-									var k = Object.keys(msg)[i]  // k is the objects name, wall, seat etc..
+					for (i=0; i < Object.keys(msg).length; i++){ 					// Create the objects at the beginning
+									var k = Object.keys(msg)[i]  									// k is the objects name, wall, seat etc..
 									//alert(k)
 									//if (msg[k]['clone']['cloned'] == false){
 									if (msg[k]['type'] == "wall"){
@@ -286,7 +286,7 @@
 								var newname = Math.random().toString(36).substring(2, 15) ; // + Math.random().toString(36).substring(2, 15)
 								interptsub = mousepos()
 								var creobj = make_mark(newname, interptsub, {"x":0, "y":0, "z":0}, 0xffffff)
-								selpos.push(interptsub)
+								selpos.push(creobj)
 						}
 						else{
 							 make_area(selpos)
@@ -306,8 +306,8 @@
 										for (i = 0; i < x.length; i++) {
 											x[i].style.visibility = "visible";
 											x[i].style.backgroundColor = "grey";
-											x[i].style.left = event.pageX + "px";  // mouse x
-											x[i].style.top = event.pageY + "px";   // mouse y
+											x[i].style.left = event.pageX + "px";  				// mouse x
+											x[i].style.top = event.pageY + "px";   				// mouse y
 										}
 							}
 							else{
@@ -316,15 +316,13 @@
 								var i;
 								for (i = 0; i < x.length; i++) {
 											//x[i].style.backgroundColor = "red";
-											x[i].style.left = "10px";                // upper left position
+											x[i].style.left = "10px";                			// upper left position
 											x[i].style.top = "10px";
 											x[i].style.visibility = "hidden";
 								  }
 							}
 						}
 				renderer.domElement.addEventListener( 'mouseup', give_infos, false );
-
-
 
 				//------------------------- Keys actions
 
@@ -339,20 +337,20 @@
 						d : delete
 						n : new piece with mouse
 						*/
-						if(keyev('r', event)){    // Rotation
+						if(keyev('r', event)){    												  // Rotation
 									if ( INTERSECTED ){
-										INTERSECTED.rotation.z += -Math.PI/2; // Pi/2 rotation
+										INTERSECTED.rotation.z += -Math.PI/2; 		  // Pi/2 rotation
 									}
 							} // end if key code
-							if(keyev('c', event)){    // Clone the selected object
+							if(keyev('c', event)){    											  // Clone the selected object
 										if ( INTERSECTED ){
 											  clone = INTERSECTED.clone();
 												clone.name = INTERSECTED.name + "_" + INTERSECTED.numclone;
 												//-----------
 												INTERSECTED.numclone += 1;
-												clone.numclone = 0;                   // number of clones from this object
-												clone.cloned = true;                  // object is a clone
-												clone.origclone = INTERSECTED.name;   // save the link to the original shape
+												clone.numclone = 0;                     // number of clones from this object
+												clone.cloned = true;                    // object is a clone
+												clone.origclone = INTERSECTED.name;     // save the link to the original shape
 												//-----------
 												clone.position.x += 100;                // shift position in relation with the original piece
 												clone.material.color.setHex( 0xffffff ); // change color
@@ -360,7 +358,7 @@
 												objects.push(clone)
 										}
 								} // end if key code
-								if(keyev('d', event)){    // Delete object selected
+								if(keyev('d', event)){    											// Delete object selected
 											if ( INTERSECTED ){
 													for (i in objects){
 																if (objects[i].name == INTERSECTED.name){
@@ -371,11 +369,11 @@
 											}
 									} // end if key code
 
-								if(keyev('n', event)){             // create or not a new object with the mouse..
+								if(keyev('n', event)){             							// create or not a new object with the mouse..
 									   create_new_obj = !create_new_obj
 									} // end if key code
 
-								if(keyev('s', event)){             // select area..
+								if(keyev('s', event)){             							// select area..
 										 select_obj = !select_obj
 
 									} // end if key code
@@ -387,14 +385,14 @@
 
 				//------------------------- Emit the positions of all the objects..
 
-				function emit_infos_scene(){          // emits the positions toward the server to save them
+				function emit_infos_scene(){          									// emits the positions toward the server to save them
 						/*
 						Send the informations to the server..
 						*/
-						var listpos = {}         // list of all the positions
+						var listpos = {}         														// list of all the positions
 						for (i in objects){
 									var dicclone = {}
-									dicclone["numclone"] = objects[i].numclone // objects.length //
+									dicclone["numclone"] = objects[i].numclone 		// objects.length
 									dicclone["cloned"] = objects[i].cloned
 									dicclone["origclone"] = objects[i].origclone
 									var infos_obj = {"pos": objects[i].position,
@@ -402,7 +400,7 @@
 																	 "clone": dicclone,
 																	 "type": objects[i].type
 																  };
-									listpos[objects[i].name] = infos_obj;   // add position to listpos
+									listpos[objects[i].name] = infos_obj;   			// add position to listpos
 									}
 						socket.emit( 'message', JSON.stringify(listpos));
 						}
