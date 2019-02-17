@@ -53,6 +53,26 @@
 		}
 
 		/*
+		Current selected function
+		*/
+
+		.current_func {
+
+			font-family: 'Playfair Display';
+			font-size: 1.2em;
+			letter-spacing: 0.2em;
+			position: absolute;
+			height : 40px;
+			width : 100px;
+			right : 10px;
+			top: 50px;
+			z-index: 10010;
+			opacity: 0.4;
+			background-color:green;
+
+		}
+
+		/*
 		Panel object
 		*/
 
@@ -350,19 +370,50 @@
 				renderer.domElement.addEventListener( 'mouseup', give_infos, false );
 
 				//------------------------- Keys actions
+				var selectdic = {'k':select_poscam, 'n':create_new_obj}
+				function select_exclude(key){
+						// create_new_obj = false;
+						// select_poscam = false;
+						selectdic[key] = !selectdic[key];
+						for (k in Object.keys(selectdic)){
+							  if(k != key){
+										selectdic[k] = false;
+								}
+						}
+
+				}
+        var current_key = ""
+				var currfuncdic = {'k':'camera', 'c':'clone',
+				 										'n':'new piece', 's':'select area', 'd':'delete'}
+				function curr_func(key){
+					  current_key = key;
+						document.getElementById("curr_func").textContent = currfuncdic[key];
+						//select_exclude(key)
+
+				}
 
 				var keyev = function(key, event){
-							return (event.keyCode == key.charCodeAt(0)-32 )
+
+							if (event.keyCode == key.charCodeAt(0)-32 ){
+									curr_func(key)
+									return true
+							}
+							else{
+								  return false
+							}
 						}
 
 				function keyDownTextField(event){
+
 						/*
 						r : rotate
 						c : clone
 						d : delete
 						n : new piece with mouse
+						s : selected area
 						k : select camera position with mouse..
 						*/
+
 						if(keyev('r', event)){    												  // Rotation
 									if ( INTERSECTED ){
 										INTERSECTED.rotation.z += -Math.PI/2; 		  // Pi/2 rotation
@@ -417,7 +468,7 @@
 
 						/*
 						Send the informations to the server..
-						Infos about : position, cloning, rotation, type of object.. 
+						Infos about : position, cloning, rotation, type of object..
 						*/
 
 						var listpos = {}         														// list of all the positions
@@ -492,6 +543,9 @@
 
 		<div class="panel_menu1" id="menu1" hidden>  </div>
 		<div class="panel_objects" id="pobj" >  </div>
+		<div class="current_func" id="curr_func" >  </div>
+
+
 
 		</body>
 </html>
