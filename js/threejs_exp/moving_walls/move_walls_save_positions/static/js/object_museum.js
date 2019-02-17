@@ -1,12 +1,12 @@
 disp = 5
 
 function obj_basics(object, p, r, name){
+
   /*
   Generic function for rotation, shadow, name, cloning etc..
   */
+
   object.material.ambient = object.material.color;
-  // object.position = p;
-  // object.rotation = r;
   //----------
   object.position.x = p.x     // pos x
   object.position.y = p.y     // pos y
@@ -24,6 +24,7 @@ function obj_basics(object, p, r, name){
 }
 
 function make_mark(name,p,r,col){
+
     /*
     Marks for delimiting the area for selecting the pieces.
     name : name of the object
@@ -31,6 +32,7 @@ function make_mark(name,p,r,col){
     r : rotation of the object
     col : color of the object
     */
+
     var size_pawns = 50;
     square_color = col;
     p.z = size_pawns/2;
@@ -47,36 +49,12 @@ function make_mark(name,p,r,col){
 
 } // end function
 
-// function make_area(selpos){
-//     /*
-//     Area for selecting the pieces
-//     */
-//     //alert("in make_board")
-//     //var size_square = 5000;
-//     var side1 = 100
-//     var side2 = 100
-//     var geometry = new THREE.CubeGeometry( side1, side2, 5 );
-//     var square_color = 0xffffff
-//     var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: square_color } ) );
-//     object.material.ambient = object.material.color;
-//     object.position.x = 0
-//     object.position.y = 0
-//     object.position.z = 160
-//     object.castShadow = true;
-//     object.receiveShadow = true;
-//     object.opacity = 0.4;
-//     scene.add( object );
-//     objects.push( object )
-//
-// } // end function
-
-//
 function make_area(selpos){
+
     /*
     Area for selecting the pieces
     */
-    //alert("in make_board")
-    //var size_square = 5000;
+
     var side1 = Math.abs(selpos[0].position.x - selpos[1].position.x)
     var side2 = Math.abs(selpos[0].position.y - selpos[1].position.y)
     var geometry = new THREE.CubeGeometry( side1, side2, 5 );
@@ -95,9 +73,11 @@ function make_area(selpos){
 } // end function
 
 function make_uniform_ground(){
+
     /*
     Principal ground
     */
+
     var size_square = 5000;
     var geometry = new THREE.CubeGeometry( size_square, size_square, 5 );
     var square_color = 0xffffff
@@ -113,10 +93,11 @@ function make_uniform_ground(){
 } // end function
 
 function make_ground_chess(){
+
     /*
     Ground with cases of different color, chess game etc..
     */
-    //alert("in make_board")
+
     var size_square = 150;
     var geometry = new THREE.CubeGeometry( size_square, size_square, 5 );
     var square_color
@@ -137,6 +118,7 @@ function make_ground_chess(){
 
 
 function make_wall(name,p,r,col){
+
     /*
     Wall
     name : name of the object
@@ -144,6 +126,7 @@ function make_wall(name,p,r,col){
     r : rotation of the object
     col : color of the object
     */
+
     wall_color = col;
     var wall_length = 150;
     var wall_width = 5;
@@ -161,10 +144,11 @@ function make_wall(name,p,r,col){
 } // end function
 
 function make_small_seats(){
+
     /*
     make small seats..
     */
-    //alert("in make_small_seats")
+
     var size_square = 150;
     var size_pawns = 50;
     var geometry = new THREE.CubeGeometry( size_pawns, size_pawns, size_pawns );
@@ -192,10 +176,11 @@ function make_small_seats(){
 } // end function
 
 function make_seat(){
+
     /*
     function to make seat.
     */
-    //alert("in make_pawns")
+
     var size_square = 150;
     var size_seat = 100;
     var geometry = new THREE.CylinderGeometry( 50, 25, size_seat);

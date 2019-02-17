@@ -186,18 +186,18 @@
 				scene = new THREE.Scene();
 
 				scene.add( new THREE.AmbientLight( 0x505050 ) );
-
+				// ----------------------------------------------- Light
 				var light = new THREE.SpotLight( 0xffffff, 1.5 );
 				light.position.set( 200, 500, 2000 );
 				light.castShadow = true;
-
+				// ----------------------------------------------- Shadow
 				light.shadowCameraNear = 200;
 				light.shadowCameraFar = camera.far;
 				light.shadowCameraFov = 50;
-
+				// -------------------------
 				light.shadowBias = -0.00022;
 				light.shadowDarkness = 0.5;
-
+				// -------------------------
 				light.shadowMapWidth = 2048;
 				light.shadowMapHeight = 2048;
 
@@ -209,24 +209,26 @@
 				//make_seat()            		// make the seat
 				listwalls = {}
 				function load_scene(msg){
-					/*
-					Loading the scene
-					*/
-					var listorig = {}
 
-					for (i=0; i < Object.keys(msg).length; i++){ 					// Create the objects at the beginning
-									var k = Object.keys(msg)[i]  									// k is the objects name, wall, seat etc..
-									//alert(k)
-									//if (msg[k]['clone']['cloned'] == false){
-									if (msg[k]['type'] == "wall"){
-										 listorig[k] = make_wall(k, msg[k]['pos'], msg[k]['rot'], 0x800000)
-									 }
+							/*
+							Loading the scene
+							*/
 
-										 listorig[k]['numclone'] = msg[k]['clone']['numclone']
-										 listorig[k]['cloned'] = msg[k]['clone']['cloned']
-										 listorig[k]['origclone'] = msg[k]['clone']['origclone']
+							var listorig = {}
 
-							} // end for
+							for (i=0; i < Object.keys(msg).length; i++){ 					// Create the objects at the beginning
+											var k = Object.keys(msg)[i]  									// k is the objects name, wall, seat etc..
+											//alert(k)
+											//if (msg[k]['clone']['cloned'] == false){
+											if (msg[k]['type'] == "wall"){
+												 listorig[k] = make_wall(k, msg[k]['pos'], msg[k]['rot'], 0x800000)
+											 }
+
+												 listorig[k]['numclone'] = msg[k]['clone']['numclone']
+												 listorig[k]['cloned'] = msg[k]['clone']['cloned']
+												 listorig[k]['origclone'] = msg[k]['clone']['origclone']
+
+									} // end for
 
 				}
 				socket.emit( 'begin',  "hello from client"); // send mess to server for ping pong..
@@ -234,9 +236,7 @@
 							load_scene(msg)
 					  });// end socket.on
 
-				init_drag()
-				// console.log('All initialized !!!! ');
-				//alert('All initialized !!!! ');
+				init_drag();
 
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.sortObjects = false;
@@ -249,8 +249,9 @@
 
 				//-------------------------- Create object
 
-				renderer.domElement.addEventListener( 'click', mouse_create_object, false );
+				renderer.domElement.addEventListener( 'click', mouse_create_object_or_action, false );
 				function mousepos(){
+
 							/*
 							Return the mouse coordinates in the plane
 							*/
@@ -258,31 +259,35 @@
 							event.preventDefault();
 							mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
 							mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
+							//---------------------------------
 							var vector = new THREE.Vector3( mouse.x, mouse.y, 0.5 );
 							projector.unprojectVector( vector, camera );
 							var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
-
+							//---------------------------------
 							var intersects = raycaster.intersectObject( plane );
 							var interptsub = intersects[ 0 ].point.sub( offset )
 							return interptsub
 
 				}
-				function mouse_create_object(){
+				function mouse_create_object_or_action(){
+
 						/*
-						Create an object where the mouse is located in the plane.
+						Create an object or an action where the mouse is located in the plane.
 						*/
+
 						if (create_new_obj){
 									var newname = Math.random().toString(36).substring(2, 15) ; // + Math.random().toString(36).substring(2, 15)
 									interptsub = mousepos()
-									var creobj = make_wall(newname, interptsub, {"x":0, "y":0, "z":0}, 0xffffff)
+									var creobj = make_wall(newname, interptsub, {"x":0, "y":0, "z":0}, 0xffffff)  // new wall created at the momuse's position..
 						}
 
 						//------------------------- Mouse select area..
 						if (select_obj){
+
 								/*
 								Select area
 								*/
+
 								if ( selpos.length < 2 ){
 										//make_mark()
 										var newname = Math.random().toString(36).substring(2, 15) ; // + Math.random().toString(36).substring(2, 15)
@@ -290,8 +295,8 @@
 										var creobj = make_mark(newname, interptsub, {"x":0, "y":0, "z":0}, 0xffffff)
 										selpos.push(creobj)
 										if (selpos.length == 2){
-													make_area(selpos)
-													selpos = []
+													make_area(selpos)   // plane created with mouse click..
+													selpos = []         // position of the diagonal of the plane
 													select_obj = !select_obj;
 										}
 								}
@@ -299,6 +304,7 @@
 						}
 
 						if (select_poscam){
+
 										/*
 										Select camera position
 										*/
@@ -307,11 +313,11 @@
 										camera.position.z = 1000;
 										camera.position.y = interptsub.y;
 										camera.position.x = interptsub.x;
-										camera.up = new THREE.Vector3(0,0,1);
+										camera.up = new THREE.Vector3(0,0,1); // good orientation of the camera..
 
 							}
 
-				} // end mouse_create_object
+				} // end mouse_create_object_or_action
 
 				//-------------------------- Infos
 
@@ -355,6 +361,7 @@
 						c : clone
 						d : delete
 						n : new piece with mouse
+						k : select camera position with mouse..
 						*/
 						if(keyev('r', event)){    												  // Rotation
 									if ( INTERSECTED ){
@@ -394,12 +401,10 @@
 
 								if(keyev('s', event)){             							// select area..
 										 select_obj = !select_obj
-
 									} // end if key code
 
 								if(keyev('k', event)){             							//
 										 select_poscam = ! select_poscam;
-
 									} // end if key code
 
 					} // end keyDownTextField
@@ -409,9 +414,12 @@
 				//------------------------- Emit the positions of all the objects..
 
 				function emit_infos_scene(){          									// emits the positions toward the server to save them
+
 						/*
 						Send the informations to the server..
+						Infos about : position, cloning, rotation, type of object.. 
 						*/
+
 						var listpos = {}         														// list of all the positions
 						for (i in objects){
 									var dicclone = {}
