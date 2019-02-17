@@ -47,21 +47,44 @@ function make_mark(name,p,r,col){
 
 } // end function
 
+// function make_area(selpos){
+//     /*
+//     Area for selecting the pieces
+//     */
+//     //alert("in make_board")
+//     //var size_square = 5000;
+//     var side1 = 100
+//     var side2 = 100
+//     var geometry = new THREE.CubeGeometry( side1, side2, 5 );
+//     var square_color = 0xffffff
+//     var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: square_color } ) );
+//     object.material.ambient = object.material.color;
+//     object.position.x = 0
+//     object.position.y = 0
+//     object.position.z = 160
+//     object.castShadow = true;
+//     object.receiveShadow = true;
+//     object.opacity = 0.4;
+//     scene.add( object );
+//     objects.push( object )
+//
+// } // end function
 
+//
 function make_area(selpos){
     /*
-    Area for selectnig the pieces
+    Area for selecting the pieces
     */
     //alert("in make_board")
     //var size_square = 5000;
-    var side1 = Math.abs(selpos[0].x - selpos[1].x)
-    var side2 = Math.abs(selpos[0].y - selpos[1].y)
+    var side1 = Math.abs(selpos[0].position.x - selpos[1].position.x)
+    var side2 = Math.abs(selpos[0].position.y - selpos[1].position.y)
     var geometry = new THREE.CubeGeometry( side1, side2, 5 );
     var square_color = 0xffffff
     var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: square_color } ) );
     object.material.ambient = object.material.color;
-    object.position.x = (selpos[0].x + selpos[1].x)/2
-    object.position.y = (selpos[0].y + selpos[1].y)/2
+    object.position.x = (selpos[0].position.x + selpos[1].position.x)/2
+    object.position.y = (selpos[0].position.y + selpos[1].position.y)/2
     object.position.z = 160
     object.castShadow = true;
     object.receiveShadow = true;
@@ -170,7 +193,7 @@ function make_small_seats(){
 
 function make_seat(){
     /*
-    function to make seat. 
+    function to make seat.
     */
     //alert("in make_pawns")
     var size_square = 150;

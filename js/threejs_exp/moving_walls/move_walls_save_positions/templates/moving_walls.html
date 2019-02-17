@@ -124,7 +124,6 @@
 			opacity: 0.8;
 		}
 
-
 		</style>
 	</head>
 	<body>
@@ -154,6 +153,7 @@
 			var create_new_obj = false;
 			var select_obj = false;
 			var selpos = [];
+			var select_poscam = false;
 
 			var mouse = new THREE.Vector2(),
 			offset = new THREE.Vector3(),
@@ -170,8 +170,8 @@
 				document.body.appendChild( container );
 
 				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
-				camera.position.z = 1000;
-				camera.position.y = -1000;
+				camera.position.z = 2000;
+				camera.position.y = -2000;
 				camera.position.x = 0;
 
 				controls = new THREE.TrackballControls( camera );
@@ -278,21 +278,40 @@
 									var creobj = make_wall(newname, interptsub, {"x":0, "y":0, "z":0}, 0xffffff)
 						}
 
-
 						//------------------------- Mouse select area..
+						if (select_obj){
+								/*
+								Select area
+								*/
+								if ( selpos.length < 2 ){
+										//make_mark()
+										var newname = Math.random().toString(36).substring(2, 15) ; // + Math.random().toString(36).substring(2, 15)
+										interptsub = mousepos()
+										var creobj = make_mark(newname, interptsub, {"x":0, "y":0, "z":0}, 0xffffff)
+										selpos.push(creobj)
+										if (selpos.length == 2){
+													make_area(selpos)
+													selpos = []
+													select_obj = !select_obj;
+										}
+								}
 
-						if (select_obj | (selpos.length == 1)){
-								//make_mark()
-								var newname = Math.random().toString(36).substring(2, 15) ; // + Math.random().toString(36).substring(2, 15)
-								interptsub = mousepos()
-								var creobj = make_mark(newname, interptsub, {"x":0, "y":0, "z":0}, 0xffffff)
-								selpos.push(creobj)
 						}
-						else{
-							 make_area(selpos)
-							 selpos = []
-						}
-				}
+
+						if (select_poscam){
+										/*
+										Select camera position
+										*/
+
+										interptsub = mousepos()
+										camera.position.z = 1000;
+										camera.position.y = interptsub.y;
+										camera.position.x = interptsub.x;
+										camera.up = new THREE.Vector3(0,0,1);
+
+							}
+
+				} // end mouse_create_object
 
 				//-------------------------- Infos
 
@@ -321,7 +340,7 @@
 											x[i].style.visibility = "hidden";
 								  }
 							}
-						}
+					} // end give infos
 				renderer.domElement.addEventListener( 'mouseup', give_infos, false );
 
 				//------------------------- Keys actions
@@ -378,6 +397,10 @@
 
 									} // end if key code
 
+								if(keyev('k', event)){             							//
+										 select_poscam = ! select_poscam;
+
+									} // end if key code
 
 					} // end keyDownTextField
 
@@ -460,7 +483,6 @@
 		</div>
 
 		<div class="panel_menu1" id="menu1" hidden>  </div>
-
 		<div class="panel_objects" id="pobj" >  </div>
 
 		</body>
