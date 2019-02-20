@@ -403,6 +403,33 @@
 							}
 						}
 
+				function clone_object(){
+						clone = INTERSECTED.clone();
+						clone.name = INTERSECTED.name + "_" + INTERSECTED.numclone;
+						clone.type = INTERSECTED.type;
+						//-----------
+						INTERSECTED.numclone += 1;
+						clone.numclone = 0;                     // number of clones from this object
+						clone.cloned = true;                    // object is a clone
+						clone.origclone = INTERSECTED.name;     // save the link to the original shape
+						//-----------
+						clone.position.x += 100;                // shift position in relation with the original piece
+						clone.material.color.setHex( 0xffffff ); // change color
+						scene.add(clone)
+						objects.push(clone)
+				}
+
+				function delete_object(){
+						if ( INTERSECTED ){
+								for (i in objects){
+											if (objects[i].name == INTERSECTED.name){
+													delete objects[i];
+											}
+									}
+								scene.remove( INTERSECTED )
+						}
+				}
+
 				function keyDownTextField(event){
 
 						/*
@@ -412,57 +439,53 @@
 						n : new piece with mouse
 						s : selected area
 						k : select camera position with mouse..
+						arrow up : move up
+						arrow down : move down
 						*/
+
+						if(event.keyCode == 38){    												  // Up
+									if ( INTERSECTED ){
+										INTERSECTED.position.z += 50;
+									}
+							} // end if key code
+
+						if(event.keyCode == 40){    												  // Down
+									if ( INTERSECTED ){
+										INTERSECTED.position.z += -50;
+									}
+							} // end if key code
 
 						if(keyev('r', event)){    												  // Rotation
 									if ( INTERSECTED ){
 										INTERSECTED.rotation.z += -Math.PI/2; 		  // Pi/2 rotation
 									}
 							} // end if key code
-							if(keyev('c', event)){    											  // Clone the selected object
-										if ( INTERSECTED ){
-											  clone = INTERSECTED.clone();
-												clone.name = INTERSECTED.name + "_" + INTERSECTED.numclone;
-												//-----------
-												INTERSECTED.numclone += 1;
-												clone.numclone = 0;                     // number of clones from this object
-												clone.cloned = true;                    // object is a clone
-												clone.origclone = INTERSECTED.name;     // save the link to the original shape
-												//-----------
-												clone.position.x += 100;                // shift position in relation with the original piece
-												clone.material.color.setHex( 0xffffff ); // change color
-												scene.add(clone)
-												objects.push(clone)
-										}
-								} // end if key code
-								if(keyev('d', event)){    											// Delete object selected
-											if ( INTERSECTED ){
-													for (i in objects){
-																if (objects[i].name == INTERSECTED.name){
-																	  delete objects[i];
-																}
-														}
-													scene.remove( INTERSECTED )
-											}
-									} // end if key code
+						if(keyev('c', event)){    											    // Clone the selected object
+									if ( INTERSECTED ){
+											clone_object()
+									}
+							} // end if key code
+						if(keyev('d', event)){    											    // Delete object selected
+								delete_object()
+							} // end if key code
 
-								if(keyev('n', event)){             							// create or not a new object with the mouse..
-									   create_new_obj = !create_new_obj
-									} // end if key code
+						if(keyev('n', event)){             							    // create or not a new object with the mouse..
+							   create_new_obj = !create_new_obj
+							} // end if key code
 
-								if(keyev('s', event)){             							// select area..
-										 select_obj = !select_obj
-									} // end if key code
+						if(keyev('s', event)){             							    // select area..
+								 select_obj = !select_obj
+							} // end if key code
 
-								if(keyev('k', event)){             							//
-										 select_poscam = ! select_poscam;
-									} // end if key code
+						if(keyev('k', event)){             							    // change camera's position with the mouse.
+								 select_poscam = ! select_poscam;
+							} // end if key code
 
 					} // end keyDownTextField
 
 					document.addEventListener("keydown", keyDownTextField, false);
 
-				//------------------------- Emit the positions of all the objects..
+				//------------------------- Emit the infos about all the objects..
 
 				function emit_infos_scene(){          									// emits the positions toward the server to save them
 
@@ -544,8 +567,6 @@
 		<div class="panel_menu1" id="menu1" hidden>  </div>
 		<div class="panel_objects" id="pobj" >  </div>
 		<div class="current_func" id="curr_func" >  </div>
-
-
 
 		</body>
 </html>

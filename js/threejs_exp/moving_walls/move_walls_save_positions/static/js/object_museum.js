@@ -116,7 +116,6 @@ function make_ground_chess(){
     }
 } // end function
 
-
 function make_wall(name,p,r,col){
 
     /*
