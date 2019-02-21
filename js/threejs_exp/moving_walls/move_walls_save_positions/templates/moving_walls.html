@@ -9,142 +9,7 @@
 		<title>Moving the walls</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<style>
 
-			body {
-				font-family: Monospace;
-				background-color: #f0f0f0;
-				margin: 0px;
-				overflow: hidden;
-
-				}
-
-     /*
-     Navigation bar..
-		 */
-
-		.navig {
-			font-family: 'Playfair Display';
-			font-size: 0.85em;
-			letter-spacing: 0.2em;
-			position: absolute;
-			top: 0px;
-			left:0px;
-			margin-left:0px;
-			padding-left: 0px;
-			padding-top: 20px;
-			width: 100%;
-			height: 50px;
-			background-color:#fff0b3;
-			z-index: 10000;
-			opacity: 1;
-		}
-
-		.menu {
-
-			font-family: 'Playfair Display';
-			font-size: 1.6em;
-			letter-spacing: 0.2em;
-			position: absolute;
-			top: 10px;
-			z-index: 10010;
-			opacity: 1;
-
-		}
-
-		/*
-		Current selected function
-		*/
-
-		.current_func {
-
-			font-family: 'Playfair Display';
-			font-size: 1.2em;
-			letter-spacing: 0.2em;
-			position: absolute;
-			height : 40px;
-			width : 100px;
-			right : 10px;
-			top: 50px;
-			z-index: 10010;
-			opacity: 0.4;
-			background-color:green;
-
-		}
-
-		/*
-		Panel object
-		*/
-
-		.panel {
-			font-family: 'Playfair Display';
-			font-size: 0.85em;
-			letter-spacing: 0.2em;
-			position: absolute;
-			top: 50px;
-			left:10px;
-			margin-left:5px;
-			padding-left: 10px;
-			padding-top: 20px;
-			width: 200px;
-			height: 200px;
-			background-color:grey;
-			z-index: 9999;
-			opacity: 0.8;
-			visibility: hidden;
-		}
-
-		.titlepanel {
-			font-family: 'Playfair Display';
-			font-size: 1.5em;
-			letter-spacing: 0.1em;
-			text-align: center;
-
-		}
-
-		/*
-		Panel menu
-		*/
-
-		.panel_menu1 {
-			font-family: 'Playfair Display';
-			font-size: 0.85em;
-			letter-spacing: 0.2em;
-			position: absolute;
-			top: 50px;
-			left:200px;
-			margin-left:5px;
-			padding-left: 10px;
-			padding-top: 20px;
-			width: 200px;
-			height: 200px;
-			background-color:grey;
-			z-index: 9999;
-			opacity: 0.8;
-		}
-
-		/*
-		Panel objects
-		*/
-
-		.panel_objects {
-			font-family: 'Playfair Display';
-			font-size: 0.85em;
-			letter-spacing: 0.2em;
-			position: absolute;
-			top: 50px;
-			right:10px;
-			margin-left:5px;
-			padding-left: 10px;
-			padding-top: 20px;
-			width: 200px;
-			height: 600px;
-			background-color:grey;
-			z-index: 9999;
-			opacity: 0.8;
-		}
-
-		</style>
 	</head>
 	<body>
 
@@ -155,6 +20,8 @@
 		<!-- bootstrap -->
 		<script src="/static/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+		<!-- moving walls -->
+		<link rel="stylesheet" href="/static/css/moving_walls.css">
 
     <!-- socket.io -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
@@ -256,6 +123,15 @@
 							load_scene(msg)
 					  });// end socket.on
 
+			 // var request = new XMLHttpRequest();
+		   // request.open("GET", '../static/pos.json', false);
+		   // request.send(null)
+		   // var jsobj = JSON.parse(request.responseText);
+			 // console.log(jsobj)
+			 // load_scene(jsobj)
+			 // dicsimple = {"rrr":"rrer"}
+			 // document.getElementById("curr_func").textContent = "heeeee"; //dicsimple['rrr'];
+
 				init_drag();
 
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -319,9 +195,9 @@
 													selpos = []         // position of the diagonal of the plane
 													select_obj = !select_obj;
 										}
-								}
+								} // Select area
 
-						}
+						} // end select_obj
 
 						if (select_poscam){
 
@@ -335,16 +211,19 @@
 										camera.position.x = interptsub.x;
 										camera.up = new THREE.Vector3(0,0,1); // good orientation of the camera..
 
-							}
+							} // end select_poscam
 
 				} // end mouse_create_object_or_action
 
 				//-------------------------- Infos
 
 				function give_infos(){
+
 							/*
-							Give infos about the seected object.
+							Give infos about the selected object.
+							The information appears close to the object selected..
 							*/
+
 							if ( INTERSECTED ){
 										var x = document.getElementsByClassName("panel");
 										var i;
@@ -370,6 +249,7 @@
 				renderer.domElement.addEventListener( 'mouseup', give_infos, false );
 
 				//------------------------- Keys actions
+
 				var selectdic = {'k':select_poscam, 'n':create_new_obj}
 				function select_exclude(key){
 						// create_new_obj = false;
@@ -394,6 +274,10 @@
 
 				var keyev = function(key, event){
 
+							/*
+							generic code for key event with a key letter..
+							*/
+
 							if (event.keyCode == key.charCodeAt(0)-32 ){
 									curr_func(key)
 									return true
@@ -404,6 +288,11 @@
 						}
 
 				function clone_object(){
+
+						/*
+						Clone the selected object
+						*/
+
 						clone = INTERSECTED.clone();
 						clone.name = INTERSECTED.name + "_" + INTERSECTED.numclone;
 						clone.type = INTERSECTED.type;
@@ -420,6 +309,11 @@
 				}
 
 				function delete_object(){
+
+						/*
+						Delete the selected object
+						*/
+
 						if ( INTERSECTED ){
 								for (i in objects){
 											if (objects[i].name == INTERSECTED.name){
