@@ -23,7 +23,8 @@
 		<script src="/static/js/simple_flat/stats.js"></script>
 		<script src="/static/js/object_museum.js"></script>
 		<script src="/static/js/make_objects.js"></script>
-		<script src="/static/js/drag_flat.js"></script>
+		<script src="/static/js/mouse_interact.js" ></script>
+		<script src="/static/js/keys.js" defer></script>
 
 		<!-- jquery -->
 		<script src="/static/js/jquery.min.js"></script>
@@ -36,13 +37,14 @@
 
 		<script>
 
+
 			var container, stats;
 			var camera, controls, scene, projector, renderer;
 			var objects = [], plane;
-			var create_new_obj = false;  // create a new object witht the mouse
+			var create_new_obj = false;  		// create a new object witht the mouse
 			var select_obj = false;
 			var selpos = [];
-			var select_poscam = false; // change camera position with mouse
+			var select_poscam = false; 			// change camera position with mouse
 
 			//------------------------- Graphical objects
 
@@ -104,8 +106,9 @@
 				light.shadowBias = -0.00022;
 				light.shadowDarkness = 0.5;
 				// -------------------------
-				light.shadowMapWidth = 2048;
-				light.shadowMapHeight = 2048;
+				var size_shadow = 4000;
+				light.shadowMapWidth = size_shadow;
+				light.shadowMapHeight = size_shadow;
 
 				scene.add( light );
 
@@ -124,8 +127,6 @@
 
 							for (i=0; i < Object.keys(msg).length; i++){ 					// Create the objects at the beginning
 											var k = Object.keys(msg)[i]  									// k is the objects name, wall, seat etc..
-											//alert(k)
-											//if (msg[k]['clone']['cloned'] == false){
 											if (msg[k]['type'] == "wall"){
 												 	listorig[k] = make_wall(k, msg[k]['pos'], msg[k]['rot'], 0x800000)
 											 }
@@ -145,6 +146,10 @@
 				socket.on('server_pos', function(msg) {
 							load_scene(msg)
 					  });// end socket.on
+
+			// 	$.getJSON("../static/js/pos.json", function (msg) {
+	    //     load_scene(msg)
+	    // });
 
 			 // var request = new XMLHttpRequest();
 		   // request.open("GET", '../static/pos.json', false);
@@ -170,224 +175,10 @@
 
 				renderer.domElement.addEventListener( 'click', mouse_create_object_or_action, false );
 
-				function mouse_create_object_or_action(){
-
-						/*
-						Create an object or an action where the mouse is located in the plane.
-						*/
-
-						if (create_new_obj){
-									var newname = Math.random().toString(36).substring(2, 15) ; // + Math.random().toString(36).substring(2, 15)
-									interptsub = mousepos()
-									var creobj = make_wall(newname, interptsub, {"x":0, "y":0, "z":0}, 0xffffff)  // new wall created at the momuse's position..
-						}
-
-						//------------------------- Mouse select area..
-						if (select_obj){
-
-								/*
-								Select area
-								*/
-
-								if ( selpos.length < 2 ){
-										//make_mark()
-										var newname = Math.random().toString(36).substring(2, 15) ; // + Math.random().toString(36).substring(2, 15)
-										interptsub = mousepos()
-										var creobj = make_mark(newname, interptsub, {"x":0, "y":0, "z":0}, 0xffffff)
-										selpos.push(creobj)
-										if (selpos.length == 2){
-													make_area(selpos)   // plane created with mouse click..
-													selpos = []         // position of the diagonal of the plane
-													select_obj = !select_obj;
-										}
-								} // Select area
-
-						} // end select_obj
-
-						if (select_poscam){
-
-										/*
-										Select camera position
-										*/
-
-										interptsub = mousepos()
-										camera.position.z = 1000;
-										camera.position.y = interptsub.y;
-										camera.position.x = interptsub.x;
-										camera.up = new THREE.Vector3(0,0,1); // good orientation of the camera..
-
-							} // end select_poscam
-
-				} // end mouse_create_object_or_action
-
 				//-------------------------- Infos
 
-				function give_infos(){
-
-							/*
-							Give infos about the selected object.
-							The information appears close to the object selected..
-							*/
-
-							if ( INTERSECTED ){
-										var x = document.getElementsByClassName("panel");
-										var i;
-										for (i = 0; i < x.length; i++) {
-											x[i].style.visibility = "visible";
-											x[i].style.backgroundColor = "grey";
-											x[i].style.left = event.pageX + "px";  				// mouse x
-											x[i].style.top = event.pageY + "px";   				// mouse y
-										}
-							}
-							else{
-
-								var x = document.getElementsByClassName("panel");
-								var i;
-								for (i = 0; i < x.length; i++) {
-											//x[i].style.backgroundColor = "red";
-											x[i].style.left = "10px";                			// upper left position
-											x[i].style.top = "10px";
-											x[i].style.visibility = "hidden";
-								  }
-							}
-					} // end give infos
 				renderer.domElement.addEventListener( 'mouseup', give_infos, false );
 
-				//------------------------- Keys actions
-
-				var selectdic = {'k':select_poscam, 'n':create_new_obj}
-				function select_exclude(key){
-						// create_new_obj = false;
-						// select_poscam = false;
-						selectdic[key] = !selectdic[key];
-						for (k in Object.keys(selectdic)){
-							  if(k != key){
-										selectdic[k] = false;
-								}
-						}
-
-				}
-        var current_key = ""
-				var currfuncdic = {'k':'camera', 'c':'clone',
-				 										'n':'new piece', 's':'select area', 'd':'delete'}
-				function curr_func(key){
-					  current_key = key;
-						document.getElementById("curr_func").textContent = currfuncdic[key];
-						//select_exclude(key)
-
-				}
-
-				var keyev = function(key, event){
-
-							/*
-							generic code for key event with a key letter..
-							*/
-
-							if (event.keyCode == key.charCodeAt(0)-32 ){
-									curr_func(key)
-									return true
-							}
-							else{
-								  return false
-							}
-						}
-
-				function clone_object(){
-
-						/*
-						Clone the selected object
-						*/
-
-
-						//$('#curr_func').css('background-color','red')
-
-						clone = INTERSECTED.clone();
-						$('#curr_func').css('background-color','red')
-						clone.name = "bing"; // INTERSECTED.name + "_" + INTERSECTED.clone.numclone;
-
-						clone.type = INTERSECTED.type;
-
-						//-----------
-						INTERSECTED.clone_infos.numclone += 1;
-						clone.clone_infos = {"numclone":0,"cloned":true,"origclone":INTERSECTED.name}
-						//-----------
-						clone.position.x += 100;                // shift position in relation with the original piece
-						clone.material.color.setHex( 0xffffff ); // change color
-						scene.add(clone)
-						objects.push(clone)
-
-				}
-
-				function delete_object(){
-
-						/*
-						Delete the selected object
-						*/
-
-						if ( INTERSECTED ){
-								for (i in objects){
-											if (objects[i].name == INTERSECTED.name){
-													delete objects[i];
-											}
-									}
-								scene.remove( INTERSECTED )
-						}
-				}
-
-				function keyDownTextField(event){
-
-						/*
-						r : rotate
-						c : clone
-						d : delete
-						n : new piece with mouse
-						s : selected area
-						k : select camera position with mouse..
-						arrow up : move up
-						arrow down : move down
-						*/
-
-						if(event.keyCode == 38){    												  // Up
-									if ( INTERSECTED ){
-										INTERSECTED.position.z += 50;
-									}
-							} // end if key code
-
-						if(event.keyCode == 40){    												  // Down
-									if ( INTERSECTED ){
-										INTERSECTED.position.z += -50;
-									}
-							} // end if key code
-
-						if(keyev('r', event)){    												  // Rotation
-									if ( INTERSECTED ){
-										INTERSECTED.rotation.z += -Math.PI/2; 		  // Pi/2 rotation
-									}
-							} // end if key code
-						if(keyev('c', event)){    											    // Clone the selected object
-									if ( INTERSECTED ){
-											clone_object()
-									}
-							} // end if key code
-						if(keyev('d', event)){    											    // Delete object selected
-								delete_object()
-							} // end if key code
-
-						if(keyev('n', event)){             							    // create or not a new object with the mouse..
-							   create_new_obj = !create_new_obj
-							} // end if key code
-
-						if(keyev('s', event)){             							    // select area..
-								 select_obj = !select_obj
-							} // end if key code
-
-						if(keyev('k', event)){             							    // change camera's position with the mouse.
-								 select_poscam = ! select_poscam;
-							} // end if key code
-
-					} // end keyDownTextField
-
-					document.addEventListener("keydown", keyDownTextField, false);
 
 				//------------------------- Emit the infos about all the objects..
 
@@ -402,7 +193,7 @@
 						for (i in objects){
 									var infos_obj = {"pos": objects[i].position,
 									 								 "rot": objects[i].rotation,
-																	 "clone_infos": objects[i].clone_infos, 
+																	 "clone_infos": objects[i].clone_infos,
 																	 "type": objects[i].type
 																  };
 									listpos[objects[i].name] = infos_obj;   			// add position to listpos
@@ -434,8 +225,6 @@
 				<div class="menu" style='left:70px'> Home </div>
 				<div class="menu" style='left:200px' id="menu" > Object </div>
 				<div class="menu" style='left: 90%'> Help</div>
-
-				<!-- onclick="showmenu()" -->
 
 		</div>
 

@@ -114,3 +114,84 @@ function mousepos(){
       return interptsub
 
 }
+
+function mouse_create_object_or_action(){
+
+    /*
+    Create an object or an action where the mouse is located in the plane.
+    */
+
+    if (create_new_obj){
+          var newname = Math.random().toString(36).substring(2, 15) ; // + Math.random().toString(36).substring(2, 15)
+          interptsub = mousepos()
+          var creobj = make_wall(newname, interptsub, {"x":0, "y":0, "z":0}, 0xffffff)  // new wall created at the momuse's position..
+    }
+
+    //------------------------- Mouse select area..
+    if (select_obj){
+
+        /*
+        Select area
+        */
+
+        if ( selpos.length < 2 ){
+            //make_mark()
+            var newname = Math.random().toString(36).substring(2, 15) ; // + Math.random().toString(36).substring(2, 15)
+            interptsub = mousepos()
+            var creobj = make_mark(newname, interptsub, {"x":0, "y":0, "z":0}, 0xffffff)
+            selpos.push(creobj)
+            if (selpos.length == 2){
+                  make_area(selpos)   // plane created with mouse click..
+                  selpos = []         // position of the diagonal of the plane
+                  select_obj = !select_obj;
+            }
+        } // Select area
+
+    } // end select_obj
+
+    if (select_poscam){
+
+            /*
+            Select camera position
+            */
+
+            interptsub = mousepos()
+            camera.position.z = 1000;
+            camera.position.y = interptsub.y;
+            camera.position.x = interptsub.x;
+            camera.up = new THREE.Vector3(0,0,1); // good orientation of the camera..
+
+      } // end select_poscam
+
+} // end mouse_create_object_or_action
+
+
+function give_infos(){
+
+      /*
+      Give infos about the selected object.
+      The information appears close to the object selected..
+      */
+
+      if ( INTERSECTED ){
+            var x = document.getElementsByClassName("panel");
+            var i;
+            for (i = 0; i < x.length; i++) {
+              x[i].style.visibility = "visible";
+              x[i].style.backgroundColor = "grey";
+              x[i].style.left = event.pageX + "px";  				// mouse x
+              x[i].style.top = event.pageY + "px";   				// mouse y
+            }
+      }
+      else{
+
+        var x = document.getElementsByClassName("panel");
+        var i;
+        for (i = 0; i < x.length; i++) {
+              //x[i].style.backgroundColor = "red";
+              x[i].style.left = "10px";                			// upper left position
+              x[i].style.top = "10px";
+              x[i].style.visibility = "hidden";
+          }
+      }
+  } // end give infos
