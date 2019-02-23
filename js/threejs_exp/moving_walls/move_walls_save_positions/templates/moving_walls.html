@@ -13,13 +13,6 @@
 	</head>
 	<body>
 
-		<!-- jquery -->
-		<script src="/static/js/js/jquery.min.js"></script>
-		<!-- jquery-ui -->
-		<script src="/static/js/jquery-ui.js"></script>
-		<!-- bootstrap -->
-		<script src="/static/js/bootstrap.min.js"></script>
-		<link rel="stylesheet" href="/static/css/bootstrap.min.css">
 		<!-- moving walls -->
 		<link rel="stylesheet" href="/static/css/moving_walls.css">
 
@@ -32,19 +25,33 @@
 		<script src="/static/js/make_objects.js"></script>
 		<script src="/static/js/drag_flat.js"></script>
 
+		<!-- jquery -->
+		<script src="/static/js/jquery.min.js"></script>
+		<!-- jquery-ui -->
+		<script src="/static/js/jquery-ui.js"></script>
+
+		<!-- bootstrap -->
+		<script src="/static/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
 		<script>
 
 			var container, stats;
 			var camera, controls, scene, projector, renderer;
 			var objects = [], plane;
-			var create_new_obj = false;
+			var create_new_obj = false;  // create a new object witht the mouse
 			var select_obj = false;
 			var selpos = [];
-			var select_poscam = false;
+			var select_poscam = false; // change camera position with mouse
+
+			//------------------------- Graphical objects
 
 			var mouse = new THREE.Vector2(),
 			offset = new THREE.Vector3(),
 			INTERSECTED, SELECTED;
+
+			//------------------------- Socket communication
+
 			namespace = '/pos'; // change to an empty string to use the global namespace
       var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
 
@@ -53,13 +60,21 @@
 
 			function init() {
 
+				/*
+				Initialize the scene..
+				*/
+
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
+
+				//------------------------- Camera
 
 				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
 				camera.position.z = 2000;
 				camera.position.y = -2000;
 				camera.position.x = 0;
+
+				//------------------------- Control the view
 
 				controls = new THREE.TrackballControls( camera );
 				controls.rotateSpeed = 1.0;
@@ -73,11 +88,15 @@
 				scene = new THREE.Scene();
 
 				scene.add( new THREE.AmbientLight( 0x505050 ) );
+
 				// ----------------------------------------------- Light
+
 				var light = new THREE.SpotLight( 0xffffff, 1.5 );
 				light.position.set( 200, 500, 2000 );
 				light.castShadow = true;
+
 				// ----------------------------------------------- Shadow
+
 				light.shadowCameraNear = 200;
 				light.shadowCameraFar = camera.far;
 				light.shadowCameraFov = 50;
@@ -108,16 +127,20 @@
 											//alert(k)
 											//if (msg[k]['clone']['cloned'] == false){
 											if (msg[k]['type'] == "wall"){
-												 listorig[k] = make_wall(k, msg[k]['pos'], msg[k]['rot'], 0x800000)
+												 	listorig[k] = make_wall(k, msg[k]['pos'], msg[k]['rot'], 0x800000)
 											 }
+										  listorig[k]['clone_infos'] = msg[k]['clone_infos']
 
-												 listorig[k]['numclone'] = msg[k]['clone']['numclone']
-												 listorig[k]['cloned'] = msg[k]['clone']['cloned']
-												 listorig[k]['origclone'] = msg[k]['clone']['origclone']
+									} // end for (loading the scene)
 
-									} // end for
+				} // end load_scene..
 
-				}
+				//-----------------------------------------
+
+				/*
+				Communication server client..
+				*/
+
 				socket.emit( 'begin',  "hello from client"); // send mess to server for ping pong..
 				socket.on('server_pos', function(msg) {
 							load_scene(msg)
@@ -146,25 +169,7 @@
 				//-------------------------- Create object
 
 				renderer.domElement.addEventListener( 'click', mouse_create_object_or_action, false );
-				function mousepos(){
 
-							/*
-							Return the mouse coordinates in the plane
-							*/
-
-							event.preventDefault();
-							mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-							mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-							//---------------------------------
-							var vector = new THREE.Vector3( mouse.x, mouse.y, 0.5 );
-							projector.unprojectVector( vector, camera );
-							var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
-							//---------------------------------
-							var intersects = raycaster.intersectObject( plane );
-							var interptsub = intersects[ 0 ].point.sub( offset )
-							return interptsub
-
-				}
 				function mouse_create_object_or_action(){
 
 						/*
@@ -293,19 +298,24 @@
 						Clone the selected object
 						*/
 
+
+						//$('#curr_func').css('background-color','red')
+
 						clone = INTERSECTED.clone();
-						clone.name = INTERSECTED.name + "_" + INTERSECTED.numclone;
+						$('#curr_func').css('background-color','red')
+						clone.name = "bing"; // INTERSECTED.name + "_" + INTERSECTED.clone.numclone;
+
 						clone.type = INTERSECTED.type;
+
 						//-----------
-						INTERSECTED.numclone += 1;
-						clone.numclone = 0;                     // number of clones from this object
-						clone.cloned = true;                    // object is a clone
-						clone.origclone = INTERSECTED.name;     // save the link to the original shape
+						INTERSECTED.clone_infos.numclone += 1;
+						clone.clone_infos = {"numclone":0,"cloned":true,"origclone":INTERSECTED.name}
 						//-----------
 						clone.position.x += 100;                // shift position in relation with the original piece
 						clone.material.color.setHex( 0xffffff ); // change color
 						scene.add(clone)
 						objects.push(clone)
+
 				}
 
 				function delete_object(){
@@ -390,13 +400,9 @@
 
 						var listpos = {}         														// list of all the positions
 						for (i in objects){
-									var dicclone = {}
-									dicclone["numclone"] = objects[i].numclone 		// objects.length
-									dicclone["cloned"] = objects[i].cloned
-									dicclone["origclone"] = objects[i].origclone
 									var infos_obj = {"pos": objects[i].position,
 									 								 "rot": objects[i].rotation,
-																	 "clone": dicclone,
+																	 "clone_infos": objects[i].clone_infos, 
 																	 "type": objects[i].type
 																  };
 									listpos[objects[i].name] = infos_obj;   			// add position to listpos
@@ -461,6 +467,19 @@
 		<div class="panel_menu1" id="menu1" hidden>  </div>
 		<div class="panel_objects" id="pobj" >  </div>
 		<div class="current_func" id="curr_func" >  </div>
+		<div  id="keys" > keys </div>
+		<div class="panel_keys" hidden >  </div>
+		<script>
+
+			$('#curr_func').click(function(){
+						$(this).css('background-color','red')
+						create_new_obj = true
+			})
+
+			$('#keys').click(function(){
+						$('.panel_keys').toggle() // show hide the key panel
+			})
+		</script>
 
 		</body>
 </html>

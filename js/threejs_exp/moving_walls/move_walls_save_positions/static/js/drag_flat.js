@@ -94,3 +94,23 @@ function onDocumentMouseUp( event ) {
     container.style.cursor = 'auto';
 
 }
+
+function mousepos(){
+
+      /*
+      Return the mouse coordinates in the plane
+      */
+
+      event.preventDefault();
+      mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+      mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+      //---------------------------------
+      var vector = new THREE.Vector3( mouse.x, mouse.y, 0.5 );
+      projector.unprojectVector( vector, camera );
+      var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+      //---------------------------------
+      var intersects = raycaster.intersectObject( plane );
+      var interptsub = intersects[ 0 ].point.sub( offset )
+      return interptsub
+
+}

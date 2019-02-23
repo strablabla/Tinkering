@@ -22,7 +22,7 @@ Navigation bar..
 	padding-top: 20px;
 	width: 100%;
 	height: 50px;
-	background-color:#fff0b3;
+	background-color:#fff0b3; /* yellow */
 	z-index: 10000;
 	opacity: 1;
 }
@@ -49,14 +49,59 @@ Current selected function
 	font-size: 1.2em;
 	letter-spacing: 0.2em;
 	position: absolute;
+	text-align: center;
+	padding-top: 5px;
 	height : 40px;
-	width : 100px;
-	right : 10px;
-	top: 50px;
+	width : 150px;
+	left:75%;
+	top: 5px;
 	z-index: 10010;
 	opacity: 0.4;
 	background-color:green;
 
+}
+
+/*
+Keys for interacting with the scene..
+*/
+
+#keys {
+
+	font-family: 'Playfair Display';
+	font-size: 1.2em;
+	letter-spacing: 0.2em;
+	position: absolute;
+	text-align: center;
+	padding-top: 5px;
+	height : 40px;
+	width : 150px;
+	left:60%;
+	top: 5px;
+	z-index: 10010;
+	opacity: 0.4;
+	background-color:green;
+
+}
+
+/*
+Panel of all the keys used for interacting with the scene.. 
+*/
+
+.panel_keys {
+	font-family: 'Playfair Display';
+	font-size: 0.85em;
+	letter-spacing: 0.2em;
+	position: absolute;
+	top: 50px;
+	left:20%;
+	margin-left:5px;
+	padding-left: 10px;
+	padding-top: 20px;
+	width: 500px;
+	height: 600px;
+	background-color:green;
+	z-index: 9999;
+	opacity: 0.8;
 }
 
 /*

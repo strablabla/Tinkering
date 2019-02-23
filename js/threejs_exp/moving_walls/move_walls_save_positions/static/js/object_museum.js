@@ -17,9 +17,7 @@ function obj_basics(object, p, r, name){
   object.castShadow = true;
   object.receiveShadow = true;
   object.name = name;
-  object.cloned = false;
-  object.origclone = "";
-  object.numclone = 0;
+  object.clone_infos = {"cloned":false,"origclone":"", "numclone":0}
   return object;
 }
 
