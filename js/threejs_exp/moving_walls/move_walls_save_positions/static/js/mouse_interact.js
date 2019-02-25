@@ -176,22 +176,23 @@ function give_infos(){
       if ( INTERSECTED ){
             var x = document.getElementsByClassName("panel");
             var i;
+            //$('.panel').show()
             for (i = 0; i < x.length; i++) {
-              x[i].style.visibility = "visible";
-              x[i].style.backgroundColor = "grey";
-              x[i].style.left = event.pageX + "px";  				// mouse x
-              x[i].style.top = event.pageY + "px";   				// mouse y
+                x[i].style.visibility = "visible";
+                x[i].style.backgroundColor = "white";
+                x[i].style.left = event.pageX + "px";  				// mouse x
+                x[i].style.top = event.pageY + "px";   				// mouse y
             }
       }
-      else{
-
-        var x = document.getElementsByClassName("panel");
-        var i;
-        for (i = 0; i < x.length; i++) {
-              //x[i].style.backgroundColor = "red";
-              x[i].style.left = "10px";                			// upper left position
-              x[i].style.top = "10px";
-              x[i].style.visibility = "hidden";
-          }
-      }
+      // else{
+      //
+      //   var x = document.getElementsByClassName("panel");
+      //   var i;
+      //   for (i = 0; i < x.length; i++) {
+      //           //x[i].style.backgroundColor = "red";
+      //           x[i].style.left = "10px";                			// upper left position
+      //           x[i].style.top = "10px";
+      //           //x[i].style.visibility = "hidden";
+      //     }  //end for
+      // } //end else
   } // end give infos

@@ -87,7 +87,9 @@ function make_uniform_ground(){
     object.castShadow = true;
     object.receiveShadow = true;
     object.opacity = 0.4;
+    object.size = size_square;
     scene.add( object );
+    return object
 } // end function
 
 function make_ground_chess(){

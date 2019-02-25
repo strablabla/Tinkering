@@ -13,6 +13,10 @@
 	</head>
 	<body>
 
+		<link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+		<link rel="stylesheet" href="/static/css/reset.css"> <!-- CSS reset -->
+		<link rel="stylesheet" href="/static/css/style.css"> <!-- Resource style -->
+
 		<!-- moving walls -->
 		<link rel="stylesheet" href="/static/css/moving_walls.css">
 
@@ -94,7 +98,7 @@
 				// ----------------------------------------------- Light
 
 				var light = new THREE.SpotLight( 0xffffff, 1.5 );
-				light.position.set( 200, 500, 2000 );
+				light.position.set( 200, 500, 5000 );
 				light.castShadow = true;
 
 				// ----------------------------------------------- Shadow
@@ -105,18 +109,18 @@
 				// -------------------------
 				light.shadowBias = -0.00022;
 				light.shadowDarkness = 0.5;
-				// -------------------------
-				var size_shadow = 4000;
-				light.shadowMapWidth = size_shadow;
-				light.shadowMapHeight = size_shadow;
+
 
 				scene.add( light );
 
 				//make_objects_onflat()
-				make_uniform_ground()  			// make the board
+				ground = make_uniform_ground()  			// make the board
+				// ------------------------- Shadow ground
+				light.shadowMapWidth = ground.size;
+				light.shadowMapHeight = ground.size;
 				//make_small_seats()     		// make the seats
 				//make_seat()            		// make the seat
-				listwalls = {}
+
 				function load_scene(msg){
 
 							/*
@@ -147,9 +151,17 @@
 							load_scene(msg)
 					  });// end socket.on
 
-			// 	$.getJSON("../static/js/pos.json", function (msg) {
-	    //     load_scene(msg)
-	    // });
+				// var gjson ;
+				// gjson = getJSON('../static/js/pos.json', function(data){
+				// 	  $('.panel_keys').text(JSON.stringify(data))
+				// }) ;
+
+
+				// $.getJSON("../static/js/pos.json", function (msg) {
+				// 		//$('.panel_keys').text(JSON.stringify(msg))
+				// 		$('.panel_keys').text("helllo darling")
+		    //     //load_scene(msg)
+	    	// 		});
 
 			 // var request = new XMLHttpRequest();
 		   // request.open("GET", '../static/pos.json', false);
@@ -221,15 +233,16 @@
 
 		</script>
 
+
     <div class="navig">
 				<div class="menu" style='left:70px'> Home </div>
-				<div class="menu" style='left:200px' id="menu" > Object </div>
+				<div class="menu" style='left:200px' id="objects" > Object </div>
 				<div class="menu" style='left: 90%'> Help</div>
 
 		</div>
 
 		<div style="cursor: auto;">
-			<!-- <canvas style="width: 1007px; height: 804px;" height="804" width="1007"></canvas> -->
+
 
 			<div class="panel" id="pan" >
 
@@ -253,22 +266,183 @@
 
 		</div>
 
-		<div class="panel_menu1" id="menu1" hidden>  </div>
+		<!-- <div class="panel_menu1" id="menu1" hidden>  </div>
 		<div class="panel_objects" id="pobj" >  </div>
-		<div class="current_func" id="curr_func" >  </div>
+		<div class="current_func" id="curr_func" >  </div> -->
+
+<!-- Keys -->
+
 		<div  id="keys" > keys </div>
-		<div class="panel_keys" hidden >  </div>
+		<div class="panel_keys" hidden ></div>
+		<div class="panel_objects" hidden ></div>
+
+
 		<script>
 
 			$('#curr_func').click(function(){
 						$(this).css('background-color','red')
-						create_new_obj = true
+						//create_new_obj = true
 			})
-
 			$('#keys').click(function(){
 						$('.panel_keys').toggle() // show hide the key panel
 			})
+			$('.panel_keys').draggable()
+
+			$("#objects").hover(function(){
+						//$('.panel_keys').toggle() // show hide the key panel
+						$('.panel_objects').show() // show hide the key panel
+			})
+			$('.panel_objects').mouseleave(function(){
+						$('.panel_objects').hide() // show hide the key panel
+			})
+			$('.panel').mouseleave(function(){
+						// x[i].style.left = "10px";                			// upper left position
+						// x[i].style.top = "10px";
+						$('.panel').css({'top':"10px","left":"-300px"})
+						//$('.panel').hide()
+
+						//$('.panel').toggle()
+						//$('.panel').hide() // show hide the key panel
+			})
+
+
 		</script>
+
+
+		<!-- <header class="cd-morph-dropdown" >
+			<a href="#0" class="nav-trigger">Open Nav<span aria-hidden="true"></span></a>
+
+			<nav class="main-nav" >
+				<ul>
+					<li class="has-dropdown gallery" data-content="about" >
+						<a href="#0">About</a>
+					</li>
+
+					<li class="has-dropdown links" data-content="pricing" style="color:black">
+						<a href="#0">Pricing</a>
+					</li>
+
+					<li class="has-dropdown button" data-content="contact">
+						<a href="#0">Contact</a>
+					</li>
+				</ul>
+			</nav>
+
+			<div class="morph-dropdown-wrapper">
+				<div class="dropdown-list">
+					<ul>
+						<li id="about" class="dropdown gallery">
+							<a href="#0" class="label">About</a>
+
+							<div class="content">
+								<ul>
+									<li>
+										<a href="#0">
+											<em>Title here</em>
+											<span>A brief description here</span>
+										</a>
+									</li>
+
+									<li>
+										<a href="#0">
+											<em>Title here</em>
+											<span>A brief description here</span>
+										</a>
+									</li>
+
+									<li>
+										<a href="#0">
+											<em>Title here</em>
+											<span>A brief description here</span>
+										</a>
+									</li>
+
+									<li>
+										<a href="#0">
+											<em>Title here</em>
+											<span>A brief description here</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</li>
+
+						<li id="pricing" class="dropdown links">
+							<a href="#0" class="label">Pricing</a>
+
+							<div class="content">
+								<ul>
+									<li>
+										<h2>Services</h2>
+
+										<ul class="links-list">
+											<li><a href="#0">Logo Design</a></li>
+											<li><a href="#0">Branding</a></li>
+											<li><a href="#0">Web Design</a></li>
+											<li><a href="#0">iOS</a></li>
+											<li><a href="#0">Android</a></li>
+											<li><a href="#0">HTML/CSS/JS</a></li>
+											<li><a href="#0">Packaging</a></li>
+											<li><a href="#0">Mobile</a></li>
+											<li><a href="#0">UI/UX</a></li>
+											<li><a href="#0">Prototyping</a></li>
+										</ul>
+									</li>
+
+									<li>
+										<h2>Projects</h2>
+
+										<ul class="links-list">
+											<li><a href="#0">Logo Design</a></li>
+											<li><a href="#0">Branding</a></li>
+											<li><a href="#0">Web Design</a></li>
+											<li><a href="#0">iOS</a></li>
+											<li><a href="#0">Android</a></li>
+											<li><a href="#0">HTML/CSS/JS</a></li>
+										</ul>
+									</li>
+								</ul>
+							</div>
+						</li>
+
+						<li id="contact" class="dropdown button">
+							<a href="#0" class="label">Contact</a>
+
+							<div class="content">
+								<ul class="links-list">
+									<li><a href="#0">Link #1</a></li>
+									<li><a href="#0">Link #2</a></li>
+									<li><a href="#0">Link #3</a></li>
+									<li><a href="#0">Link #4</a></li>
+									<li><a href="#0">Link #5</a></li>
+									<li><a href="#0">Link #6</a></li>
+								</ul>
+
+								<a href="#0" class="btn">Get in Touch</a>
+							</div>
+						</li>
+					</ul>
+
+					<div class="bg-layer" aria-hidden="true"></div>
+				</div> <!-- dropdown-list -->
+			</div> <!-- morph-dropdown-wrapper -->
+		</header>
+
+		<main class="cd-main-content">
+
+		</main>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+	<script>
+		if( !window.jQuery ) document.write('<script src="/static/js/jquery-3.0.0.min.js"><\/script>');
+	</script>
+	<script src="/static/js/modernizr-custom.js"></script>
+	<script src="/static/js/main_jquery.js"></script> <!-- Resource jQuery --> -->
+
+
+
+
+
+
 
 		</body>
 </html>
