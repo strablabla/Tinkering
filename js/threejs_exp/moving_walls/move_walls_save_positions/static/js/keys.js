@@ -93,7 +93,7 @@ function keyDownTextField1(event){
 
   }
   var current_key = ""
-  var currfuncdic = {'k':'camera', 'c':'clone',
+  var currfuncdic = {'k':'camera', 'c':'clone', 'r':'rotation',
                       'n':'new piece', 's':'select area', 'd':'delete'}
 
   function curr_func(key){
@@ -117,7 +117,6 @@ function keyDownTextField1(event){
             return false
         }
       }
-
 
 //------------------------- Keys actions
 

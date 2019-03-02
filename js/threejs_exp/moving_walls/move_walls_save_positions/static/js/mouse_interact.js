@@ -180,7 +180,7 @@ function mouse_create_object_or_action(){
             selpos.push(creobj)
             if (selpos.length == 2){
                   make_area(selpos)   // plane created with mouse click..
-                  objects_in_area()  // action on the object in the area.. 
+                  objects_in_area()  // action on the object in the area..
                   selpos = []         // position of the diagonal of the plane
                   select_obj = !select_obj;
             }
@@ -221,6 +221,7 @@ function give_infos(){
                 x[i].style.left = event.pageX + "px";  				// mouse x
                 x[i].style.top = event.pageY + "px";   				// mouse y
             }
+            $('#name_panel').text(INTERSECTED.name); // 
       }
 
   } // end give infos

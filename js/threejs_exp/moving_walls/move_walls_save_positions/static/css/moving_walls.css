@@ -104,7 +104,7 @@ Panel of all the keys used for interacting with the scene..
 	z-index: 9999;
 	opacity: 1;
 	border-radius: 10px;
-	box-shadow: 10px 10px;
+	box-shadow: 10px 10px 12px;
 }
 
 /*
@@ -148,7 +148,7 @@ Panel objects
 	z-index: 9999;
 	opacity: 1;
 	border-radius: 10px;
-	box-shadow: 10px 10px;
+	box-shadow: 10px 10px 12px;
 }
 
 /*
@@ -172,7 +172,7 @@ Panel giving infos about the object. Open close to the object
 	opacity: 1;
 	visibility: hidden;
 	border-radius: 10px;
-	box-shadow: 10px 10px;
+	box-shadow: 10px 10px 12px;
 }
 
 .titlepanel {
@@ -220,7 +220,7 @@ Panel objects
 	padding-top: 20px;
 	width: 400px;
 	height: 600px;
-	background-color:#d6f5f5; /*blue;*/
+	background-color:#fff; /*blue;*/
 	z-index: 9999;
 	opacity: 0.9;
 }

@@ -217,7 +217,7 @@
 				container.appendChild( renderer.domElement );
 				window.addEventListener( 'resize', onWindowResize, false );
 
-		
+
 
 			} // end init
 
@@ -249,6 +249,10 @@
 						<div class="titlepanel" >
 									Parameters
 						</div>
+						<br><br>
+						<div id="name_panel" >
+									name
+						</div>
 
 						<br><br>
 
@@ -278,14 +282,10 @@
 
 		<script>
 
-			$('#curr_func').click(function(){
-						$(this).css('background-color','red')
-						//create_new_obj = true
-			})
+
 			$('#keys').click(function(){
 						$('.panel_keys').toggle() // show hide the key panel
 			})
-			$('.panel_keys').draggable()
 
 			$("#objects").hover(function(){
 						//$('.panel_keys').toggle() // show hide the key panel
