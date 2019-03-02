@@ -45,10 +45,11 @@
 			var container, stats;
 			var camera, controls, scene, projector, renderer;
 			var objects = [], plane;
-			var create_new_obj = false;  		// create a new object witht the mouse
+			var create_new_obj = false;  		    // create a new object witht the mouse
 			var select_obj = false;
 			var selpos = [];
-			var select_poscam = false; 			// change camera position with mouse
+			var select_poscam = false; 			    // change camera position with mouse
+			var list_obj_inside = [];  					// list of the objects inside the area..
 
 			//------------------------- Graphical objects
 
@@ -113,7 +114,7 @@
 				scene.add( light );
 
 				//make_objects_onflat()
-				ground = make_uniform_ground()  			// make the board
+				ground = make_uniform_ground()  							// make the board
 				// ------------------------- Shadow ground
 				light.shadowMapWidth = ground.size;
 				light.shadowMapHeight = ground.size;
@@ -201,12 +202,14 @@
 
 						var listpos = {}         														// list of all the positions
 						for (i in objects){
-									var infos_obj = {"pos": objects[i].position,
-									 								 "rot": objects[i].rotation,
-																	 "clone_infos": objects[i].clone_infos,
-																	 "type": objects[i].type
-																  };
-									listpos[objects[i].name] = infos_obj;   			// add position to listpos
+									if (objects[i].type != 'pawn' & objects[i].type != null){
+											var infos_obj = {"pos": objects[i].position,
+											 								 "rot": objects[i].rotation,
+																			 "clone_infos": objects[i].clone_infos,
+																			 "type": objects[i].type
+																		  };
+											listpos[objects[i].name] = infos_obj;   			// add position to listpos
+											}
 									}
 						socket.emit( 'message', JSON.stringify(listpos));
 						}
@@ -216,8 +219,6 @@
 
 				container.appendChild( renderer.domElement );
 				window.addEventListener( 'resize', onWindowResize, false );
-
-
 
 			} // end init
 
@@ -284,19 +285,19 @@
 
 
 			$('#keys').click(function(){
-						$('.panel_keys').toggle() // show hide the key panel
-			})
+						$('.panel_keys').toggle() 											// show hide the key panel
+				})
 
 			$("#objects").hover(function(){
-						//$('.panel_keys').toggle() // show hide the key panel
-						$('.panel_objects').show() // show hide the key panel
-			})
+						//$('.panel_keys').toggle() 										// show hide the key panel
+						$('.panel_objects').show() 											// show hide the key panel
+				})
 			$('.panel_objects').mouseleave(function(){
-						$('.panel_objects').hide() // show hide the key panel
-			})
+						$('.panel_objects').hide() 											// show hide the key panel
+				})
 			$('.panel').mouseleave(function(){
-						$('.panel').css({'top':"10px","left":"-300px"})
-			})
+						$('.panel').css({'top':"10px","left":"-300px"})  // close panel when mouse leaves..
+				})
 
 
 		</script>

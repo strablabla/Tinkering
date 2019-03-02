@@ -146,7 +146,7 @@ function keyDownTextField1(event){
       Delete the selected object
       */
 
-      if ( INTERSECTED ){
+      if ( INTERSECTED){
           for (i in objects){
                 if (objects[i].name == INTERSECTED.name){
                     delete objects[i];
@@ -154,7 +154,28 @@ function keyDownTextField1(event){
             }
           scene.remove( INTERSECTED )
       }
-  }
+
+      else if(list_obj_inside.length > 0){
+          for (i in list_obj_inside){
+                for (j in objects){
+                      if (objects[j].name == list_obj_inside[i].name){
+                          delete objects[j];
+                      }
+                  }
+                scene.remove(list_obj_inside[i]);
+                delete list_obj_inside[i];
+
+
+                //list_obj_inside[i].material.color.setHex('0xf0f0f5');
+              } // end for
+        } // end else if
+      else{
+          console.log('delete nothing')
+        }
+
+    } // end delete_object
+
+//}
 
   document.addEventListener("keydown", keyDownTextField1, false);
   //document.addEventListener("keydown", keyDownTextField0, false);

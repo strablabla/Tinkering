@@ -65,7 +65,6 @@ function onDocumentMouseMove( event ) {
         container.style.cursor = 'auto';
 
     }
-
 }
 
 function onDocumentMouseDown( event ) {
@@ -88,7 +87,10 @@ function onDocumentMouseDown( event ) {
         container.style.cursor = 'move';
 
     }
-    if ( INTERSECTED ) INTERSECTED.material.color.setHex( 0x66ff33 ); // changing color in green when selected
+    else{
+        $('.panel').css({'top':"10px","left":"-300px"})  // close panel when mouse leaves..
+    }
+    if ( INTERSECTED ) INTERSECTED.material.color.setHex( 0x66ff33 );       // changing color in green when selected
 
 }
 
@@ -103,6 +105,9 @@ function onDocumentMouseUp( event ) {
     if ( INTERSECTED ) {
         SELECTED = null;
     }
+    // else{                                               // no intesection, close the panel about the objects..
+    //    $('.panel').css({'top':"10px","left":"-300px"})  // close panel when mouse leaves..
+    // }
     container.style.cursor = 'auto';
 
 }
@@ -110,7 +115,7 @@ function onDocumentMouseUp( event ) {
 function mousepos(){
 
       /*
-      Return the mouse coordinates in the plane
+      Return the mouse coordinates in the horizontal plane
       */
 
       event.preventDefault();
@@ -128,6 +133,7 @@ function mousepos(){
 }
 
 function objects_in_area(){
+
     /*
     Find the objects in the selected area..
     */
@@ -137,16 +143,14 @@ function objects_in_area(){
     miny = Math.min(selpos[0].position.y, selpos[1].position.y)
     maxy = Math.max(selpos[0].position.y, selpos[1].position.y)
 
-    list_obj_inside = []
-
     for (i in objects){
         if (objects[i].position.x > minx &
             objects[i].position.x < maxx &
             objects[i].position.y > miny &
             objects[i].position.y < maxy )
             {
-              list_obj_inside.push(objects[i])
-              objects[i].material.color.setHex(0xffffff)
+                list_obj_inside.push(objects[i])
+                objects[i].material.color.setHex(0xffffff)
             }
 
     } // end for
@@ -156,7 +160,8 @@ function objects_in_area(){
 function mouse_create_object_or_action(){
 
     /*
-    Create an object (create_new_obj) or an action where the mouse is located in the plane.
+    Create an object (create_new_obj) or an action
+     where the mouse is located in the plane.
     */
 
     if (create_new_obj){
@@ -166,6 +171,7 @@ function mouse_create_object_or_action(){
     }
 
     //------------------------- Mouse select area..
+
     if (select_obj){
 
         /*
@@ -173,16 +179,18 @@ function mouse_create_object_or_action(){
         */
 
         if ( selpos.length < 2 ){
-            //make_mark()
+
             var newname = Math.random().toString(36).substring(2, 15) ; // + Math.random().toString(36).substring(2, 15)
             interptsub = mousepos()
             var creobj = make_mark(newname, interptsub, {"x":0, "y":0, "z":0}, 0xffffff)
             selpos.push(creobj)
+            list_obj_inside.push(creobj)      // adding the limits in the list
             if (selpos.length == 2){
-                  make_area(selpos)   // plane created with mouse click..
-                  objects_in_area()  // action on the object in the area..
-                  selpos = []         // position of the diagonal of the plane
+                  make_area(selpos)           // plane created with mouse click..
+                  objects_in_area()           // action on the object in the area..
+                  selpos = []                 // position of the diagonal of the plane
                   select_obj = !select_obj;
+
             }
         } // Select area
 
@@ -209,19 +217,22 @@ function give_infos(){
       /*
       Give infos about the selected object.
       The information appears close to the object selected..
+      Infos are :
+          * the name
+          * the orientation..
       */
 
       if ( INTERSECTED ){
+
             var x = document.getElementsByClassName("panel");
             var i;
-            //$('.panel').show()
             for (i = 0; i < x.length; i++) {
                 x[i].style.visibility = "visible";
                 x[i].style.backgroundColor = "white";
                 x[i].style.left = event.pageX + "px";  				// mouse x
                 x[i].style.top = event.pageY + "px";   				// mouse y
             }
-            $('#name_panel').text(INTERSECTED.name); // 
+            $('#name_panel').text(INTERSECTED.name);          //  show the name of the element in the parameter panel..
       }
 
   } // end give infos

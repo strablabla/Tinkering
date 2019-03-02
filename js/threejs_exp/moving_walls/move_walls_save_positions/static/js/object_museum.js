@@ -2,23 +2,23 @@ disp = 5
 
 function obj_basics(object, p, r, name){
 
-  /*
-  Generic function for rotation, shadow, name, cloning etc..
-  */
+    /*
+    Generic function for rotation, shadow, name, cloning etc..
+    */
 
-  object.material.ambient = object.material.color;
-  //----------
-  object.position.x = p.x     // pos x
-  object.position.y = p.y     // pos y
-  object.position.z = p.z     // pos z
-  object.rotation.x = r.x     // rot x
-  object.rotation.y = r.y     // rot y
-  object.rotation.z = r.z     // rot z
-  object.castShadow = true;
-  object.receiveShadow = true;
-  object.name = name;
-  object.clone_infos = {"cloned":false,"origclone":"", "numclone":0}
-  return object;
+    object.material.ambient = object.material.color;
+    //----------
+    object.position.x = p.x     // pos x
+    object.position.y = p.y     // pos y
+    object.position.z = p.z     // pos z
+    object.rotation.x = r.x     // rot x
+    object.rotation.y = r.y     // rot y
+    object.rotation.z = r.z     // rot z
+    object.castShadow = true;
+    object.receiveShadow = true;
+    object.name = name;
+    object.clone_infos = {"cloned":false,"origclone":"", "numclone":0}
+    return object;
 }
 
 function make_mark(name,p,r,col){
@@ -87,6 +87,7 @@ function make_uniform_ground(){
     object.castShadow = true;
     object.receiveShadow = true;
     object.opacity = 0.4;
+    object.name = "ground";
     object.size = size_square;
     scene.add( object );
     return object
