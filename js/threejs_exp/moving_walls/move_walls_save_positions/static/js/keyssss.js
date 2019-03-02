@@ -1,19 +1,4 @@
-function keyDownTextField0(event){
-
-    /*
-
-    */
-
-    if(event.keyCode == 14){    												  //
-          $('#curr_func').click(function(){
-                $(this).css('background-color','red')
-                //create_new_obj = true
-          })
-      } // end if key code
-
-  } // end keyDownTextField2
-
-function keyDownTextField1(event){
+function keyDownTextField(event){
 
     /*
     r : rotate
@@ -25,8 +10,6 @@ function keyDownTextField1(event){
     arrow up : move up
     arrow down : move down
     */
-
-    $('#curr_func').css('background-color','red')
 
     if(event.keyCode == 38){    												  // Up
           if ( INTERSECTED ){
@@ -66,19 +49,11 @@ function keyDownTextField1(event){
          select_poscam = ! select_poscam;
       } // end if key code
 
-  } // end keyDownTextField1
-
-  function keyDownTextField2(event){
-
-      /*
-
-      */
+  } // end keyDownTextField
 
 
 
-    } // end keyDownTextField2
-
-  //-------------------------
+  //------------------------- Keys actions
 
   var selectdic = {'k':select_poscam, 'n':create_new_obj}
   function select_exclude(key){
@@ -118,9 +93,6 @@ function keyDownTextField1(event){
         }
       }
 
-
-//------------------------- Keys actions
-
   function clone_object(){
 
       /*
@@ -157,5 +129,4 @@ function keyDownTextField1(event){
       }
   }
 
-  document.addEventListener("keydown", keyDownTextField1, false);
-  //document.addEventListener("keydown", keyDownTextField0, false);
+  document.addEventListener("keydown", keyDownTextField, false);

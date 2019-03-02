@@ -18,6 +18,10 @@ function onWindowResize() {
 
 function onDocumentMouseMove( event ) {
 
+    /*
+    Mouse moving
+    */
+
     event.preventDefault();
     mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
     mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
@@ -66,6 +70,10 @@ function onDocumentMouseMove( event ) {
 
 function onDocumentMouseDown( event ) {
 
+    /*
+    Mouse down
+    */
+
     event.preventDefault();
     var vector = new THREE.Vector3( mouse.x, mouse.y, 0.5 );
     projector.unprojectVector( vector, camera );
@@ -85,6 +93,10 @@ function onDocumentMouseDown( event ) {
 }
 
 function onDocumentMouseUp( event ) {
+
+    /*
+    Mouse up
+    */
 
     event.preventDefault();
     controls.enabled = true;
@@ -115,10 +127,36 @@ function mousepos(){
 
 }
 
+function objects_in_area(){
+    /*
+    Find the objects in the selected area..
+    */
+
+    minx = Math.min(selpos[0].position.x, selpos[1].position.x)
+    maxx = Math.max(selpos[0].position.x, selpos[1].position.x)
+    miny = Math.min(selpos[0].position.y, selpos[1].position.y)
+    maxy = Math.max(selpos[0].position.y, selpos[1].position.y)
+
+    list_obj_inside = []
+
+    for (i in objects){
+        if (objects[i].position.x > minx &
+            objects[i].position.x < maxx &
+            objects[i].position.y > miny &
+            objects[i].position.y < maxy )
+            {
+              list_obj_inside.push(objects[i])
+              objects[i].material.color.setHex(0xffffff)
+            }
+
+    } // end for
+
+} // end objects in area..
+
 function mouse_create_object_or_action(){
 
     /*
-    Create an object or an action where the mouse is located in the plane.
+    Create an object (create_new_obj) or an action where the mouse is located in the plane.
     */
 
     if (create_new_obj){
@@ -142,6 +180,7 @@ function mouse_create_object_or_action(){
             selpos.push(creobj)
             if (selpos.length == 2){
                   make_area(selpos)   // plane created with mouse click..
+                  objects_in_area()  // action on the object in the area.. 
                   selpos = []         // position of the diagonal of the plane
                   select_obj = !select_obj;
             }
@@ -165,7 +204,6 @@ function mouse_create_object_or_action(){
 
 } // end mouse_create_object_or_action
 
-
 function give_infos(){
 
       /*
@@ -184,15 +222,5 @@ function give_infos(){
                 x[i].style.top = event.pageY + "px";   				// mouse y
             }
       }
-      // else{
-      //
-      //   var x = document.getElementsByClassName("panel");
-      //   var i;
-      //   for (i = 0; i < x.length; i++) {
-      //           //x[i].style.backgroundColor = "red";
-      //           x[i].style.left = "10px";                			// upper left position
-      //           x[i].style.top = "10px";
-      //           //x[i].style.visibility = "hidden";
-      //     }  //end for
-      // } //end else
+
   } // end give infos
