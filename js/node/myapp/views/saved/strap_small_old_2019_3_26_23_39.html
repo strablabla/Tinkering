@@ -40,7 +40,7 @@
 §menu toto:#janv%202016_oo    text:text
 §noiframe
 §width_video 10%
-§width_pdf 10%
+§width_pdf 90%
 §width_iframe 1000
 §col_sublist #ff6600
 §col_toc #ccccff
@@ -65,15 +65,16 @@ $menu_bim link:nm_Edit:ic_edit:href_baragouinage
 
 ## Example of equation
 * first example
-    * sum
+    * sum ::
         * $math \sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}
 
+## blablabla
 
 # barag
 
 23/4/19
 
-* L. Duval,
+* L. Duval ::
     * Greg Egan
     * NNLS pas de lambda..
         * Slavsky..
@@ -364,21 +365,8 @@ $menu_bim link:nm_Edit:ic_edit:href_baragouinage
        socket.emit('join', 'This is a message from client' );
       });
 
-var aref = $('a[href="text"]')
-// aref.attr('id','text')
-
-// aref.click(function(){
-//       //var h =  $(document).height() - $(window).height()
-//       var top = $(window).scrollTop()
-//       var ratio = top  // /h
-//       socket.emit('scroll', ratio );
-//  })// end click
-
 $('.date').click(function(){
-       //var h =  $(document).height() - $(window).height()
-       var aref = $('a[href="text"]')
        var patt = $(this).attr('id').split('_')[1]
-       alert(patt)
        window.location.href = 'text';
        socket.emit('scroll', patt );// noooothinggggggggggggggggg
   })// end click

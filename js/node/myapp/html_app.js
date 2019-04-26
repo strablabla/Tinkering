@@ -34,6 +34,14 @@ function count_empty_before_pattern(text, pattern) {
     return (cut_text.match(/(^[ \t]*(\n|$))/gm) || []).length;
 }
 
+function count_empty_lines_tot(text, pattern) {
+
+    /*
+    Count the number of empty lines until the pattern.
+    */
+    return (text.match(/(^[ \t]*(\n|$))/gm) || []).length;
+}
+
 function find_line_of_pattern(text, pattern){
 
       /*
@@ -44,7 +52,7 @@ function find_line_of_pattern(text, pattern){
       var line_number = 0
       var tot_lines = 0
       var astring = text.split('\n')
-      count = true
+      var count = true
       astring.forEach(function (line, number) {
 
           if( line.match(pattern) == null & count){
@@ -56,13 +64,17 @@ function find_line_of_pattern(text, pattern){
 
       });
       //
+      var nb_empty_lines_tot = count_empty_lines_tot(text, pattern)
       var nb_empty_lines = count_empty_before_pattern(text, pattern)    // number of empty lines before pattern
       line_number += nb_empty_lines                                     // full line plus empty lines
+      tot_lines += nb_empty_lines_tot
       console.log('############## line_number ############' + line_number)
       console.log('############## tot_lines ###############' + tot_lines)
       var ratio = line_number/tot_lines
 
-      return ratio
+      console.log('############## ratio ###############' + ratio)
+
+      return line_number
 
 }
 
@@ -127,12 +139,14 @@ function save_regularly(){
               fs.readFile('views/strap_small.html', 'utf8', function (err,data) {
                       if (err) { return console.log(err); }
                       save_current_version(data)
-                  }); // end fs.readFile views/strap_small.html
-        }, 60000); // end set Interval
+                  });   // end fs.readFile views/strap_small.html
+        }, 300000);   // 5 min intervall
 
 }
 
 var patt = ''
+
+var comment = false;
 
 io.sockets.on('connection', function (socket) {
 
@@ -140,7 +154,18 @@ io.sockets.on('connection', function (socket) {
     fs.readFile('views/strap_small.html', 'utf8', function (err,data) {
             if (err) { return console.log(err); }
             //io.sockets.emit('message', data); // send the text read in html file to textarea
-            io.sockets.emit('scroll', 'hello the gallery !! '); // send the text read in html file to textarea
+            socket.emit('message', data); // send the text read in html file to textarea
+            if (comment){ console.log('blablabala in readFile !! ') }
+            // console.log('patt before emit !! ' + patt)
+            // socket.emit('scroll', patt);
+            // console.log('patt after emit !! ' + patt)
+
+
+            var line_number = find_line_of_pattern(data, patt)
+            if (comment){ console.log('line_number after find_line_of_pattern !! ' + line_number) }
+            socket.emit('scroll', line_number);
+            if (comment){ console.log('just after scrolllll !! ') }
+
         }); // end fs.readFile
 
     save_regularly()
@@ -179,16 +204,6 @@ io.sockets.on('connection', function (socket) {
             socket.emit('scroll', patt); // send the text read in html file to textarea
         })
 
-
-    // socket.on('scroll', function(ratio) {    // save the scroll position
-    //       console.log('ratio is ... ' + ratio);
-    //       fs.writeFile("views/scroll.json", ratio, function(err) {
-    //
-    //             if(err) { return console.log(err); }
-    //             console.log("saving scroll in json");
-    //
-    //       }); // end writeFile
-    //     }); // end socket.on scroll
 
 }); // sockets.on connection
 
