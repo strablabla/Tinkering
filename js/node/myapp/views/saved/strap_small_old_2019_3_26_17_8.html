@@ -379,8 +379,15 @@ $('.date').click(function(){
        var aref = $('a[href="text"]')
        var patt = $(this).attr('id').split('_')[1]
        alert(patt)
-       window.location.href = 'text';
+       // var top = $(window).scrollTop()
+       // var ratio = top  // /h
+       alert('############### bongoggggggggggggggg')
        socket.emit('scroll', patt );// noooothinggggggggggggggggg
+       //$('a[href="text"]').click()
+       //location.href='text';
+       //$("<a href='localhost:3000/text'></a>").click();
+       console.log('############### bongoggggggggggggggg')
+       //$('#text').click()
   })// end click
 
 

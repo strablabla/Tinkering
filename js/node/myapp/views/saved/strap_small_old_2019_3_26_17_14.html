@@ -378,9 +378,19 @@ $('.date').click(function(){
        //var h =  $(document).height() - $(window).height()
        var aref = $('a[href="text"]')
        var patt = $(this).attr('id').split('_')[1]
+       alert('############### bongoggggggggggggggg')
        alert(patt)
-       window.location.href = 'text';
+       // var top = $(window).scrollTop()
+       // var ratio = top  // /h
+
+       //alert()
        socket.emit('scroll', patt );// noooothinggggggggggggggggg
+       aref.click()
+       //$('a[href="text"]').click()
+       //location.href='text';
+       //$("<a href='localhost:3000/text'></a>").click();
+       console.log('############### bongoggggggggggggggg')
+       //$('#text').click()
   })// end click
 
 

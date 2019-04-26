@@ -13,6 +13,11 @@ function keyDownTextField0(event){
 
   } // end keyDownTextField2
 
+function rotate_obj(obj){
+   obj.rotation.z += -Math.PI/2;
+   obj.material.color.setHex( 0xff33f5 ); // change color
+}
+
 function keyDownTextField1(event){
 
     /*
@@ -43,6 +48,9 @@ function keyDownTextField1(event){
     if(keyev('r', event)){    												  // Rotation
           if ( INTERSECTED ){
             INTERSECTED.rotation.z += -Math.PI/2; 		  // Pi/2 rotation
+          }
+          else if(list_obj_inside.length > 0){
+            apply_to_all(rotate_obj)
           }
       } // end if key code
     if(keyev('c', event)){    											    // Clone the selected object
@@ -97,6 +105,11 @@ function keyDownTextField1(event){
                       'n':'new piece', 's':'select area', 'd':'delete'}
 
   function curr_func(key){
+
+      /*
+      Show the current action
+      */
+
       current_key = key;
       document.getElementById("curr_func").textContent = currfuncdic[key];
       //select_exclude(key)
@@ -140,6 +153,23 @@ function keyDownTextField1(event){
 
   }
 
+  function apply_to_all(func_all){
+
+        /*
+         Apply the same func_all to all the objects..
+        */
+
+        for (i in list_obj_inside){
+              for (j in objects){
+                    if (objects[j].name == list_obj_inside[i].name){
+                        func_all(objects[j])
+                    } //end if
+                } // end for j
+
+            } // end for i
+        list_obj_inside = []
+  }
+
   function delete_object(){
 
       /*
@@ -160,18 +190,16 @@ function keyDownTextField1(event){
                 for (j in objects){
                       if (objects[j].name == list_obj_inside[i].name){
                           delete objects[j];
-                      }
-                  }
+                      } //end if
+                  } // end for
                 scene.remove(list_obj_inside[i]);
-                delete list_obj_inside[i];
-
-
-                //list_obj_inside[i].material.color.setHex('0xf0f0f5');
+                //delete list_obj_inside[i];
               } // end for
         } // end else if
       else{
           console.log('delete nothing')
         }
+      list_obj_inside = []
 
     } // end delete_object
 

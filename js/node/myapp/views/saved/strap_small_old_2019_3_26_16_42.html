@@ -364,23 +364,21 @@ $menu_bim link:nm_Edit:ic_edit:href_baragouinage
        socket.emit('join', 'This is a message from client' );
       });
 
-var aref = $('a[href="text"]')
-// aref.attr('id','text')
+var aref = $('a[href="text"]');
 
-// aref.click(function(){
-//       //var h =  $(document).height() - $(window).height()
-//       var top = $(window).scrollTop()
-//       var ratio = top  // /h
-//       socket.emit('scroll', ratio );
-//  })// end click
+aref.click(function(){
+      //var h =  $(document).height() - $(window).height()
+      var top = $(window).scrollTop()
+      var ratio = top  // /h
+      socket.emit('scroll', ratio );
+ })// end click
 
 $('.date').click(function(){
        //var h =  $(document).height() - $(window).height()
-       var aref = $('a[href="text"]')
-       var patt = $(this).attr('id').split('_')[1]
-       alert(patt)
-       window.location.href = 'text';
-       socket.emit('scroll', patt );// noooothinggggggggggggggggg
+       alert($(this).attr('id'))
+       // var top = $(window).scrollTop()
+       // var ratio = top  // /h
+       socket.emit('scroll', 'pattern' );// noooothinggggggggggggggggg
   })// end click
 
 

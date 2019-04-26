@@ -65,7 +65,7 @@
 
  <div class="form-group">
   <label for="comment">Comment:</label>
-  <textarea class="form-control" rows="10" id="comment" style="width: 600px; height: 300px">aaaa</textarea>
+  <textarea class="form-control" rows="10" id="comment" style="width: 600px; height: 500px">aaaa</textarea>
 
   <br/>
 
@@ -93,29 +93,40 @@
 
 
     var socket = io.connect();  //'http://localhost:3000'
+
     socket.on('connection', function() {
-        socket.emit('join', 'This is a message from client' );
-    });
+        socket.emit('join', 'This is a message from client textarea !!' );
+      });
 
-    socket.on('message', function(message) {     // retrieve text in textarea..
+    socket.on('message', function(message) {     // write html in textarea
         $('#comment').val(message);
-    })
-
-    $('#submit').click(function(){               // submit new text..
-      socket.emit('return', $('#comment').val());
-    }) // end click
-
-    socket.on('scroll', function(ratio) {        // retrieve text in textarea..
-        // alert(ratio)
-        var h = $('#comment').height()
-        var scrollpos = parseInt(ratio) + 700 // h*parseFloat(ratio)
-        // alert(scrollpos)
-        $('#comment').scrollTop(scrollpos)
+        alert('received the text from html via the server !! ')
+        //socket.emit('pos_scroll', 'what is it');
       })
 
-      // $( document ).ready(function() {
+    $('#submit').click(function(){               // submit new text..
+          var data = $('#comment').val()
+          socket.emit('return', data);
+        }) // end click
 
-     // });
+    socket.on('scroll', function(patt) {
+      //$('#comment').scrollTop(400)
+        console.log('############  in textarea patt   ########### ' + patt)
+      })
+
+    // socket.on('scroll', function(ratio) {
+    //     //alert(ratio)
+    //     var h = $('#comment').height()
+    //     //var scrollpos = parseInt(ratio) + 700 // h*parseFloat(ratio)
+    //     // alert(scrollpos)
+    //     //$('#comment').scrollTop(scrollpos)
+    //     var scrollpos = parseInt(h*parseFloat(ratio))
+    //     console.log('scrollpos is ' + scrollpos)
+    //     $('#comment').scrollTop(scrollpos)
+    //   })
+
+
+
 
 </script>
 
