@@ -1,0 +1,258 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/nodejs',
+1 verbose cli   '/usr/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'app.js',
+1 verbose cli   'html_app.js',
+1 verbose cli   'node_modules',
+1 verbose cli   'node_modulesss',
+1 verbose cli   'package.json',
+1 verbose cli   'public',
+1 verbose cli   'views' ]
+2 info using npm@3.5.2
+3 info using node@v4.2.6
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData app.js
+8 silly fetchPackageMetaData html_app.js
+9 silly fetchPackageMetaData node_modules
+10 silly fetchPackageMetaData node_modulesss
+11 silly fetchPackageMetaData package.json
+12 silly fetchPackageMetaData public
+13 silly fetchPackageMetaData views
+14 silly fetchOtherPackageData app.js
+15 silly cache add args [ 'app.js', null ]
+16 verbose cache add spec app.js
+17 silly fetchOtherPackageData html_app.js
+18 silly cache add args [ 'html_app.js', null ]
+19 verbose cache add spec html_app.js
+20 silly fetchOtherPackageData package.json
+21 silly cache add args [ 'package.json', null ]
+22 verbose cache add spec package.json
+23 silly cache add parsed spec Result {
+23 silly cache add   raw: 'app.js',
+23 silly cache add   scope: null,
+23 silly cache add   name: null,
+23 silly cache add   rawSpec: 'app.js',
+23 silly cache add   spec: '/home/lio/git/node_straptoc/myapp/app.js',
+23 silly cache add   type: 'local' }
+24 silly cache add parsed spec Result {
+24 silly cache add   raw: 'html_app.js',
+24 silly cache add   scope: null,
+24 silly cache add   name: null,
+24 silly cache add   rawSpec: 'html_app.js',
+24 silly cache add   spec: '/home/lio/git/node_straptoc/myapp/html_app.js',
+24 silly cache add   type: 'local' }
+25 silly fetchOtherPackageData node_modules
+26 silly cache add args [ 'node_modules', null ]
+27 verbose cache add spec node_modules
+28 silly fetchNamedPackageData node_modulesss
+29 silly mapToRegistry name node_modulesss
+30 silly mapToRegistry using default registry
+31 silly mapToRegistry registry https://registry.npmjs.org/
+32 silly mapToRegistry uri https://registry.npmjs.org/node_modulesss
+33 silly cache add parsed spec Result {
+33 silly cache add   raw: 'package.json',
+33 silly cache add   scope: null,
+33 silly cache add   name: null,
+33 silly cache add   rawSpec: 'package.json',
+33 silly cache add   spec: '/home/lio/git/node_straptoc/myapp/package.json',
+33 silly cache add   type: 'local' }
+34 silly fetchNamedPackageData public
+35 silly mapToRegistry name public
+36 silly mapToRegistry using default registry
+37 silly mapToRegistry registry https://registry.npmjs.org/
+38 silly mapToRegistry uri https://registry.npmjs.org/public
+39 silly fetchNamedPackageData views
+40 silly mapToRegistry name views
+41 silly mapToRegistry using default registry
+42 silly mapToRegistry registry https://registry.npmjs.org/
+43 silly mapToRegistry uri https://registry.npmjs.org/views
+44 verbose request uri https://registry.npmjs.org/node_modulesss
+45 verbose request no auth needed
+46 info attempt registry request try #1 at 10:27:24
+47 verbose request id 15132e40716c5de2
+48 http request GET https://registry.npmjs.org/node_modulesss
+49 silly cache add parsed spec Result {
+49 silly cache add   raw: 'node_modules',
+49 silly cache add   scope: null,
+49 silly cache add   name: null,
+49 silly cache add   rawSpec: 'node_modules',
+49 silly cache add   spec: '/home/lio/git/node_straptoc/myapp/node_modules',
+49 silly cache add   type: 'local' }
+50 silly addLocalTarball shasum (computed) 1b5d43fdc35866a1faff86b12ca91efd792b546b
+51 verbose addTmpTarball /home/lio/git/node_straptoc/myapp/app.js not in flight; adding
+52 silly addLocalTarball shasum (computed) 605f934880ccd018a0c8138167db8456dc2c64a0
+53 verbose addTmpTarball /home/lio/git/node_straptoc/myapp/html_app.js not in flight; adding
+54 silly addLocalTarball shasum (computed) 68f5fc62e176088f3b779a75821bb9895263c478
+55 verbose addTmpTarball /home/lio/git/node_straptoc/myapp/package.json not in flight; adding
+56 verbose addTmpTarball validating metadata from /home/lio/git/node_straptoc/myapp/app.js
+57 verbose tar unpack /home/lio/git/node_straptoc/myapp/app.js
+58 verbose tar unpacking to /tmp/npm-5694-75d7e617/unpack-2bc2c00f
+59 silly gentlyRm /tmp/npm-5694-75d7e617/unpack-2bc2c00f is being purged
+60 verbose gentlyRm don't care about contents; nuking /tmp/npm-5694-75d7e617/unpack-2bc2c00f
+61 verbose addTmpTarball validating metadata from /home/lio/git/node_straptoc/myapp/html_app.js
+62 verbose tar unpack /home/lio/git/node_straptoc/myapp/html_app.js
+63 verbose tar unpacking to /tmp/npm-5694-75d7e617/unpack-7311f0e0
+64 silly gentlyRm /tmp/npm-5694-75d7e617/unpack-7311f0e0 is being purged
+65 verbose gentlyRm don't care about contents; nuking /tmp/npm-5694-75d7e617/unpack-7311f0e0
+66 error addLocal Could not install /home/lio/git/node_straptoc/myapp/node_modules
+67 silly fetchPackageMetaData Error: EISDIR: illegal operation on a directory, read
+67 silly fetchPackageMetaData     at Error (native)
+67 silly fetchPackageMetaData  error for node_modules { [Error: EISDIR: illegal operation on a directory, read] errno: -21, code: 'EISDIR', syscall: 'read' }
+68 verbose addTmpTarball validating metadata from /home/lio/git/node_straptoc/myapp/package.json
+69 verbose tar unpack /home/lio/git/node_straptoc/myapp/package.json
+70 verbose tar unpacking to /tmp/npm-5694-75d7e617/unpack-5ff6c4de
+71 silly gentlyRm /tmp/npm-5694-75d7e617/unpack-5ff6c4de is being purged
+72 verbose gentlyRm don't care about contents; nuking /tmp/npm-5694-75d7e617/unpack-5ff6c4de
+73 silly gunzTarPerm modes [ '755', '644' ]
+74 silly gunzTarPerm modes [ '755', '644' ]
+75 silly gunzTarPerm modes [ '755', '644' ]
+76 verbose request uri https://registry.npmjs.org/public
+77 verbose request no auth needed
+78 info attempt registry request try #1 at 10:27:24
+79 verbose etag W/"c66106cb3184f9bd4bee02ab87867a1d"
+80 verbose lastModified Thu, 07 Jun 2018 08:39:21 GMT
+81 http request GET https://registry.npmjs.org/public
+82 verbose request uri https://registry.npmjs.org/views
+83 verbose request no auth needed
+84 info attempt registry request try #1 at 10:27:24
+85 verbose etag W/"e929a444b9811a6e7cc82c819d8427c7"
+86 verbose lastModified Sun, 27 May 2018 20:55:47 GMT
+87 http request GET https://registry.npmjs.org/views
+88 error not a package /home/lio/git/node_straptoc/myapp/app.js
+89 error not a package /home/lio/git/node_straptoc/myapp/html_app.js
+90 error not a package /home/lio/git/node_straptoc/myapp/package.json
+91 error addLocal Could not install /home/lio/git/node_straptoc/myapp/app.js
+92 silly fetchPackageMetaData Error: ENOENT: no such file or directory, open '/tmp/npm-5694-75d7e617/unpack-2bc2c00f/package.json'
+92 silly fetchPackageMetaData     at Error (native)
+92 silly fetchPackageMetaData  error for app.js { [Error: ENOENT: no such file or directory, open '/tmp/npm-5694-75d7e617/unpack-2bc2c00f/package.json']
+92 silly fetchPackageMetaData   errno: -2,
+92 silly fetchPackageMetaData   code: 'ENOENT',
+92 silly fetchPackageMetaData   syscall: 'open',
+92 silly fetchPackageMetaData   path: '/tmp/npm-5694-75d7e617/unpack-2bc2c00f/package.json' }
+93 error addLocal Could not install /home/lio/git/node_straptoc/myapp/package.json
+94 silly fetchPackageMetaData Error: ENOENT: no such file or directory, open '/tmp/npm-5694-75d7e617/unpack-5ff6c4de/package.json'
+94 silly fetchPackageMetaData     at Error (native)
+94 silly fetchPackageMetaData  error for package.json { [Error: ENOENT: no such file or directory, open '/tmp/npm-5694-75d7e617/unpack-5ff6c4de/package.json']
+94 silly fetchPackageMetaData   errno: -2,
+94 silly fetchPackageMetaData   code: 'ENOENT',
+94 silly fetchPackageMetaData   syscall: 'open',
+94 silly fetchPackageMetaData   path: '/tmp/npm-5694-75d7e617/unpack-5ff6c4de/package.json' }
+95 error addLocal Could not install /home/lio/git/node_straptoc/myapp/html_app.js
+96 silly fetchPackageMetaData Error: ENOENT: no such file or directory, open '/tmp/npm-5694-75d7e617/unpack-7311f0e0/package.json'
+96 silly fetchPackageMetaData     at Error (native)
+96 silly fetchPackageMetaData  error for html_app.js { [Error: ENOENT: no such file or directory, open '/tmp/npm-5694-75d7e617/unpack-7311f0e0/package.json']
+96 silly fetchPackageMetaData   errno: -2,
+96 silly fetchPackageMetaData   code: 'ENOENT',
+96 silly fetchPackageMetaData   syscall: 'open',
+96 silly fetchPackageMetaData   path: '/tmp/npm-5694-75d7e617/unpack-7311f0e0/package.json' }
+97 http 304 https://registry.npmjs.org/views
+98 verbose headers { date: 'Sat, 27 Apr 2019 08:28:32 GMT',
+98 verbose headers   connection: 'keep-alive',
+98 verbose headers   'set-cookie': [ '__cfduid=dc12c9660524df7a32c7ec934919dcb641556353712; expires=Sun, 26-Apr-20 08:28:32 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+98 verbose headers   'cf-cache-status': 'HIT',
+98 verbose headers   'cache-control': 'max-age=300',
+98 verbose headers   'cf-ray': '4cdf6c70bf92a857-CDG',
+98 verbose headers   etag: '"e929a444b9811a6e7cc82c819d8427c7"',
+98 verbose headers   'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+98 verbose headers   'last-modified': 'Sun, 27 May 2018 20:55:47 GMT',
+98 verbose headers   vary: 'accept-encoding, accept',
+98 verbose headers   server: 'cloudflare' }
+99 silly get cb [ 304,
+99 silly get   { date: 'Sat, 27 Apr 2019 08:28:32 GMT',
+99 silly get     connection: 'keep-alive',
+99 silly get     'set-cookie': [ '__cfduid=dc12c9660524df7a32c7ec934919dcb641556353712; expires=Sun, 26-Apr-20 08:28:32 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+99 silly get     'cf-cache-status': 'HIT',
+99 silly get     'cache-control': 'max-age=300',
+99 silly get     'cf-ray': '4cdf6c70bf92a857-CDG',
+99 silly get     etag: '"e929a444b9811a6e7cc82c819d8427c7"',
+99 silly get     'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+99 silly get     'last-modified': 'Sun, 27 May 2018 20:55:47 GMT',
+99 silly get     vary: 'accept-encoding, accept',
+99 silly get     server: 'cloudflare' } ]
+100 verbose etag https://registry.npmjs.org/views from cache
+101 verbose get saving views to /home/lio/.npm/registry.npmjs.org/views/.cache.json
+102 http 304 https://registry.npmjs.org/public
+103 verbose headers { date: 'Sat, 27 Apr 2019 08:28:32 GMT',
+103 verbose headers   connection: 'keep-alive',
+103 verbose headers   'set-cookie': [ '__cfduid=d05f84786b0826e58228d85b66e95dff21556353712; expires=Sun, 26-Apr-20 08:28:32 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+103 verbose headers   'cf-cache-status': 'HIT',
+103 verbose headers   'cache-control': 'max-age=300',
+103 verbose headers   'cf-ray': '4cdf6c714eebb7bf-CDG',
+103 verbose headers   etag: '"c66106cb3184f9bd4bee02ab87867a1d"',
+103 verbose headers   'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+103 verbose headers   'last-modified': 'Thu, 07 Jun 2018 08:39:21 GMT',
+103 verbose headers   vary: 'accept-encoding, accept',
+103 verbose headers   server: 'cloudflare' }
+104 silly get cb [ 304,
+104 silly get   { date: 'Sat, 27 Apr 2019 08:28:32 GMT',
+104 silly get     connection: 'keep-alive',
+104 silly get     'set-cookie': [ '__cfduid=d05f84786b0826e58228d85b66e95dff21556353712; expires=Sun, 26-Apr-20 08:28:32 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+104 silly get     'cf-cache-status': 'HIT',
+104 silly get     'cache-control': 'max-age=300',
+104 silly get     'cf-ray': '4cdf6c714eebb7bf-CDG',
+104 silly get     etag: '"c66106cb3184f9bd4bee02ab87867a1d"',
+104 silly get     'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+104 silly get     'last-modified': 'Thu, 07 Jun 2018 08:39:21 GMT',
+104 silly get     vary: 'accept-encoding, accept',
+104 silly get     server: 'cloudflare' } ]
+105 verbose etag https://registry.npmjs.org/public from cache
+106 verbose get saving public to /home/lio/.npm/registry.npmjs.org/public/.cache.json
+107 http 404 https://registry.npmjs.org/node_modulesss
+108 verbose headers { date: 'Sat, 27 Apr 2019 08:28:33 GMT',
+108 verbose headers   'content-type': 'application/json',
+108 verbose headers   'content-length': '21',
+108 verbose headers   connection: 'keep-alive',
+108 verbose headers   'set-cookie': [ '__cfduid=ded704a07d3a58e52e29d00d5c7fe63241556353712; expires=Sun, 26-Apr-20 08:28:32 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+108 verbose headers   'cf-cache-status': 'MISS',
+108 verbose headers   'cache-control': 'max-age=300',
+108 verbose headers   'cf-ray': '4cdf6c70b8faa86f-CDG',
+108 verbose headers   'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+108 verbose headers   vary: 'accept-encoding, accept',
+108 verbose headers   server: 'cloudflare' }
+109 silly get cb [ 404,
+109 silly get   { date: 'Sat, 27 Apr 2019 08:28:33 GMT',
+109 silly get     'content-type': 'application/json',
+109 silly get     'content-length': '21',
+109 silly get     connection: 'keep-alive',
+109 silly get     'set-cookie': [ '__cfduid=ded704a07d3a58e52e29d00d5c7fe63241556353712; expires=Sun, 26-Apr-20 08:28:32 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+109 silly get     'cf-cache-status': 'MISS',
+109 silly get     'cache-control': 'max-age=300',
+109 silly get     'cf-ray': '4cdf6c70b8faa86f-CDG',
+109 silly get     'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+109 silly get     vary: 'accept-encoding, accept',
+109 silly get     server: 'cloudflare' } ]
+110 silly fetchPackageMetaData Error: Not found : node_modulesss
+110 silly fetchPackageMetaData     at makeError (/usr/share/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+110 silly fetchPackageMetaData     at CachingRegistryClient.<anonymous> (/usr/share/npm/node_modules/npm-registry-client/lib/request.js:252:14)
+110 silly fetchPackageMetaData     at Request._callback (/usr/share/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+110 silly fetchPackageMetaData     at Request.self.callback (/usr/share/npm/node_modules/request/request.js:198:22)
+110 silly fetchPackageMetaData     at emitTwo (events.js:87:13)
+110 silly fetchPackageMetaData     at Request.emit (events.js:172:7)
+110 silly fetchPackageMetaData     at Request.<anonymous> (/usr/share/npm/node_modules/request/request.js:1082:10)
+110 silly fetchPackageMetaData     at emitOne (events.js:82:20)
+110 silly fetchPackageMetaData     at Request.emit (events.js:169:7)
+110 silly fetchPackageMetaData     at IncomingMessage.<anonymous> (/usr/share/npm/node_modules/request/request.js:1009:12)
+110 silly fetchPackageMetaData  error for node_modulesss { [Error: Not found : node_modulesss] pkgid: 'node_modulesss', statusCode: 404, code: 'E404' }
+111 silly rollbackFailedOptional Starting
+112 silly rollbackFailedOptional Finishing
+113 silly runTopLevelLifecycles Starting
+114 silly runTopLevelLifecycles Finishing
+115 silly install printInstalled
+116 verbose stack Error: EISDIR: illegal operation on a directory, read
+116 verbose stack     at Error (native)
+117 verbose cwd /home/lio/git/node_straptoc/myapp
+118 error Linux 4.4.0-79-generic
+119 error argv "/usr/bin/nodejs" "/usr/bin/npm" "install" "app.js" "html_app.js" "node_modules" "node_modulesss" "package.json" "public" "views"
+120 error node v4.2.6
+121 error npm  v3.5.2
+122 error code EISDIR
+123 error errno -21
+124 error syscall read
+125 error eisdir EISDIR: illegal operation on a directory, read
+126 error eisdir This is most likely not a problem with npm itself
+126 error eisdir and is related to npm not being able to find a package.json in
+126 error eisdir a package you are trying to install.
+127 verbose exit [ -21, true ]

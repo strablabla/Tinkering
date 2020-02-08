@@ -538,7 +538,7 @@ var maketoc = function(){
                 //alert($(this).html())
                 ulhtm.append($('<li/>').append($(this)))
              }) // end each
-           $(this).replaceWith(ulhtm) // replace whole p or li
+           $(this).parent().replaceWith(ulhtm) // replace whole p or li  !!!!!! CORRECTION
         }   // end if regexp
     })   // end each p, li
 
@@ -554,7 +554,8 @@ var maketoc = function(){
            $(this).children('a').each(function(){
                 ulvid.append($('<li/>').append($(this)))
              }) // end each
-           $(this).replaceWith(ulvid) // replace whole p or li
+           $(this).parent().replaceWith(ulvid) // replace whole p or li  !!!!!! CORRECTION
+           // $(this).replaceWith(ulvid) // replace whole p or li
         }   // end if regexp
     })   // end each p, li
 
@@ -1107,6 +1108,8 @@ buc($("p"))  // dealing with p
                  var ulvid = $('<li/>').append(tlist).append(underthis) // <li> with text then clone
                  $(this).parent().replaceWith(ulvid) // replace <a> with a <ul> containing <a>
               } // end if
+
+
         })
 
 //===================================================================== Folding iframes and root mechanism (+++) with multiple iframes
@@ -1650,9 +1653,9 @@ buc($("p"))  // dealing with p
                       $(this).trigger('click') // close lists.
                       } // if not toc
 
-                  // } // if display == block 
+                  // } // if display == block
 
-               }) // end a > span each(function(), 
+               }) // end a > span each(function(),
            } // end if key code l
      }) // end keydown (end of all keys functions)
 
@@ -1728,7 +1731,7 @@ buc($("p"))  // dealing with p
     //===================================================================== Notes
 
     // Taking Notes
-   
+
     $('body').prepend($('<div/>').addClass('notes').attr('id',"notes"))
     $('#notes').toggle()
     $('#notes').append($('</div>').text('Notes')) // adding title
@@ -1736,7 +1739,7 @@ buc($("p"))  // dealing with p
     $('#notes').append($('<input/>').attr('type','button').addClass('btn btn-default').attr('id','notif').val('save')) // save
     // $('#notes').append($('<input>').attr('type','button').attr('id','inside').val('show'))
     $('#notes').draggable()
-    
+
    // Restitute textarea
 
    try {
@@ -1746,7 +1749,7 @@ buc($("p"))  // dealing with p
     catch(err) {
         //alert("no library store.js")
         }
-    
+
     // Save textarea
 
     $('#notif').click(function(){
