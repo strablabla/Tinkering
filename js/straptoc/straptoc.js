@@ -523,7 +523,7 @@ var maketoc = function(){
            $(this).children('a').each(function(){
                 ulpdf.append($('<li/>').append($(this)))
              }) // end each
-           $(this).replaceWith(ulpdf) // replace whole p or li
+           $(this).parent().replaceWith(ulpdf) // replace whole p or li
         }   // end if regexp
     })   // end each p, li
 
