@@ -468,8 +468,8 @@ var maketoc = function(){
     var htm = $(this).html()
     var txt = htm.split('\n')[1] || ' '
     if (txt.match(/\+\+\+\.*/)) {
-        var addroot = txt.split('+++')[1].trim()+'/'   // makes the root
-        addroot = addroot.replace(/<em>|<\/em>/g,"_")
+        var addroot = txt.split('+++')[1].trim()+'/'    // makes the root
+        addroot = addroot.replace(/<em>|<\/em>/g,"_")   // correction for underscore..
 
         $(this).find('*').each(function(){
 
@@ -523,7 +523,7 @@ var maketoc = function(){
            $(this).children('a').each(function(){
                 ulpdf.append($('<li/>').append($(this)))
              }) // end each
-           $(this).parent().replaceWith(ulpdf) // replace whole p or li
+           $(this).parent().replaceWith(ulpdf) // replace whole p or li // CORRECTION for pdf..
         }   // end if regexp
     })   // end each p, li
 
@@ -791,7 +791,7 @@ var maketoc = function(){
     var htm = $('#content').html()
     var m = htm.replace(regcbarree,function(content){
         var barr = content.split('%%%')[0].trim()
-        var barrcorr = '<del>'+barr+'</del>'
+        var barrcorr = '<del>' + barr + '</del>'
         return barrcorr
         }) // end replace
     $('#content').html(m)
@@ -954,7 +954,7 @@ var maketoc = function(){
     $('#toc').append(toc_touch)
 
     $('#toc_touch').click(function(){
-        $('#showtoc').toggle()
+        //$('#showtoc').toggle()
         $('#toc').toggle()
         }) // end toc_touch click
 
@@ -1336,7 +1336,7 @@ buc($("p"))  // dealing with p
           }// end if key code
         })
 
-//=====================================================================
+//===================================================================== text for pdf
 
     var sel = ['§§'] // ';;',
     var wpdf = '"' + param['pdf_width']['var'] + '"'
@@ -1369,6 +1369,7 @@ buc($("p"))  // dealing with p
     })  // end each
 
 //===================================================================== No iframe
+
     /*
     Prevents the insertion of iframes from the document parameters
     */
@@ -1378,8 +1379,8 @@ buc($("p"))  // dealing with p
          var regnoifr = '§noiframe'
          if (textp.match(regnoifr)){
              $(this).hide()
-             if (textp.trim() == regnoifr){  // hides novideo
-                $("a").each(function(){ // removing ;;
+             if (textp.trim() == regnoifr){  // hides iframes
+                $("a").each(function(){ // removing ,,
                     var texta = $(this).text()
                     if (texta.search(',,') != -1){
                         $(this).text(texta.replace(',,',''))
@@ -1411,12 +1412,12 @@ buc($("p"))  // dealing with p
                             .replace(patt[select][0], patt[select][1]) + end)) // make doc
         var text = self.text().replace(select,'')
         $('<a/>').text(text).append($('<a/>').append($('<span/>').text( " [-]").addClass(select)))
-                 .insertBefore(self).css({'color':debend[select]['color']})
-                 .attr('title', self.attr('title')) // Adding tooltip
+                 .insertBefore(self).css({'color': debend[select]['color']})
+                 .attr('title', self.attr('title'))     // Adding tooltip
         return tag
     }
 
-    $("a").each(function(){  // Deals with videos and pdfs
+    $("a").each(function(){  // Deals with videos and pdfs and iframes
          for (i in sel){
              if($(this).text().search(sel[i]) != -1){
                    var obj = maketag($(this), debend[sel[i]]['deb'], debend[sel[i]]['end'], sel[i]) // makes the tag.
@@ -1424,6 +1425,7 @@ buc($("p"))  // dealing with p
                    obj.toggle() // hide
                  } // end if
               }// end for
+
          }); // end each
 
 //=====================================================================  Toggle ;; and §§
@@ -1434,7 +1436,7 @@ buc($("p"))  // dealing with p
 
     $("a").click(function (evt) {
         var evtc = evt.target.className;
-        if(evtc == ';;' | evtc == '§§') {      // toggle
+        if( evtc == ';;' | evtc == '§§' ) {      // toggle
             $(this).parent().next().toggle(); // if click, activate next <ul>
             } // end if event
         });// end click
@@ -1567,13 +1569,17 @@ buc($("p"))  // dealing with p
 
         //=====================================================================   Youtube
 
-        if ($(this).text().match(';;')){      // replace the address with a div with 'youtube' class.
-            var id = $(this).attr('href').split('v=')[1].trim()
-            var newtag = $('<div/>').addClass('youtube')
-                   .css({'width': '500px', 'height': '281px'})
-                   .attr('id', id)
-            $(this).replaceWith(newtag) // replace the <a> with a <div> with class 'youtube'
-         } // end if
+        try{
+              if ($(this).text().match(';;')){      // replace the address with a div with 'youtube' class.
+                  var id = $(this).attr('href').split('v=')[1].trim()
+                  var newtag = $('<div/>').addClass('youtube')
+                         .css({'width': '500px', 'height': '281px'})
+                         .attr('id', id)
+                  $(this).replaceWith(newtag) // replace the <a> with a <div> with class 'youtube'
+               } // end if
+         }catch(err){
+             console.log('issue with youtube video');
+         }
 
         //=====================================================================   Insert iframe
 
@@ -1903,9 +1909,9 @@ buc($("p"))  // dealing with p
     $('body').prepend(showtoc)
     $('#showtoc').click(function(){
         $('#toc').toggle()
-        $('#showtoc').toggle()
+        //$('#showtoc').toggle()
     })
-    $('#showtoc').toggle()
+    //$('#showtoc').toggle()
 
     //===================================================================== esc
 
